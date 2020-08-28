@@ -203,13 +203,38 @@ export function generateResolversBarrelFile(
       },
     );
 
-  const moduleName =
-    type === "crud" ? "CrudResolversModule" : "RelationsResolversModule";
-  const providers = resolversData
+  const providers: string[] = [];
+  resolversData
     .sort((a, b) =>
       a.modelName > b.modelName ? 1 : a.modelName < b.modelName ? -1 : 0,
     )
-    .map(({ resolverName }) => resolverName);
+    .forEach(
+      ({
+        modelName,
+        resolverName,
+        actionResolverNames,
+        hasSomeArgs: hasArgs,
+      }) => {
+        sourceFile.addImportDeclaration({
+          moduleSpecifier: `./${modelName}/${resolverName}`,
+          namedImports: [resolverName],
+        });
+        providers.push(resolverName);
+        if (actionResolverNames) {
+          actionResolverNames.forEach(actionResolverName => {
+            sourceFile.addImportDeclaration({
+              moduleSpecifier: `./${modelName}/${actionResolverName}`,
+              namedImports: [actionResolverName],
+            });
+            providers.push(actionResolverName);
+          });
+        }
+      },
+    );
+
+  const moduleName =
+    type === "crud" ? "CrudResolversModule" : "RelationsResolversModule";
+
   sourceFile.addImportDeclaration({
     moduleSpecifier: "@nestjs/common",
     namedImports: ["Module"].sort(),
