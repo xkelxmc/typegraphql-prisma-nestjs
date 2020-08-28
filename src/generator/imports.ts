@@ -205,7 +205,7 @@ export function generateResolversBarrelFile(
 
   const moduleName =
     type === "crud" ? "CrudResolversModule" : "RelationsResolversModule";
-  const providers = relationResolversData
+  const providers = resolversData
     .sort((a, b) =>
       a.modelName > b.modelName ? 1 : a.modelName < b.modelName ? -1 : 0,
     )
