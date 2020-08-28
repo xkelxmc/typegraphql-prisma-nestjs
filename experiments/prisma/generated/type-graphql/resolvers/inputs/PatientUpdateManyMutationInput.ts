@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -10,17 +11,17 @@ export class PatientUpdateManyMutationInput {
     nullable: true,
     description: undefined
   })
-  firstName?: string | null;
+  firstName?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  lastName?: string | null;
+  lastName?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  email?: string | null;
+  email?: string | undefined;
 }

@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 import { MovieCreateManyWithoutDirectorInput } from "../inputs/MovieCreateManyWithoutDirectorInput";
 
 @TypeGraphQL.InputType({
@@ -23,5 +24,5 @@ export class DirectorCreateInput {
     nullable: true,
     description: undefined
   })
-  movies?: MovieCreateManyWithoutDirectorInput | null;
+  movies?: MovieCreateManyWithoutDirectorInput | undefined;
 }

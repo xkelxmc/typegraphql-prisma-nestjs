@@ -1,71 +1,73 @@
 import * as TypeGraphQL from "type-graphql";
-import { BooleanFilter } from "../inputs/BooleanFilter";
+import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "@prisma/client";
+import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
-import { NullableStringFilter } from "../inputs/NullableStringFilter";
 import { StringFilter } from "../inputs/StringFilter";
+import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
   description: undefined,
 })
 export class PostScalarWhereInput {
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
     nullable: true,
     description: undefined
   })
-  id?: StringFilter | null;
+  AND?: PostScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
     nullable: true,
     description: undefined
   })
-  createdAt?: DateTimeFilter | null;
+  OR?: PostScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
     nullable: true,
     description: undefined
   })
-  updatedAt?: DateTimeFilter | null;
-
-  @TypeGraphQL.Field(_type => BooleanFilter, {
-    nullable: true,
-    description: undefined
-  })
-  published?: BooleanFilter | null;
+  NOT?: PostScalarWhereInput[] | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true,
     description: undefined
   })
-  title?: StringFilter | null;
+  id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFilter, {
+  @TypeGraphQL.Field(_type => DateTimeFilter, {
     nullable: true,
     description: undefined
   })
-  content?: NullableStringFilter | null;
+  createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFilter, {
+  @TypeGraphQL.Field(_type => DateTimeFilter, {
     nullable: true,
     description: undefined
   })
-  authorId?: NullableStringFilter | null;
+  updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true,
     description: undefined
   })
-  AND?: PostScalarWhereInput[] | null;
+  published?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true,
     description: undefined
   })
-  OR?: PostScalarWhereInput[] | null;
+  title?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true,
     description: undefined
   })
-  NOT?: PostScalarWhereInput[] | null;
+  content?: StringNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
+    nullable: true,
+    description: undefined
+  })
+  authorId?: StringNullableFilter | undefined;
 }

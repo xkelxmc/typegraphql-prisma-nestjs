@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 import { FirstNameLastNameCompoundUniqueInput } from "../inputs/FirstNameLastNameCompoundUniqueInput";
 
 @TypeGraphQL.InputType({
@@ -11,5 +12,5 @@ export class PatientWhereUniqueInput {
     nullable: true,
     description: undefined
   })
-  firstName_lastName?: FirstNameLastNameCompoundUniqueInput | null;
+  firstName_lastName?: FirstNameLastNameCompoundUniqueInput | undefined;
 }

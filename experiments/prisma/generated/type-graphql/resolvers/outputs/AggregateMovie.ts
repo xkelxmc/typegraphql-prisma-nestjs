@@ -1,6 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
-import { AggregateMovieCountArgs } from "./args/AggregateMovieCountArgs";
+import { JsonValue, InputJsonValue } from "../../../client";
 
 @TypeGraphQL.ObjectType({
   isAbstract: true,
@@ -11,7 +11,5 @@ export class AggregateMovie {
     nullable: false,
     description: undefined
   })
-  count(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: AggregateMovieCountArgs) {
-    return ctx.prisma.movie.count(args);
-  }
+  count!: number;
 }

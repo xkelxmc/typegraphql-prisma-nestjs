@@ -43,7 +43,7 @@ export declare class Field {
     };
 }
 export declare class Args {
-    readonly args: Arg[];
+    args: Arg[];
     readonly hasInvalidArg: boolean;
     constructor(args?: Arg[]);
     toString(): string;
@@ -59,12 +59,13 @@ interface ArgOptions {
 }
 export declare class Arg {
     readonly key: string;
-    readonly value: ArgValue;
+    value: ArgValue;
     readonly error?: InvalidArgError;
     readonly hasError: boolean;
     readonly isEnum: boolean;
     readonly schemaArg?: DMMF.SchemaArg;
     readonly argType?: DMMF.ArgType;
+    readonly isNullable: boolean;
     constructor({ key, value, argType, isEnum, error, schemaArg, }: ArgOptions);
     _toString(value: ArgValue, key: string): string | undefined;
     toString(): string;

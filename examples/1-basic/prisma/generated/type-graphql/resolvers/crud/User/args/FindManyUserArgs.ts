@@ -1,28 +1,27 @@
 import * as TypeGraphQL from "type-graphql";
+import GraphQLJSON from "graphql-type-json";
 import { UserOrderByInput } from "../../../inputs/UserOrderByInput";
 import { UserWhereInput } from "../../../inputs/UserWhereInput";
 import { UserWhereUniqueInput } from "../../../inputs/UserWhereUniqueInput";
+import { UserDistinctFieldEnum } from "../../../../enums/UserDistinctFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class FindManyUserArgs {
   @TypeGraphQL.Field(_type => UserWhereInput, { nullable: true })
-  where?: UserWhereInput | null;
+  where?: UserWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => UserOrderByInput, { nullable: true })
-  orderBy?: UserOrderByInput | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  skip?: number | null;
+  @TypeGraphQL.Field(_type => [UserOrderByInput], { nullable: true })
+  orderBy?: UserOrderByInput[] | undefined;
 
   @TypeGraphQL.Field(_type => UserWhereUniqueInput, { nullable: true })
-  after?: UserWhereUniqueInput | null;
-
-  @TypeGraphQL.Field(_type => UserWhereUniqueInput, { nullable: true })
-  before?: UserWhereUniqueInput | null;
+  cursor?: UserWhereUniqueInput | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  first?: number | null;
+  take?: number | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  last?: number | null;
+  skip?: number | undefined;
+
+  @TypeGraphQL.Field(_type => [UserDistinctFieldEnum], { nullable: true })
+  distinct?: Array<keyof typeof UserDistinctFieldEnum> | undefined;
 }

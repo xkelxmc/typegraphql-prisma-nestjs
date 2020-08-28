@@ -1,88 +1,95 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
-import { BooleanFilter } from "../inputs/BooleanFilter";
+import { JsonValue, InputJsonValue } from "../../../client";
+import { BoolFilter } from "../inputs/BoolFilter";
 import { ClientWhereInput } from "../inputs/ClientWhereInput";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
+import { EnumPostKindNullableFilter } from "../inputs/EnumPostKindNullableFilter";
 import { IntFilter } from "../inputs/IntFilter";
-import { NullablePostKindFilter } from "../inputs/NullablePostKindFilter";
-import { NullableStringFilter } from "../inputs/NullableStringFilter";
+import { JsonFilter } from "../inputs/JsonFilter";
 import { StringFilter } from "../inputs/StringFilter";
-import { UUIDFilter } from "../inputs/UUIDFilter";
+import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
   description: undefined,
 })
 export class PostWhereInput {
-  @TypeGraphQL.Field(_type => UUIDFilter, {
+  @TypeGraphQL.Field(_type => [PostWhereInput], {
     nullable: true,
     description: undefined
   })
-  uuid?: UUIDFilter | null;
+  AND?: PostWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => [PostWhereInput], {
     nullable: true,
     description: undefined
   })
-  createdAt?: DateTimeFilter | null;
+  OR?: PostWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => [PostWhereInput], {
     nullable: true,
     description: undefined
   })
-  updatedAt?: DateTimeFilter | null;
-
-  @TypeGraphQL.Field(_type => BooleanFilter, {
-    nullable: true,
-    description: undefined
-  })
-  published?: BooleanFilter | null;
+  NOT?: PostWhereInput[] | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true,
     description: undefined
   })
-  title?: StringFilter | null;
+  uuid?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFilter, {
+  @TypeGraphQL.Field(_type => DateTimeFilter, {
     nullable: true,
     description: undefined
   })
-  content?: NullableStringFilter | null;
+  createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @TypeGraphQL.Field(_type => DateTimeFilter, {
     nullable: true,
     description: undefined
   })
-  authorId?: IntFilter | null;
+  updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NullablePostKindFilter, {
+  @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true,
     description: undefined
   })
-  kind?: NullablePostKindFilter | null;
+  published?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereInput], {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true,
     description: undefined
   })
-  AND?: PostWhereInput[] | null;
+  title?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereInput], {
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true,
     description: undefined
   })
-  OR?: PostWhereInput[] | null;
-
-  @TypeGraphQL.Field(_type => [PostWhereInput], {
-    nullable: true,
-    description: undefined
-  })
-  NOT?: PostWhereInput[] | null;
+  content?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => ClientWhereInput, {
     nullable: true,
     description: undefined
   })
-  author?: ClientWhereInput | null;
+  author?: ClientWhereInput | undefined;
+
+  @TypeGraphQL.Field(_type => IntFilter, {
+    nullable: true,
+    description: undefined
+  })
+  authorId?: IntFilter | undefined;
+
+  @TypeGraphQL.Field(_type => EnumPostKindNullableFilter, {
+    nullable: true,
+    description: undefined
+  })
+  kind?: EnumPostKindNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => JsonFilter, {
+    nullable: true,
+    description: undefined
+  })
+  metadata?: JsonFilter | undefined;
 }

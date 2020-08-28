@@ -3,27 +3,25 @@ import GraphQLJSON from "graphql-type-json";
 import { DirectorOrderByInput } from "../../../inputs/DirectorOrderByInput";
 import { DirectorWhereInput } from "../../../inputs/DirectorWhereInput";
 import { DirectorWhereUniqueInput } from "../../../inputs/DirectorWhereUniqueInput";
+import { DirectorDistinctFieldEnum } from "../../../../enums/DirectorDistinctFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class FindManyDirectorArgs {
   @TypeGraphQL.Field(_type => DirectorWhereInput, { nullable: true })
-  where?: DirectorWhereInput | null;
+  where?: DirectorWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => DirectorOrderByInput, { nullable: true })
-  orderBy?: DirectorOrderByInput | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  skip?: number | null;
+  @TypeGraphQL.Field(_type => [DirectorOrderByInput], { nullable: true })
+  orderBy?: DirectorOrderByInput[] | undefined;
 
   @TypeGraphQL.Field(_type => DirectorWhereUniqueInput, { nullable: true })
-  after?: DirectorWhereUniqueInput | null;
-
-  @TypeGraphQL.Field(_type => DirectorWhereUniqueInput, { nullable: true })
-  before?: DirectorWhereUniqueInput | null;
+  cursor?: DirectorWhereUniqueInput | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  first?: number | null;
+  take?: number | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  last?: number | null;
+  skip?: number | undefined;
+
+  @TypeGraphQL.Field(_type => [DirectorDistinctFieldEnum], { nullable: true })
+  distinct?: Array<keyof typeof DirectorDistinctFieldEnum> | undefined;
 }

@@ -1,27 +1,28 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
-import { OrderByArg } from "../../enums/OrderByArg";
+import { JsonValue, InputJsonValue } from "../../../client";
+import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
   description: undefined,
 })
 export class MovieOrderByInput {
-  @TypeGraphQL.Field(_type => OrderByArg, {
+  @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  directorFirstName?: keyof typeof OrderByArg | null;
+  directorFirstName?: keyof typeof SortOrder | undefined;
 
-  @TypeGraphQL.Field(_type => OrderByArg, {
+  @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  directorLastName?: keyof typeof OrderByArg | null;
+  directorLastName?: keyof typeof SortOrder | undefined;
 
-  @TypeGraphQL.Field(_type => OrderByArg, {
+  @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  title?: keyof typeof OrderByArg | null;
+  title?: keyof typeof SortOrder | undefined;
 }

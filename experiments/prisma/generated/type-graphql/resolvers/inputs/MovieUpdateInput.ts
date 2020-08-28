@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 import { DirectorUpdateOneRequiredWithoutMoviesInput } from "../inputs/DirectorUpdateOneRequiredWithoutMoviesInput";
 
 @TypeGraphQL.InputType({
@@ -11,11 +12,11 @@ export class MovieUpdateInput {
     nullable: true,
     description: undefined
   })
-  title?: string | null;
+  title?: string | undefined;
 
   @TypeGraphQL.Field(_type => DirectorUpdateOneRequiredWithoutMoviesInput, {
     nullable: true,
     description: undefined
   })
-  director?: DirectorUpdateOneRequiredWithoutMoviesInput | null;
+  director?: DirectorUpdateOneRequiredWithoutMoviesInput | undefined;
 }

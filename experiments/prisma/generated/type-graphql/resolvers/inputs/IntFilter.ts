@@ -1,5 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
+import { NestedIntFilter } from "../inputs/NestedIntFilter";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -10,47 +12,47 @@ export class IntFilter {
     nullable: true,
     description: undefined
   })
-  equals?: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true,
-    description: undefined
-  })
-  not?: number | null;
+  equals?: number | undefined;
 
   @TypeGraphQL.Field(_type => [TypeGraphQL.Int], {
     nullable: true,
     description: undefined
   })
-  in?: number[] | null;
+  in?: number[] | undefined;
 
   @TypeGraphQL.Field(_type => [TypeGraphQL.Int], {
     nullable: true,
     description: undefined
   })
-  notIn?: number[] | null;
+  notIn?: number[] | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true,
     description: undefined
   })
-  lt?: number | null;
+  lt?: number | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true,
     description: undefined
   })
-  lte?: number | null;
+  lte?: number | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true,
     description: undefined
   })
-  gt?: number | null;
+  gt?: number | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true,
     description: undefined
   })
-  gte?: number | null;
+  gte?: number | undefined;
+
+  @TypeGraphQL.Field(_type => NestedIntFilter, {
+    nullable: true,
+    description: undefined
+  })
+  not?: NestedIntFilter | undefined;
 }

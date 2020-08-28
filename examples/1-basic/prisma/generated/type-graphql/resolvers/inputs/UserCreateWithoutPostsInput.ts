@@ -1,4 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
+import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "@prisma/client";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -9,7 +11,7 @@ export class UserCreateWithoutPostsInput {
     nullable: true,
     description: undefined
   })
-  id?: string | null;
+  id?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false,
@@ -21,5 +23,5 @@ export class UserCreateWithoutPostsInput {
     nullable: true,
     description: undefined
   })
-  name?: string | null;
+  name?: string | undefined;
 }

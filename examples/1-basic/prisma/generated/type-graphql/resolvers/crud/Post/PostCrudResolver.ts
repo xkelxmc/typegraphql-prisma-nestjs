@@ -1,12 +1,15 @@
 import * as TypeGraphQL from "type-graphql";
-import { CreateOnePostArgs } from "./args/CreateOnePostArgs";
+import graphqlFields from "graphql-fields";
+import { GraphQLResolveInfo } from "graphql";
+import { AggregatePostArgs } from "./args/AggregatePostArgs";
+import { CreatePostArgs } from "./args/CreatePostArgs";
 import { DeleteManyPostArgs } from "./args/DeleteManyPostArgs";
-import { DeleteOnePostArgs } from "./args/DeleteOnePostArgs";
+import { DeletePostArgs } from "./args/DeletePostArgs";
 import { FindManyPostArgs } from "./args/FindManyPostArgs";
 import { FindOnePostArgs } from "./args/FindOnePostArgs";
 import { UpdateManyPostArgs } from "./args/UpdateManyPostArgs";
-import { UpdateOnePostArgs } from "./args/UpdateOnePostArgs";
-import { UpsertOnePostArgs } from "./args/UpsertOnePostArgs";
+import { UpdatePostArgs } from "./args/UpdatePostArgs";
+import { UpsertPostArgs } from "./args/UpsertPostArgs";
 import { Post } from "../../../models/Post";
 import { AggregatePost } from "../../outputs/AggregatePost";
 import { BatchPayload } from "../../outputs/BatchPayload";
@@ -17,7 +20,7 @@ export class PostCrudResolver {
     nullable: true,
     description: undefined
   })
-  async post(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOnePostArgs): Promise<Post | null> {
+  async post(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOnePostArgs): Promise<Post | undefined> {
     return ctx.prisma.post.findOne(args);
   }
 
@@ -33,7 +36,7 @@ export class PostCrudResolver {
     nullable: false,
     description: undefined
   })
-  async createOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: CreateOnePostArgs): Promise<Post> {
+  async createPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: CreatePostArgs): Promise<Post> {
     return ctx.prisma.post.create(args);
   }
 
@@ -41,7 +44,7 @@ export class PostCrudResolver {
     nullable: true,
     description: undefined
   })
-  async deleteOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteOnePostArgs): Promise<Post | null> {
+  async deletePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeletePostArgs): Promise<Post | undefined> {
     return ctx.prisma.post.delete(args);
   }
 
@@ -49,7 +52,7 @@ export class PostCrudResolver {
     nullable: true,
     description: undefined
   })
-  async updateOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateOnePostArgs): Promise<Post | null> {
+  async updatePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdatePostArgs): Promise<Post | undefined> {
     return ctx.prisma.post.update(args);
   }
 
@@ -73,7 +76,7 @@ export class PostCrudResolver {
     nullable: false,
     description: undefined
   })
-  async upsertOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpsertOnePostArgs): Promise<Post> {
+  async upsertPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpsertPostArgs): Promise<Post> {
     return ctx.prisma.post.upsert(args);
   }
 
@@ -81,7 +84,23 @@ export class PostCrudResolver {
     nullable: false,
     description: undefined
   })
-  async aggregatePost(): Promise<AggregatePost> {
-    return new AggregatePost();
+  async aggregatePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: AggregatePostArgs): Promise<AggregatePost> {
+    function transformFields(fields: Record<string, any>): Record<string, any> {
+      return Object.fromEntries(
+        Object.entries(fields)
+          .filter(([key, value]) => !key.startsWith("_"))
+          .map<[string, any]>(([key, value]) => {
+            if (Object.keys(value).length === 0) {
+              return [key, true];
+            }
+            return [key, transformFields(value)];
+          }),
+      );
+    }
+
+    return ctx.prisma.post.aggregate({
+      ...args,
+      ...transformFields(graphqlFields(info as any)),
+    });
   }
 }

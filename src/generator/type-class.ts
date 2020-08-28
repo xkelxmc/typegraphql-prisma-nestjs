@@ -2,20 +2,11 @@ import {
   PropertyDeclarationStructure,
   OptionalKind,
   Project,
-  MethodDeclarationStructure,
+  GetAccessorDeclarationStructure,
+  SetAccessorDeclarationStructure,
 } from "ts-morph";
-import { DMMF } from "@prisma/client/runtime/dmmf-types";
 import path from "path";
 
-import {
-  getFieldTSType,
-  getTypeGraphQLType,
-  selectInputTypeFromTypes,
-  camelCase,
-  pascalCase,
-  getInputTypeName,
-} from "./helpers";
-import { DMMFTypeInfo } from "./types";
 import { outputsFolderName, inputsFolderName } from "./config";
 import {
   generateTypeGraphQLImport,
@@ -23,10 +14,13 @@ import {
   generateEnumsImports,
   generateArgsImports,
   generateGraphQLScalarImport,
+  generatePrismaJsonTypeImport,
+  generateOutputsImports,
 } from "./imports";
 import saveSourceFile from "../utils/saveSourceFile";
-import generateArgsTypeClassFromArgs from "./args-class";
 import { DmmfDocument } from "./dmmf/dmmf-document";
+import { DMMF } from "./dmmf/types";
+import { GenerateCodeOptions } from "./options";
 
 export async function generateOutputTypeClassFromType(
   project: Project,
@@ -34,47 +28,29 @@ export async function generateOutputTypeClassFromType(
   type: DMMF.OutputType,
   dmmfDocument: DmmfDocument,
 ) {
-  // TODO: make it more future-proof
-  const modelName = type.name.replace("Aggregate", "");
-  const typeName = !type.name.includes("Aggregate")
-    ? type.name
-    : `Aggregate${dmmfDocument.getModelTypeName(
-        type.name.replace("Aggregate", ""),
-      )}`;
-
   const fileDirPath = path.resolve(dirPath, outputsFolderName);
-  const filePath = path.resolve(fileDirPath, `${typeName}.ts`);
+  const filePath = path.resolve(fileDirPath, `${type.typeName}.ts`);
   const sourceFile = project.createSourceFile(filePath, undefined, {
     overwrite: true,
   });
-
-  const fieldsInfo = await Promise.all(
-    type.fields.map(async field => {
-      let argsTypeName: string | undefined;
-      if (field.args.length > 0) {
-        argsTypeName = await generateArgsTypeClassFromArgs(
-          project,
-          fileDirPath,
-          field.args,
-          `${typeName}${pascalCase(field.name)}`,
-          dmmfDocument,
-          2,
-        );
-      }
-      return { ...field, argsTypeName };
-    }),
-  );
-
-  const fieldArgsTypeNames = fieldsInfo
+  const fieldArgsTypeNames = type.fields
     .filter(it => it.argsTypeName)
     .map(it => it.argsTypeName!);
 
   generateTypeGraphQLImport(sourceFile);
   generateGraphQLScalarImport(sourceFile);
+  generatePrismaJsonTypeImport(sourceFile, dmmfDocument.options, 2);
   generateArgsImports(sourceFile, fieldArgsTypeNames, 0);
+  generateOutputsImports(
+    sourceFile,
+    type.fields
+      .filter(field => field.outputType.kind === "object")
+      .map(field => field.outputType.type),
+    1,
+  );
 
   sourceFile.addClass({
-    name: typeName,
+    name: type.typeName,
     isExported: true,
     decorators: [
       {
@@ -87,14 +63,13 @@ export async function generateOutputTypeClassFromType(
         ],
       },
     ],
-    properties: fieldsInfo
-      .filter(it => it.args.length === 0)
-      .map<OptionalKind<PropertyDeclarationStructure>>(field => {
+    properties: type.fields.map<OptionalKind<PropertyDeclarationStructure>>(
+      field => {
         const isRequired = field.outputType.isRequired;
 
         return {
           name: field.name,
-          type: getFieldTSType(field.outputType as DMMFTypeInfo, dmmfDocument),
+          type: field.fieldTSType,
           hasExclamationToken: isRequired,
           hasQuestionToken: !isRequired,
           trailingTrivia: "\r\n",
@@ -102,10 +77,7 @@ export async function generateOutputTypeClassFromType(
             {
               name: "Field",
               arguments: [
-                `_type => ${getTypeGraphQLType(
-                  field.outputType as DMMFTypeInfo,
-                  dmmfDocument,
-                )}`,
+                `_type => ${field.typeGraphQLType}`,
                 `{
                   nullable: ${!isRequired},
                   description: undefined
@@ -114,72 +86,24 @@ export async function generateOutputTypeClassFromType(
             },
           ],
         };
-      }),
-    methods: fieldsInfo
-      // TODO: allow also for other fields args
-      .filter(it => it.args.length > 0 && type.name.startsWith("Aggregate"))
-      .map<OptionalKind<MethodDeclarationStructure>>(fieldInfo => {
-        const isRequired = fieldInfo.outputType.isRequired;
-        const collectionName = camelCase(modelName);
-
-        return {
-          name: fieldInfo.name,
-          type: getFieldTSType(
-            fieldInfo.outputType as DMMFTypeInfo,
-            dmmfDocument,
-          ),
-          trailingTrivia: "\r\n",
-          decorators: [
-            {
-              name: "Field",
-              arguments: [
-                `_type => ${getTypeGraphQLType(
-                  fieldInfo.outputType as DMMFTypeInfo,
-                  dmmfDocument,
-                )}`,
-                `{
-                  nullable: ${!isRequired},
-                  description: undefined
-                }`,
-              ],
-            },
-          ],
-          parameters: [
-            {
-              name: "ctx",
-              // TODO: import custom `ContextType`
-              type: "any",
-              decorators: [{ name: "Context", arguments: [] }],
-            },
-            {
-              name: "args",
-              type: fieldInfo.argsTypeName,
-              decorators: [{ name: "Args", arguments: [] }],
-            },
-          ],
-          statements: [
-            `return ctx.prisma.${collectionName}.${fieldInfo.name}(args);`,
-          ],
-        };
-      }),
+      },
+    ),
   });
 
   await saveSourceFile(sourceFile);
-
-  return { typeName, fieldArgsTypeNames };
 }
 
 export async function generateInputTypeClassFromType(
   project: Project,
   dirPath: string,
-  type: DMMF.InputType,
-  dmmfDocument: DmmfDocument,
+  inputType: DMMF.InputType,
+  _dmmfDocument: DmmfDocument,
+  options: GenerateCodeOptions,
 ): Promise<void> {
-  const inputTypeName = getInputTypeName(type.name, dmmfDocument);
   const filePath = path.resolve(
     dirPath,
     inputsFolderName,
-    `${inputTypeName}.ts`,
+    `${inputType.typeName}.ts`,
   );
   const sourceFile = project.createSourceFile(filePath, undefined, {
     overwrite: true,
@@ -187,30 +111,27 @@ export async function generateInputTypeClassFromType(
 
   generateTypeGraphQLImport(sourceFile);
   generateGraphQLScalarImport(sourceFile);
+  generatePrismaJsonTypeImport(sourceFile, options, 2);
   generateInputsImports(
     sourceFile,
-    type.fields
-      .map(field => selectInputTypeFromTypes(field.inputType))
-      .filter(
-        fieldType =>
-          fieldType.kind === "object" && fieldType.type !== "JsonFilter",
-      )
-      .map(fieldType =>
-        getInputTypeName(fieldType.type as string, dmmfDocument),
-      )
-      .filter(fieldType => fieldType !== inputTypeName),
+    inputType.fields
+      .filter(field => field.selectedInputType.kind === "object")
+      .map(field => field.selectedInputType.type)
+      .filter(fieldType => fieldType !== inputType.typeName),
   );
   generateEnumsImports(
     sourceFile,
-    type.fields
-      .map(field => selectInputTypeFromTypes(field.inputType))
+    inputType.fields
+      .map(field => field.selectedInputType)
       .filter(fieldType => fieldType.kind === "enum")
       .map(fieldType => fieldType.type as string),
     2,
   );
 
+  const mappedFields = inputType.fields.filter(field => field.hasMappedName);
+
   sourceFile.addClass({
-    name: inputTypeName,
+    name: inputType.typeName,
     isExported: true,
     decorators: [
       {
@@ -223,36 +144,69 @@ export async function generateInputTypeClassFromType(
         ],
       },
     ],
-    properties: type.fields
-      .map(field => ({
-        ...field,
-        inputType: selectInputTypeFromTypes(field.inputType),
-      }))
-      .filter(field => field.inputType.type !== "JsonFilter")
-      .map<OptionalKind<PropertyDeclarationStructure>>(field => {
-        return {
-          name: field.name,
-          type: getFieldTSType(field.inputType as DMMFTypeInfo, dmmfDocument),
-          hasExclamationToken: field.inputType.isRequired,
-          hasQuestionToken: !field.inputType.isRequired,
-          trailingTrivia: "\r\n",
-          decorators: [
-            {
-              name: "Field",
-              arguments: [
-                `_type => ${getTypeGraphQLType(
-                  field.inputType as DMMFTypeInfo,
-                  dmmfDocument,
-                )}`,
-                `{
-                  nullable: ${!field.inputType.isRequired},
+    properties: inputType.fields.map<
+      OptionalKind<PropertyDeclarationStructure>
+    >(field => {
+      const isOptional = !field.selectedInputType.isRequired;
+      return {
+        name: field.name,
+        type: field.fieldTSType,
+        hasExclamationToken: !isOptional,
+        hasQuestionToken: isOptional,
+        trailingTrivia: "\r\n",
+        decorators: field.hasMappedName
+          ? []
+          : [
+              {
+                name: "Field",
+                arguments: [
+                  `_type => ${field.typeGraphQLType}`,
+                  `{
+                      nullable: ${isOptional},
+                      description: undefined
+                    }`,
+                ],
+              },
+            ],
+      };
+    }),
+    getAccessors: mappedFields.map<
+      OptionalKind<GetAccessorDeclarationStructure>
+    >(field => {
+      return {
+        name: field.typeName,
+        type: field.fieldTSType,
+        hasExclamationToken: field.selectedInputType.isRequired,
+        hasQuestionToken: !field.selectedInputType.isRequired,
+        trailingTrivia: "\r\n",
+        statements: [`return this.${field.name};`],
+        decorators: [
+          {
+            name: "Field",
+            arguments: [
+              `_type => ${field.typeGraphQLType}`,
+              `{
+                  nullable: ${!field.selectedInputType.isRequired},
                   description: undefined
                 }`,
-              ],
-            },
-          ],
-        };
-      }),
+            ],
+          },
+        ],
+      };
+    }),
+    setAccessors: mappedFields.map<
+      OptionalKind<SetAccessorDeclarationStructure>
+    >(field => {
+      return {
+        name: field.typeName,
+        type: field.fieldTSType,
+        hasExclamationToken: field.selectedInputType.isRequired,
+        hasQuestionToken: !field.selectedInputType.isRequired,
+        trailingTrivia: "\r\n",
+        parameters: [{ name: field.name, type: field.fieldTSType }],
+        statements: [`this.${field.name} = ${field.name};`],
+      };
+    }),
   });
 
   await saveSourceFile(sourceFile);

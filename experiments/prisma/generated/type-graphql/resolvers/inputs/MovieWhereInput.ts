@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 import { DirectorWhereInput } from "../inputs/DirectorWhereInput";
 import { StringFilter } from "../inputs/StringFilter";
 
@@ -8,45 +9,45 @@ import { StringFilter } from "../inputs/StringFilter";
   description: undefined,
 })
 export class MovieWhereInput {
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @TypeGraphQL.Field(_type => [MovieWhereInput], {
     nullable: true,
     description: undefined
   })
-  directorFirstName?: StringFilter | null;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true,
-    description: undefined
-  })
-  directorLastName?: StringFilter | null;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true,
-    description: undefined
-  })
-  title?: StringFilter | null;
+  AND?: MovieWhereInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [MovieWhereInput], {
     nullable: true,
     description: undefined
   })
-  AND?: MovieWhereInput[] | null;
+  OR?: MovieWhereInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [MovieWhereInput], {
     nullable: true,
     description: undefined
   })
-  OR?: MovieWhereInput[] | null;
+  NOT?: MovieWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieWhereInput], {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true,
     description: undefined
   })
-  NOT?: MovieWhereInput[] | null;
+  directorFirstName?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true,
+    description: undefined
+  })
+  directorLastName?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => DirectorWhereInput, {
     nullable: true,
     description: undefined
   })
-  director?: DirectorWhereInput | null;
+  director?: DirectorWhereInput | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true,
+    description: undefined
+  })
+  title?: StringFilter | undefined;
 }

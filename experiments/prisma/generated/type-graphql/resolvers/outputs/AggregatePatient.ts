@@ -1,6 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
-import { AggregatePatientCountArgs } from "./args/AggregatePatientCountArgs";
+import { JsonValue, InputJsonValue } from "../../../client";
 
 @TypeGraphQL.ObjectType({
   isAbstract: true,
@@ -11,7 +11,5 @@ export class AggregatePatient {
     nullable: false,
     description: undefined
   })
-  count(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: AggregatePatientCountArgs) {
-    return ctx.prisma.patient.count(args);
-  }
+  count!: number;
 }

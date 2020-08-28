@@ -1,4 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
+import graphqlFields from "graphql-fields";
+import { GraphQLResolveInfo } from "graphql";
+import { AggregatePatientArgs } from "./args/AggregatePatientArgs";
 import { CreatePatientArgs } from "./args/CreatePatientArgs";
 import { DeleteManyPatientArgs } from "./args/DeleteManyPatientArgs";
 import { DeletePatientArgs } from "./args/DeletePatientArgs";
@@ -17,7 +20,7 @@ export class PatientCrudResolver {
     nullable: true,
     description: undefined
   })
-  async patient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOnePatientArgs): Promise<Patient | null> {
+  async patient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOnePatientArgs): Promise<Patient | undefined> {
     return ctx.prisma.patient.findOne(args);
   }
 
@@ -41,7 +44,7 @@ export class PatientCrudResolver {
     nullable: true,
     description: undefined
   })
-  async deletePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeletePatientArgs): Promise<Patient | null> {
+  async deletePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeletePatientArgs): Promise<Patient | undefined> {
     return ctx.prisma.patient.delete(args);
   }
 
@@ -49,7 +52,7 @@ export class PatientCrudResolver {
     nullable: true,
     description: undefined
   })
-  async updatePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdatePatientArgs): Promise<Patient | null> {
+  async updatePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdatePatientArgs): Promise<Patient | undefined> {
     return ctx.prisma.patient.update(args);
   }
 
@@ -81,7 +84,23 @@ export class PatientCrudResolver {
     nullable: false,
     description: undefined
   })
-  async aggregatePatient(): Promise<AggregatePatient> {
-    return new AggregatePatient();
+  async aggregatePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: AggregatePatientArgs): Promise<AggregatePatient> {
+    function transformFields(fields: Record<string, any>): Record<string, any> {
+      return Object.fromEntries(
+        Object.entries(fields)
+          .filter(([key, value]) => !key.startsWith("_"))
+          .map<[string, any]>(([key, value]) => {
+            if (Object.keys(value).length === 0) {
+              return [key, true];
+            }
+            return [key, transformFields(value)];
+          }),
+      );
+    }
+
+    return ctx.prisma.patient.aggregate({
+      ...args,
+      ...transformFields(graphqlFields(info as any)),
+    });
   }
 }

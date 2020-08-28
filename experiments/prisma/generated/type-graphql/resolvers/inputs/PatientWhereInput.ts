@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 import { StringFilter } from "../inputs/StringFilter";
 
 @TypeGraphQL.InputType({
@@ -7,39 +8,39 @@ import { StringFilter } from "../inputs/StringFilter";
   description: undefined,
 })
 export class PatientWhereInput {
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @TypeGraphQL.Field(_type => [PatientWhereInput], {
     nullable: true,
     description: undefined
   })
-  firstName?: StringFilter | null;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true,
-    description: undefined
-  })
-  lastName?: StringFilter | null;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true,
-    description: undefined
-  })
-  email?: StringFilter | null;
+  AND?: PatientWhereInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [PatientWhereInput], {
     nullable: true,
     description: undefined
   })
-  AND?: PatientWhereInput[] | null;
+  OR?: PatientWhereInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [PatientWhereInput], {
     nullable: true,
     description: undefined
   })
-  OR?: PatientWhereInput[] | null;
+  NOT?: PatientWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PatientWhereInput], {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true,
     description: undefined
   })
-  NOT?: PatientWhereInput[] | null;
+  firstName?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true,
+    description: undefined
+  })
+  lastName?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true,
+    description: undefined
+  })
+  email?: StringFilter | undefined;
 }

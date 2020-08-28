@@ -13,6 +13,11 @@ describe("custom resolvers execution", () => {
     outputDirPath = generateArtifactsDirPath("functional-custom-resolvers");
     await fs.mkdir(outputDirPath, { recursive: true });
     const prismaSchema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
       enum Color {
         RED
         GREEN
@@ -43,7 +48,7 @@ describe("custom resolvers execution", () => {
     const document = /* graphql */ `
       query {
         customFindManyPost(
-          first: 1
+          take: 1
           skip: 1
           where: {
             content: { startsWith: "Test" }

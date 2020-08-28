@@ -11,7 +11,8 @@ import {
   crudResolversFolderName,
   relationsResolversFolderName,
 } from "./config";
-import { GeneratedResolverData } from "./types";
+import { GenerateMappingData } from "./types";
+import { GenerateCodeOptions } from "./options";
 
 export function generateTypeGraphQLImport(sourceFile: SourceFile) {
   sourceFile.addImportDeclaration({
@@ -32,7 +33,19 @@ export function generateTypeGraphQLImport(sourceFile: SourceFile) {
       "ID",
       "InputType",
       "ArgsType",
+      "Info",
     ].sort(),
+  });
+}
+
+export function generateGraphQLFieldsImport(sourceFile: SourceFile) {
+  sourceFile.addImportDeclaration({
+    moduleSpecifier: "graphql-fields",
+    defaultImport: "graphqlFields",
+  });
+  sourceFile.addImportDeclaration({
+    moduleSpecifier: "graphql",
+    namedImports: ["GraphQLResolveInfo"],
   });
 }
 
@@ -40,6 +53,23 @@ export function generateGraphQLScalarImport(sourceFile: SourceFile) {
   sourceFile.addImportDeclaration({
     moduleSpecifier: "graphql-type-json",
     defaultImport: "GraphQLJSON",
+  });
+}
+
+export function generatePrismaJsonTypeImport(
+  sourceFile: SourceFile,
+  options: GenerateCodeOptions,
+  level = 0,
+) {
+  sourceFile.addImportDeclaration({
+    moduleSpecifier:
+      options.absolutePrismaOutputPath ??
+      (level === 0 ? "./" : "") +
+        path.posix.join(
+          ...Array(level).fill(".."),
+          options.relativePrismaOutputPath,
+        ),
+    namedImports: ["JsonValue", "InputJsonValue"],
   });
 }
 
@@ -140,18 +170,19 @@ export function generateIndexFile(
 export function generateResolversBarrelFile(
   type: "crud" | "relations",
   sourceFile: SourceFile,
-  relationResolversData: GeneratedResolverData[],
+  resolversData: GenerateMappingData[],
 ) {
-  relationResolversData
+  resolversData
     .sort((a, b) =>
       a.modelName > b.modelName ? 1 : a.modelName < b.modelName ? -1 : 0,
     )
     .forEach(
-      ({ modelName, resolverName, actionResolverNames, argTypeNames }) => {
-        sourceFile.addImportDeclaration({
-          moduleSpecifier: `./${modelName}/${resolverName}`,
-          namedImports: [resolverName].sort(),
-        });
+      ({
+        modelName,
+        resolverName,
+        actionResolverNames,
+        hasSomeArgs: hasArgs,
+      }) => {
         sourceFile.addExportDeclaration({
           moduleSpecifier: `./${modelName}/${resolverName}`,
           namedExports: [resolverName],
@@ -164,7 +195,7 @@ export function generateResolversBarrelFile(
             });
           });
         }
-        if (argTypeNames.length) {
+        if (hasArgs) {
           sourceFile.addExportDeclaration({
             moduleSpecifier: `./${modelName}/args`,
           });

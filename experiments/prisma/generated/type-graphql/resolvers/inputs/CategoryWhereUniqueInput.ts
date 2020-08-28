@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 import { SlugNumberCompoundUniqueInput } from "../inputs/SlugNumberCompoundUniqueInput";
 
 @TypeGraphQL.InputType({
@@ -11,5 +12,5 @@ export class CategoryWhereUniqueInput {
     nullable: true,
     description: undefined
   })
-  slug_number?: SlugNumberCompoundUniqueInput | null;
+  slug_number?: SlugNumberCompoundUniqueInput | undefined;
 }

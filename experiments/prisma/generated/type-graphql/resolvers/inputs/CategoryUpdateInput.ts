@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -10,17 +11,17 @@ export class CategoryUpdateInput {
     nullable: true,
     description: undefined
   })
-  name?: string | null;
+  name?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  slug?: string | null;
+  slug?: string | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true,
     description: undefined
   })
-  number?: number | null;
+  number?: number | undefined;
 }

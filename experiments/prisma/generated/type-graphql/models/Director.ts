@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../client";
 import { Movie } from "../models/Movie";
 
 @TypeGraphQL.ObjectType({
@@ -19,5 +20,5 @@ export class Director {
   })
   lastName!: string;
 
-  movies?: Movie[] | null;
+  movies?: Movie[] | undefined;
 }

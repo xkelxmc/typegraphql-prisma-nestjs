@@ -1,5 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "../../../client";
+import { NestedStringFilter } from "../inputs/NestedStringFilter";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -10,65 +12,65 @@ export class StringFilter {
     nullable: true,
     description: undefined
   })
-  equals?: string | null;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true,
-    description: undefined
-  })
-  not?: string | null;
+  equals?: string | undefined;
 
   @TypeGraphQL.Field(_type => [String], {
     nullable: true,
     description: undefined
   })
-  in?: string[] | null;
+  in?: string[] | undefined;
 
   @TypeGraphQL.Field(_type => [String], {
     nullable: true,
     description: undefined
   })
-  notIn?: string[] | null;
+  notIn?: string[] | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  lt?: string | null;
+  lt?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  lte?: string | null;
+  lte?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  gt?: string | null;
+  gt?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  gte?: string | null;
+  gte?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  contains?: string | null;
+  contains?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  startsWith?: string | null;
+  startsWith?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  endsWith?: string | null;
+  endsWith?: string | undefined;
+
+  @TypeGraphQL.Field(_type => NestedStringFilter, {
+    nullable: true,
+    description: undefined
+  })
+  not?: NestedStringFilter | undefined;
 }

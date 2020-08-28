@@ -15,6 +15,11 @@ describe("structure", () => {
 
   it("should generate proper folders structure and file names for complex datamodel", async () => {
     const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
       enum Color {
         RED
         GREEN
@@ -48,20 +53,25 @@ describe("structure", () => {
 
   it("should generate proper folders and file names when model is renamed", async () => {
     const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
       enum Color {
         RED
         GREEN
         BLUE
       }
 
-      // @@TypeGraphQL.type("RenamedUser")
+      /// @@TypeGraphQL.type("RenamedUser")
       model User {
         id    Int      @id @default(autoincrement())
         name  String?
         posts Post[]
       }
 
-      // @@TypeGraphQL.type("RenamedPost")
+      /// @@TypeGraphQL.type("RenamedPost")
       model Post {
         uuid      String  @id @default(cuid())
         content   String

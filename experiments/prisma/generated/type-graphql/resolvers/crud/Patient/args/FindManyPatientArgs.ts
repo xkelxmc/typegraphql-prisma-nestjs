@@ -3,27 +3,25 @@ import GraphQLJSON from "graphql-type-json";
 import { PatientOrderByInput } from "../../../inputs/PatientOrderByInput";
 import { PatientWhereInput } from "../../../inputs/PatientWhereInput";
 import { PatientWhereUniqueInput } from "../../../inputs/PatientWhereUniqueInput";
+import { PatientDistinctFieldEnum } from "../../../../enums/PatientDistinctFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class FindManyPatientArgs {
   @TypeGraphQL.Field(_type => PatientWhereInput, { nullable: true })
-  where?: PatientWhereInput | null;
+  where?: PatientWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => PatientOrderByInput, { nullable: true })
-  orderBy?: PatientOrderByInput | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  skip?: number | null;
+  @TypeGraphQL.Field(_type => [PatientOrderByInput], { nullable: true })
+  orderBy?: PatientOrderByInput[] | undefined;
 
   @TypeGraphQL.Field(_type => PatientWhereUniqueInput, { nullable: true })
-  after?: PatientWhereUniqueInput | null;
-
-  @TypeGraphQL.Field(_type => PatientWhereUniqueInput, { nullable: true })
-  before?: PatientWhereUniqueInput | null;
+  cursor?: PatientWhereUniqueInput | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  first?: number | null;
+  take?: number | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, { nullable: true })
-  last?: number | null;
+  skip?: number | undefined;
+
+  @TypeGraphQL.Field(_type => [PatientDistinctFieldEnum], { nullable: true })
+  distinct?: Array<keyof typeof PatientDistinctFieldEnum> | undefined;
 }

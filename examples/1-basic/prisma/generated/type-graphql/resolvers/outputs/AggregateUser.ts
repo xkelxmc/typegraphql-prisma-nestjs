@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
-import { AggregateUserCountArgs } from "./args/AggregateUserCountArgs";
+import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "@prisma/client";
 
 @TypeGraphQL.ObjectType({
   isAbstract: true,
@@ -10,7 +11,5 @@ export class AggregateUser {
     nullable: false,
     description: undefined
   })
-  count(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: AggregateUserCountArgs) {
-    return ctx.prisma.user.count(args);
-  }
+  count!: number;
 }

@@ -1,4 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
+import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "@prisma/client";
 import { PostUpdateManyWithoutAuthorInput } from "../inputs/PostUpdateManyWithoutAuthorInput";
 
 @TypeGraphQL.InputType({
@@ -10,23 +12,23 @@ export class UserUpdateInput {
     nullable: true,
     description: undefined
   })
-  id?: string | null;
+  id?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  email?: string | null;
+  email?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined
   })
-  name?: string | null;
+  name?: string | undefined;
 
   @TypeGraphQL.Field(_type => PostUpdateManyWithoutAuthorInput, {
     nullable: true,
     description: undefined
   })
-  posts?: PostUpdateManyWithoutAuthorInput | null;
+  posts?: PostUpdateManyWithoutAuthorInput | undefined;
 }

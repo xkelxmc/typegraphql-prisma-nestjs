@@ -1,4 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
+import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "@prisma/client";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -9,5 +11,5 @@ export class PostWhereUniqueInput {
     nullable: true,
     description: undefined
   })
-  id?: string | null;
+  id?: string | undefined;
 }

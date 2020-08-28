@@ -42,6 +42,11 @@ describe("models", () => {
 
   it("should properly generate object type class for prisma model with enum and alias fields types", async () => {
     const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
       type Numeric = Float
 
       enum Sample {
@@ -63,6 +68,11 @@ describe("models", () => {
 
   it("should properly generate object type classes for prisma models with cyclic relations", async () => {
     const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
       model User {
         id     Int    @id @default(autoincrement())
         posts  Post[]
@@ -84,6 +94,11 @@ describe("models", () => {
 
   it("should properly generate object type classes for prisma models with self relations", async () => {
     const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
       model Service {
         id            Int       @default(autoincrement()) @id
         name          String
@@ -101,6 +116,11 @@ describe("models", () => {
 
   it("should properly generate object type class for prisma model with descriptions", async () => {
     const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
       /// User model doc
       model User {
         id           Int    @id @default(autoincrement())
@@ -125,12 +145,17 @@ describe("models", () => {
 
   it("should properly generate object type classes for prisma models with cyclic relations when models are renamed", async () => {
     const schema = /* prisma */ `
-      // @@TypeGraphQL.type("Client")
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      /// @@TypeGraphQL.type("Client")
       model User {
         id     Int    @id @default(autoincrement())
         posts  Post[]
       }
-      // @@TypeGraphQL.type("Article")
+      /// @@TypeGraphQL.type("Article")
       model Post {
         id        Int   @id @default(autoincrement())
         author    User  @relation(fields: [authorId], references: [id])
@@ -144,5 +169,36 @@ describe("models", () => {
 
     expect(clientModelTSFile).toMatchSnapshot("Client");
     expect(articleModelTSFile).toMatchSnapshot("Article");
+  });
+
+  it("should properly generate object type class for prisma model with renamed fields", async () => {
+    const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model User {
+        id           Int       @id @default(autoincrement())
+        dateOfBirth  DateTime
+        /// renamed field docs
+        /// @TypeGraphQL.field("firstName")
+        name         String
+        /// @TypeGraphQL.field("accountBalance")
+        balance      Float?
+        /// @TypeGraphQL.field("userPosts")
+        posts        Post[]
+      }
+      model Post {
+        uuid      String  @id @default(cuid())
+        author    User?   @relation(fields: [authorId], references: [id])
+        authorId  Int?
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const userModelTSFile = await readGeneratedFile("/models/User.ts");
+
+    expect(userModelTSFile).toMatchSnapshot("User");
   });
 });

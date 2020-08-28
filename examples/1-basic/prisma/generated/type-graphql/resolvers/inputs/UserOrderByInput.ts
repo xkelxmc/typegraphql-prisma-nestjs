@@ -1,26 +1,28 @@
 import * as TypeGraphQL from "type-graphql";
-import { OrderByArg } from "../../enums/OrderByArg";
+import GraphQLJSON from "graphql-type-json";
+import { JsonValue, InputJsonValue } from "@prisma/client";
+import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
   description: undefined,
 })
 export class UserOrderByInput {
-  @TypeGraphQL.Field(_type => OrderByArg, {
+  @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  id?: keyof typeof OrderByArg | null;
+  id?: keyof typeof SortOrder | undefined;
 
-  @TypeGraphQL.Field(_type => OrderByArg, {
+  @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  email?: keyof typeof OrderByArg | null;
+  email?: keyof typeof SortOrder | undefined;
 
-  @TypeGraphQL.Field(_type => OrderByArg, {
+  @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  name?: keyof typeof OrderByArg | null;
+  name?: keyof typeof SortOrder | undefined;
 }

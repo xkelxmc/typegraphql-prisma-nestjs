@@ -1,4 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
+import graphqlFields from "graphql-fields";
+import { GraphQLResolveInfo } from "graphql";
+import { AggregateMovieArgs } from "./args/AggregateMovieArgs";
 import { CreateMovieArgs } from "./args/CreateMovieArgs";
 import { DeleteManyMovieArgs } from "./args/DeleteManyMovieArgs";
 import { DeleteMovieArgs } from "./args/DeleteMovieArgs";
@@ -17,7 +20,7 @@ export class MovieCrudResolver {
     nullable: true,
     description: undefined
   })
-  async movie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneMovieArgs): Promise<Movie | null> {
+  async movie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneMovieArgs): Promise<Movie | undefined> {
     return ctx.prisma.movie.findOne(args);
   }
 
@@ -41,7 +44,7 @@ export class MovieCrudResolver {
     nullable: true,
     description: undefined
   })
-  async deleteMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteMovieArgs): Promise<Movie | null> {
+  async deleteMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteMovieArgs): Promise<Movie | undefined> {
     return ctx.prisma.movie.delete(args);
   }
 
@@ -49,7 +52,7 @@ export class MovieCrudResolver {
     nullable: true,
     description: undefined
   })
-  async updateMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateMovieArgs): Promise<Movie | null> {
+  async updateMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateMovieArgs): Promise<Movie | undefined> {
     return ctx.prisma.movie.update(args);
   }
 
@@ -81,7 +84,23 @@ export class MovieCrudResolver {
     nullable: false,
     description: undefined
   })
-  async aggregateMovie(): Promise<AggregateMovie> {
-    return new AggregateMovie();
+  async aggregateMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: AggregateMovieArgs): Promise<AggregateMovie> {
+    function transformFields(fields: Record<string, any>): Record<string, any> {
+      return Object.fromEntries(
+        Object.entries(fields)
+          .filter(([key, value]) => !key.startsWith("_"))
+          .map<[string, any]>(([key, value]) => {
+            if (Object.keys(value).length === 0) {
+              return [key, true];
+            }
+            return [key, transformFields(value)];
+          }),
+      );
+    }
+
+    return ctx.prisma.movie.aggregate({
+      ...args,
+      ...transformFields(graphqlFields(info as any)),
+    });
   }
 }
