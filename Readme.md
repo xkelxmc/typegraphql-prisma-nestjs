@@ -1,4 +1,27 @@
-# Example use NestJS + Prisma2 + Typegraphql
+# Fork of [typegraphql-prisma](https://www.npmjs.com/package/typegraphql-prisma)
+
+This project is a fork of another with minor changes, created for personal use.
+
+Long term support is not guaranteed, use of this copy is at your own risk.
+
+## Differences from the original project:
+
+Functions and classes used in generated files from scheme of [prisma](https://github.com/prisma/prisma), imports from [nestjs](https://nestjs.com)
+
+Original:
+```typescript
+import { Ctx, Query, Resolver } from "type-graphql";
+```
+
+In fork:
+```typescript
+import { Context, Query, Resolver } from "@nestjs/graphql";
+```
+
+---
+
+## Example use NestJS + Prisma2 + Typegraphql
+
 https://github.com/EndyKaufman/typegraphql-prisma-nestjs-example
 
 ![integration logo](https://raw.githubusercontent.com/EndyKaufman/typegraphql-prisma-nestjs/prisma/img/integration.png)
