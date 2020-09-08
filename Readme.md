@@ -22,7 +22,7 @@ npm i -D @prisma/cli
 npm i @prisma/client
 ```
 
-> `typegraphql-prisma` is designed to work with a selected version of `prisma` (or newer), so please make sure you use `@prisma/cli` and `@prisma/client` of version `~2.5.0`!
+> `typegraphql-prisma` is designed to work with a selected version of `prisma` (or newer), so please make sure you use `@prisma/cli` and `@prisma/client` of version `~2.6.0`!
 
 You also need to install the GraphQL JSON scalar library (to support the Prisma `Json` scalar):
 
@@ -52,12 +52,27 @@ generator typegraphql {
 }
 ```
 
-Then after running `npx prisma generate`, this will emit the generated TypeGraphQL classes to `@generated/typegraphql-prisma-nestjs` in `node_modules` folder. You can also configure the default output folder, e.g.:
+Then after running `npx prisma generate`, this will emit the generated TypeGraphQL classes to `@generated/typegraphql-prisma-nestjs` in `node_modules` folder.
+
+You can also configure the default output folder, e.g.:
 
 ```prisma
 generator typegraphql {
   provider = "typegraphql-prisma-nestjs"
   output   = "../prisma/generated/type-graphql"
+}
+```
+
+By default, when the output path contains `node_modules`, the generated code is transpiled - consist of `*.js` and `*.d.ts` files that are ready to use (import) in your code.
+However, if you explicitly choose some other folder in `output` config, the generated code will be emitted as a raw TS files which you can use and import as your other source code files.
+
+You can overwrite that by explicitly setting `emitTranspiledCode` config option:
+
+```prisma
+generator typegraphql {
+  provider           = "typegraphql-prisma"
+  output             = "../prisma/generated/type-graphql"
+  emitTranspiledCode = true
 }
 ```
 
@@ -77,7 +92,7 @@ model User {
   name  String?
   posts Post[]
 }
-```
+````
 
 It will generate a `User` class in the output folder, with TypeGraphQL decorators, and an enum - you can import them and use normally as a type or an explicit type in your resolvers:
 
