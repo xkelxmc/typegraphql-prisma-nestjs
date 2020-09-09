@@ -4,6 +4,12 @@ This project is a fork of another with minor changes, created for personal use.
 
 Long term support is not guaranteed, use of this copy is at your own risk.
 
+## Installation
+
+```
+npm install typegraphql-prisma-nestjs --save-dev
+```
+
 ## Differences from the original project:
 
 Functions and classes used in generated files from scheme of [prisma](https://github.com/prisma/prisma), imports from [nestjs](https://nestjs.com)
