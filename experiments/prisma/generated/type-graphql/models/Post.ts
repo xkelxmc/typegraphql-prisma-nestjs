@@ -39,11 +39,13 @@ export class Post {
   })
   title!: string;
 
+  subtitle?: string;
+
   @TypeGraphQL.Field(_type => String, {
     nullable: true,
     description: undefined,
   })
-  content?: string | undefined;
+  content?: string | null;
 
   author?: Client;
 
@@ -53,11 +55,15 @@ export class Post {
   })
   authorId!: number;
 
+  editor?: Client | null;
+
+  editorId?: number | null;
+
   @TypeGraphQL.Field(_type => PostKind, {
     nullable: true,
     description: undefined,
   })
-  kind?: keyof typeof PostKind | undefined;
+  kind?: typeof PostKind[keyof typeof PostKind] | null;
 
   @TypeGraphQL.Field(_type => GraphQLJSON, {
     nullable: false,

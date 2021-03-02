@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
 import { JsonValue, InputJsonValue } from "../../../client";
+import { PostCreateManyWithoutEditorInput } from "../inputs/PostCreateManyWithoutEditorInput";
 import { Role } from "../../enums/Role";
 
 @TypeGraphQL.InputType({
@@ -34,7 +35,13 @@ export class ClientCreateWithoutPostsInput {
     nullable: false,
     description: undefined
   })
-  role!: keyof typeof Role;
+  role!: typeof Role[keyof typeof Role];
+
+  @TypeGraphQL.Field(_type => PostCreateManyWithoutEditorInput, {
+    nullable: true,
+    description: undefined
+  })
+  editorPosts?: PostCreateManyWithoutEditorInput | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true,

@@ -189,13 +189,13 @@ describe("relations resolvers generation", () => {
 
       model User {
         id     Int    @id @default(autoincrement())
-        /// @TypeGraphQL.field("userPosts")
+        /// @TypeGraphQL.field(name: "userPosts")
         posts  Post[]
       }
       model Post {
         uuid      String  @id @default(cuid())
         /// author field doc
-        /// @TypeGraphQL.field("postAuthor")
+        /// @TypeGraphQL.field(name: "postAuthor")
         author    User?   @relation(fields: [authorId], references: [id])
         authorId  Int?
       }
@@ -209,7 +209,43 @@ describe("relations resolvers generation", () => {
       "/resolvers/relations/Post/PostRelationsResolver.ts",
     );
 
-    expect(userResolverTSFile).toMatchSnapshot("User");
-    expect(postResolverTSFile).toMatchSnapshot("Post");
+    expect(userResolverTSFile).toMatchSnapshot("UserRelationsResolver");
+    expect(postResolverTSFile).toMatchSnapshot("PostRelationsResolver");
+  });
+
+  it("should properly generate relation resolvers classes for models with omitted relation field", async () => {
+    const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model User {
+        id           Int    @id @default(autoincrement())
+        posts        Post[]  @relation("posts")
+        /// @TypeGraphQL.omit(output: true)
+        editorPosts  Post[]  @relation("editorPosts")
+      }
+      model Post {
+        uuid      String  @id @default(cuid())
+        author    User?   @relation(fields: [authorId], references: [id], name: "posts")
+        authorId  Int?
+        /// @TypeGraphQL.omit(output: true)
+        editor    User?   @relation(fields: [editorId], references: [id], name: "editorPosts")
+        /// @TypeGraphQL.omit(output: true)
+        editorId  Int?
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const userResolverTSFile = await readGeneratedFile(
+      "/resolvers/relations/User/UserRelationsResolver.ts",
+    );
+    const postResolverTSFile = await readGeneratedFile(
+      "/resolvers/relations/Post/PostRelationsResolver.ts",
+    );
+
+    expect(userResolverTSFile).toMatchSnapshot("UserRelationsResolver");
+    expect(postResolverTSFile).toMatchSnapshot("PostRelationsResolver");
   });
 });

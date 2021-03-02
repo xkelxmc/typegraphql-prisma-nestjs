@@ -66,7 +66,10 @@ export default function generateObjectTypeClassFromModel(
     ],
     properties: model.fields.map<OptionalKind<PropertyDeclarationStructure>>(
       field => {
-        const isOptional = !!field.relationName || !field.isRequired;
+        const isOptional =
+          !!field.relationName ||
+          field.isOmitted.output ||
+          (!field.isRequired && field.typeFieldAlias === undefined);
 
         return {
           name: field.name,
@@ -75,7 +78,9 @@ export default function generateObjectTypeClassFromModel(
           hasQuestionToken: isOptional,
           trailingTrivia: "\r\n",
           decorators: [
-            ...(field.relationName || field.typeFieldAlias
+            ...(field.relationName ||
+            field.typeFieldAlias ||
+            field.isOmitted.output
               ? []
               : [
                   {
@@ -99,7 +104,12 @@ export default function generateObjectTypeClassFromModel(
       },
     ),
     getAccessors: model.fields
-      .filter(field => field.typeFieldAlias && !field.relationName)
+      .filter(
+        field =>
+          field.typeFieldAlias &&
+          !field.relationName &&
+          !field.isOmitted.output,
+      )
       .map<OptionalKind<GetAccessorDeclarationStructure>>(field => {
         return {
           name: field.typeFieldAlias!,
@@ -117,7 +127,11 @@ export default function generateObjectTypeClassFromModel(
               ],
             },
           ],
-          statements: [`return this.${field.name};`],
+          statements: [
+            field.isRequired
+              ? `return this.${field.name};`
+              : `return this.${field.name} ?? null;`,
+          ],
           ...(field.docs && {
             docs: [{ description: field.docs }],
           }),

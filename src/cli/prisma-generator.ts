@@ -1,5 +1,5 @@
 import { GeneratorOptions } from "@prisma/generator-helper";
-import { DMMF as PrismaDMMF } from "@prisma/client/runtime/dmmf-types";
+import { DMMF as PrismaDMMF } from "@prisma/client/runtime";
 import { promises as asyncFs } from "fs";
 import path from "path";
 
@@ -26,7 +26,7 @@ export async function generate(options: GeneratorOptions) {
       path.relative(outputDir, prismaClientPath),
     ),
     absolutePrismaOutputPath: prismaClientPath.includes("node_modules")
-      ? prismaClientPath.split("node_modules/")[1]
+      ? "@prisma/client"
       : undefined,
   };
 

@@ -5,6 +5,7 @@ import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { EnumPostKindNullableFilter } from "../inputs/EnumPostKindNullableFilter";
 import { IntFilter } from "../inputs/IntFilter";
+import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { JsonFilter } from "../inputs/JsonFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
@@ -62,6 +63,12 @@ export class PostScalarWhereInput {
   })
   title?: StringFilter | undefined;
 
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true,
+    description: undefined
+  })
+  subtitle?: StringFilter | undefined;
+
   @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true,
     description: undefined
@@ -73,6 +80,12 @@ export class PostScalarWhereInput {
     description: undefined
   })
   authorId?: IntFilter | undefined;
+
+  @TypeGraphQL.Field(_type => IntNullableFilter, {
+    nullable: true,
+    description: undefined
+  })
+  editorId?: IntNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => EnumPostKindNullableFilter, {
     nullable: true,

@@ -2,8 +2,8 @@ import * as TypeGraphQL from "type-graphql";
 import GraphQLJSON from "graphql-type-json";
 import { JsonValue, InputJsonValue } from "../../../client";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
+import { ClientUpdateOneWithoutEditorPostsInput } from "../inputs/ClientUpdateOneWithoutEditorPostsInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
-import { JsonFieldUpdateOperationsInput } from "../inputs/JsonFieldUpdateOperationsInput";
 import { NullableEnumPostKindFieldUpdateOperationsInput } from "../inputs/NullableEnumPostKindFieldUpdateOperationsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
@@ -43,6 +43,12 @@ export class PostUpdateWithoutAuthorDataInput {
   })
   title?: StringFieldUpdateOperationsInput | undefined;
 
+  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true,
+    description: undefined
+  })
+  subtitle?: StringFieldUpdateOperationsInput | undefined;
+
   @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
     nullable: true,
     description: undefined
@@ -55,9 +61,15 @@ export class PostUpdateWithoutAuthorDataInput {
   })
   kind?: NullableEnumPostKindFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => JsonFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => GraphQLJSON, {
     nullable: true,
     description: undefined
   })
-  metadata?: JsonFieldUpdateOperationsInput | undefined;
+  metadata?: InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => ClientUpdateOneWithoutEditorPostsInput, {
+    nullable: true,
+    description: undefined
+  })
+  editor?: ClientUpdateOneWithoutEditorPostsInput | undefined;
 }

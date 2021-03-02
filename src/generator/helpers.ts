@@ -5,8 +5,9 @@ import { DMMF } from "./dmmf/types";
 export function noop() {}
 
 export function getFieldTSType(
-  typeInfo: DMMF.TypeInfo,
   dmmfDocument: DmmfDocument,
+  typeInfo: DMMF.TypeInfo,
+  isRequired: boolean,
   isInputType: boolean,
   modelName?: string,
   typeName?: string,
@@ -24,7 +25,7 @@ export function getFieldTSType(
           : typeInfo.type.replace(modelName, typeName);
     }
   } else if (typeInfo.kind === "enum") {
-    TSType = `keyof typeof ${typeInfo.type}`;
+    TSType = `typeof ${typeInfo.type}[keyof typeof ${typeInfo.type}]`;
   } else {
     throw new Error(`Unsupported field type kind: ${typeInfo.kind}`);
   }
@@ -35,10 +36,12 @@ export function getFieldTSType(
       TSType += "[]";
     }
   }
-  if (!typeInfo.isRequired) {
-    // FIXME: use properly null for output and undefined for input
-    // TSType += " | null | undefined";
-    TSType += " | undefined";
+  if (!isRequired) {
+    if (isInputType) {
+      TSType += " | undefined";
+    } else {
+      TSType += " | null";
+    }
   }
   return TSType;
 }

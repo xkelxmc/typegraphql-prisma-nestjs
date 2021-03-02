@@ -13,11 +13,9 @@ import path from "path";
 
 import {
   Client,
-  // Client as BaseClient,
   ClientRelationsResolver,
   ClientCrudResolver,
   Post,
-  // Post as BasePost,
   PostRelationsResolver,
   FindOnePostResolver,
   CreatePostResolver,
@@ -32,14 +30,13 @@ import {
   DirectorRelationsResolver,
   MovieRelationsResolver,
   FindManyClientArgs,
+  ProblemRelationsResolver,
+  CreatorRelationsResolver,
 } from "./prisma/generated/type-graphql";
 import { PrismaClient } from "./prisma/generated/client";
-
-// @ObjectType()
-// class User extends BaseUser {}
-
-// @ObjectType()
-// class Post extends BasePost {}
+import * as Prisma from "./prisma/generated/client";
+import { ProblemCrudResolver } from "./prisma/generated/type-graphql/resolvers/crud/Problem/ProblemCrudResolver";
+import { CreatorCrudResolver } from "./prisma/generated/type-graphql/resolvers/crud/Creator/CreatorCrudResolver";
 
 interface Context {
   prisma: PrismaClient;
@@ -48,15 +45,15 @@ interface Context {
 @Resolver(of => Client)
 class ClientResolver {
   @Query(returns => [Client])
-  async allClients(@Ctx() { prisma }: Context): Promise<Client[]> {
-    return (await prisma.user.findMany()) as Client[];
+  async allClients(@Ctx() { prisma }: Context): Promise<Prisma.User[]> {
+    return await prisma.user.findMany();
   }
 
   @Query(returns => [Client])
   async customFindClientsWithArgs(
     @Args() args: FindManyClientArgs,
     @Ctx() { prisma }: Context,
-  ) {
+  ): Promise<Prisma.User[]> {
     return prisma.user.findMany(args);
   }
 
@@ -92,6 +89,10 @@ async function main() {
       MovieRelationsResolver,
       DirectorCrudResolver,
       DirectorRelationsResolver,
+      ProblemCrudResolver,
+      CreatorCrudResolver,
+      ProblemRelationsResolver,
+      CreatorRelationsResolver,
     ],
     validate: false,
     emitSchemaFile: path.resolve(__dirname, "./generated-schema.graphql"),

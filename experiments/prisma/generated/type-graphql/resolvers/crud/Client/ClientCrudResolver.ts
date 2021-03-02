@@ -5,6 +5,7 @@ import { AggregateClientArgs } from "./args/AggregateClientArgs";
 import { CreateClientArgs } from "./args/CreateClientArgs";
 import { DeleteClientArgs } from "./args/DeleteClientArgs";
 import { DeleteManyClientArgs } from "./args/DeleteManyClientArgs";
+import { FindFirstClientArgs } from "./args/FindFirstClientArgs";
 import { FindManyClientArgs } from "./args/FindManyClientArgs";
 import { FindOneClientArgs } from "./args/FindOneClientArgs";
 import { UpdateClientArgs } from "./args/UpdateClientArgs";
@@ -20,8 +21,16 @@ export class ClientCrudResolver {
     nullable: true,
     description: undefined
   })
-  async client(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneClientArgs): Promise<Client | undefined> {
+  async client(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneClientArgs): Promise<Client | null> {
     return ctx.prisma.user.findOne(args);
+  }
+
+  @TypeGraphQL.Query(_returns => Client, {
+    nullable: true,
+    description: undefined
+  })
+  async findFirstClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindFirstClientArgs): Promise<Client | null> {
+    return ctx.prisma.user.findFirst(args);
   }
 
   @TypeGraphQL.Query(_returns => [Client], {
@@ -44,7 +53,7 @@ export class ClientCrudResolver {
     nullable: true,
     description: undefined
   })
-  async deleteClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteClientArgs): Promise<Client | undefined> {
+  async deleteClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteClientArgs): Promise<Client | null> {
     return ctx.prisma.user.delete(args);
   }
 
@@ -52,7 +61,7 @@ export class ClientCrudResolver {
     nullable: true,
     description: undefined
   })
-  async updateClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateClientArgs): Promise<Client | undefined> {
+  async updateClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateClientArgs): Promise<Client | null> {
     return ctx.prisma.user.update(args);
   }
 

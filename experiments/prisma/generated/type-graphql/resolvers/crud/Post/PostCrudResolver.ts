@@ -5,6 +5,7 @@ import { AggregatePostArgs } from "./args/AggregatePostArgs";
 import { CreatePostArgs } from "./args/CreatePostArgs";
 import { DeleteManyPostArgs } from "./args/DeleteManyPostArgs";
 import { DeletePostArgs } from "./args/DeletePostArgs";
+import { FindFirstPostArgs } from "./args/FindFirstPostArgs";
 import { FindManyPostArgs } from "./args/FindManyPostArgs";
 import { FindOnePostArgs } from "./args/FindOnePostArgs";
 import { UpdateManyPostArgs } from "./args/UpdateManyPostArgs";
@@ -20,8 +21,16 @@ export class PostCrudResolver {
     nullable: true,
     description: undefined
   })
-  async post(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOnePostArgs): Promise<Post | undefined> {
+  async post(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOnePostArgs): Promise<Post | null> {
     return ctx.prisma.post.findOne(args);
+  }
+
+  @TypeGraphQL.Query(_returns => Post, {
+    nullable: true,
+    description: undefined
+  })
+  async findFirstPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindFirstPostArgs): Promise<Post | null> {
+    return ctx.prisma.post.findFirst(args);
   }
 
   @TypeGraphQL.Query(_returns => [Post], {
@@ -44,7 +53,7 @@ export class PostCrudResolver {
     nullable: true,
     description: undefined
   })
-  async deletePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeletePostArgs): Promise<Post | undefined> {
+  async deletePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeletePostArgs): Promise<Post | null> {
     return ctx.prisma.post.delete(args);
   }
 
@@ -52,7 +61,7 @@ export class PostCrudResolver {
     nullable: true,
     description: undefined
   })
-  async updatePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdatePostArgs): Promise<Post | undefined> {
+  async updatePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdatePostArgs): Promise<Post | null> {
     return ctx.prisma.post.update(args);
   }
 

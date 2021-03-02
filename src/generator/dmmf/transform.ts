@@ -1,4 +1,4 @@
-import { DMMF as PrismaDMMF } from "@prisma/client/runtime/dmmf-types";
+import { DMMF as PrismaDMMF } from "@prisma/client/runtime";
 import { DMMF } from "./types";
 import { parseDocumentationAttributes } from "./helpers";
 import {
@@ -36,15 +36,14 @@ export function transformMappings(
 }
 
 export function transformBareModel(model: PrismaDMMF.Model): DMMF.Model {
-  const attributeArgs = parseDocumentationAttributes(
+  const attributeArgs = parseDocumentationAttributes<{ name: string }>(
     model.documentation,
     "type",
     "model",
   );
-  const typeName = attributeArgs?.slice(1, -1);
   return {
     ...model,
-    typeName: typeName ?? pascalCase(model.name),
+    typeName: attributeArgs.name ?? pascalCase(model.name),
     fields: [],
     docs: cleanDocsString(model.documentation),
   };
@@ -61,20 +60,29 @@ export function transformModelWithFields(dmmfDocument: DmmfDocument) {
 
 function transformField(dmmfDocument: DmmfDocument) {
   return (field: PrismaDMMF.Field): DMMF.Field => {
-    const attributeArgs = parseDocumentationAttributes(
+    const attributeArgs = parseDocumentationAttributes<{ name: string }>(
       field.documentation,
       "field",
       "field",
     );
-    const typeFieldAlias = attributeArgs?.slice(1, -1);
-    const fieldTSType = getFieldTSType(field, dmmfDocument, false);
+    const fieldTSType = getFieldTSType(
+      dmmfDocument,
+      field,
+      field.isRequired,
+      false,
+    );
     const typeGraphQLType = getTypeGraphQLType(field, dmmfDocument);
+    const { output = false, input = false } = parseDocumentationAttributes<{
+      output: boolean;
+      input: boolean;
+    }>(field.documentation, "omit", "field");
     return {
       ...field,
-      typeFieldAlias,
+      typeFieldAlias: attributeArgs.name,
       fieldTSType,
       typeGraphQLType,
       docs: cleanDocsString(field.documentation),
+      isOmitted: { output, input },
     };
   };
 }
@@ -92,15 +100,16 @@ function transformInputType(dmmfDocument: DmmfDocument) {
         const modelField = modelType?.fields.find(it => it.name === field.name);
         const typeName = modelField?.typeFieldAlias ?? field.name;
         const selectedInputType = selectInputTypeFromTypes(dmmfDocument)(
-          field.inputType,
+          field.inputTypes,
         );
         const typeGraphQLType = getTypeGraphQLType(
           selectedInputType,
           dmmfDocument,
         );
         const fieldTSType = getFieldTSType(
-          selectedInputType,
           dmmfDocument,
+          selectedInputType,
+          field.isRequired,
           true,
         );
         return {
@@ -134,19 +143,25 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
             field.outputType.type as string,
           ),
         };
-        const fieldTSType = getFieldTSType(outputType, dmmfDocument, false);
+        const fieldTSType = getFieldTSType(
+          dmmfDocument,
+          outputType,
+          field.isRequired,
+          false,
+        );
         const typeGraphQLType = getTypeGraphQLType(outputType, dmmfDocument);
         const args = field.args.map<DMMF.SchemaArg>(arg => {
           const selectedInputType = selectInputTypeFromTypes(dmmfDocument)(
-            arg.inputType,
+            arg.inputTypes,
           );
           const typeGraphQLType = getTypeGraphQLType(
             selectedInputType,
             dmmfDocument,
           );
           const fieldTSType = getFieldTSType(
-            selectedInputType,
             dmmfDocument,
+            selectedInputType,
+            arg.isRequired,
             true,
           );
 
@@ -209,8 +224,9 @@ function transformMapping(
   return (mapping: PrismaDMMF.Mapping): DMMF.Mapping => {
     const { model, plural, ...availableActions } = mapping;
     const modelTypeName = dmmfDocument.getModelTypeName(model) ?? model;
-    const actions = Object.entries(availableActions).map<DMMF.Action>(
-      ([modelAction, fieldName]) => {
+    const actions = Object.entries(availableActions)
+      .filter(([actionKind]) => getOperationKindName(actionKind))
+      .map<DMMF.Action>(([modelAction, fieldName]) => {
         const kind = modelAction as DMMF.ModelAction;
         const actionOutputType = dmmfDocument.schema.outputTypes.find(type =>
           type.fields.some(field => field.name === fieldName),
@@ -244,8 +260,7 @@ function transformMapping(
           outputTypeName,
           actionResolverName,
         };
-      },
-    );
+      });
     const resolverName = `${modelTypeName}CrudResolver`;
     return {
       model,
@@ -261,10 +276,16 @@ function selectInputTypeFromTypes(dmmfDocument: DmmfDocument) {
   return (
     inputTypes: PrismaDMMF.SchemaArgInputType[],
   ): DMMF.SchemaArgInputType => {
+    let possibleInputTypes: PrismaDMMF.SchemaArgInputType[];
+    possibleInputTypes = inputTypes.filter(it => it.kind === "object");
+    if (possibleInputTypes.length === 0) {
+      possibleInputTypes = inputTypes.filter(it => it.kind === "enum");
+    }
+    if (possibleInputTypes.length === 0) {
+      possibleInputTypes = inputTypes;
+    }
     const selectedInputType =
-      inputTypes.find(it => it.kind === "object") ||
-      inputTypes.find(it => it.kind === "enum") ||
-      inputTypes[0];
+      possibleInputTypes.find(it => it.isList) || possibleInputTypes[0];
 
     let inputType = selectedInputType.type as string;
     if (selectedInputType.kind === "enum") {
@@ -311,29 +332,48 @@ function getMappedActionName(
 }
 
 function getOperationKindName(actionName: string) {
-  if (supportedQueryActions.includes(actionName as any)) return "Query";
-  if (supportedMutationActions.includes(actionName as any)) return "Mutation";
+  if ((supportedQueryActions as string[]).includes(actionName)) {
+    return "Query";
+  }
+  if ((supportedMutationActions as string[]).includes(actionName)) {
+    return "Mutation";
+  }
+  // throw new Error(`Unsupported operation kind: '${actionName}'`);
 }
 
 export function transformEnums(dmmfDocument: DmmfDocument) {
-  return (enumDef: PrismaDMMF.Enum): DMMF.Enum => {
+  return (
+    enumDef: PrismaDMMF.DatamodelEnum | PrismaDMMF.SchemaEnum,
+  ): DMMF.Enum => {
     const modelName = enumDef.name.includes("DistinctFieldEnum")
       ? enumDef.name.replace("DistinctFieldEnum", "")
       : undefined;
     const typeName = modelName
       ? `${dmmfDocument.getModelTypeName(modelName)}DistinctFieldEnum`
       : enumDef.name;
+    const enumValues = enumDef.values as Array<
+      | PrismaDMMF.DatamodelEnum["values"][number]
+      | PrismaDMMF.SchemaEnum["values"][number]
+    >;
 
     return {
       ...enumDef,
-      docs: cleanDocsString(enumDef.documentation),
+      docs:
+        "documentation" in enumDef
+          ? cleanDocsString(enumDef.documentation)
+          : undefined,
       typeName,
-      valuesMap: enumDef.values.map(value => ({
-        value,
-        name:
-          (modelName && dmmfDocument.getModelFieldAlias(modelName, value)) ||
-          value,
-      })),
+      valuesMap: enumValues.map(enumValue => {
+        const enumValueName =
+          typeof enumValue === "string" ? enumValue : enumValue.name;
+        return {
+          value: enumValueName,
+          name:
+            (modelName &&
+              dmmfDocument.getModelFieldAlias(modelName, enumValueName)) ||
+            enumValueName,
+        };
+      }),
     };
   };
 }
@@ -345,7 +385,7 @@ export function generateRelationModel(dmmfDocument: DmmfDocument) {
     )!;
     const resolverName = `${model.typeName}RelationsResolver`;
     const relationFields = model.fields
-      .filter(field => field.relationName)
+      .filter(field => field.relationName && !field.isOmitted.output)
       .map<DMMF.RelationField>(field => {
         const outputTypeField = outputType.fields.find(
           it => it.name === field.name,

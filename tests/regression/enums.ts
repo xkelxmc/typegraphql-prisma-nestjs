@@ -59,7 +59,7 @@ describe("enums", () => {
     expect(enumsIndexTSFile).toMatchSnapshot("enums index");
   });
 
-  it("should properly generate sort order enum", async () => {
+  it("should properly generate standard prisma enums", async () => {
     const schema = /* prisma */ `
       datasource db {
         provider = "postgresql"
@@ -85,9 +85,11 @@ describe("enums", () => {
 
     await generateCodeFromSchema(schema, { outputDirPath });
     const sortOrderTSFile = await readGeneratedFile("/enums/SortOrder.ts");
+    const queryModeTSFile = await readGeneratedFile("/enums/QueryMode.ts");
     const enumsIndexTSFile = await readGeneratedFile("/enums/index.ts");
 
     expect(sortOrderTSFile).toMatchSnapshot("SortOrder");
+    expect(queryModeTSFile).toMatchSnapshot("QueryMode");
     expect(enumsIndexTSFile).toMatchSnapshot("enums index");
   });
 
@@ -122,7 +124,7 @@ describe("enums", () => {
         provider = "postgresql"
         url      = env("DATABASE_URL")
       }
-      /// @@TypeGraphQL.type("ExampleModel")
+      /// @@TypeGraphQL.type(name: "ExampleModel")
       model SampleModel {
         intIdField   Int     @id @default(autoincrement())
         stringField  String  @unique
@@ -150,7 +152,7 @@ describe("enums", () => {
       }
       model SampleModel {
         intIdField   Int     @id @default(autoincrement())
-        /// @TypeGraphQL.field("mappedFieldName")
+        /// @TypeGraphQL.field(name: "mappedFieldName")
         stringField  String  @unique
         intField     Int
       }

@@ -5,6 +5,7 @@ import { AggregateCategoryArgs } from "./args/AggregateCategoryArgs";
 import { CreateCategoryArgs } from "./args/CreateCategoryArgs";
 import { DeleteCategoryArgs } from "./args/DeleteCategoryArgs";
 import { DeleteManyCategoryArgs } from "./args/DeleteManyCategoryArgs";
+import { FindFirstCategoryArgs } from "./args/FindFirstCategoryArgs";
 import { FindManyCategoryArgs } from "./args/FindManyCategoryArgs";
 import { FindOneCategoryArgs } from "./args/FindOneCategoryArgs";
 import { UpdateCategoryArgs } from "./args/UpdateCategoryArgs";
@@ -20,8 +21,16 @@ export class CategoryCrudResolver {
     nullable: true,
     description: undefined
   })
-  async category(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneCategoryArgs): Promise<Category | undefined> {
+  async category(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneCategoryArgs): Promise<Category | null> {
     return ctx.prisma.category.findOne(args);
+  }
+
+  @TypeGraphQL.Query(_returns => Category, {
+    nullable: true,
+    description: undefined
+  })
+  async findFirstCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindFirstCategoryArgs): Promise<Category | null> {
+    return ctx.prisma.category.findFirst(args);
   }
 
   @TypeGraphQL.Query(_returns => [Category], {
@@ -44,7 +53,7 @@ export class CategoryCrudResolver {
     nullable: true,
     description: undefined
   })
-  async deleteCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteCategoryArgs): Promise<Category | undefined> {
+  async deleteCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteCategoryArgs): Promise<Category | null> {
     return ctx.prisma.category.delete(args);
   }
 
@@ -52,7 +61,7 @@ export class CategoryCrudResolver {
     nullable: true,
     description: undefined
   })
-  async updateCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateCategoryArgs): Promise<Category | undefined> {
+  async updateCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateCategoryArgs): Promise<Category | null> {
     return ctx.prisma.category.update(args);
   }
 

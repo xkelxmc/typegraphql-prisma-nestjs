@@ -5,6 +5,7 @@ import { AggregateDirectorArgs } from "./args/AggregateDirectorArgs";
 import { CreateDirectorArgs } from "./args/CreateDirectorArgs";
 import { DeleteDirectorArgs } from "./args/DeleteDirectorArgs";
 import { DeleteManyDirectorArgs } from "./args/DeleteManyDirectorArgs";
+import { FindFirstDirectorArgs } from "./args/FindFirstDirectorArgs";
 import { FindManyDirectorArgs } from "./args/FindManyDirectorArgs";
 import { FindOneDirectorArgs } from "./args/FindOneDirectorArgs";
 import { UpdateDirectorArgs } from "./args/UpdateDirectorArgs";
@@ -20,8 +21,16 @@ export class DirectorCrudResolver {
     nullable: true,
     description: undefined
   })
-  async director(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneDirectorArgs): Promise<Director | undefined> {
+  async director(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneDirectorArgs): Promise<Director | null> {
     return ctx.prisma.director.findOne(args);
+  }
+
+  @TypeGraphQL.Query(_returns => Director, {
+    nullable: true,
+    description: undefined
+  })
+  async findFirstDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindFirstDirectorArgs): Promise<Director | null> {
+    return ctx.prisma.director.findFirst(args);
   }
 
   @TypeGraphQL.Query(_returns => [Director], {
@@ -44,7 +53,7 @@ export class DirectorCrudResolver {
     nullable: true,
     description: undefined
   })
-  async deleteDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteDirectorArgs): Promise<Director | undefined> {
+  async deleteDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteDirectorArgs): Promise<Director | null> {
     return ctx.prisma.director.delete(args);
   }
 
@@ -52,7 +61,7 @@ export class DirectorCrudResolver {
     nullable: true,
     description: undefined
   })
-  async updateDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateDirectorArgs): Promise<Director | undefined> {
+  async updateDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateDirectorArgs): Promise<Director | null> {
     return ctx.prisma.director.update(args);
   }
 

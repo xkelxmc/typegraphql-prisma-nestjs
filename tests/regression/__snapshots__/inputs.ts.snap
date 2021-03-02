@@ -16,19 +16,19 @@ export class EnumColorFilter {
     nullable: true,
     description: undefined
   })
-  equals?: keyof typeof Color | undefined;
+  equals?: typeof Color[keyof typeof Color] | undefined;
 
   @TypeGraphQL.Field(_type => [Color], {
     nullable: true,
     description: undefined
   })
-  in?: Array<keyof typeof Color> | undefined;
+  in?: Array<typeof Color[keyof typeof Color]> | undefined;
 
   @TypeGraphQL.Field(_type => [Color], {
     nullable: true,
     description: undefined
   })
-  notIn?: Array<keyof typeof Color> | undefined;
+  notIn?: Array<typeof Color[keyof typeof Color]> | undefined;
 
   @TypeGraphQL.Field(_type => NestedEnumColorFilter, {
     nullable: true,
@@ -54,19 +54,19 @@ export class NestedEnumColorFilter {
     nullable: true,
     description: undefined
   })
-  equals?: keyof typeof Color | undefined;
+  equals?: typeof Color[keyof typeof Color] | undefined;
 
   @TypeGraphQL.Field(_type => [Color], {
     nullable: true,
     description: undefined
   })
-  in?: Array<keyof typeof Color> | undefined;
+  in?: Array<typeof Color[keyof typeof Color]> | undefined;
 
   @TypeGraphQL.Field(_type => [Color], {
     nullable: true,
     description: undefined
   })
-  notIn?: Array<keyof typeof Color> | undefined;
+  notIn?: Array<typeof Color[keyof typeof Color]> | undefined;
 
   @TypeGraphQL.Field(_type => NestedEnumColorFilter, {
     nullable: true,
@@ -212,13 +212,11 @@ export { FloatFieldUpdateOperationsInput } from \\"./FloatFieldUpdateOperationsI
 export { FloatFilter } from \\"./FloatFilter\\";
 export { IntFieldUpdateOperationsInput } from \\"./IntFieldUpdateOperationsInput\\";
 export { IntFilter } from \\"./IntFilter\\";
-export { JsonFieldUpdateOperationsInput } from \\"./JsonFieldUpdateOperationsInput\\";
 export { JsonFilter } from \\"./JsonFilter\\";
 export { NestedBoolFilter } from \\"./NestedBoolFilter\\";
 export { NestedDateTimeFilter } from \\"./NestedDateTimeFilter\\";
 export { NestedFloatFilter } from \\"./NestedFloatFilter\\";
 export { NestedIntFilter } from \\"./NestedIntFilter\\";
-export { NestedJsonFilter } from \\"./NestedJsonFilter\\";
 export { NestedStringFilter } from \\"./NestedStringFilter\\";
 export { NestedStringNullableFilter } from \\"./NestedStringNullableFilter\\";
 export { NullableStringFieldUpdateOperationsInput } from \\"./NullableStringFieldUpdateOperationsInput\\";
@@ -249,19 +247,19 @@ export class FirstModelOrderByInput {
     nullable: true,
     description: undefined
   })
-  idField?: keyof typeof SortOrder | undefined;
+  idField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  uniqueStringField?: keyof typeof SortOrder | undefined;
+  uniqueStringField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  floatField?: keyof typeof SortOrder | undefined;
+  floatField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -461,19 +459,19 @@ export class FirstModelOrderByInput {
     nullable: true,
     description: undefined
   })
-  idField?: keyof typeof SortOrder | undefined;
+  idField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  uniqueStringField?: keyof typeof SortOrder | undefined;
+  uniqueStringField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  floatField?: keyof typeof SortOrder | undefined;
+  floatField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -635,25 +633,25 @@ export class SecondModelOrderByInput {
     nullable: true,
     description: undefined
   })
-  idField?: keyof typeof SortOrder | undefined;
+  idField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  uniqueStringField?: keyof typeof SortOrder | undefined;
+  uniqueStringField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  floatField?: keyof typeof SortOrder | undefined;
+  floatField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  firstModelFieldId?: keyof typeof SortOrder | undefined;
+  firstModelFieldId?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -720,7 +718,7 @@ exports[`inputs should properly generate input type classes for filtering models
 "import * as TypeGraphQL from \\"type-graphql\\";
 import GraphQLJSON from \\"graphql-type-json\\";
 import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
-import { FirstModelWhereInput } from \\"../inputs/FirstModelWhereInput\\";
+import { FirstModelRelationFilter } from \\"../inputs/FirstModelRelationFilter\\";
 import { FloatFilter } from \\"../inputs/FloatFilter\\";
 import { IntFilter } from \\"../inputs/IntFilter\\";
 import { StringFilter } from \\"../inputs/StringFilter\\";
@@ -772,11 +770,11 @@ export class SecondModelWhereInput {
   })
   firstModelFieldId?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FirstModelWhereInput, {
+  @TypeGraphQL.Field(_type => FirstModelRelationFilter, {
     nullable: true,
     description: undefined
   })
-  firstModelField?: FirstModelWhereInput | undefined;
+  firstModelField?: FirstModelRelationFilter | undefined;
 }
 "
 `;
@@ -1062,7 +1060,6 @@ exports[`inputs should properly generate input type classes for filtering scalar
 "import * as TypeGraphQL from \\"type-graphql\\";
 import GraphQLJSON from \\"graphql-type-json\\";
 import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
-import { NestedJsonFilter } from \\"../inputs/NestedJsonFilter\\";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -1075,11 +1072,11 @@ export class JsonFilter {
   })
   equals?: InputJsonValue | undefined;
 
-  @TypeGraphQL.Field(_type => NestedJsonFilter, {
+  @TypeGraphQL.Field(_type => GraphQLJSON, {
     nullable: true,
     description: undefined
   })
-  not?: NestedJsonFilter | undefined;
+  not?: InputJsonValue | undefined;
 }
 "
 `;
@@ -1292,31 +1289,6 @@ export class NestedIntFilter {
 "
 `;
 
-exports[`inputs should properly generate input type classes for filtering scalar fields: NestedJsonFilter 1`] = `
-"import * as TypeGraphQL from \\"type-graphql\\";
-import GraphQLJSON from \\"graphql-type-json\\";
-import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
-
-@TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
-})
-export class NestedJsonFilter {
-  @TypeGraphQL.Field(_type => GraphQLJSON, {
-    nullable: true,
-    description: undefined
-  })
-  equals?: InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => NestedJsonFilter, {
-    nullable: true,
-    description: undefined
-  })
-  not?: NestedJsonFilter | undefined;
-}
-"
-`;
-
 exports[`inputs should properly generate input type classes for filtering scalar fields: NestedStringNullableFilter 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
 import GraphQLJSON from \\"graphql-type-json\\";
@@ -1401,6 +1373,7 @@ exports[`inputs should properly generate input type classes for filtering scalar
 import GraphQLJSON from \\"graphql-type-json\\";
 import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
 import { NestedStringFilter } from \\"../inputs/NestedStringFilter\\";
+import { QueryMode } from \\"../../enums/QueryMode\\";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -1467,6 +1440,12 @@ export class StringFilter {
   })
   endsWith?: string | undefined;
 
+  @TypeGraphQL.Field(_type => QueryMode, {
+    nullable: true,
+    description: undefined
+  })
+  mode?: typeof QueryMode[keyof typeof QueryMode] | undefined;
+
   @TypeGraphQL.Field(_type => NestedStringFilter, {
     nullable: true,
     description: undefined
@@ -1481,6 +1460,7 @@ exports[`inputs should properly generate input type classes for filtering scalar
 import GraphQLJSON from \\"graphql-type-json\\";
 import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
 import { NestedStringNullableFilter } from \\"../inputs/NestedStringNullableFilter\\";
+import { QueryMode } from \\"../../enums/QueryMode\\";
 
 @TypeGraphQL.InputType({
   isAbstract: true,
@@ -1547,6 +1527,12 @@ export class StringNullableFilter {
   })
   endsWith?: string | undefined;
 
+  @TypeGraphQL.Field(_type => QueryMode, {
+    nullable: true,
+    description: undefined
+  })
+  mode?: typeof QueryMode[keyof typeof QueryMode] | undefined;
+
   @TypeGraphQL.Field(_type => NestedStringNullableFilter, {
     nullable: true,
     description: undefined
@@ -1569,7 +1555,6 @@ export { FloatNullableFilter } from \\"./FloatNullableFilter\\";
 export { IntFieldUpdateOperationsInput } from \\"./IntFieldUpdateOperationsInput\\";
 export { IntFilter } from \\"./IntFilter\\";
 export { IntNullableFilter } from \\"./IntNullableFilter\\";
-export { JsonFieldUpdateOperationsInput } from \\"./JsonFieldUpdateOperationsInput\\";
 export { JsonFilter } from \\"./JsonFilter\\";
 export { JsonNullableFilter } from \\"./JsonNullableFilter\\";
 export { NestedBoolFilter } from \\"./NestedBoolFilter\\";
@@ -1580,15 +1565,12 @@ export { NestedFloatFilter } from \\"./NestedFloatFilter\\";
 export { NestedFloatNullableFilter } from \\"./NestedFloatNullableFilter\\";
 export { NestedIntFilter } from \\"./NestedIntFilter\\";
 export { NestedIntNullableFilter } from \\"./NestedIntNullableFilter\\";
-export { NestedJsonFilter } from \\"./NestedJsonFilter\\";
-export { NestedJsonNullableFilter } from \\"./NestedJsonNullableFilter\\";
 export { NestedStringFilter } from \\"./NestedStringFilter\\";
 export { NestedStringNullableFilter } from \\"./NestedStringNullableFilter\\";
 export { NullableBoolFieldUpdateOperationsInput } from \\"./NullableBoolFieldUpdateOperationsInput\\";
 export { NullableDateTimeFieldUpdateOperationsInput } from \\"./NullableDateTimeFieldUpdateOperationsInput\\";
 export { NullableFloatFieldUpdateOperationsInput } from \\"./NullableFloatFieldUpdateOperationsInput\\";
 export { NullableIntFieldUpdateOperationsInput } from \\"./NullableIntFieldUpdateOperationsInput\\";
-export { NullableJsonFieldUpdateOperationsInput } from \\"./NullableJsonFieldUpdateOperationsInput\\";
 export { NullableStringFieldUpdateOperationsInput } from \\"./NullableStringFieldUpdateOperationsInput\\";
 export { SampleModelCreateInput } from \\"./SampleModelCreateInput\\";
 export { SampleModelOrderByInput } from \\"./SampleModelOrderByInput\\";
@@ -1617,19 +1599,19 @@ export class DirectorOrderByInput {
     nullable: true,
     description: undefined
   })
-  firstName?: keyof typeof SortOrder | undefined;
+  firstName?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  lastName?: keyof typeof SortOrder | undefined;
+  lastName?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  age?: keyof typeof SortOrder | undefined;
+  age?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -1826,25 +1808,25 @@ export class MovieOrderByInput {
     nullable: true,
     description: undefined
   })
-  directorFirstName?: keyof typeof SortOrder | undefined;
+  directorFirstName?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  directorLastName?: keyof typeof SortOrder | undefined;
+  directorLastName?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  title?: keyof typeof SortOrder | undefined;
+  title?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  rating?: keyof typeof SortOrder | undefined;
+  rating?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -1910,7 +1892,7 @@ exports[`inputs should properly generate input type classes for model with id ke
 "import * as TypeGraphQL from \\"type-graphql\\";
 import GraphQLJSON from \\"graphql-type-json\\";
 import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
-import { DirectorWhereInput } from \\"../inputs/DirectorWhereInput\\";
+import { DirectorRelationFilter } from \\"../inputs/DirectorRelationFilter\\";
 import { FloatFilter } from \\"../inputs/FloatFilter\\";
 import { StringFilter } from \\"../inputs/StringFilter\\";
 
@@ -1949,11 +1931,11 @@ export class MovieWhereInput {
   })
   directorLastName?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DirectorWhereInput, {
+  @TypeGraphQL.Field(_type => DirectorRelationFilter, {
     nullable: true,
     description: undefined
   })
-  director?: DirectorWhereInput | undefined;
+  director?: DirectorRelationFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true,
@@ -2086,7 +2068,7 @@ export class EnumColorFieldUpdateOperationsInput {
     nullable: true,
     description: undefined
   })
-  set?: keyof typeof Color | undefined;
+  set?: typeof Color[keyof typeof Color] | undefined;
 }
 "
 `;
@@ -2125,25 +2107,6 @@ export class IntFieldUpdateOperationsInput {
     description: undefined
   })
   set?: number | undefined;
-}
-"
-`;
-
-exports[`inputs should properly generate input type classes for updating scalar fields: JSONFieldUpdateOperationsInput 1`] = `
-"import * as TypeGraphQL from \\"type-graphql\\";
-import GraphQLJSON from \\"graphql-type-json\\";
-import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
-
-@TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
-})
-export class JsonFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => GraphQLJSON, {
-    nullable: true,
-    description: undefined
-  })
-  set?: InputJsonValue | undefined;
 }
 "
 `;
@@ -2401,7 +2364,6 @@ export { FloatNullableFilter } from \\"./FloatNullableFilter\\";
 export { IntFieldUpdateOperationsInput } from \\"./IntFieldUpdateOperationsInput\\";
 export { IntFilter } from \\"./IntFilter\\";
 export { IntNullableFilter } from \\"./IntNullableFilter\\";
-export { JsonFieldUpdateOperationsInput } from \\"./JsonFieldUpdateOperationsInput\\";
 export { JsonFilter } from \\"./JsonFilter\\";
 export { JsonNullableFilter } from \\"./JsonNullableFilter\\";
 export { NestedBoolFilter } from \\"./NestedBoolFilter\\";
@@ -2414,8 +2376,6 @@ export { NestedFloatFilter } from \\"./NestedFloatFilter\\";
 export { NestedFloatNullableFilter } from \\"./NestedFloatNullableFilter\\";
 export { NestedIntFilter } from \\"./NestedIntFilter\\";
 export { NestedIntNullableFilter } from \\"./NestedIntNullableFilter\\";
-export { NestedJsonFilter } from \\"./NestedJsonFilter\\";
-export { NestedJsonNullableFilter } from \\"./NestedJsonNullableFilter\\";
 export { NestedStringFilter } from \\"./NestedStringFilter\\";
 export { NestedStringNullableFilter } from \\"./NestedStringNullableFilter\\";
 export { NullableBoolFieldUpdateOperationsInput } from \\"./NullableBoolFieldUpdateOperationsInput\\";
@@ -2423,7 +2383,6 @@ export { NullableDateTimeFieldUpdateOperationsInput } from \\"./NullableDateTime
 export { NullableEnumColorFieldUpdateOperationsInput } from \\"./NullableEnumColorFieldUpdateOperationsInput\\";
 export { NullableFloatFieldUpdateOperationsInput } from \\"./NullableFloatFieldUpdateOperationsInput\\";
 export { NullableIntFieldUpdateOperationsInput } from \\"./NullableIntFieldUpdateOperationsInput\\";
-export { NullableJsonFieldUpdateOperationsInput } from \\"./NullableJsonFieldUpdateOperationsInput\\";
 export { NullableStringFieldUpdateOperationsInput } from \\"./NullableStringFieldUpdateOperationsInput\\";
 export { SampleModelCreateInput } from \\"./SampleModelCreateInput\\";
 export { SampleModelOrderByInput } from \\"./SampleModelOrderByInput\\";
@@ -2452,9 +2411,9 @@ export class SampleOrderByInput {
     nullable: true,
     description: undefined
   })
-  idField?: keyof typeof SortOrder | undefined;
+  idField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
-  modelFieldName?: keyof typeof SortOrder | undefined;
+  modelFieldName?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
@@ -2464,7 +2423,7 @@ export class SampleOrderByInput {
     return this.modelFieldName;
   }
 
-  set mappedFieldName(modelFieldName: keyof typeof SortOrder | undefined) {
+  set mappedFieldName(modelFieldName: typeof SortOrder[keyof typeof SortOrder] | undefined) {
     this.modelFieldName = modelFieldName;
   }
 }
@@ -2554,19 +2513,19 @@ export class RenamedFirstModelOrderByInput {
     nullable: true,
     description: undefined
   })
-  idField?: keyof typeof SortOrder | undefined;
+  idField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  uniqueStringField?: keyof typeof SortOrder | undefined;
+  uniqueStringField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  floatField?: keyof typeof SortOrder | undefined;
+  floatField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -2766,19 +2725,19 @@ export class RenamedFirstModelOrderByInput {
     nullable: true,
     description: undefined
   })
-  idField?: keyof typeof SortOrder | undefined;
+  idField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  uniqueStringField?: keyof typeof SortOrder | undefined;
+  uniqueStringField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  floatField?: keyof typeof SortOrder | undefined;
+  floatField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -2940,25 +2899,25 @@ export class RenamedSecondModelOrderByInput {
     nullable: true,
     description: undefined
   })
-  idField?: keyof typeof SortOrder | undefined;
+  idField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  uniqueStringField?: keyof typeof SortOrder | undefined;
+  uniqueStringField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  floatField?: keyof typeof SortOrder | undefined;
+  floatField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  firstModelFieldId?: keyof typeof SortOrder | undefined;
+  firstModelFieldId?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -3027,7 +2986,7 @@ import GraphQLJSON from \\"graphql-type-json\\";
 import { JsonValue, InputJsonValue } from \\"../../../../helpers/prisma-client-mock\\";
 import { FloatFilter } from \\"../inputs/FloatFilter\\";
 import { IntFilter } from \\"../inputs/IntFilter\\";
-import { RenamedFirstModelWhereInput } from \\"../inputs/RenamedFirstModelWhereInput\\";
+import { RenamedFirstModelRelationFilter } from \\"../inputs/RenamedFirstModelRelationFilter\\";
 import { StringFilter } from \\"../inputs/StringFilter\\";
 
 @TypeGraphQL.InputType({
@@ -3077,11 +3036,11 @@ export class RenamedSecondModelWhereInput {
   })
   firstModelFieldId?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => RenamedFirstModelWhereInput, {
+  @TypeGraphQL.Field(_type => RenamedFirstModelRelationFilter, {
     nullable: true,
     description: undefined
   })
-  firstModelField?: RenamedFirstModelWhereInput | undefined;
+  firstModelField?: RenamedFirstModelRelationFilter | undefined;
 }
 "
 `;
@@ -3166,37 +3125,37 @@ export class ExampleOrderByInput {
     nullable: true,
     description: undefined
   })
-  intIdField?: keyof typeof SortOrder | undefined;
+  intIdField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  stringField?: keyof typeof SortOrder | undefined;
+  stringField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  floatField?: keyof typeof SortOrder | undefined;
+  floatField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  booleanField?: keyof typeof SortOrder | undefined;
+  booleanField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  dateField?: keyof typeof SortOrder | undefined;
+  dateField?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true,
     description: undefined
   })
-  otherId?: keyof typeof SortOrder | undefined;
+  otherId?: typeof SortOrder[keyof typeof SortOrder] | undefined;
 }
 "
 `;
@@ -3209,7 +3168,7 @@ import { BoolFilter } from \\"../inputs/BoolFilter\\";
 import { DateTimeFilter } from \\"../inputs/DateTimeFilter\\";
 import { FloatFilter } from \\"../inputs/FloatFilter\\";
 import { IntFilter } from \\"../inputs/IntFilter\\";
-import { OtherModelWhereInput } from \\"../inputs/OtherModelWhereInput\\";
+import { OtherModelRelationFilter } from \\"../inputs/OtherModelRelationFilter\\";
 import { StringFilter } from \\"../inputs/StringFilter\\";
 
 @TypeGraphQL.InputType({
@@ -3265,11 +3224,11 @@ export class ExampleWhereInput {
   })
   dateField?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => OtherModelWhereInput, {
+  @TypeGraphQL.Field(_type => OtherModelRelationFilter, {
     nullable: true,
     description: undefined
   })
-  other?: OtherModelWhereInput | undefined;
+  other?: OtherModelRelationFilter | undefined;
 
   @TypeGraphQL.Field(_type => IntFilter, {
     nullable: true,

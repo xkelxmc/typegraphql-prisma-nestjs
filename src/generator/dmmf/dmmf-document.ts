@@ -1,4 +1,4 @@
-import { DMMF as PrismaDMMF } from "@prisma/client/runtime/dmmf-types";
+import { DMMF as PrismaDMMF } from "@prisma/client/runtime";
 import { DMMF } from "./types";
 import {
   transformSchema,
@@ -39,7 +39,9 @@ export class DmmfDocument implements DMMF.Document {
     this.mappings = transformMappings(mappings, this, options);
     this.relationModels = this.models
       .filter(model =>
-        model.fields.some(field => field.relationName !== undefined),
+        model.fields.some(
+          field => field.relationName !== undefined && !field.isOmitted.output,
+        ),
       )
       .map(generateRelationModel(this));
   }
