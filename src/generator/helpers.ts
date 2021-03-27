@@ -2,6 +2,18 @@ import { DmmfDocument } from "./dmmf/dmmf-document";
 import { modelAttributeRegex, fieldAttributeRegex } from "./dmmf/helpers";
 import { DMMF } from "./dmmf/types";
 
+enum PrismaScalars {
+  String = "String",
+  Boolean = "Boolean",
+  Int = "Int",
+  Float = "Float",
+  DateTime = "DateTime",
+  Json = "Json",
+  BigInt = "BigInt",
+  Decimal = "Decimal",
+  Bytes = "Bytes",
+}
+
 export function noop() {}
 
 export function getFieldTSType(
@@ -13,9 +25,12 @@ export function getFieldTSType(
   typeName?: string,
 ) {
   let TSType: string;
-  if (typeInfo.kind === "scalar") {
+  if (typeInfo.location === "scalar") {
     TSType = mapScalarToTSType(typeInfo.type, isInputType);
-  } else if (typeInfo.kind === "object") {
+  } else if (
+    typeInfo.location === "inputObjectTypes" ||
+    typeInfo.location === "outputObjectTypes"
+  ) {
     if (dmmfDocument.isModelName(typeInfo.type)) {
       TSType = dmmfDocument.getModelTypeName(typeInfo.type)!;
     } else {
@@ -24,10 +39,13 @@ export function getFieldTSType(
           ? getInputTypeName(typeInfo.type, dmmfDocument)
           : typeInfo.type.replace(modelName, typeName);
     }
-  } else if (typeInfo.kind === "enum") {
-    TSType = `typeof ${typeInfo.type}[keyof typeof ${typeInfo.type}]`;
+  } else if (typeInfo.location === "enumTypes") {
+    const enumDef = dmmfDocument.enums.find(
+      it => it.typeName == typeInfo.type,
+    )!;
+    TSType = enumDef.valuesMap.map(({ value }) => `"${value}"`).join(" | ");
   } else {
-    throw new Error(`Unsupported field type kind: ${typeInfo.kind}`);
+    throw new Error(`Unsupported field type location: ${typeInfo.location}`);
   }
   if (typeInfo.isList) {
     if (TSType.includes(" ")) {
@@ -48,25 +66,30 @@ export function getFieldTSType(
 
 export function mapScalarToTSType(scalar: string, isInputType: boolean) {
   switch (scalar) {
-    case "ID":
-    case "UUID": {
+    case PrismaScalars.String: {
       return "string";
     }
-    case "String": {
-      return "string";
-    }
-    case "Boolean": {
+    case PrismaScalars.Boolean: {
       return "boolean";
     }
-    case "DateTime": {
-      return "Date";
-    }
-    case "Int":
-    case "Float": {
+    case PrismaScalars.Int:
+    case PrismaScalars.Float: {
       return "number";
     }
-    case "Json":
-      return isInputType ? "InputJsonValue" : "JsonValue";
+    case PrismaScalars.DateTime: {
+      return "Date";
+    }
+    case PrismaScalars.Json:
+      return isInputType ? "Prisma.InputJsonValue" : "Prisma.JsonValue";
+    case PrismaScalars.BigInt: {
+      return "bigint";
+    }
+    case PrismaScalars.Decimal: {
+      return "Prisma.Decimal";
+    }
+    case PrismaScalars.Bytes: {
+      return "Buffer";
+    }
     default:
       throw new Error(`Unrecognized scalar type: ${scalar}`);
   }
@@ -79,9 +102,12 @@ export function getTypeGraphQLType(
   typeName?: string,
 ) {
   let GraphQLType: string;
-  if (typeInfo.kind === "scalar") {
+  if (typeInfo.location === "scalar") {
     GraphQLType = mapScalarToTypeGraphQLType(typeInfo.type);
-  } else if (typeInfo.kind === "object") {
+  } else if (
+    typeInfo.location === "inputObjectTypes" ||
+    typeInfo.location === "outputObjectTypes"
+  ) {
     if (dmmfDocument.isModelName(typeInfo.type)) {
       GraphQLType = dmmfDocument.getModelTypeName(typeInfo.type)!;
     } else {
@@ -101,24 +127,28 @@ export function getTypeGraphQLType(
 
 export function mapScalarToTypeGraphQLType(scalar: string) {
   switch (scalar) {
-    case "DateTime": {
-      return "Date";
-    }
-    // TODO: use proper uuid graphql scalar
-    case "UUID": {
-      return "String";
-    }
-    case "Boolean":
-    case "String": {
+    case PrismaScalars.String:
+    case PrismaScalars.Boolean: {
       return scalar;
     }
-    case "ID":
-    case "Int":
-    case "Float": {
-      return `${scalar}`;
+    case PrismaScalars.Int:
+    case PrismaScalars.Float: {
+      return `TypeGraphQL.${scalar}`;
     }
-    case "Json": {
-      return `GraphQLJSON`;
+    case PrismaScalars.DateTime: {
+      return "Date";
+    }
+    case PrismaScalars.Json: {
+      return `GraphQLScalars.JSONResolver`;
+    }
+    case PrismaScalars.BigInt: {
+      return "GraphQLScalars.BigIntResolver";
+    }
+    case PrismaScalars.Decimal: {
+      return "DecimalJSScalar";
+    }
+    case PrismaScalars.Bytes: {
+      return "GraphQLScalars.ByteResolver";
     }
     default: {
       throw new Error(`Unrecognized scalar type: ${scalar}`);
@@ -136,6 +166,7 @@ export function pascalCase(str: string): string {
 
 function getInputKeywordPhrasePosition(inputTypeName: string) {
   const inputParseResult = [
+    "Unchecked",
     "Create",
     "OrderBy",
     "Update",

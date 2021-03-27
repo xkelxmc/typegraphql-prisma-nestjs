@@ -82,24 +82,24 @@ type Post {
   uuid: String!
 }
 
-enum PostDistinctFieldEnum {
-  color
-  content
-  uuid
-}
-
 input PostOrderByInput {
   color: SortOrder
   content: SortOrder
   uuid: SortOrder
 }
 
+enum PostScalarFieldEnum {
+  color
+  content
+  uuid
+}
+
 input PostWhereInput {
   AND: [PostWhereInput!]
-  color: EnumColorFilter
-  content: StringFilter
   NOT: [PostWhereInput!]
   OR: [PostWhereInput!]
+  color: EnumColorFilter
+  content: StringFilter
   uuid: StringFilter
 }
 
@@ -108,7 +108,7 @@ input PostWhereUniqueInput {
 }
 
 type Query {
-  customFindManyPost(cursor: PostWhereUniqueInput, distinct: [PostDistinctFieldEnum!], orderBy: [PostOrderByInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
+  customFindManyPost(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
 }
 
 enum QueryMode {

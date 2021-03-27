@@ -1,9 +1,11 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
+import * as GraphQLScalars from "graphql-scalars";
 import { DirectorWhereUniqueInput } from "../../../inputs/DirectorWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteDirectorArgs {
-  @TypeGraphQL.Field(_type => DirectorWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(_type => DirectorWhereUniqueInput, {
+    nullable: false
+  })
   where!: DirectorWhereUniqueInput;
 }

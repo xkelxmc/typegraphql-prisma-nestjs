@@ -1,43 +1,39 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { ProblemAvgAggregateOutputType } from "../outputs/ProblemAvgAggregateOutputType";
-import { ProblemMaxAggregateOutputType } from "../outputs/ProblemMaxAggregateOutputType";
-import { ProblemMinAggregateOutputType } from "../outputs/ProblemMinAggregateOutputType";
-import { ProblemSumAggregateOutputType } from "../outputs/ProblemSumAggregateOutputType";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { ProblemAvgAggregate } from "../outputs/ProblemAvgAggregate";
+import { ProblemCountAggregate } from "../outputs/ProblemCountAggregate";
+import { ProblemMaxAggregate } from "../outputs/ProblemMaxAggregate";
+import { ProblemMinAggregate } from "../outputs/ProblemMinAggregate";
+import { ProblemSumAggregate } from "../outputs/ProblemSumAggregate";
 
 @TypeGraphQL.ObjectType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class AggregateProblem {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemCountAggregate, {
+    nullable: true
   })
-  count!: number;
+  count!: ProblemCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemAvgAggregateOutputType, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemAvgAggregate, {
+    nullable: true
   })
-  avg!: ProblemAvgAggregateOutputType | null;
+  avg!: ProblemAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemSumAggregateOutputType, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemSumAggregate, {
+    nullable: true
   })
-  sum!: ProblemSumAggregateOutputType | null;
+  sum!: ProblemSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemMinAggregateOutputType, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemMinAggregate, {
+    nullable: true
   })
-  min!: ProblemMinAggregateOutputType | null;
+  min!: ProblemMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemMaxAggregateOutputType, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemMaxAggregate, {
+    nullable: true
   })
-  max!: ProblemMaxAggregateOutputType | null;
+  max!: ProblemMaxAggregate | null;
 }

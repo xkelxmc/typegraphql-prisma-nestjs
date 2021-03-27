@@ -1,4 +1,9 @@
-import { OptionalKind, MethodDeclarationStructure, Project } from "ts-morph";
+import {
+  OptionalKind,
+  MethodDeclarationStructure,
+  Project,
+  Writers,
+} from "ts-morph";
 import path from "path";
 
 import { camelCase } from "../helpers";
@@ -7,6 +12,7 @@ import {
   generateTypeGraphQLImport,
   generateArgsImports,
   generateModelsImports,
+  generateHelpersFileImport,
 } from "../imports";
 import { DmmfDocument } from "../dmmf/dmmf-document";
 import { DMMF } from "../dmmf/types";
@@ -21,13 +27,14 @@ export default function generateRelationsResolverClassesFromModel(
   const singleIdField = model.fields.find(field => field.isId);
   const singleUniqueField = model.fields.find(field => field.isUnique);
   const singleFilterField = singleIdField ?? singleUniqueField;
-  const compositeIdFields = model.fields.filter(field =>
-    model.idFields.includes(field.name),
+  const compositeIdFields = model.idFields.map(
+    idField => model.fields.find(field => idField === field.name)!,
   );
-  const compositeUniqueFields = model.fields.filter(field =>
-    // taking first unique group is enough to fetch entity
-    model.uniqueFields[0]?.includes(field.name),
-  );
+  const compositeUniqueFields = model.uniqueFields[0]
+    ? model.uniqueFields[0].map(
+        uniqueField => model.fields.find(field => uniqueField === field.name)!,
+      )
+    : [];
   const compositeFilterFields =
     compositeIdFields.length > 0 ? compositeIdFields : compositeUniqueFields;
 
@@ -57,6 +64,7 @@ export default function generateRelationsResolverClassesFromModel(
     .filter(it => it.argsTypeName !== undefined)
     .map(it => it.argsTypeName!);
   generateArgsImports(sourceFile, argTypeNames, 0);
+  generateHelpersFileImport(sourceFile, 3);
 
   sourceFile.addClass({
     name: resolverName,
@@ -99,10 +107,10 @@ export default function generateRelationsResolverClassesFromModel(
               name: "ResolveField",
               arguments: [
                 `_type => ${field.typeGraphQLType}`,
-                `{
-                  nullable: ${!field.isRequired},
-                  description: ${field.docs ? `"${field.docs}"` : "undefined"},
-                }`,
+                Writers.object({
+                  nullable: `${!field.isRequired}`,
+                  ...(field.docs && { description: `"${field.docs}"` }),
+                }),
               ],
             },
           ],
@@ -130,7 +138,9 @@ export default function generateRelationsResolverClassesFromModel(
           ],
           // TODO: refactor to AST
           statements: [
-            `return ctx.prisma.${camelCase(model.name)}.findOne({
+            /* ts */ `return getPrismaFromContext(ctx).${camelCase(
+              model.name,
+            )}.findUnique({
               where: {${whereConditionString}},
             }).${field.name}(${field.argsTypeName ? "args" : "{}"});`,
           ],

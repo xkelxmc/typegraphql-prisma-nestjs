@@ -1,22 +1,20 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
 import { CreatorWhereInput } from "../inputs/CreatorWhereInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class CreatorRelationFilter {
   @TypeGraphQL.Field(_type => CreatorWhereInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   is?: CreatorWhereInput | undefined;
 
   @TypeGraphQL.Field(_type => CreatorWhereInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   isNot?: CreatorWhereInput | undefined;
 }

@@ -37,30 +37,30 @@ describe("outputs", () => {
       "/resolvers/outputs/AggregateSample.ts",
     );
     const avgAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/SampleAvgAggregateOutputType.ts",
+      "/resolvers/outputs/SampleAvgAggregate.ts",
     );
     const sumAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/SampleSumAggregateOutputType.ts",
+      "/resolvers/outputs/SampleSumAggregate.ts",
     );
     const minAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/SampleMinAggregateOutputType.ts",
+      "/resolvers/outputs/SampleMinAggregate.ts",
     );
     const maxAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/SampleMaxAggregateOutputType.ts",
+      "/resolvers/outputs/SampleMaxAggregate.ts",
     );
-    const batchPayloadTSFile = await readGeneratedFile(
-      "/resolvers/outputs/BatchPayload.ts",
+    const affectedRowsOutputTSFile = await readGeneratedFile(
+      "/resolvers/outputs/AffectedRowsOutput.ts",
     );
     const outputsIndexTSFile = await readGeneratedFile(
       "/resolvers/outputs/index.ts",
     );
 
     expect(aggregateSampleTSFile).toMatchSnapshot("AggregateSample");
-    expect(avgAggregateTSFile).toMatchSnapshot("SampleAvgAggregateOutputType");
-    expect(sumAggregateTSFile).toMatchSnapshot("SampleSumAggregateOutputType");
-    expect(minAggregateTSFile).toMatchSnapshot("SampleMinAggregateOutputType");
-    expect(maxAggregateTSFile).toMatchSnapshot("SampleMaxAggregateOutputType");
-    expect(batchPayloadTSFile).toMatchSnapshot("BatchPayload");
+    expect(avgAggregateTSFile).toMatchSnapshot("SampleAvgAggregate");
+    expect(sumAggregateTSFile).toMatchSnapshot("SampleSumAggregate");
+    expect(minAggregateTSFile).toMatchSnapshot("SampleMinAggregate");
+    expect(maxAggregateTSFile).toMatchSnapshot("SampleMaxAggregate");
+    expect(affectedRowsOutputTSFile).toMatchSnapshot("AffectedRowsOutput");
     expect(outputsIndexTSFile).toMatchSnapshot("outputs index");
   });
 
@@ -86,26 +86,26 @@ describe("outputs", () => {
       "/resolvers/outputs/AggregateExample.ts",
     );
     const avgAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleAvgAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleAvgAggregate.ts",
     );
     const sumAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleSumAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleSumAggregate.ts",
     );
     const minAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleMinAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleMinAggregate.ts",
     );
     const maxAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleMaxAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleMaxAggregate.ts",
     );
     const outputsIndexTSFile = await readGeneratedFile(
       "/resolvers/outputs/index.ts",
     );
 
     expect(aggregateExampleTSFile).toMatchSnapshot("AggregateExample");
-    expect(avgAggregateTSFile).toMatchSnapshot("ExampleAvgAggregateOutputType");
-    expect(sumAggregateTSFile).toMatchSnapshot("ExampleSumAggregateOutputType");
-    expect(minAggregateTSFile).toMatchSnapshot("ExampleMinAggregateOutputType");
-    expect(maxAggregateTSFile).toMatchSnapshot("ExampleMaxAggregateOutputType");
+    expect(avgAggregateTSFile).toMatchSnapshot("ExampleAvgAggregate");
+    expect(sumAggregateTSFile).toMatchSnapshot("ExampleSumAggregate");
+    expect(minAggregateTSFile).toMatchSnapshot("ExampleMinAggregate");
+    expect(maxAggregateTSFile).toMatchSnapshot("ExampleMaxAggregate");
     expect(outputsIndexTSFile).toMatchSnapshot("outputs index");
   });
 
@@ -130,26 +130,95 @@ describe("outputs", () => {
       "/resolvers/outputs/AggregateExample.ts",
     );
     const avgAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleAvgAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleAvgAggregate.ts",
     );
     const sumAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleSumAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleSumAggregate.ts",
     );
     const minAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleMinAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleMinAggregate.ts",
     );
     const maxAggregateTSFile = await readGeneratedFile(
-      "/resolvers/outputs/ExampleMaxAggregateOutputType.ts",
+      "/resolvers/outputs/ExampleMaxAggregate.ts",
     );
     const outputsIndexTSFile = await readGeneratedFile(
       "/resolvers/outputs/index.ts",
     );
 
     expect(aggregateExampleTSFile).toMatchSnapshot("AggregateExample");
-    expect(avgAggregateTSFile).toMatchSnapshot("ExampleAvgAggregateOutputType");
-    expect(sumAggregateTSFile).toMatchSnapshot("ExampleSumAggregateOutputType");
-    expect(minAggregateTSFile).toMatchSnapshot("ExampleMinAggregateOutputType");
-    expect(maxAggregateTSFile).toMatchSnapshot("ExampleMaxAggregateOutputType");
+    expect(avgAggregateTSFile).toMatchSnapshot("ExampleAvgAggregate");
+    expect(sumAggregateTSFile).toMatchSnapshot("ExampleSumAggregate");
+    expect(minAggregateTSFile).toMatchSnapshot("ExampleMinAggregate");
+    expect(maxAggregateTSFile).toMatchSnapshot("ExampleMaxAggregate");
     expect(outputsIndexTSFile).toMatchSnapshot("outputs index");
+  });
+
+  it("should properly generate output type classes when simpleResolvers option is enabled", async () => {
+    const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model Sample {
+        intIdField    Int       @id @default(autoincrement())
+        stringField   String
+        floatField    Float
+        booleanField  Boolean
+        dateField     DateTime
+      }
+    `;
+
+    await generateCodeFromSchema(schema, {
+      outputDirPath,
+      simpleResolvers: true,
+    });
+    const aggregateSampleTSFile = await readGeneratedFile(
+      "/resolvers/outputs/AggregateSample.ts",
+    );
+    const avgAggregateTSFile = await readGeneratedFile(
+      "/resolvers/outputs/SampleAvgAggregate.ts",
+    );
+    const affectedRowsOutputTSFile = await readGeneratedFile(
+      "/resolvers/outputs/AffectedRowsOutput.ts",
+    );
+
+    expect(aggregateSampleTSFile).toMatchSnapshot("AggregateSample");
+    expect(avgAggregateTSFile).toMatchSnapshot("SampleAvgAggregate");
+    expect(affectedRowsOutputTSFile).toMatchSnapshot("AffectedRowsOutput");
+  });
+
+  describe("when preview feature `groupBy` is enabled", () => {
+    it("should generate group by output type for model", async () => {
+      const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model Sample {
+        intIdField    Int       @id @default(autoincrement())
+        stringField   String
+        floatField    Float
+        booleanField  Boolean
+        dateField     DateTime
+      }
+    `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        enabledPreviewFeatures: ["groupBy"],
+      });
+
+      const sampleGroupByTSFile = await readGeneratedFile(
+        "/resolvers/outputs/SampleGroupBy.ts",
+      );
+      const outputsIndexTSFile = await readGeneratedFile(
+        "/resolvers/outputs/index.ts",
+      );
+
+      expect(sampleGroupByTSFile).toMatchSnapshot("SampleGroupBy");
+      expect(outputsIndexTSFile).toMatchSnapshot("outputs index");
+    });
   });
 });

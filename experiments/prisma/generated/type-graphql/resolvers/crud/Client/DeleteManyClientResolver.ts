@@ -1,15 +1,15 @@
 import * as TypeGraphQL from "type-graphql";
 import { DeleteManyClientArgs } from "./args/DeleteManyClientArgs";
 import { Client } from "../../../models/Client";
-import { BatchPayload } from "../../outputs/BatchPayload";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Client)
 export class DeleteManyClientResolver {
-  @TypeGraphQL.Mutation(_returns => BatchPayload, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+    nullable: false
   })
-  async deleteManyClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyClientArgs): Promise<BatchPayload> {
-    return ctx.prisma.user.deleteMany(args);
+  async deleteManyClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyClientArgs): Promise<AffectedRowsOutput> {
+    return getPrismaFromContext(ctx).user.deleteMany(args);
   }
 }

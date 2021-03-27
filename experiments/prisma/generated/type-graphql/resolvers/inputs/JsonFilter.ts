@@ -1,21 +1,19 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class JsonFilter {
-  @TypeGraphQL.Field(_type => GraphQLJSON, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
   })
-  equals?: InputJsonValue | undefined;
+  equals?: Prisma.InputJsonValue | undefined;
 
-  @TypeGraphQL.Field(_type => GraphQLJSON, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
   })
-  not?: InputJsonValue | undefined;
+  not?: Prisma.InputJsonValue | undefined;
 }

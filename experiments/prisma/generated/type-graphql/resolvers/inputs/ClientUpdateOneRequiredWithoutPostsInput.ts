@@ -1,44 +1,39 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { ClientCreateOrConnectWithoutpostInput } from "../inputs/ClientCreateOrConnectWithoutpostInput";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { ClientCreateOrConnectWithoutPostsInput } from "../inputs/ClientCreateOrConnectWithoutPostsInput";
 import { ClientCreateWithoutPostsInput } from "../inputs/ClientCreateWithoutPostsInput";
-import { ClientUpdateWithoutPostsDataInput } from "../inputs/ClientUpdateWithoutPostsDataInput";
+import { ClientUpdateWithoutPostsInput } from "../inputs/ClientUpdateWithoutPostsInput";
 import { ClientUpsertWithoutPostsInput } from "../inputs/ClientUpsertWithoutPostsInput";
 import { ClientWhereUniqueInput } from "../inputs/ClientWhereUniqueInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class ClientUpdateOneRequiredWithoutPostsInput {
   @TypeGraphQL.Field(_type => ClientCreateWithoutPostsInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   create?: ClientCreateWithoutPostsInput | undefined;
 
-  @TypeGraphQL.Field(_type => ClientWhereUniqueInput, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ClientCreateOrConnectWithoutPostsInput, {
+    nullable: true
   })
-  connect?: ClientWhereUniqueInput | undefined;
-
-  @TypeGraphQL.Field(_type => ClientUpdateWithoutPostsDataInput, {
-    nullable: true,
-    description: undefined
-  })
-  update?: ClientUpdateWithoutPostsDataInput | undefined;
+  connectOrCreate?: ClientCreateOrConnectWithoutPostsInput | undefined;
 
   @TypeGraphQL.Field(_type => ClientUpsertWithoutPostsInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   upsert?: ClientUpsertWithoutPostsInput | undefined;
 
-  @TypeGraphQL.Field(_type => ClientCreateOrConnectWithoutpostInput, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ClientWhereUniqueInput, {
+    nullable: true
   })
-  connectOrCreate?: ClientCreateOrConnectWithoutpostInput | undefined;
+  connect?: ClientWhereUniqueInput | undefined;
+
+  @TypeGraphQL.Field(_type => ClientUpdateWithoutPostsInput, {
+    nullable: true
+  })
+  update?: ClientUpdateWithoutPostsInput | undefined;
 }

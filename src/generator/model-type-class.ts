@@ -3,6 +3,7 @@ import {
   OptionalKind,
   Project,
   GetAccessorDeclarationStructure,
+  Writers,
 } from "ts-morph";
 import path from "path";
 
@@ -10,8 +11,9 @@ import {
   generateTypeGraphQLImport,
   generateModelsImports,
   generateEnumsImports,
-  generateGraphQLScalarImport,
-  generatePrismaJsonTypeImport,
+  generateGraphQLScalarsImport,
+  generatePrismaNamespaceImport,
+  generateCustomScalarsImport,
 } from "./imports";
 import { modelsFolderName } from "./config";
 import { DMMF } from "./dmmf/types";
@@ -30,12 +32,13 @@ export default function generateObjectTypeClassFromModel(
   });
 
   generateTypeGraphQLImport(sourceFile);
-  generateGraphQLScalarImport(sourceFile);
-  generatePrismaJsonTypeImport(sourceFile, dmmfDocument.options, 1);
+  generateGraphQLScalarsImport(sourceFile);
+  generatePrismaNamespaceImport(sourceFile, dmmfDocument.options, 1);
+  generateCustomScalarsImport(sourceFile, 1);
   generateModelsImports(
     sourceFile,
     model.fields
-      .filter(field => field.kind === "object")
+      .filter(field => field.location === "inputObjectTypes")
       .filter(field => field.type !== model.name)
       .map(field =>
         dmmfDocument.isModelName(field.type)
@@ -46,7 +49,7 @@ export default function generateObjectTypeClassFromModel(
   generateEnumsImports(
     sourceFile,
     model.fields
-      .filter(field => field.kind === "enum")
+      .filter(field => field.location === "enumTypes")
       .map(field => field.type),
   );
 
@@ -57,10 +60,13 @@ export default function generateObjectTypeClassFromModel(
       {
         name: "ObjectType",
         arguments: [
-          `{
-            isAbstract: true,
-            description: ${model.docs ? `"${model.docs}"` : "undefined"},
-          }`,
+          Writers.object({
+            isAbstract: "true",
+            ...(model.docs && { description: `"${model.docs}"` }),
+            ...(dmmfDocument.options.simpleResolvers && {
+              simpleResolvers: "true",
+            }),
+          }),
         ],
       },
     ],
@@ -87,12 +93,10 @@ export default function generateObjectTypeClassFromModel(
                     name: "Field",
                     arguments: [
                       `_type => ${field.typeGraphQLType}`,
-                      `{
-                        nullable: ${isOptional},
-                        description: ${
-                          field.docs ? `"${field.docs}"` : "undefined"
-                        },
-                      }`,
+                      Writers.object({
+                        nullable: `${isOptional}`,
+                        ...(field.docs && { description: `"${field.docs}"` }),
+                      }),
                     ],
                   },
                 ]),
@@ -120,10 +124,10 @@ export default function generateObjectTypeClassFromModel(
               name: "Field",
               arguments: [
                 `_type => ${field.typeGraphQLType}`,
-                `{
-                  nullable: ${!field.isRequired},
-                  description: ${field.docs ? `"${field.docs}"` : "undefined"},
-                }`,
+                Writers.object({
+                  nullable: `${!field.isRequired}`,
+                  ...(field.docs && { description: `"${field.docs}"` }),
+                }),
               ],
             },
           ],

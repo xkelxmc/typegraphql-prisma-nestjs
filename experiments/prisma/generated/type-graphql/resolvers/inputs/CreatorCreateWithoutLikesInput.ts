@@ -1,22 +1,20 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { ProblemCreateManyWithoutCreatorInput } from "../inputs/ProblemCreateManyWithoutCreatorInput";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { ProblemCreateNestedManyWithoutCreatorInput } from "../inputs/ProblemCreateNestedManyWithoutCreatorInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class CreatorCreateWithoutLikesInput {
   @TypeGraphQL.Field(_type => String, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => ProblemCreateManyWithoutCreatorInput, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemCreateNestedManyWithoutCreatorInput, {
+    nullable: true
   })
-  problems?: ProblemCreateManyWithoutCreatorInput | undefined;
+  problems?: ProblemCreateNestedManyWithoutCreatorInput | undefined;
 }

@@ -2,15 +2,15 @@ import * as TypeGraphQL from "type-graphql";
 import { Director } from "../../../models/Director";
 import { Movie } from "../../../models/Movie";
 import { DirectorMoviesArgs } from "./args/DirectorMoviesArgs";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Director)
 export class DirectorRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => [Movie], {
-    nullable: true,
-    description: undefined,
+    nullable: false
   })
-  async movies(@TypeGraphQL.Root() director: Director, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DirectorMoviesArgs): Promise<Movie[] | null> {
-    return ctx.prisma.director.findOne({
+  async movies(@TypeGraphQL.Root() director: Director, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DirectorMoviesArgs): Promise<Movie[]> {
+    return getPrismaFromContext(ctx).director.findUnique({
       where: {
         firstName_lastName: {
           firstName: director.firstName,

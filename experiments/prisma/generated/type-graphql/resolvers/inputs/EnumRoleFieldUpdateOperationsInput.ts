@@ -1,16 +1,15 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
 import { Role } from "../../enums/Role";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class EnumRoleFieldUpdateOperationsInput {
   @TypeGraphQL.Field(_type => Role, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  set?: typeof Role[keyof typeof Role] | undefined;
+  set?: "USER" | "ADMIN" | undefined;
 }

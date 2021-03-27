@@ -1,15 +1,15 @@
 import * as TypeGraphQL from "type-graphql";
 import { DeleteManyMovieArgs } from "./args/DeleteManyMovieArgs";
 import { Movie } from "../../../models/Movie";
-import { BatchPayload } from "../../outputs/BatchPayload";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Movie)
 export class DeleteManyMovieResolver {
-  @TypeGraphQL.Mutation(_returns => BatchPayload, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+    nullable: false
   })
-  async deleteManyMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyMovieArgs): Promise<BatchPayload> {
-    return ctx.prisma.movie.deleteMany(args);
+  async deleteManyMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyMovieArgs): Promise<AffectedRowsOutput> {
+    return getPrismaFromContext(ctx).movie.deleteMany(args);
   }
 }

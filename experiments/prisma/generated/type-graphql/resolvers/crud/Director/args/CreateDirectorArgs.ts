@@ -1,9 +1,11 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
+import * as GraphQLScalars from "graphql-scalars";
 import { DirectorCreateInput } from "../../../inputs/DirectorCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateDirectorArgs {
-  @TypeGraphQL.Field(_type => DirectorCreateInput, { nullable: false })
+  @TypeGraphQL.Field(_type => DirectorCreateInput, {
+    nullable: false
+  })
   data!: DirectorCreateInput;
 }

@@ -1,30 +1,27 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
 import { ProblemCreateWithoutLikedByInput } from "../inputs/ProblemCreateWithoutLikedByInput";
-import { ProblemUpdateWithoutLikedByDataInput } from "../inputs/ProblemUpdateWithoutLikedByDataInput";
+import { ProblemUpdateWithoutLikedByInput } from "../inputs/ProblemUpdateWithoutLikedByInput";
 import { ProblemWhereUniqueInput } from "../inputs/ProblemWhereUniqueInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class ProblemUpsertWithWhereUniqueWithoutLikedByInput {
   @TypeGraphQL.Field(_type => ProblemWhereUniqueInput, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   where!: ProblemWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => ProblemUpdateWithoutLikedByDataInput, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemUpdateWithoutLikedByInput, {
+    nullable: false
   })
-  update!: ProblemUpdateWithoutLikedByDataInput;
+  update!: ProblemUpdateWithoutLikedByInput;
 
   @TypeGraphQL.Field(_type => ProblemCreateWithoutLikedByInput, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   create!: ProblemCreateWithoutLikedByInput;
 }

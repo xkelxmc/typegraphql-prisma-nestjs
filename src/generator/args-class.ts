@@ -1,4 +1,9 @@
-import { PropertyDeclarationStructure, OptionalKind, Project } from "ts-morph";
+import {
+  PropertyDeclarationStructure,
+  OptionalKind,
+  Project,
+  Writers,
+} from "ts-morph";
 import path from "path";
 
 import { argsFolderName } from "./config";
@@ -6,7 +11,7 @@ import {
   generateTypeGraphQLImport,
   generateInputsImports,
   generateEnumsImports,
-  generateGraphQLScalarImport,
+  generateGraphQLScalarsImport,
 } from "./imports";
 import { DmmfDocument } from "./dmmf/dmmf-document";
 import { DMMF } from "./dmmf/types";
@@ -26,12 +31,12 @@ export default function generateArgsTypeClassFromArgs(
   });
 
   generateTypeGraphQLImport(sourceFile);
-  generateGraphQLScalarImport(sourceFile);
+  generateGraphQLScalarsImport(sourceFile);
   generateInputsImports(
     sourceFile,
     fields
       .map(arg => arg.selectedInputType)
-      .filter(argInputType => argInputType.kind === "object")
+      .filter(argInputType => argInputType.location === "inputObjectTypes")
       .map(argInputType => argInputType.type),
     inputImportsLevel,
   );
@@ -39,7 +44,7 @@ export default function generateArgsTypeClassFromArgs(
     sourceFile,
     fields
       .map(field => field.selectedInputType)
-      .filter(argType => argType.kind === "enum")
+      .filter(argType => argType.location === "enumTypes")
       .map(argType => argType.type as string),
     4,
   );
@@ -65,7 +70,9 @@ export default function generateArgsTypeClassFromArgs(
             name: "Field",
             arguments: [
               `_type => ${arg.typeGraphQLType}`,
-              `{ nullable: ${!arg.isRequired} }`,
+              Writers.object({
+                nullable: `${!arg.isRequired}`,
+              }),
             ],
           },
         ],

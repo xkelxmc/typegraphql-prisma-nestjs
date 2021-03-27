@@ -1,56 +1,49 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { CreatorCreateOrConnectWithoutProblemInput } from "../inputs/CreatorCreateOrConnectWithoutProblemInput";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { CreatorCreateOrConnectWithoutProblemsInput } from "../inputs/CreatorCreateOrConnectWithoutProblemsInput";
 import { CreatorCreateWithoutProblemsInput } from "../inputs/CreatorCreateWithoutProblemsInput";
-import { CreatorUpdateWithoutProblemsDataInput } from "../inputs/CreatorUpdateWithoutProblemsDataInput";
+import { CreatorUpdateWithoutProblemsInput } from "../inputs/CreatorUpdateWithoutProblemsInput";
 import { CreatorUpsertWithoutProblemsInput } from "../inputs/CreatorUpsertWithoutProblemsInput";
 import { CreatorWhereUniqueInput } from "../inputs/CreatorWhereUniqueInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class CreatorUpdateOneWithoutProblemsInput {
   @TypeGraphQL.Field(_type => CreatorCreateWithoutProblemsInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   create?: CreatorCreateWithoutProblemsInput | undefined;
 
+  @TypeGraphQL.Field(_type => CreatorCreateOrConnectWithoutProblemsInput, {
+    nullable: true
+  })
+  connectOrCreate?: CreatorCreateOrConnectWithoutProblemsInput | undefined;
+
+  @TypeGraphQL.Field(_type => CreatorUpsertWithoutProblemsInput, {
+    nullable: true
+  })
+  upsert?: CreatorUpsertWithoutProblemsInput | undefined;
+
   @TypeGraphQL.Field(_type => CreatorWhereUniqueInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   connect?: CreatorWhereUniqueInput | undefined;
 
   @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   disconnect?: boolean | undefined;
 
   @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorUpdateWithoutProblemsDataInput, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => CreatorUpdateWithoutProblemsInput, {
+    nullable: true
   })
-  update?: CreatorUpdateWithoutProblemsDataInput | undefined;
-
-  @TypeGraphQL.Field(_type => CreatorUpsertWithoutProblemsInput, {
-    nullable: true,
-    description: undefined
-  })
-  upsert?: CreatorUpsertWithoutProblemsInput | undefined;
-
-  @TypeGraphQL.Field(_type => CreatorCreateOrConnectWithoutProblemInput, {
-    nullable: true,
-    description: undefined
-  })
-  connectOrCreate?: CreatorCreateOrConnectWithoutProblemInput | undefined;
+  update?: CreatorUpdateWithoutProblemsInput | undefined;
 }

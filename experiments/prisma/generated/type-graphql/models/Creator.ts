@@ -1,26 +1,24 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../client";
+import { DecimalJSScalar } from "../scalars";
 import { Problem } from "../models/Problem";
 
 @TypeGraphQL.ObjectType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class Creator {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false,
-    description: undefined,
+    nullable: false
   })
   id!: number;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false,
-    description: undefined,
+    nullable: false
   })
   name!: string;
 
-  likes?: Problem[] | null;
+  likes?: Problem[];
 
-  problems?: Problem[] | null;
+  problems?: Problem[];
 }

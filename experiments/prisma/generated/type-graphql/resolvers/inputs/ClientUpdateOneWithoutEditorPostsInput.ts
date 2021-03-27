@@ -1,56 +1,49 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { ClientCreateOrConnectWithoutpostInput } from "../inputs/ClientCreateOrConnectWithoutpostInput";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { ClientCreateOrConnectWithoutEditorPostsInput } from "../inputs/ClientCreateOrConnectWithoutEditorPostsInput";
 import { ClientCreateWithoutEditorPostsInput } from "../inputs/ClientCreateWithoutEditorPostsInput";
-import { ClientUpdateWithoutEditorPostsDataInput } from "../inputs/ClientUpdateWithoutEditorPostsDataInput";
+import { ClientUpdateWithoutEditorPostsInput } from "../inputs/ClientUpdateWithoutEditorPostsInput";
 import { ClientUpsertWithoutEditorPostsInput } from "../inputs/ClientUpsertWithoutEditorPostsInput";
 import { ClientWhereUniqueInput } from "../inputs/ClientWhereUniqueInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class ClientUpdateOneWithoutEditorPostsInput {
   @TypeGraphQL.Field(_type => ClientCreateWithoutEditorPostsInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   create?: ClientCreateWithoutEditorPostsInput | undefined;
 
+  @TypeGraphQL.Field(_type => ClientCreateOrConnectWithoutEditorPostsInput, {
+    nullable: true
+  })
+  connectOrCreate?: ClientCreateOrConnectWithoutEditorPostsInput | undefined;
+
+  @TypeGraphQL.Field(_type => ClientUpsertWithoutEditorPostsInput, {
+    nullable: true
+  })
+  upsert?: ClientUpsertWithoutEditorPostsInput | undefined;
+
   @TypeGraphQL.Field(_type => ClientWhereUniqueInput, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   connect?: ClientWhereUniqueInput | undefined;
 
   @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   disconnect?: boolean | undefined;
 
   @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => ClientUpdateWithoutEditorPostsDataInput, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => ClientUpdateWithoutEditorPostsInput, {
+    nullable: true
   })
-  update?: ClientUpdateWithoutEditorPostsDataInput | undefined;
-
-  @TypeGraphQL.Field(_type => ClientUpsertWithoutEditorPostsInput, {
-    nullable: true,
-    description: undefined
-  })
-  upsert?: ClientUpsertWithoutEditorPostsInput | undefined;
-
-  @TypeGraphQL.Field(_type => ClientCreateOrConnectWithoutpostInput, {
-    nullable: true,
-    description: undefined
-  })
-  connectOrCreate?: ClientCreateOrConnectWithoutpostInput | undefined;
+  update?: ClientUpdateWithoutEditorPostsInput | undefined;
 }

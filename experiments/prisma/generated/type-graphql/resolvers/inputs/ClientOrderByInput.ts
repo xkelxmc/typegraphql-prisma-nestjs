@@ -1,68 +1,61 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class ClientOrderByInput {
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  id?: typeof SortOrder[keyof typeof SortOrder] | undefined;
+  id?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  email?: typeof SortOrder[keyof typeof SortOrder] | undefined;
+  email?: "asc" | "desc" | undefined;
 
-  name?: typeof SortOrder[keyof typeof SortOrder] | undefined;
+  name?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  age?: typeof SortOrder[keyof typeof SortOrder] | undefined;
+  age?: "asc" | "desc" | undefined;
 
-  balance?: typeof SortOrder[keyof typeof SortOrder] | undefined;
+  balance?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  amount?: typeof SortOrder[keyof typeof SortOrder] | undefined;
+  amount?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  role?: typeof SortOrder[keyof typeof SortOrder] | undefined;
+  role?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   get firstName() {
     return this.name;
   }
 
-  set firstName(name: typeof SortOrder[keyof typeof SortOrder] | undefined) {
+  set firstName(name: "asc" | "desc" | undefined) {
     this.name = name;
   }
 
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   get accountBalance() {
     return this.balance;
   }
 
-  set accountBalance(balance: typeof SortOrder[keyof typeof SortOrder] | undefined) {
+  set accountBalance(balance: "asc" | "desc" | undefined) {
     this.balance = balance;
   }
 }

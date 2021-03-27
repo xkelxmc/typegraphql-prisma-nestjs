@@ -1,23 +1,21 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { MovieUpdateWithoutDirectorDataInput } from "../inputs/MovieUpdateWithoutDirectorDataInput";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { MovieUpdateWithoutDirectorInput } from "../inputs/MovieUpdateWithoutDirectorInput";
 import { MovieWhereUniqueInput } from "../inputs/MovieWhereUniqueInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class MovieUpdateWithWhereUniqueWithoutDirectorInput {
   @TypeGraphQL.Field(_type => MovieWhereUniqueInput, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   where!: MovieWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => MovieUpdateWithoutDirectorDataInput, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Field(_type => MovieUpdateWithoutDirectorInput, {
+    nullable: false
   })
-  data!: MovieUpdateWithoutDirectorDataInput;
+  data!: MovieUpdateWithoutDirectorInput;
 }

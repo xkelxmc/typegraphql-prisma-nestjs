@@ -8,6 +8,7 @@ import {
   generateModelsImports,
   generateOutputsImports,
   generateGraphQLFieldsImport,
+  generateHelpersFileImport,
 } from "../imports";
 import { generateCrudResolverClassMethodDeclaration } from "./helpers";
 import { DmmfDocument } from "../dmmf/dmmf-document";
@@ -18,7 +19,7 @@ export default function generateActionResolverClass(
   baseDirPath: string,
   model: DMMF.Model,
   action: DMMF.Action,
-  mapping: DMMF.Mapping,
+  mapping: DMMF.ModelMapping,
   dmmfDocument: DmmfDocument,
 ) {
   const sourceFile = project.createSourceFile(
@@ -34,7 +35,10 @@ export default function generateActionResolverClass(
   );
 
   generateTypeGraphQLImport(sourceFile);
-  if (action.kind === DMMF.ModelAction.aggregate) {
+  if (
+    action.kind === DMMF.ModelAction.aggregate ||
+    action.kind === DMMF.ModelAction.groupBy
+  ) {
     generateGraphQLFieldsImport(sourceFile);
   }
   if (action.argsTypeName) {
@@ -54,6 +58,7 @@ export default function generateActionResolverClass(
     ),
     2,
   );
+  generateHelpersFileImport(sourceFile, 3);
 
   sourceFile.addClass({
     name: action.actionResolverName,
@@ -65,12 +70,7 @@ export default function generateActionResolverClass(
       },
     ],
     methods: [
-      generateCrudResolverClassMethodDeclaration(
-        action,
-        model.typeName,
-        dmmfDocument,
-        mapping,
-      ),
+      generateCrudResolverClassMethodDeclaration(action, mapping, dmmfDocument),
     ],
   });
 }

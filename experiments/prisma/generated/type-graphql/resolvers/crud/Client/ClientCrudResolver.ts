@@ -3,113 +3,116 @@ import graphqlFields from "graphql-fields";
 import { GraphQLResolveInfo } from "graphql";
 import { AggregateClientArgs } from "./args/AggregateClientArgs";
 import { CreateClientArgs } from "./args/CreateClientArgs";
+import { CreateManyClientArgs } from "./args/CreateManyClientArgs";
 import { DeleteClientArgs } from "./args/DeleteClientArgs";
 import { DeleteManyClientArgs } from "./args/DeleteManyClientArgs";
 import { FindFirstClientArgs } from "./args/FindFirstClientArgs";
 import { FindManyClientArgs } from "./args/FindManyClientArgs";
-import { FindOneClientArgs } from "./args/FindOneClientArgs";
+import { FindUniqueClientArgs } from "./args/FindUniqueClientArgs";
+import { GroupByClientArgs } from "./args/GroupByClientArgs";
 import { UpdateClientArgs } from "./args/UpdateClientArgs";
 import { UpdateManyClientArgs } from "./args/UpdateManyClientArgs";
 import { UpsertClientArgs } from "./args/UpsertClientArgs";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 import { Client } from "../../../models/Client";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateClient } from "../../outputs/AggregateClient";
-import { BatchPayload } from "../../outputs/BatchPayload";
+import { ClientGroupBy } from "../../outputs/ClientGroupBy";
 
 @TypeGraphQL.Resolver(_of => Client)
 export class ClientCrudResolver {
   @TypeGraphQL.Query(_returns => Client, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  async client(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindOneClientArgs): Promise<Client | null> {
-    return ctx.prisma.user.findOne(args);
+  async client(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindUniqueClientArgs): Promise<Client | null> {
+    return getPrismaFromContext(ctx).user.findUnique(args);
   }
 
   @TypeGraphQL.Query(_returns => Client, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   async findFirstClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindFirstClientArgs): Promise<Client | null> {
-    return ctx.prisma.user.findFirst(args);
+    return getPrismaFromContext(ctx).user.findFirst(args);
   }
 
   @TypeGraphQL.Query(_returns => [Client], {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   async clients(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindManyClientArgs): Promise<Client[]> {
-    return ctx.prisma.user.findMany(args);
+    return getPrismaFromContext(ctx).user.findMany(args);
   }
 
   @TypeGraphQL.Mutation(_returns => Client, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   async createClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: CreateClientArgs): Promise<Client> {
-    return ctx.prisma.user.create(args);
+    return getPrismaFromContext(ctx).user.create(args);
+  }
+
+  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+    nullable: false
+  })
+  async createManyClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: CreateManyClientArgs): Promise<AffectedRowsOutput> {
+    return getPrismaFromContext(ctx).user.createMany(args);
   }
 
   @TypeGraphQL.Mutation(_returns => Client, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   async deleteClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteClientArgs): Promise<Client | null> {
-    return ctx.prisma.user.delete(args);
+    return getPrismaFromContext(ctx).user.delete(args);
   }
 
   @TypeGraphQL.Mutation(_returns => Client, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   async updateClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateClientArgs): Promise<Client | null> {
-    return ctx.prisma.user.update(args);
+    return getPrismaFromContext(ctx).user.update(args);
   }
 
-  @TypeGraphQL.Mutation(_returns => BatchPayload, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+    nullable: false
   })
-  async deleteManyClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyClientArgs): Promise<BatchPayload> {
-    return ctx.prisma.user.deleteMany(args);
+  async deleteManyClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyClientArgs): Promise<AffectedRowsOutput> {
+    return getPrismaFromContext(ctx).user.deleteMany(args);
   }
 
-  @TypeGraphQL.Mutation(_returns => BatchPayload, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+    nullable: false
   })
-  async updateManyClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateManyClientArgs): Promise<BatchPayload> {
-    return ctx.prisma.user.updateMany(args);
+  async updateManyClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateManyClientArgs): Promise<AffectedRowsOutput> {
+    return getPrismaFromContext(ctx).user.updateMany(args);
   }
 
   @TypeGraphQL.Mutation(_returns => Client, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   async upsertClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpsertClientArgs): Promise<Client> {
-    return ctx.prisma.user.upsert(args);
+    return getPrismaFromContext(ctx).user.upsert(args);
   }
 
   @TypeGraphQL.Query(_returns => AggregateClient, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   async aggregateClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: AggregateClientArgs): Promise<AggregateClient> {
-    function transformFields(fields: Record<string, any>): Record<string, any> {
-      return Object.fromEntries(
-        Object.entries(fields)
-          .filter(([key, value]) => !key.startsWith("_"))
-          .map<[string, any]>(([key, value]) => {
-            if (Object.keys(value).length === 0) {
-              return [key, true];
-            }
-            return [key, transformFields(value)];
-          }),
-      );
-    }
-
-    return ctx.prisma.user.aggregate({
+    return getPrismaFromContext(ctx).user.aggregate({
       ...args,
       ...transformFields(graphqlFields(info as any)),
+    });
+  }
+
+  @TypeGraphQL.Query(_returns => [ClientGroupBy], {
+    nullable: false
+  })
+  async groupByClient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: GroupByClientArgs): Promise<ClientGroupBy[]> {
+    const { count, avg, sum, min, max } = transformFields(
+      graphqlFields(info as any)
+    );
+    return getPrismaFromContext(ctx).user.groupBy({
+      ...args,
+      ...Object.fromEntries(
+        Object.entries({ count, avg, sum, min, max }).filter(([_, v]) => v != null)
+      ),
     });
   }
 }

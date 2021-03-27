@@ -1,9 +1,11 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
+import * as GraphQLScalars from "graphql-scalars";
 import { PatientWhereUniqueInput } from "../../../inputs/PatientWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeletePatientArgs {
-  @TypeGraphQL.Field(_type => PatientWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(_type => PatientWhereUniqueInput, {
+    nullable: false
+  })
   where!: PatientWhereUniqueInput;
 }

@@ -123,17 +123,19 @@ describe("models", () => {
 
       /// User model doc
       model User {
-        id           Int    @id @default(autoincrement())
+        id          Int    @id @default(autoincrement())
         /// field doc
-        stringField  String
+        stringField String
         // field comment
-        intField     Int
+        intField    Int
         /// relation doc
-        posts        Post[]
+        posts       Post[]
       }
 
       model Post {
-        id  Int  @id @default(autoincrement())
+        id     Int   @id @default(autoincrement())
+        userId Int?
+        User   User? @relation(fields: [userId], references: [id])
       }
     `;
 
@@ -222,5 +224,51 @@ describe("models", () => {
     const userModelTSFile = await readGeneratedFile("/models/User.ts");
 
     expect(userModelTSFile).toMatchSnapshot("User");
+  });
+
+  it("should properly generate object type class for prisma model when simpleResolvers option is enabled", async () => {
+    const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model User {
+        id           Int       @id @default(autoincrement())
+        dateOfBirth  DateTime
+        balance      Float?
+      }
+    `;
+
+    await generateCodeFromSchema(schema, {
+      outputDirPath,
+      simpleResolvers: true,
+    });
+    const userModelTSFile = await readGeneratedFile("/models/User.ts");
+
+    expect(userModelTSFile).toMatchSnapshot("User");
+  });
+
+  it("should properly generate object type class for prisma model with native types", async () => {
+    const schema = /* prisma */ `
+      datasource postgres {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model NativeTypeModel {
+        id      Int      @id @default(autoincrement()) @postgres.Integer
+        bigInt  BigInt?  @postgres.BigInt
+        byteA   Bytes?   @postgres.ByteA
+        decimal Decimal? @postgres.Decimal
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const nativeTypeModelTSFile = await readGeneratedFile(
+      "/models/NativeTypeModel.ts",
+    );
+
+    expect(nativeTypeModelTSFile).toMatchSnapshot("NativeTypeModel");
   });
 });

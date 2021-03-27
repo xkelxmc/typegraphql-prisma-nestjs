@@ -1,35 +1,31 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
 import { NestedEnumPostKindNullableFilter } from "../inputs/NestedEnumPostKindNullableFilter";
 import { PostKind } from "../../enums/PostKind";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class EnumPostKindNullableFilter {
   @TypeGraphQL.Field(_type => PostKind, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  equals?: typeof PostKind[keyof typeof PostKind] | undefined;
+  equals?: "BLOG" | "ADVERT" | undefined;
 
   @TypeGraphQL.Field(_type => [PostKind], {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  in?: Array<typeof PostKind[keyof typeof PostKind]> | undefined;
+  in?: Array<"BLOG" | "ADVERT"> | undefined;
 
   @TypeGraphQL.Field(_type => [PostKind], {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
-  notIn?: Array<typeof PostKind[keyof typeof PostKind]> | undefined;
+  notIn?: Array<"BLOG" | "ADVERT"> | undefined;
 
   @TypeGraphQL.Field(_type => NestedEnumPostKindNullableFilter, {
-    nullable: true,
-    description: undefined
+    nullable: true
   })
   not?: NestedEnumPostKindNullableFilter | undefined;
 }

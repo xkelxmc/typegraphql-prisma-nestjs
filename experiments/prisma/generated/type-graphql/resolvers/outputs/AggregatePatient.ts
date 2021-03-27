@@ -1,15 +1,27 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { PatientCountAggregate } from "../outputs/PatientCountAggregate";
+import { PatientMaxAggregate } from "../outputs/PatientMaxAggregate";
+import { PatientMinAggregate } from "../outputs/PatientMinAggregate";
 
 @TypeGraphQL.ObjectType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class AggregatePatient {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Field(_type => PatientCountAggregate, {
+    nullable: true
   })
-  count!: number;
+  count!: PatientCountAggregate | null;
+
+  @TypeGraphQL.Field(_type => PatientMinAggregate, {
+    nullable: true
+  })
+  min!: PatientMinAggregate | null;
+
+  @TypeGraphQL.Field(_type => PatientMaxAggregate, {
+    nullable: true
+  })
+  max!: PatientMaxAggregate | null;
 }

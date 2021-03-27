@@ -16,6 +16,79 @@ describe("relations resolvers generation", () => {
     readGeneratedFile = createReadGeneratedFile(outputDirPath);
   });
 
+  it("should properly generate index files for 1-1 relation resolvers", async () => {
+    const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model User {
+        id        Int        @id @default(autoincrement())
+        name      String
+        adminInfo AdminUser?
+      }
+
+      model AdminUser {
+        id     Int    @id @default(autoincrement())
+        email  String
+        user   User   @relation(fields: [userId], references: [id])
+        userId Int
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const indexTSFile = await readGeneratedFile(
+      "/resolvers/relations/index.ts",
+    );
+    const resolversIndexTSFile = await readGeneratedFile(
+      "/resolvers/relations/resolvers.index.ts",
+    );
+    const mainIndexTSFile = await readGeneratedFile("/index.ts");
+
+    expect(indexTSFile).toMatchSnapshot("index");
+    expect(resolversIndexTSFile).toMatchSnapshot("resolversIndex");
+    expect(mainIndexTSFile).toMatchSnapshot("mainIndex");
+  });
+
+  it("should properly generate index files for 1-many relation resolvers", async () => {
+    const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model User {
+        id         Int      @id @default(autoincrement())
+        name       String
+        addresses  Address[]
+      }
+      model Address {
+        uuid      String  @id @default(cuid())
+        content   String
+        user      User    @relation(fields: [userId], references: [id])
+        userId    Int
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const indexTSFile = await readGeneratedFile(
+      "/resolvers/relations/index.ts",
+    );
+    const argsIndexTSFile = await readGeneratedFile(
+      "/resolvers/relations/args.index.ts",
+    );
+    const resolversIndexTSFile = await readGeneratedFile(
+      "/resolvers/relations/resolvers.index.ts",
+    );
+    const mainIndexTSFile = await readGeneratedFile("/index.ts");
+
+    expect(indexTSFile).toMatchSnapshot("index");
+    expect(argsIndexTSFile).toMatchSnapshot("argsIndex");
+    expect(resolversIndexTSFile).toMatchSnapshot("resolversIndex");
+    expect(mainIndexTSFile).toMatchSnapshot("mainIndex");
+  });
+
   it("should properly generate resolvers classes for prisma models with cyclic relations", async () => {
     const schema = /* prisma */ `
       datasource db {
@@ -247,5 +320,88 @@ describe("relations resolvers generation", () => {
 
     expect(userResolverTSFile).toMatchSnapshot("UserRelationsResolver");
     expect(postResolverTSFile).toMatchSnapshot("PostRelationsResolver");
+  });
+
+  it("should properly generate composite keys where phrase in resolver", async () => {
+    const schema = /* prisma */ `
+      datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+      }
+
+      model User {
+        id                String      @id @default(cuid())
+        name              String
+        memberOfProjects  UsersOnProjects[]
+        ownsProjects      Project[]
+      }
+
+      model Project {
+        id            String      @id @default(cuid())
+        owner         User        @relation(fields: [ownerId], references: [id])
+        ownerId       String
+        members       UsersOnProjects[]
+      }
+
+      model UsersOnProjects {
+        project       Project     @relation(fields: [projectId], references: [id])
+        projectId     String
+        user          User        @relation(fields: [userId], references: [id])
+        userId        String
+        createdAt     DateTime    @default(now())
+
+        @@id([userId, projectId])
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const usersOnProjectsRelationsResolverTSFile = await readGeneratedFile(
+      "/resolvers/relations/UsersOnProjects/UsersOnProjectsRelationsResolver.ts",
+    );
+
+    expect(usersOnProjectsRelationsResolverTSFile).toMatchSnapshot(
+      "UsersOnProjectsRelationsResolver",
+    );
+  });
+
+  describe("when `orderByRelation` preview feature is enabled", () => {
+    it("should properly generate args classes for sorting by relation fields", async () => {
+      const schema = /* prisma */ `
+        datasource db {
+          provider = "postgresql"
+          url      = env("DATABASE_URL")
+        }
+
+        model FirstModel {
+          idField            Int            @id @default(autoincrement())
+          uniqueStringField  String         @unique
+          floatField         Float
+          secondModelsField  SecondModel[]
+        }
+        model SecondModel {
+          idField            Int          @id @default(autoincrement())
+          uniqueStringField  String       @unique
+          floatField         Float
+          firstModelFieldId  Int
+          firstModelField    FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
+        }
+      `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        enabledPreviewFeatures: ["orderByRelation"],
+      });
+      const firstModelSecondModelsFieldArgsTSFile = await readGeneratedFile(
+        "/resolvers/relations/FirstModel/args/FirstModelSecondModelsFieldArgs.ts",
+      );
+      const indexTSFile = await readGeneratedFile(
+        "/resolvers/relations/FirstModel/args/index.ts",
+      );
+
+      expect(firstModelSecondModelsFieldArgsTSFile).toMatchSnapshot(
+        "FirstModelSecondModelsFieldArgs",
+      );
+      expect(indexTSFile).toMatchSnapshot("index");
+    });
   });
 });

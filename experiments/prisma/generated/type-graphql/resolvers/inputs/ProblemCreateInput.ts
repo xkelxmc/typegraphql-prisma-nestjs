@@ -1,29 +1,26 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { CreatorCreateManyWithoutLikesInput } from "../inputs/CreatorCreateManyWithoutLikesInput";
-import { CreatorCreateOneWithoutProblemsInput } from "../inputs/CreatorCreateOneWithoutProblemsInput";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { CreatorCreateNestedManyWithoutLikesInput } from "../inputs/CreatorCreateNestedManyWithoutLikesInput";
+import { CreatorCreateNestedOneWithoutProblemsInput } from "../inputs/CreatorCreateNestedOneWithoutProblemsInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class ProblemCreateInput {
   @TypeGraphQL.Field(_type => String, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   problemText!: string;
 
-  @TypeGraphQL.Field(_type => CreatorCreateManyWithoutLikesInput, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => CreatorCreateNestedManyWithoutLikesInput, {
+    nullable: true
   })
-  likedBy?: CreatorCreateManyWithoutLikesInput | undefined;
+  likedBy?: CreatorCreateNestedManyWithoutLikesInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorCreateOneWithoutProblemsInput, {
-    nullable: true,
-    description: undefined
+  @TypeGraphQL.Field(_type => CreatorCreateNestedOneWithoutProblemsInput, {
+    nullable: true
   })
-  creator?: CreatorCreateOneWithoutProblemsInput | undefined;
+  creator?: CreatorCreateNestedOneWithoutProblemsInput | undefined;
 }

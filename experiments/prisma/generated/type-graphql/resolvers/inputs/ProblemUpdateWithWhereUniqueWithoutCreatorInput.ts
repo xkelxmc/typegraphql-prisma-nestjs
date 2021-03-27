@@ -1,23 +1,21 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
-import { ProblemUpdateWithoutCreatorDataInput } from "../inputs/ProblemUpdateWithoutCreatorDataInput";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
+import { ProblemUpdateWithoutCreatorInput } from "../inputs/ProblemUpdateWithoutCreatorInput";
 import { ProblemWhereUniqueInput } from "../inputs/ProblemWhereUniqueInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class ProblemUpdateWithWhereUniqueWithoutCreatorInput {
   @TypeGraphQL.Field(_type => ProblemWhereUniqueInput, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   where!: ProblemWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => ProblemUpdateWithoutCreatorDataInput, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Field(_type => ProblemUpdateWithoutCreatorInput, {
+    nullable: false
   })
-  data!: ProblemUpdateWithoutCreatorDataInput;
+  data!: ProblemUpdateWithoutCreatorInput;
 }

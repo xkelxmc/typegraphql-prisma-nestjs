@@ -4,6 +4,7 @@ import {
   Project,
   GetAccessorDeclarationStructure,
   SetAccessorDeclarationStructure,
+  Writers,
 } from "ts-morph";
 import path from "path";
 
@@ -13,9 +14,10 @@ import {
   generateInputsImports,
   generateEnumsImports,
   generateArgsImports,
-  generateGraphQLScalarImport,
-  generatePrismaJsonTypeImport,
+  generateGraphQLScalarsImport,
+  generatePrismaNamespaceImport,
   generateOutputsImports,
+  generateCustomScalarsImport,
 } from "./imports";
 import { DmmfDocument } from "./dmmf/dmmf-document";
 import { DMMF } from "./dmmf/types";
@@ -38,15 +40,24 @@ export function generateOutputTypeClassFromType(
   const isAggregateOutputType = type.name.includes("Aggregate");
 
   generateTypeGraphQLImport(sourceFile);
-  generateGraphQLScalarImport(sourceFile);
-  generatePrismaJsonTypeImport(sourceFile, dmmfDocument.options, 2);
+  generateGraphQLScalarsImport(sourceFile);
+  generatePrismaNamespaceImport(sourceFile, dmmfDocument.options, 2);
+  generateCustomScalarsImport(sourceFile, 2);
   generateArgsImports(sourceFile, fieldArgsTypeNames, 0);
   generateOutputsImports(
     sourceFile,
     type.fields
-      .filter(field => field.outputType.kind === "object")
+      .filter(field => field.outputType.location === "outputObjectTypes")
       .map(field => field.outputType.type),
     1,
+  );
+  generateEnumsImports(
+    sourceFile,
+    type.fields
+      .map(field => field.outputType)
+      .filter(fieldType => fieldType.location === "enumTypes")
+      .map(fieldType => fieldType.type),
+    2,
   );
 
   sourceFile.addClass({
@@ -56,10 +67,12 @@ export function generateOutputTypeClassFromType(
       {
         name: "ObjectType",
         arguments: [
-          `{
-            isAbstract: true,
-            description: undefined,
-          }`,
+          Writers.object({
+            isAbstract: "true",
+            ...(dmmfDocument.options.simpleResolvers && {
+              simpleResolvers: "true",
+            }),
+          }),
         ],
       },
     ],
@@ -78,10 +91,9 @@ export function generateOutputTypeClassFromType(
               name: "Field",
               arguments: [
                 `_type => ${field.typeGraphQLType}`,
-                `{
-                  nullable: ${!field.isRequired},
-                  description: undefined
-                }`,
+                Writers.object({
+                  nullable: `${!field.isRequired}`,
+                }),
               ],
             },
           ],
@@ -108,12 +120,13 @@ export function generateInputTypeClassFromType(
   });
 
   generateTypeGraphQLImport(sourceFile);
-  generateGraphQLScalarImport(sourceFile);
-  generatePrismaJsonTypeImport(sourceFile, options, 2);
+  generateGraphQLScalarsImport(sourceFile);
+  generatePrismaNamespaceImport(sourceFile, options, 2);
+  generateCustomScalarsImport(sourceFile, 2);
   generateInputsImports(
     sourceFile,
     inputType.fields
-      .filter(field => field.selectedInputType.kind === "object")
+      .filter(field => field.selectedInputType.location === "inputObjectTypes")
       .map(field => field.selectedInputType.type)
       .filter(fieldType => fieldType !== inputType.typeName),
   );
@@ -121,7 +134,7 @@ export function generateInputTypeClassFromType(
     sourceFile,
     inputType.fields
       .map(field => field.selectedInputType)
-      .filter(fieldType => fieldType.kind === "enum")
+      .filter(fieldType => fieldType.location === "enumTypes")
       .map(fieldType => fieldType.type as string),
     2,
   );
@@ -135,10 +148,9 @@ export function generateInputTypeClassFromType(
       {
         name: "InputType",
         arguments: [
-          `{
-            isAbstract: true,
-            description: undefined,
-          }`,
+          Writers.object({
+            isAbstract: "true",
+          }),
         ],
       },
     ],
@@ -158,10 +170,9 @@ export function generateInputTypeClassFromType(
                 name: "Field",
                 arguments: [
                   `_type => ${field.typeGraphQLType}`,
-                  `{
-                      nullable: ${!field.isRequired},
-                      description: undefined
-                    }`,
+                  Writers.object({
+                    nullable: `${!field.isRequired}`,
+                  }),
                 ],
               },
             ],
@@ -182,10 +193,9 @@ export function generateInputTypeClassFromType(
             name: "Field",
             arguments: [
               `_type => ${field.typeGraphQLType}`,
-              `{
-                  nullable: ${!field.isRequired},
-                  description: undefined
-                }`,
+              Writers.object({
+                nullable: `${!field.isRequired}`,
+              }),
             ],
           },
         ],

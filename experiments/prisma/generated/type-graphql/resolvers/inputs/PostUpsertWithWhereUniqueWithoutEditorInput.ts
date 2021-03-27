@@ -1,30 +1,27 @@
 import * as TypeGraphQL from "type-graphql";
-import GraphQLJSON from "graphql-type-json";
-import { JsonValue, InputJsonValue } from "../../../client";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "../../../client";
+import { DecimalJSScalar } from "../../scalars";
 import { PostCreateWithoutEditorInput } from "../inputs/PostCreateWithoutEditorInput";
-import { PostUpdateWithoutEditorDataInput } from "../inputs/PostUpdateWithoutEditorDataInput";
+import { PostUpdateWithoutEditorInput } from "../inputs/PostUpdateWithoutEditorInput";
 import { PostWhereUniqueInput } from "../inputs/PostWhereUniqueInput";
 
 @TypeGraphQL.InputType({
-  isAbstract: true,
-  description: undefined,
+  isAbstract: true
 })
 export class PostUpsertWithWhereUniqueWithoutEditorInput {
   @TypeGraphQL.Field(_type => PostWhereUniqueInput, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   where!: PostWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => PostUpdateWithoutEditorDataInput, {
-    nullable: false,
-    description: undefined
+  @TypeGraphQL.Field(_type => PostUpdateWithoutEditorInput, {
+    nullable: false
   })
-  update!: PostUpdateWithoutEditorDataInput;
+  update!: PostUpdateWithoutEditorInput;
 
   @TypeGraphQL.Field(_type => PostCreateWithoutEditorInput, {
-    nullable: false,
-    description: undefined
+    nullable: false
   })
   create!: PostCreateWithoutEditorInput;
 }
