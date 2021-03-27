@@ -102,7 +102,7 @@ You can overwrite that by explicitly setting `emitTranspiledCode` config option:
 
 ```prisma
 generator typegraphql {
-  provider           = "typegraphql-prisma"
+  provider           = "typegraphql-prisma-nestjs"
   output             = "../prisma/generated/type-graphql"
   emitTranspiledCode = true
 }
@@ -226,7 +226,7 @@ If you prefer simplicity over more sophisticated solutions like `connectOrCreate
 
 ```prisma
 generator typegraphql {
-  provider                 = "typegraphql-prisma"
+  provider                 = "typegraphql-prisma-nestjs"
   output                   = "../prisma/generated/type-graphql"
   useUncheckedScalarInputs = true
 }
@@ -653,7 +653,7 @@ If you don't have any global middlewares and you want to tune the generated sche
 
 ```prisma
 generator typegraphql {
-  provider        = "typegraphql-prisma"
+  provider        = "typegraphql-prisma-nestjs"
   simpleResolvers = true
 }
 ```
