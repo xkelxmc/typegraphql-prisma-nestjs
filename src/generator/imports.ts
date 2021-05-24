@@ -50,7 +50,7 @@ export function generateTypeGraphQLImport(sourceFile: SourceFile) {
 export function generateGraphQLFieldsImport(sourceFile: SourceFile) {
   sourceFile.addImportDeclaration({
     moduleSpecifier: "graphql-fields",
-    defaultImport: "graphqlFields",
+    namespaceImport: "graphqlFields",
   });
   sourceFile.addImportDeclaration({
     moduleSpecifier: "graphql",
