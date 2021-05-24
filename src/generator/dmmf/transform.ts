@@ -158,17 +158,16 @@ function transformInputType(dmmfDocument: DmmfDocument) {
 
 function transformOutputType(dmmfDocument: DmmfDocument) {
   return (outputType: PrismaDMMF.OutputType): DMMF.OutputType => {
-    // TODO: make it more future-proof
-    const modelName = outputType.name.replace("Aggregate", "");
     const typeName = getMappedOutputTypeName(dmmfDocument, outputType.name);
-
     return {
       ...outputType,
-      modelName,
       typeName,
       fields: outputType.fields.map<DMMF.OutputSchemaField>(field => {
-        const isFieldRequired = field.isNullable ? false : true;
-        const outputType: DMMF.TypeInfo = {
+        // FIXME: workaround for https://github.com/prisma/prisma/issues/6835
+        const isFieldRequired = field.outputType.isList
+          ? true
+          : field.isNullable !== true;
+        const outputTypeInfo: DMMF.TypeInfo = {
           ...field.outputType,
           type: getMappedOutputTypeName(
             dmmfDocument,
@@ -177,11 +176,14 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
         };
         const fieldTSType = getFieldTSType(
           dmmfDocument,
-          outputType,
+          outputTypeInfo,
           isFieldRequired,
           false,
         );
-        const typeGraphQLType = getTypeGraphQLType(outputType, dmmfDocument);
+        const typeGraphQLType = getTypeGraphQLType(
+          outputTypeInfo,
+          dmmfDocument,
+        );
         const args = field.args.map<DMMF.SchemaArg>(arg => {
           const selectedInputType = selectInputTypeFromTypes(dmmfDocument)(
             arg.inputTypes,
@@ -215,7 +217,7 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
         return {
           ...field,
           isRequired: isFieldRequired,
-          outputType,
+          outputType: outputTypeInfo,
           fieldTSType,
           typeGraphQLType,
           args,
@@ -243,6 +245,7 @@ function getMappedOutputTypeName(
     "AvgAggregateOutputType",
     "SumAggregateOutputType",
     "GroupByOutputType",
+    "CountOutputType",
   ].find(type => outputTypeName.includes(type));
   if (dedicatedTypeSuffix) {
     const modelName = outputTypeName.replace(dedicatedTypeSuffix, "");

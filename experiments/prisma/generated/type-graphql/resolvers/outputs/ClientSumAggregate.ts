@@ -8,22 +8,27 @@ import { DecimalJSScalar } from "../../scalars";
 })
 export class ClientSumAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+    nullable: true
   })
-  id!: number;
+  id!: number | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+    nullable: true
   })
-  age!: number;
+  age!: number | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: false
+    nullable: true
   })
-  balance!: number;
+  balance!: number | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  amount!: number | null;
+
+  @TypeGraphQL.Field(_type => [TypeGraphQL.Int], {
     nullable: false
   })
-  amount!: number;
+  grades!: number[];
 }

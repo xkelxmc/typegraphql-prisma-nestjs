@@ -98,9 +98,18 @@ export default async function generateCode(
   generateEnumsBarrelFile(enumsBarrelExportSourceFile, emittedEnumNames);
 
   log("Generating models...");
-  dmmfDocument.datamodel.models.forEach(model =>
-    generateObjectTypeClassFromModel(project, baseDirPath, model, dmmfDocument),
-  );
+  dmmfDocument.datamodel.models.forEach(model => {
+    const modelOutputType = dmmfDocument.schema.outputTypes.find(
+      type => type.name === model.name,
+    )!;
+    return generateObjectTypeClassFromModel(
+      project,
+      baseDirPath,
+      model,
+      modelOutputType,
+      dmmfDocument,
+    );
+  });
   const modelsBarrelExportSourceFile = project.createSourceFile(
     path.resolve(baseDirPath, modelsFolderName, "index.ts"),
     undefined,
@@ -452,7 +461,7 @@ export default async function generateCode(
     dmmfDocument.relationModels,
     dmmfDocument.datamodel.models,
     dmmfDocument.schema.inputTypes,
-    dmmfDocument.schema.outputTypes,
+    outputTypesToGenerate,
   );
 
   log("Generate custom scalars");

@@ -15,10 +15,6 @@ describe("crud resolvers execution", () => {
       outputDirPath = generateArtifactsDirPath("functional-crud");
       await fs.mkdir(outputDirPath, { recursive: true });
       const prismaSchema = /* prisma */ `
-        datasource db {
-          provider = "postgresql"
-          url      = env("DATABASE_URL")
-        }
         model User {
           intIdField          Int     @id @default(autoincrement())
           uniqueStringField   String  @unique
@@ -316,6 +312,74 @@ describe("crud resolvers execution", () => {
         "upsertUser call args",
       );
     });
+
+    describe("when selectRelationCount preview feature is enabled", () => {
+      let outputDirPath: string;
+      let graphQLSchema: GraphQLSchema;
+      beforeAll(async () => {
+        outputDirPath = generateArtifactsDirPath("functional-crud");
+        await fs.mkdir(outputDirPath, { recursive: true });
+        const prismaSchema = /* prisma */ `
+          model FirstModel {
+            idField            Int            @id @default(autoincrement())
+            uniqueStringField  String         @unique
+            floatField         Float
+            secondModelsField  SecondModel[]
+          }
+          model SecondModel {
+            idField            Int          @id @default(autoincrement())
+            uniqueStringField  String       @unique
+            floatField         Float
+            firstModelFieldId  Int
+            firstModelField    FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
+          }
+        `;
+        await generateCodeFromSchema(prismaSchema, {
+          outputDirPath,
+          previewFeatures: ["selectRelationCount"],
+        });
+        const { FirstModelCrudResolver } = require(outputDirPath +
+          "/resolvers/crud/FirstModel/FirstModelCrudResolver.ts");
+
+        graphQLSchema = await buildSchema({
+          resolvers: [FirstModelCrudResolver],
+          validate: false,
+        });
+      });
+
+      it("should properly count relations", async () => {
+        const document = /* graphql */ `
+          query {
+            findFirstFirstModel {
+              idField
+              _count {
+                secondModelsField
+              }
+            }
+          }
+        `;
+        const prismaMock = {
+          firstModel: {
+            findFirst: jest.fn().mockResolvedValue({
+              idField: 1,
+              _count: {
+                secondModelsField: 2,
+              },
+            }),
+          },
+        };
+
+        const { data, errors } = await graphql(graphQLSchema, document, null, {
+          prisma: prismaMock,
+        });
+
+        expect(errors).toBeUndefined();
+        expect(data).toMatchSnapshot("secondModelsField count mocked response");
+        expect(prismaMock.firstModel.findFirst.mock.calls).toMatchSnapshot(
+          "firstModel.findFirst call args",
+        );
+      });
+    });
   });
 
   describe("aggregations", () => {
@@ -323,11 +387,6 @@ describe("crud resolvers execution", () => {
       outputDirPath = generateArtifactsDirPath("functional-crud");
       await fs.mkdir(outputDirPath, { recursive: true });
       const prismaSchema = /* prisma */ `
-        datasource db {
-          provider = "postgresql"
-          url      = env("DATABASE_URL")
-        }
-
         model User {
           idField     Int  @id @default(autoincrement())
           intField    Int
@@ -449,35 +508,6 @@ describe("crud resolvers execution", () => {
       expect(prismaMock.user.aggregate.mock.calls).toMatchSnapshot(
         "user.aggregate call args",
       );
-    });
-  });
-  describe("when preview feature `groupBy` is enabled", () => {
-    beforeAll(async () => {
-      outputDirPath = generateArtifactsDirPath("functional-crud");
-      await fs.mkdir(outputDirPath, { recursive: true });
-      const prismaSchema = /* prisma */ `
-        datasource db {
-          provider = "postgresql"
-          url      = env("DATABASE_URL")
-        }
-
-        model User {
-          idField     Int  @id @default(autoincrement())
-          intField    Int
-          floatField  Int
-        }
-      `;
-      await generateCodeFromSchema(prismaSchema, {
-        outputDirPath,
-        enabledPreviewFeatures: ["groupBy"],
-      });
-      const { UserCrudResolver } = require(outputDirPath +
-        "/resolvers/crud/User/UserCrudResolver.ts");
-
-      graphQLSchema = await buildSchema({
-        resolvers: [UserCrudResolver],
-        validate: false,
-      });
     });
 
     it("should properly call PrismaClient on `groupBy` action with advanced operations", async () => {

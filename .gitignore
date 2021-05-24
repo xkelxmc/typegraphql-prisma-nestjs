@@ -8,4 +8,4 @@ coverage
 ## prisma engine binary
 *.exe
 *.x
-*.tgz
+*.node

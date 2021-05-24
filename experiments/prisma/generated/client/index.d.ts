@@ -24,6 +24,8 @@ export type User = {
   balance: number
   amount: number
   role: Role
+  grades: number[]
+  aliases: string[]
 }
 
 /**
@@ -377,8 +379,8 @@ export namespace Prisma {
   export import Decimal = runtime.Decimal
 
   /**
-   * Prisma Client JS version: 2.19.0
-   * Query Engine version: c1455d0b443d66b0d9db9bcb1bb9ee0d5bbc511d
+   * Prisma Client JS version: 2.22.0
+   * Query Engine version: 60cc71d884972ab4e897f0277c4b84383dddaf6c
    */
   export type PrismaVersion = {
     client: string
@@ -673,6 +675,11 @@ export namespace Prisma {
    */
   type PickArray<T, K extends Array<keyof T>> = Prisma__Pick<T, TupleToUnion<K>>
 
+  /**
+   * Exclude all keys with underscores
+   */
+  type ExcludeUnderscoreKeys<T extends string> = T extends `_${string}` ? never : T
+
   class PrismaClientFetcher {
     private readonly prisma;
     private readonly debug;
@@ -842,6 +849,214 @@ export namespace Prisma {
     url?: string
   }
 
+  /**
+   * Count Types
+   */
+
+
+  /**
+   * Count Type UserCountOutputType
+   */
+
+
+  export type UserCountOutputType = {
+    posts: number
+    editorPosts: number
+  }
+
+  export type UserCountOutputTypeSelect = {
+    posts?: boolean
+    editorPosts?: boolean
+  }
+
+  export type UserCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | UserCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? UserCountOutputType
+    : S extends undefined
+    ? never
+    : S extends UserCountOutputTypeArgs
+    ?'include' extends U
+    ? UserCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof UserCountOutputType ?UserCountOutputType [P]
+  : 
+     never
+  } 
+    : UserCountOutputType
+  : UserCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+    **/
+    select?: UserCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type DirectorCountOutputType
+   */
+
+
+  export type DirectorCountOutputType = {
+    movies: number
+  }
+
+  export type DirectorCountOutputTypeSelect = {
+    movies?: boolean
+  }
+
+  export type DirectorCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | DirectorCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? DirectorCountOutputType
+    : S extends undefined
+    ? never
+    : S extends DirectorCountOutputTypeArgs
+    ?'include' extends U
+    ? DirectorCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof DirectorCountOutputType ?DirectorCountOutputType [P]
+  : 
+     never
+  } 
+    : DirectorCountOutputType
+  : DirectorCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * DirectorCountOutputType without action
+   */
+  export type DirectorCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the DirectorCountOutputType
+    **/
+    select?: DirectorCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type ProblemCountOutputType
+   */
+
+
+  export type ProblemCountOutputType = {
+    likedBy: number
+  }
+
+  export type ProblemCountOutputTypeSelect = {
+    likedBy?: boolean
+  }
+
+  export type ProblemCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | ProblemCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? ProblemCountOutputType
+    : S extends undefined
+    ? never
+    : S extends ProblemCountOutputTypeArgs
+    ?'include' extends U
+    ? ProblemCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof ProblemCountOutputType ?ProblemCountOutputType [P]
+  : 
+     never
+  } 
+    : ProblemCountOutputType
+  : ProblemCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ProblemCountOutputType without action
+   */
+  export type ProblemCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the ProblemCountOutputType
+    **/
+    select?: ProblemCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type CreatorCountOutputType
+   */
+
+
+  export type CreatorCountOutputType = {
+    likes: number
+    problems: number
+  }
+
+  export type CreatorCountOutputTypeSelect = {
+    likes?: boolean
+    problems?: boolean
+  }
+
+  export type CreatorCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | CreatorCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? CreatorCountOutputType
+    : S extends undefined
+    ? never
+    : S extends CreatorCountOutputTypeArgs
+    ?'include' extends U
+    ? CreatorCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof CreatorCountOutputType ?CreatorCountOutputType [P]
+  : 
+     never
+  } 
+    : CreatorCountOutputType
+  : CreatorCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * CreatorCountOutputType without action
+   */
+  export type CreatorCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the CreatorCountOutputType
+    **/
+    select?: CreatorCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Models
+   */
 
   /**
    * Model User
@@ -857,47 +1072,51 @@ export namespace Prisma {
   }
 
   export type UserAvgAggregateOutputType = {
-    id: number
-    age: number
-    balance: number
-    amount: number
+    id: number | null
+    age: number | null
+    balance: number | null
+    amount: number | null
+    grades: number | null
   }
 
   export type UserSumAggregateOutputType = {
-    id: number
-    age: number
-    balance: number
-    amount: number
+    id: number | null
+    age: number | null
+    balance: number | null
+    amount: number | null
+    grades: number[]
   }
 
   export type UserMinAggregateOutputType = {
-    id: number
+    id: number | null
     email: string | null
     name: string | null
-    age: number
-    balance: number
-    amount: number
+    age: number | null
+    balance: number | null
+    amount: number | null
     role: Role | null
   }
 
   export type UserMaxAggregateOutputType = {
-    id: number
+    id: number | null
     email: string | null
     name: string | null
-    age: number
-    balance: number
-    amount: number
+    age: number | null
+    balance: number | null
+    amount: number | null
     role: Role | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
-    email: number | null
-    name: number | null
+    email: number
+    name: number
     age: number
     balance: number
     amount: number
-    role: number | null
+    role: number
+    grades: number
+    aliases: number
     _all: number
   }
 
@@ -907,6 +1126,7 @@ export namespace Prisma {
     age?: true
     balance?: true
     amount?: true
+    grades?: true
   }
 
   export type UserSumAggregateInputType = {
@@ -914,6 +1134,7 @@ export namespace Prisma {
     age?: true
     balance?: true
     amount?: true
+    grades?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -944,6 +1165,8 @@ export namespace Prisma {
     balance?: true
     amount?: true
     role?: true
+    grades?: true
+    aliases?: true
     _all?: true
   }
 
@@ -1021,7 +1244,7 @@ export namespace Prisma {
     
   export type UserGroupByArgs = {
     where?: UserWhereInput
-    orderBy?: Enumerable<UserOrderByInput>
+    orderBy?: Enumerable<UserOrderByWithAggregationInput>
     by: Array<UserScalarFieldEnum>
     having?: UserScalarWhereWithAggregatesInput
     take?: number
@@ -1042,6 +1265,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades: number[]
+    aliases: string[]
     count: UserCountAggregateOutputType | null
     avg: UserAvgAggregateOutputType | null
     sum: UserSumAggregateOutputType | null
@@ -1066,11 +1291,15 @@ export namespace Prisma {
     posts?: boolean | postFindManyArgs
     role?: boolean
     editorPosts?: boolean | postFindManyArgs
+    grades?: boolean
+    aliases?: boolean
+    _count?: boolean | UserCountOutputTypeArgs
   }
 
   export type UserInclude = {
     posts?: boolean | postFindManyArgs
     editorPosts?: boolean | postFindManyArgs
+    _count?: boolean | UserCountOutputTypeArgs
   }
 
   export type UserGetPayload<
@@ -1087,7 +1316,9 @@ export namespace Prisma {
           P extends 'posts'
         ? Array < postGetPayload<S['include'][P]>>  :
         P extends 'editorPosts'
-        ? Array < postGetPayload<S['include'][P]>>  : never
+        ? Array < postGetPayload<S['include'][P]>>  :
+        P extends '_count'
+        ? UserCountOutputTypeGetPayload<S['include'][P]> | null : never
   } 
     : 'select' extends U
     ? {
@@ -1096,7 +1327,9 @@ export namespace Prisma {
           P extends 'posts'
         ? Array < postGetPayload<S['select'][P]>>  :
         P extends 'editorPosts'
-        ? Array < postGetPayload<S['select'][P]>>  : never
+        ? Array < postGetPayload<S['select'][P]>>  :
+        P extends '_count'
+        ? UserCountOutputTypeGetPayload<S['select'][P]> | null : never
   } 
     : User
   : User
@@ -1362,7 +1595,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: UserGroupByArgs['orderBy'] }
         : { orderBy?: UserGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -1729,12 +1962,12 @@ export namespace Prisma {
   }
 
   export type PostAvgAggregateOutputType = {
-    authorId: number
+    authorId: number | null
     editorId: number | null
   }
 
   export type PostSumAggregateOutputType = {
-    authorId: number
+    authorId: number | null
     editorId: number | null
   }
 
@@ -1746,7 +1979,7 @@ export namespace Prisma {
     title: string | null
     subtitle: string | null
     content: string | null
-    authorId: number
+    authorId: number | null
     editorId: number | null
     kind: PostKind | null
   }
@@ -1759,23 +1992,23 @@ export namespace Prisma {
     title: string | null
     subtitle: string | null
     content: string | null
-    authorId: number
+    authorId: number | null
     editorId: number | null
     kind: PostKind | null
   }
 
   export type PostCountAggregateOutputType = {
-    uuid: number | null
-    createdAt: number | null
-    updatedAt: number | null
-    published: number | null
-    title: number | null
-    subtitle: number | null
-    content: number | null
+    uuid: number
+    createdAt: number
+    updatedAt: number
+    published: number
+    title: number
+    subtitle: number
+    content: number
     authorId: number
-    editorId: number | null
-    kind: number | null
-    metadata: number | null
+    editorId: number
+    kind: number
+    metadata: number
     _all: number
   }
 
@@ -1905,7 +2138,7 @@ export namespace Prisma {
     
   export type PostGroupByArgs = {
     where?: postWhereInput
-    orderBy?: Enumerable<postOrderByInput>
+    orderBy?: Enumerable<postOrderByWithAggregationInput>
     by: Array<PostScalarFieldEnum>
     having?: postScalarWhereWithAggregatesInput
     take?: number
@@ -2254,7 +2487,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: PostGroupByArgs['orderBy'] }
         : { orderBy?: PostGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -2621,28 +2854,28 @@ export namespace Prisma {
   }
 
   export type CategoryAvgAggregateOutputType = {
-    number: number
+    number: number | null
   }
 
   export type CategorySumAggregateOutputType = {
-    number: number
+    number: number | null
   }
 
   export type CategoryMinAggregateOutputType = {
     name: string | null
     slug: string | null
-    number: number
+    number: number | null
   }
 
   export type CategoryMaxAggregateOutputType = {
     name: string | null
     slug: string | null
-    number: number
+    number: number | null
   }
 
   export type CategoryCountAggregateOutputType = {
-    name: number | null
-    slug: number | null
+    name: number
+    slug: number
     number: number
     _all: number
   }
@@ -2749,7 +2982,7 @@ export namespace Prisma {
     
   export type CategoryGroupByArgs = {
     where?: CategoryWhereInput
-    orderBy?: Enumerable<CategoryOrderByInput>
+    orderBy?: Enumerable<CategoryOrderByWithAggregationInput>
     by: Array<CategoryScalarFieldEnum>
     having?: CategoryScalarWhereWithAggregatesInput
     take?: number
@@ -3066,7 +3299,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: CategoryGroupByArgs['orderBy'] }
         : { orderBy?: CategoryGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -3408,9 +3641,9 @@ export namespace Prisma {
   }
 
   export type PatientCountAggregateOutputType = {
-    firstName: number | null
-    lastName: number | null
-    email: number | null
+    firstName: number
+    lastName: number
+    email: number
     _all: number
   }
 
@@ -3496,7 +3729,7 @@ export namespace Prisma {
     
   export type PatientGroupByArgs = {
     where?: PatientWhereInput
-    orderBy?: Enumerable<PatientOrderByInput>
+    orderBy?: Enumerable<PatientOrderByWithAggregationInput>
     by: Array<PatientScalarFieldEnum>
     having?: PatientScalarWhereWithAggregatesInput
     take?: number
@@ -3809,7 +4042,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: PatientGroupByArgs['orderBy'] }
         : { orderBy?: PatientGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -4151,9 +4384,9 @@ export namespace Prisma {
   }
 
   export type MovieCountAggregateOutputType = {
-    directorFirstName: number | null
-    directorLastName: number | null
-    title: number | null
+    directorFirstName: number
+    directorLastName: number
+    title: number
     _all: number
   }
 
@@ -4239,7 +4472,7 @@ export namespace Prisma {
     
   export type MovieGroupByArgs = {
     where?: MovieWhereInput
-    orderBy?: Enumerable<MovieOrderByInput>
+    orderBy?: Enumerable<MovieOrderByWithAggregationInput>
     by: Array<MovieScalarFieldEnum>
     having?: MovieScalarWhereWithAggregatesInput
     take?: number
@@ -4562,7 +4795,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: MovieGroupByArgs['orderBy'] }
         : { orderBy?: MovieGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -4935,8 +5168,8 @@ export namespace Prisma {
   }
 
   export type DirectorCountAggregateOutputType = {
-    firstName: number | null
-    lastName: number | null
+    firstName: number
+    lastName: number
     _all: number
   }
 
@@ -5019,7 +5252,7 @@ export namespace Prisma {
     
   export type DirectorGroupByArgs = {
     where?: DirectorWhereInput
-    orderBy?: Enumerable<DirectorOrderByInput>
+    orderBy?: Enumerable<DirectorOrderByWithAggregationInput>
     by: Array<DirectorScalarFieldEnum>
     having?: DirectorScalarWhereWithAggregatesInput
     take?: number
@@ -5049,10 +5282,12 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     movies?: boolean | MovieFindManyArgs
+    _count?: boolean | DirectorCountOutputTypeArgs
   }
 
   export type DirectorInclude = {
     movies?: boolean | MovieFindManyArgs
+    _count?: boolean | DirectorCountOutputTypeArgs
   }
 
   export type DirectorGetPayload<
@@ -5067,14 +5302,18 @@ export namespace Prisma {
     ? Director  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'movies'
-        ? Array < MovieGetPayload<S['include'][P]>>  : never
+        ? Array < MovieGetPayload<S['include'][P]>>  :
+        P extends '_count'
+        ? DirectorCountOutputTypeGetPayload<S['include'][P]> | null : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Director ?Director [P]
   : 
           P extends 'movies'
-        ? Array < MovieGetPayload<S['select'][P]>>  : never
+        ? Array < MovieGetPayload<S['select'][P]>>  :
+        P extends '_count'
+        ? DirectorCountOutputTypeGetPayload<S['select'][P]> | null : never
   } 
     : Director
   : Director
@@ -5340,7 +5579,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: DirectorGroupByArgs['orderBy'] }
         : { orderBy?: DirectorGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -5705,31 +5944,31 @@ export namespace Prisma {
   }
 
   export type ProblemAvgAggregateOutputType = {
-    id: number
+    id: number | null
     creatorId: number | null
   }
 
   export type ProblemSumAggregateOutputType = {
-    id: number
+    id: number | null
     creatorId: number | null
   }
 
   export type ProblemMinAggregateOutputType = {
-    id: number
+    id: number | null
     problemText: string | null
     creatorId: number | null
   }
 
   export type ProblemMaxAggregateOutputType = {
-    id: number
+    id: number | null
     problemText: string | null
     creatorId: number | null
   }
 
   export type ProblemCountAggregateOutputType = {
     id: number
-    problemText: number | null
-    creatorId: number | null
+    problemText: number
+    creatorId: number
     _all: number
   }
 
@@ -5837,7 +6076,7 @@ export namespace Prisma {
     
   export type ProblemGroupByArgs = {
     where?: ProblemWhereInput
-    orderBy?: Enumerable<ProblemOrderByInput>
+    orderBy?: Enumerable<ProblemOrderByWithAggregationInput>
     by: Array<ProblemScalarFieldEnum>
     having?: ProblemScalarWhereWithAggregatesInput
     take?: number
@@ -5874,11 +6113,13 @@ export namespace Prisma {
     likedBy?: boolean | CreatorFindManyArgs
     creator?: boolean | CreatorArgs
     creatorId?: boolean
+    _count?: boolean | ProblemCountOutputTypeArgs
   }
 
   export type ProblemInclude = {
     likedBy?: boolean | CreatorFindManyArgs
     creator?: boolean | CreatorArgs
+    _count?: boolean | ProblemCountOutputTypeArgs
   }
 
   export type ProblemGetPayload<
@@ -5895,7 +6136,9 @@ export namespace Prisma {
           P extends 'likedBy'
         ? Array < CreatorGetPayload<S['include'][P]>>  :
         P extends 'creator'
-        ? CreatorGetPayload<S['include'][P]> | null : never
+        ? CreatorGetPayload<S['include'][P]> | null :
+        P extends '_count'
+        ? ProblemCountOutputTypeGetPayload<S['include'][P]> | null : never
   } 
     : 'select' extends U
     ? {
@@ -5904,7 +6147,9 @@ export namespace Prisma {
           P extends 'likedBy'
         ? Array < CreatorGetPayload<S['select'][P]>>  :
         P extends 'creator'
-        ? CreatorGetPayload<S['select'][P]> | null : never
+        ? CreatorGetPayload<S['select'][P]> | null :
+        P extends '_count'
+        ? ProblemCountOutputTypeGetPayload<S['select'][P]> | null : never
   } 
     : Problem
   : Problem
@@ -6170,7 +6415,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: ProblemGroupByArgs['orderBy'] }
         : { orderBy?: ProblemGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -6537,26 +6782,26 @@ export namespace Prisma {
   }
 
   export type CreatorAvgAggregateOutputType = {
-    id: number
+    id: number | null
   }
 
   export type CreatorSumAggregateOutputType = {
-    id: number
+    id: number | null
   }
 
   export type CreatorMinAggregateOutputType = {
-    id: number
+    id: number | null
     name: string | null
   }
 
   export type CreatorMaxAggregateOutputType = {
-    id: number
+    id: number | null
     name: string | null
   }
 
   export type CreatorCountAggregateOutputType = {
     id: number
-    name: number | null
+    name: number
     _all: number
   }
 
@@ -6659,7 +6904,7 @@ export namespace Prisma {
     
   export type CreatorGroupByArgs = {
     where?: CreatorWhereInput
-    orderBy?: Enumerable<CreatorOrderByInput>
+    orderBy?: Enumerable<CreatorOrderByWithAggregationInput>
     by: Array<CreatorScalarFieldEnum>
     having?: CreatorScalarWhereWithAggregatesInput
     take?: number
@@ -6694,11 +6939,13 @@ export namespace Prisma {
     name?: boolean
     likes?: boolean | ProblemFindManyArgs
     problems?: boolean | ProblemFindManyArgs
+    _count?: boolean | CreatorCountOutputTypeArgs
   }
 
   export type CreatorInclude = {
     likes?: boolean | ProblemFindManyArgs
     problems?: boolean | ProblemFindManyArgs
+    _count?: boolean | CreatorCountOutputTypeArgs
   }
 
   export type CreatorGetPayload<
@@ -6715,7 +6962,9 @@ export namespace Prisma {
           P extends 'likes'
         ? Array < ProblemGetPayload<S['include'][P]>>  :
         P extends 'problems'
-        ? Array < ProblemGetPayload<S['include'][P]>>  : never
+        ? Array < ProblemGetPayload<S['include'][P]>>  :
+        P extends '_count'
+        ? CreatorCountOutputTypeGetPayload<S['include'][P]> | null : never
   } 
     : 'select' extends U
     ? {
@@ -6724,7 +6973,9 @@ export namespace Prisma {
           P extends 'likes'
         ? Array < ProblemGetPayload<S['select'][P]>>  :
         P extends 'problems'
-        ? Array < ProblemGetPayload<S['select'][P]>>  : never
+        ? Array < ProblemGetPayload<S['select'][P]>>  :
+        P extends '_count'
+        ? CreatorCountOutputTypeGetPayload<S['select'][P]> | null : never
   } 
     : Creator
   : Creator
@@ -6990,7 +7241,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: CreatorGroupByArgs['orderBy'] }
         : { orderBy?: CreatorGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -7357,26 +7608,26 @@ export namespace Prisma {
   }
 
   export type NativeTypeModelAvgAggregateOutputType = {
-    id: number
+    id: number | null
     bigInt: number | null
     decimal: Decimal | null
   }
 
   export type NativeTypeModelSumAggregateOutputType = {
-    id: number
+    id: number | null
     bigInt: bigint | null
     decimal: Decimal | null
   }
 
   export type NativeTypeModelMinAggregateOutputType = {
-    id: number
+    id: number | null
     bigInt: bigint | null
     byteA: Buffer | null
     decimal: Decimal | null
   }
 
   export type NativeTypeModelMaxAggregateOutputType = {
-    id: number
+    id: number | null
     bigInt: bigint | null
     byteA: Buffer | null
     decimal: Decimal | null
@@ -7384,9 +7635,9 @@ export namespace Prisma {
 
   export type NativeTypeModelCountAggregateOutputType = {
     id: number
-    bigInt: number | null
-    byteA: number | null
-    decimal: number | null
+    bigInt: number
+    byteA: number
+    decimal: number
     _all: number
   }
 
@@ -7499,7 +7750,7 @@ export namespace Prisma {
     
   export type NativeTypeModelGroupByArgs = {
     where?: NativeTypeModelWhereInput
-    orderBy?: Enumerable<NativeTypeModelOrderByInput>
+    orderBy?: Enumerable<NativeTypeModelOrderByWithAggregationInput>
     by: Array<NativeTypeModelScalarFieldEnum>
     having?: NativeTypeModelScalarWhereWithAggregatesInput
     take?: number
@@ -7818,7 +8069,7 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: NativeTypeModelGroupByArgs['orderBy'] }
         : { orderBy?: NativeTypeModelGroupByArgs['orderBy'] },
-      OrderFields extends Keys<MaybeTupleToUnion<T['orderBy']>>,
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
@@ -8150,7 +8401,9 @@ export namespace Prisma {
     age: 'age',
     balance: 'balance',
     amount: 'amount',
-    role: 'role'
+    role: 'role',
+    grades: 'grades',
+    aliases: 'aliases'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8269,6 +8522,8 @@ export namespace Prisma {
     posts?: PostListRelationFilter
     role?: EnumRoleFilter | Role
     editorPosts?: PostListRelationFilter
+    grades?: IntNullableListFilter
+    aliases?: StringNullableListFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8278,9 +8533,11 @@ export namespace Prisma {
     age?: SortOrder
     balance?: SortOrder
     amount?: SortOrder
-    posts?: postOrderByAggregateInput
+    posts?: postOrderByRelationAggregateInput
     role?: SortOrder
-    editorPosts?: postOrderByAggregateInput
+    editorPosts?: postOrderByRelationAggregateInput
+    grades?: SortOrder
+    aliases?: SortOrder
   }
 
   export type UserWhereUniqueInput = {
@@ -8288,7 +8545,7 @@ export namespace Prisma {
     email?: string
   }
 
-  export type UserOrderByInput = {
+  export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
     name?: SortOrder
@@ -8296,6 +8553,13 @@ export namespace Prisma {
     balance?: SortOrder
     amount?: SortOrder
     role?: SortOrder
+    grades?: SortOrder
+    aliases?: SortOrder
+    _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
+    _max?: UserMaxOrderByAggregateInput
+    _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -8309,6 +8573,8 @@ export namespace Prisma {
     balance?: FloatWithAggregatesFilter | number
     amount?: FloatWithAggregatesFilter | number
     role?: EnumRoleWithAggregatesFilter | Role
+    grades?: IntNullableListFilter
+    aliases?: StringNullableListFilter
   }
 
   export type postWhereInput = {
@@ -8350,7 +8616,7 @@ export namespace Prisma {
     uuid?: string
   }
 
-  export type postOrderByInput = {
+  export type postOrderByWithAggregationInput = {
     uuid?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8362,6 +8628,11 @@ export namespace Prisma {
     editorId?: SortOrder
     kind?: SortOrder
     metadata?: SortOrder
+    _count?: postCountOrderByAggregateInput
+    _avg?: postAvgOrderByAggregateInput
+    _max?: postMaxOrderByAggregateInput
+    _min?: postMinOrderByAggregateInput
+    _sum?: postSumOrderByAggregateInput
   }
 
   export type postScalarWhereWithAggregatesInput = {
@@ -8400,10 +8671,15 @@ export namespace Prisma {
     slug_number?: CategorySlugNumberCompoundUniqueInput
   }
 
-  export type CategoryOrderByInput = {
+  export type CategoryOrderByWithAggregationInput = {
     name?: SortOrder
     slug?: SortOrder
     number?: SortOrder
+    _count?: CategoryCountOrderByAggregateInput
+    _avg?: CategoryAvgOrderByAggregateInput
+    _max?: CategoryMaxOrderByAggregateInput
+    _min?: CategoryMinOrderByAggregateInput
+    _sum?: CategorySumOrderByAggregateInput
   }
 
   export type CategoryScalarWhereWithAggregatesInput = {
@@ -8434,10 +8710,13 @@ export namespace Prisma {
     firstName_lastName?: PatientFirstNameLastNameCompoundUniqueInput
   }
 
-  export type PatientOrderByInput = {
+  export type PatientOrderByWithAggregationInput = {
     firstName?: SortOrder
     lastName?: SortOrder
     email?: SortOrder
+    _count?: PatientCountOrderByAggregateInput
+    _max?: PatientMaxOrderByAggregateInput
+    _min?: PatientMinOrderByAggregateInput
   }
 
   export type PatientScalarWhereWithAggregatesInput = {
@@ -8470,10 +8749,13 @@ export namespace Prisma {
     directorFirstName_directorLastName_title?: MovieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInput
   }
 
-  export type MovieOrderByInput = {
+  export type MovieOrderByWithAggregationInput = {
     directorFirstName?: SortOrder
     directorLastName?: SortOrder
     title?: SortOrder
+    _count?: MovieCountOrderByAggregateInput
+    _max?: MovieMaxOrderByAggregateInput
+    _min?: MovieMinOrderByAggregateInput
   }
 
   export type MovieScalarWhereWithAggregatesInput = {
@@ -8497,16 +8779,19 @@ export namespace Prisma {
   export type DirectorOrderByWithRelationInput = {
     firstName?: SortOrder
     lastName?: SortOrder
-    movies?: MovieOrderByAggregateInput
+    movies?: MovieOrderByRelationAggregateInput
   }
 
   export type DirectorWhereUniqueInput = {
     firstName_lastName?: DirectorFirstNameLastNameCompoundUniqueInput
   }
 
-  export type DirectorOrderByInput = {
+  export type DirectorOrderByWithAggregationInput = {
     firstName?: SortOrder
     lastName?: SortOrder
+    _count?: DirectorCountOrderByAggregateInput
+    _max?: DirectorMaxOrderByAggregateInput
+    _min?: DirectorMinOrderByAggregateInput
   }
 
   export type DirectorScalarWhereWithAggregatesInput = {
@@ -8531,7 +8816,7 @@ export namespace Prisma {
   export type ProblemOrderByWithRelationInput = {
     id?: SortOrder
     problemText?: SortOrder
-    likedBy?: CreatorOrderByAggregateInput
+    likedBy?: CreatorOrderByRelationAggregateInput
     creator?: CreatorOrderByWithRelationInput
     creatorId?: SortOrder
   }
@@ -8540,10 +8825,15 @@ export namespace Prisma {
     id?: number
   }
 
-  export type ProblemOrderByInput = {
+  export type ProblemOrderByWithAggregationInput = {
     id?: SortOrder
     problemText?: SortOrder
     creatorId?: SortOrder
+    _count?: ProblemCountOrderByAggregateInput
+    _avg?: ProblemAvgOrderByAggregateInput
+    _max?: ProblemMaxOrderByAggregateInput
+    _min?: ProblemMinOrderByAggregateInput
+    _sum?: ProblemSumOrderByAggregateInput
   }
 
   export type ProblemScalarWhereWithAggregatesInput = {
@@ -8568,17 +8858,22 @@ export namespace Prisma {
   export type CreatorOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    likes?: ProblemOrderByAggregateInput
-    problems?: ProblemOrderByAggregateInput
+    likes?: ProblemOrderByRelationAggregateInput
+    problems?: ProblemOrderByRelationAggregateInput
   }
 
   export type CreatorWhereUniqueInput = {
     id?: number
   }
 
-  export type CreatorOrderByInput = {
+  export type CreatorOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    _count?: CreatorCountOrderByAggregateInput
+    _avg?: CreatorAvgOrderByAggregateInput
+    _max?: CreatorMaxOrderByAggregateInput
+    _min?: CreatorMinOrderByAggregateInput
+    _sum?: CreatorSumOrderByAggregateInput
   }
 
   export type CreatorScalarWhereWithAggregatesInput = {
@@ -8610,11 +8905,16 @@ export namespace Prisma {
     id?: number
   }
 
-  export type NativeTypeModelOrderByInput = {
+  export type NativeTypeModelOrderByWithAggregationInput = {
     id?: SortOrder
     bigInt?: SortOrder
     byteA?: SortOrder
     decimal?: SortOrder
+    _count?: NativeTypeModelCountOrderByAggregateInput
+    _avg?: NativeTypeModelAvgOrderByAggregateInput
+    _max?: NativeTypeModelMaxOrderByAggregateInput
+    _min?: NativeTypeModelMinOrderByAggregateInput
+    _sum?: NativeTypeModelSumOrderByAggregateInput
   }
 
   export type NativeTypeModelScalarWhereWithAggregatesInput = {
@@ -8634,6 +8934,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades?: UserCreategradesInput | Enumerable<number>
+    aliases?: UserCreatealiasesInput | Enumerable<string>
     posts?: postCreateNestedManyWithoutAuthorInput
     editorPosts?: postCreateNestedManyWithoutEditorInput
   }
@@ -8646,6 +8948,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades?: UserCreategradesInput | Enumerable<number>
+    aliases?: UserCreatealiasesInput | Enumerable<string>
     posts?: postUncheckedCreateNestedManyWithoutAuthorInput
     editorPosts?: postUncheckedCreateNestedManyWithoutEditorInput
   }
@@ -8657,6 +8961,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
     posts?: postUpdateManyWithoutAuthorInput
     editorPosts?: postUpdateManyWithoutEditorInput
   }
@@ -8669,6 +8975,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
     posts?: postUncheckedUpdateManyWithoutAuthorInput
     editorPosts?: postUncheckedUpdateManyWithoutEditorInput
   }
@@ -8681,6 +8989,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades?: UserCreateManygradesInput | Enumerable<number>
+    aliases?: UserCreateManyaliasesInput | Enumerable<string>
   }
 
   export type UserUpdateManyMutationInput = {
@@ -8690,6 +9000,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -8700,6 +9012,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
   }
 
   export type postCreateInput = {
@@ -9148,8 +9462,72 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter | Role
   }
 
-  export type postOrderByAggregateInput = {
+  export type IntNullableListFilter = {
+    equals?: Enumerable<number> | null
+    has?: number | null
+    hasEvery?: Enumerable<number>
+    hasSome?: Enumerable<number>
+    isEmpty?: boolean
+  }
+
+  export type StringNullableListFilter = {
+    equals?: Enumerable<string> | null
+    has?: string | null
+    hasEvery?: Enumerable<string>
+    hasSome?: Enumerable<string>
+    isEmpty?: boolean
+  }
+
+  export type postOrderByRelationAggregateInput = {
     count: SortOrder
+  }
+
+  export type UserCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    age?: SortOrder
+    balance?: SortOrder
+    amount?: SortOrder
+    role?: SortOrder
+    grades?: SortOrder
+    aliases?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    id?: SortOrder
+    age?: SortOrder
+    balance?: SortOrder
+    amount?: SortOrder
+    grades?: SortOrder
+  }
+
+  export type UserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    age?: SortOrder
+    balance?: SortOrder
+    amount?: SortOrder
+    role?: SortOrder
+  }
+
+  export type UserMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    age?: SortOrder
+    balance?: SortOrder
+    amount?: SortOrder
+    role?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    id?: SortOrder
+    age?: SortOrder
+    balance?: SortOrder
+    amount?: SortOrder
+    grades?: SortOrder
   }
 
   export type IntWithAggregatesFilter = {
@@ -9274,6 +9652,56 @@ export namespace Prisma {
     not?: InputJsonValue
   }
 
+  export type postCountOrderByAggregateInput = {
+    uuid?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    published?: SortOrder
+    title?: SortOrder
+    subtitle?: SortOrder
+    content?: SortOrder
+    authorId?: SortOrder
+    editorId?: SortOrder
+    kind?: SortOrder
+    metadata?: SortOrder
+  }
+
+  export type postAvgOrderByAggregateInput = {
+    authorId?: SortOrder
+    editorId?: SortOrder
+  }
+
+  export type postMaxOrderByAggregateInput = {
+    uuid?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    published?: SortOrder
+    title?: SortOrder
+    subtitle?: SortOrder
+    content?: SortOrder
+    authorId?: SortOrder
+    editorId?: SortOrder
+    kind?: SortOrder
+  }
+
+  export type postMinOrderByAggregateInput = {
+    uuid?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    published?: SortOrder
+    title?: SortOrder
+    subtitle?: SortOrder
+    content?: SortOrder
+    authorId?: SortOrder
+    editorId?: SortOrder
+    kind?: SortOrder
+  }
+
+  export type postSumOrderByAggregateInput = {
+    authorId?: SortOrder
+    editorId?: SortOrder
+  }
+
   export type DateTimeWithAggregatesFilter = {
     equals?: Date | string
     in?: Enumerable<Date> | Enumerable<string>
@@ -9335,9 +9763,53 @@ export namespace Prisma {
     number: number
   }
 
+  export type CategoryCountOrderByAggregateInput = {
+    name?: SortOrder
+    slug?: SortOrder
+    number?: SortOrder
+  }
+
+  export type CategoryAvgOrderByAggregateInput = {
+    number?: SortOrder
+  }
+
+  export type CategoryMaxOrderByAggregateInput = {
+    name?: SortOrder
+    slug?: SortOrder
+    number?: SortOrder
+  }
+
+  export type CategoryMinOrderByAggregateInput = {
+    name?: SortOrder
+    slug?: SortOrder
+    number?: SortOrder
+  }
+
+  export type CategorySumOrderByAggregateInput = {
+    number?: SortOrder
+  }
+
   export type PatientFirstNameLastNameCompoundUniqueInput = {
     firstName: string
     lastName: string
+  }
+
+  export type PatientCountOrderByAggregateInput = {
+    firstName?: SortOrder
+    lastName?: SortOrder
+    email?: SortOrder
+  }
+
+  export type PatientMaxOrderByAggregateInput = {
+    firstName?: SortOrder
+    lastName?: SortOrder
+    email?: SortOrder
+  }
+
+  export type PatientMinOrderByAggregateInput = {
+    firstName?: SortOrder
+    lastName?: SortOrder
+    email?: SortOrder
   }
 
   export type DirectorRelationFilter = {
@@ -9351,19 +9823,52 @@ export namespace Prisma {
     title: string
   }
 
+  export type MovieCountOrderByAggregateInput = {
+    directorFirstName?: SortOrder
+    directorLastName?: SortOrder
+    title?: SortOrder
+  }
+
+  export type MovieMaxOrderByAggregateInput = {
+    directorFirstName?: SortOrder
+    directorLastName?: SortOrder
+    title?: SortOrder
+  }
+
+  export type MovieMinOrderByAggregateInput = {
+    directorFirstName?: SortOrder
+    directorLastName?: SortOrder
+    title?: SortOrder
+  }
+
   export type MovieListRelationFilter = {
     every?: MovieWhereInput
     some?: MovieWhereInput
     none?: MovieWhereInput
   }
 
-  export type MovieOrderByAggregateInput = {
+  export type MovieOrderByRelationAggregateInput = {
     count: SortOrder
   }
 
   export type DirectorFirstNameLastNameCompoundUniqueInput = {
     firstName: string
     lastName: string
+  }
+
+  export type DirectorCountOrderByAggregateInput = {
+    firstName?: SortOrder
+    lastName?: SortOrder
+  }
+
+  export type DirectorMaxOrderByAggregateInput = {
+    firstName?: SortOrder
+    lastName?: SortOrder
+  }
+
+  export type DirectorMinOrderByAggregateInput = {
+    firstName?: SortOrder
+    lastName?: SortOrder
   }
 
   export type CreatorListRelationFilter = {
@@ -9377,8 +9882,36 @@ export namespace Prisma {
     isNot?: CreatorWhereInput | null
   }
 
-  export type CreatorOrderByAggregateInput = {
+  export type CreatorOrderByRelationAggregateInput = {
     count: SortOrder
+  }
+
+  export type ProblemCountOrderByAggregateInput = {
+    id?: SortOrder
+    problemText?: SortOrder
+    creatorId?: SortOrder
+  }
+
+  export type ProblemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    creatorId?: SortOrder
+  }
+
+  export type ProblemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    problemText?: SortOrder
+    creatorId?: SortOrder
+  }
+
+  export type ProblemMinOrderByAggregateInput = {
+    id?: SortOrder
+    problemText?: SortOrder
+    creatorId?: SortOrder
+  }
+
+  export type ProblemSumOrderByAggregateInput = {
+    id?: SortOrder
+    creatorId?: SortOrder
   }
 
   export type ProblemListRelationFilter = {
@@ -9387,8 +9920,31 @@ export namespace Prisma {
     none?: ProblemWhereInput
   }
 
-  export type ProblemOrderByAggregateInput = {
+  export type ProblemOrderByRelationAggregateInput = {
     count: SortOrder
+  }
+
+  export type CreatorCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type CreatorAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type CreatorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type CreatorMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type CreatorSumOrderByAggregateInput = {
+    id?: SortOrder
   }
 
   export type BigIntNullableFilter = {
@@ -9416,6 +9972,39 @@ export namespace Prisma {
     gt?: Decimal | number | string
     gte?: Decimal | number | string
     not?: NestedDecimalNullableFilter | Decimal | number | string | null
+  }
+
+  export type NativeTypeModelCountOrderByAggregateInput = {
+    id?: SortOrder
+    bigInt?: SortOrder
+    byteA?: SortOrder
+    decimal?: SortOrder
+  }
+
+  export type NativeTypeModelAvgOrderByAggregateInput = {
+    id?: SortOrder
+    bigInt?: SortOrder
+    decimal?: SortOrder
+  }
+
+  export type NativeTypeModelMaxOrderByAggregateInput = {
+    id?: SortOrder
+    bigInt?: SortOrder
+    byteA?: SortOrder
+    decimal?: SortOrder
+  }
+
+  export type NativeTypeModelMinOrderByAggregateInput = {
+    id?: SortOrder
+    bigInt?: SortOrder
+    byteA?: SortOrder
+    decimal?: SortOrder
+  }
+
+  export type NativeTypeModelSumOrderByAggregateInput = {
+    id?: SortOrder
+    bigInt?: SortOrder
+    decimal?: SortOrder
   }
 
   export type BigIntNullableWithAggregatesFilter = {
@@ -9456,6 +10045,14 @@ export namespace Prisma {
     sum?: NestedDecimalNullableFilter
     min?: NestedDecimalNullableFilter
     max?: NestedDecimalNullableFilter
+  }
+
+  export type UserCreategradesInput = {
+    set: Enumerable<number>
+  }
+
+  export type UserCreatealiasesInput = {
+    set: Enumerable<string>
   }
 
   export type postCreateNestedManyWithoutAuthorInput = {
@@ -9514,6 +10111,16 @@ export namespace Prisma {
     set?: Role
   }
 
+  export type UserUpdategradesInput = {
+    set?: Enumerable<number>
+    push?: number | Enumerable<number>
+  }
+
+  export type UserUpdatealiasesInput = {
+    set?: Enumerable<string>
+    push?: string | Enumerable<string>
+  }
+
   export type postUpdateManyWithoutAuthorInput = {
     create?: XOR<Enumerable<postCreateWithoutAuthorInput>, Enumerable<postUncheckedCreateWithoutAuthorInput>>
     connectOrCreate?: Enumerable<postCreateOrConnectWithoutAuthorInput>
@@ -9568,6 +10175,14 @@ export namespace Prisma {
     update?: Enumerable<postUpdateWithWhereUniqueWithoutEditorInput>
     updateMany?: Enumerable<postUpdateManyWithWhereWithoutEditorInput>
     deleteMany?: Enumerable<postScalarWhereInput>
+  }
+
+  export type UserCreateManygradesInput = {
+    set: Enumerable<number>
+  }
+
+  export type UserCreateManyaliasesInput = {
+    set: Enumerable<string>
   }
 
   export type UserCreateNestedOneWithoutPostsInput = {
@@ -10218,6 +10833,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades?: UserCreategradesInput | Enumerable<number>
+    aliases?: UserCreatealiasesInput | Enumerable<string>
     editorPosts?: postCreateNestedManyWithoutEditorInput
   }
 
@@ -10229,6 +10846,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades?: UserCreategradesInput | Enumerable<number>
+    aliases?: UserCreatealiasesInput | Enumerable<string>
     editorPosts?: postUncheckedCreateNestedManyWithoutEditorInput
   }
 
@@ -10244,6 +10863,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades?: UserCreategradesInput | Enumerable<number>
+    aliases?: UserCreatealiasesInput | Enumerable<string>
     posts?: postCreateNestedManyWithoutAuthorInput
   }
 
@@ -10255,6 +10876,8 @@ export namespace Prisma {
     balance: number
     amount: number
     role: Role
+    grades?: UserCreategradesInput | Enumerable<number>
+    aliases?: UserCreatealiasesInput | Enumerable<string>
     posts?: postUncheckedCreateNestedManyWithoutAuthorInput
   }
 
@@ -10275,6 +10898,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
     editorPosts?: postUpdateManyWithoutEditorInput
   }
 
@@ -10286,6 +10911,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
     editorPosts?: postUncheckedUpdateManyWithoutEditorInput
   }
 
@@ -10301,6 +10928,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
     posts?: postUpdateManyWithoutAuthorInput
   }
 
@@ -10312,6 +10941,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
+    grades?: UserUpdategradesInput | Enumerable<number>
+    aliases?: UserUpdatealiasesInput | Enumerable<string>
     posts?: postUncheckedUpdateManyWithoutAuthorInput
   }
 
