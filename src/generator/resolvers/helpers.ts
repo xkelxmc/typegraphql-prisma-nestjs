@@ -35,6 +35,11 @@ export function generateCrudResolverClassMethodDeclaration(
         type: "GraphQLResolveInfo",
         decorators: [{ name: "Info", arguments: [] }],
       },
+      {
+        name: "info",
+        type: "GraphQLResolveInfo",
+        decorators: [{ name: "Info", arguments: [] }],
+      },
       ...(!action.argsTypeName
         ? []
         : [
@@ -55,13 +60,13 @@ export function generateCrudResolverClassMethodDeclaration(
           ]
         : action.kind === DMMF.ModelAction.groupBy
         ? [
-            /* ts */ ` const { count, avg, sum, min, max } = transformFields(
+            /* ts */ ` const { _count, _avg, _sum, _min, _max } = transformFields(
               graphqlFields(info as any)
             );`,
             /* ts */ ` return getPrismaFromContext(ctx).${mapping.collectionName}.${action.kind}({
               ...args,
               ...Object.fromEntries(
-                Object.entries({ count, avg, sum, min, max }).filter(([_, v]) => v != null)
+                Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
               ),
             });`,
           ]

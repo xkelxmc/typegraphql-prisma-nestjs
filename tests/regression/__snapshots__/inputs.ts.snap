@@ -95,17 +95,17 @@ export class BoolWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  count?: NestedIntFilter | undefined;
+  _count?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedBoolFilter, {
     nullable: true
   })
-  min?: NestedBoolFilter | undefined;
+  _min?: NestedBoolFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedBoolFilter, {
     nullable: true
   })
-  max?: NestedBoolFilter | undefined;
+  _max?: NestedBoolFilter | undefined;
 }
 "
 `;
@@ -166,17 +166,17 @@ export class DateTimeWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  count?: NestedIntFilter | undefined;
+  _count?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDateTimeFilter, {
     nullable: true
   })
-  min?: NestedDateTimeFilter | undefined;
+  _min?: NestedDateTimeFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDateTimeFilter, {
     nullable: true
   })
-  max?: NestedDateTimeFilter | undefined;
+  _max?: NestedDateTimeFilter | undefined;
 }
 "
 `;
@@ -237,27 +237,27 @@ export class FloatWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  count?: NestedIntFilter | undefined;
+  _count?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedFloatFilter, {
     nullable: true
   })
-  avg?: NestedFloatFilter | undefined;
+  _avg?: NestedFloatFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedFloatFilter, {
     nullable: true
   })
-  sum?: NestedFloatFilter | undefined;
+  _sum?: NestedFloatFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedFloatFilter, {
     nullable: true
   })
-  min?: NestedFloatFilter | undefined;
+  _min?: NestedFloatFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedFloatFilter, {
     nullable: true
   })
-  max?: NestedFloatFilter | undefined;
+  _max?: NestedFloatFilter | undefined;
 }
 "
 `;
@@ -318,27 +318,27 @@ export class IntWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  count?: NestedIntFilter | undefined;
+  _count?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedFloatFilter, {
     nullable: true
   })
-  avg?: NestedFloatFilter | undefined;
+  _avg?: NestedFloatFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  sum?: NestedIntFilter | undefined;
+  _sum?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  min?: NestedIntFilter | undefined;
+  _min?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  max?: NestedIntFilter | undefined;
+  _max?: NestedIntFilter | undefined;
 }
 "
 `;
@@ -368,17 +368,17 @@ export class JsonWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  count?: NestedIntFilter | undefined;
+  _count?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedJsonFilter, {
     nullable: true
   })
-  min?: NestedJsonFilter | undefined;
+  _min?: NestedJsonFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedJsonFilter, {
     nullable: true
   })
-  max?: NestedJsonFilter | undefined;
+  _max?: NestedJsonFilter | undefined;
 }
 "
 `;
@@ -460,17 +460,17 @@ export class StringWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntFilter, {
     nullable: true
   })
-  count?: NestedIntFilter | undefined;
+  _count?: NestedIntFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedStringFilter, {
     nullable: true
   })
-  min?: NestedStringFilter | undefined;
+  _min?: NestedStringFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedStringFilter, {
     nullable: true
   })
-  max?: NestedStringFilter | undefined;
+  _max?: NestedStringFilter | undefined;
 }
 "
 `;
@@ -3970,27 +3970,27 @@ export class BigIntNullableWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntNullableFilter, {
     nullable: true
   })
-  count?: NestedIntNullableFilter | undefined;
+  _count?: NestedIntNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedFloatNullableFilter, {
     nullable: true
   })
-  avg?: NestedFloatNullableFilter | undefined;
+  _avg?: NestedFloatNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedBigIntNullableFilter, {
     nullable: true
   })
-  sum?: NestedBigIntNullableFilter | undefined;
+  _sum?: NestedBigIntNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedBigIntNullableFilter, {
     nullable: true
   })
-  min?: NestedBigIntNullableFilter | undefined;
+  _min?: NestedBigIntNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedBigIntNullableFilter, {
     nullable: true
   })
-  max?: NestedBigIntNullableFilter | undefined;
+  _max?: NestedBigIntNullableFilter | undefined;
 }
 "
 `;
@@ -4015,6 +4015,47 @@ export class BytesNullableFilter {
     nullable: true
   })
   not?: NestedBytesNullableFilter | undefined;
+}
+"
+`;
+
+exports[`inputs should properly generate input type scalar filters classes for model with native types: BytesNullableWithAggregatesFilter 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import * as GraphQLScalars from \\"graphql-scalars\\";
+import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
+import { DecimalJSScalar } from \\"../../scalars\\";
+import { NestedBytesNullableFilter } from \\"../inputs/NestedBytesNullableFilter\\";
+import { NestedBytesNullableWithAggregatesFilter } from \\"../inputs/NestedBytesNullableWithAggregatesFilter\\";
+import { NestedIntNullableFilter } from \\"../inputs/NestedIntNullableFilter\\";
+
+@TypeGraphQL.InputType({
+  isAbstract: true
+})
+export class BytesNullableWithAggregatesFilter {
+  @TypeGraphQL.Field(_type => GraphQLScalars.ByteResolver, {
+    nullable: true
+  })
+  equals?: Buffer | undefined;
+
+  @TypeGraphQL.Field(_type => NestedBytesNullableWithAggregatesFilter, {
+    nullable: true
+  })
+  not?: NestedBytesNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => NestedIntNullableFilter, {
+    nullable: true
+  })
+  _count?: NestedIntNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => NestedBytesNullableFilter, {
+    nullable: true
+  })
+  _min?: NestedBytesNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => NestedBytesNullableFilter, {
+    nullable: true
+  })
+  _max?: NestedBytesNullableFilter | undefined;
 }
 "
 `;
@@ -4170,27 +4211,27 @@ export class DecimalNullableWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntNullableFilter, {
     nullable: true
   })
-  count?: NestedIntNullableFilter | undefined;
+  _count?: NestedIntNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  avg?: NestedDecimalNullableFilter | undefined;
+  _avg?: NestedDecimalNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  sum?: NestedDecimalNullableFilter | undefined;
+  _sum?: NestedDecimalNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  min?: NestedDecimalNullableFilter | undefined;
+  _min?: NestedDecimalNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  max?: NestedDecimalNullableFilter | undefined;
+  _max?: NestedDecimalNullableFilter | undefined;
 }
 "
 `;
@@ -4243,17 +4284,17 @@ export class NestedBytesNullableWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntNullableFilter, {
     nullable: true
   })
-  count?: NestedIntNullableFilter | undefined;
+  _count?: NestedIntNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedBytesNullableFilter, {
     nullable: true
   })
-  min?: NestedBytesNullableFilter | undefined;
+  _min?: NestedBytesNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedBytesNullableFilter, {
     nullable: true
   })
-  max?: NestedBytesNullableFilter | undefined;
+  _max?: NestedBytesNullableFilter | undefined;
 }
 "
 `;
@@ -4263,6 +4304,8 @@ exports[`inputs should properly generate input type scalar filters classes for m
 import * as GraphQLScalars from \\"graphql-scalars\\";
 import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
 import { DecimalJSScalar } from \\"../../scalars\\";
+import { NestedDecimalNullableFilter } from \\"../inputs/NestedDecimalNullableFilter\\";
+import { NestedIntNullableFilter } from \\"../inputs/NestedIntNullableFilter\\";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -4366,27 +4409,27 @@ export class NestedDecimalNullableWithAggregatesFilter {
   @TypeGraphQL.Field(_type => NestedIntNullableFilter, {
     nullable: true
   })
-  count?: NestedIntNullableFilter | undefined;
+  _count?: NestedIntNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  avg?: NestedDecimalNullableFilter | undefined;
+  _avg?: NestedDecimalNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  sum?: NestedDecimalNullableFilter | undefined;
+  _sum?: NestedDecimalNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  min?: NestedDecimalNullableFilter | undefined;
+  _min?: NestedDecimalNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => NestedDecimalNullableFilter, {
     nullable: true
   })
-  max?: NestedDecimalNullableFilter | undefined;
+  _max?: NestedDecimalNullableFilter | undefined;
 }
 "
 `;
@@ -4858,9 +4901,9 @@ import { SortOrder } from \\"../../enums/SortOrder\\";
 })
 export class SecondModelOrderByRelationAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: false
+    nullable: true
   })
-  count!: \\"asc\\" | \\"desc\\";
+  _count?: \\"asc\\" | \\"desc\\" | undefined;
 }
 "
 `;
@@ -4971,9 +5014,9 @@ import { SortOrder } from \\"../../enums/SortOrder\\";
 })
 export class SecondModelOrderByRelationAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: false
+    nullable: true
   })
-  count!: \\"asc\\" | \\"desc\\";
+  _count?: \\"asc\\" | \\"desc\\" | undefined;
 }
 "
 `;
@@ -5183,6 +5226,7 @@ exports[`inputs when model is renamed should properly generate input type classe
 import * as GraphQLScalars from \\"graphql-scalars\\";
 import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
 import { DecimalJSScalar } from \\"../../scalars\\";
+import { FirstModelOrderByWithRelationInput } from \\"../inputs/FirstModelOrderByWithRelationInput\\";
 import { SortOrder } from \\"../../enums/SortOrder\\";
 
 @TypeGraphQL.InputType({
@@ -5212,9 +5256,7 @@ exports[`inputs when model is renamed should properly generate input type classe
 import * as GraphQLScalars from \\"graphql-scalars\\";
 import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
 import { DecimalJSScalar } from \\"../../scalars\\";
-import { FloatFilter } from \\"../inputs/FloatFilter\\";
-import { IntFilter } from \\"../inputs/IntFilter\\";
-import { StringFilter } from \\"../inputs/StringFilter\\";
+import { SortOrder } from \\"../../enums/SortOrder\\";
 
 @TypeGraphQL.InputType({
   isAbstract: true
@@ -5238,14 +5280,11 @@ export class RenamedFirstModelScalarWhereInput {
   @TypeGraphQL.Field(_type => IntFilter, {
     nullable: true
   })
-  idField?: IntFilter | undefined;
+  idField?: \\"asc\\" | \\"desc\\" | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
-  })
-  uniqueStringField?: StringFilter | undefined;
+  modelFieldName?: \\"asc\\" | \\"desc\\" | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFilter, {
+  @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
   floatField?: FloatFilter | undefined;
@@ -5258,7 +5297,6 @@ exports[`inputs when model is renamed should properly generate input type classe
 import * as GraphQLScalars from \\"graphql-scalars\\";
 import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
 import { DecimalJSScalar } from \\"../../scalars\\";
-import { FloatFilter } from \\"../inputs/FloatFilter\\";
 import { IntFilter } from \\"../inputs/IntFilter\\";
 import { RenamedSecondModelListRelationFilter } from \\"../inputs/RenamedSecondModelListRelationFilter\\";
 import { StringFilter } from \\"../inputs/StringFilter\\";
@@ -5320,7 +5358,7 @@ export class RenamedFirstModelWhereUniqueInput {
   })
   idField?: number | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
   uniqueStringField?: string | undefined;
