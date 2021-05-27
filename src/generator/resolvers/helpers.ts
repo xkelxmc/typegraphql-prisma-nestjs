@@ -35,11 +35,6 @@ export function generateCrudResolverClassMethodDeclaration(
         type: "GraphQLResolveInfo",
         decorators: [{ name: "Info", arguments: [] }],
       },
-      {
-        name: "info",
-        type: "GraphQLResolveInfo",
-        decorators: [{ name: "Info", arguments: [] }],
-      },
       ...(!action.argsTypeName
         ? []
         : [
