@@ -3,11 +3,11 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../client";
 import { DecimalJSScalar } from "../scalars";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("NativeTypeModel", {
   isAbstract: true
 })
 export class NativeTypeModel {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => TypeGraphQL.ID, {
     nullable: false
   })
   id!: number;

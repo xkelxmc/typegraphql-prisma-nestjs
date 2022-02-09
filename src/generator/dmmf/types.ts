@@ -22,16 +22,19 @@ export namespace DMMF {
     name: string;
     fields: string[];
   }
+  export interface PrimaryKey {
+    name: string | null;
+    fields: string[];
+  }
   export interface Model {
     name: string;
-    isEmbedded: boolean;
     dbName: string | null;
-    fields: Field[];
+    fields: ModelField[];
     // fieldMap?: Record<string, Field>;
     uniqueFields: string[][];
     uniqueIndexes: UniqueIndex[];
     // documentation?: string;
-    idFields: string[];
+    primaryKey: PrimaryKey | null;
     // [key: string]: any;
     // additional props
     typeName: string;
@@ -44,14 +47,15 @@ export namespace DMMF {
     | "inputObjectTypes"
     | "outputObjectTypes"
     | "enumTypes";
-  export interface Field {
+  // Field
+  export interface ModelField {
     // kind: FieldKind;
     name: string;
     isRequired: boolean;
     isList: boolean;
     isUnique: boolean;
     isId: boolean;
-    type: string;
+    // type: string | DMMF.SchemaEnum | DMMF.OutputType | DMMF.SchemaArg;
     dbNames?: string[] | null;
     isGenerated: boolean;
     hasDefaultValue: boolean;
@@ -62,6 +66,7 @@ export namespace DMMF {
     // documentation?: string;
     // [key: string]: any;
     // additional props
+    type: string;
     location: FieldLocation;
     typeFieldAlias?: string;
     typeGraphQLType: string;
@@ -112,6 +117,7 @@ export namespace DMMF {
     typeGraphQLType: string;
     fieldTSType: string;
     hasMappedName: boolean;
+    isOmitted: boolean;
   }
   export interface OutputType {
     name: string;
@@ -148,10 +154,11 @@ export namespace DMMF {
   // named subtype of SchemaField->outputType
   export interface TypeInfo {
     // type: string | OutputType | Enum;
-    type: string;
     isList: boolean;
     location: FieldLocation;
     namespace?: FieldNamespace;
+    // additional props
+    type: string;
   }
   // additional type
   export interface OutputSchemaField extends SchemaField {
@@ -227,7 +234,7 @@ export namespace DMMF {
     resolverName: string;
   }
   // additional type
-  export interface RelationField extends Field {
+  export interface RelationField extends ModelField {
     outputTypeField: OutputSchemaField;
     argsTypeName: string | undefined;
   }

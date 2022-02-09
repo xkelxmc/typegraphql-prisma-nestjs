@@ -19,6 +19,7 @@ import {
 import { modelsFolderName } from "./config";
 import { DMMF } from "./dmmf/types";
 import { DmmfDocument } from "./dmmf/dmmf-document";
+import { convertNewLines } from "./helpers";
 
 export default function generateObjectTypeClassFromModel(
   project: Project,
@@ -40,7 +41,7 @@ export default function generateObjectTypeClassFromModel(
   generateModelsImports(
     sourceFile,
     model.fields
-      .filter(field => field.location === "inputObjectTypes")
+      .filter(field => field.location === "outputObjectTypes")
       .filter(field => field.type !== model.name)
       .map(field =>
         dmmfDocument.isModelName(field.type)
@@ -56,7 +57,10 @@ export default function generateObjectTypeClassFromModel(
   );
 
   const countField = modelOutputType.fields.find(it => it.name === "_count");
-  if (countField) {
+  const shouldEmitCountField =
+    countField !== undefined &&
+    dmmfDocument.shouldGenerateBlock("crudResolvers");
+  if (shouldEmitCountField) {
     generateResolversOutputsImports(sourceFile, [countField.typeGraphQLType]);
   }
 
@@ -67,6 +71,7 @@ export default function generateObjectTypeClassFromModel(
       {
         name: "ObjectType",
         arguments: [
+          `"${model.typeName}"`,
           Writers.object({
             isAbstract: "true",
             ...(model.docs && { description: `"${model.docs}"` }),
@@ -109,11 +114,11 @@ export default function generateObjectTypeClassFromModel(
                 ]),
           ],
           ...(field.docs && {
-            docs: [{ description: field.docs }],
+            docs: [{ description: `\n${convertNewLines(field.docs)}` }],
           }),
         };
       }),
-      ...(countField
+      ...(shouldEmitCountField
         ? [
             {
               name: countField.name,
@@ -166,12 +171,12 @@ export default function generateObjectTypeClassFromModel(
               : `return this.${field.name} ?? null;`,
           ],
           ...(field.docs && {
-            docs: [{ description: field.docs }],
+            docs: [{ description: `\n${convertNewLines(field.docs)}` }],
           }),
         };
       }),
     ...(model.docs && {
-      docs: [{ description: model.docs }],
+      docs: [{ description: `\n${convertNewLines(model.docs)}` }],
     }),
   });
 }

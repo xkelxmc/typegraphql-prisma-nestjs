@@ -68,8 +68,8 @@ export function generateCrudResolverClassMethodDeclaration(
         : [
             /* ts */ ` const { _count } = transformFields(
               graphqlFields(info as any)
-            );`,
-            /* ts */ ` return getPrismaFromContext(ctx).${mapping.collectionName}.${action.kind}({
+            );
+            return getPrismaFromContext(ctx).${mapping.collectionName}.${action.kind}({
               ...args,
               ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
             });`,

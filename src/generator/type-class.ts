@@ -21,7 +21,7 @@ import {
 } from "./imports";
 import { DmmfDocument } from "./dmmf/dmmf-document";
 import { DMMF } from "./dmmf/types";
-import { GenerateCodeOptions } from "./options";
+import { GeneratorOptions } from "./options";
 
 export function generateOutputTypeClassFromType(
   project: Project,
@@ -66,6 +66,7 @@ export function generateOutputTypeClassFromType(
       {
         name: "ObjectType",
         arguments: [
+          `"${type.typeName}"`,
           Writers.object({
             isAbstract: "true",
             ...(dmmfDocument.options.simpleResolvers && {
@@ -103,7 +104,7 @@ export function generateInputTypeClassFromType(
   dirPath: string,
   inputType: DMMF.InputType,
   _dmmfDocument: DmmfDocument,
-  options: GenerateCodeOptions,
+  options: GeneratorOptions,
 ) {
   const filePath = path.resolve(
     dirPath,
@@ -134,7 +135,8 @@ export function generateInputTypeClassFromType(
     2,
   );
 
-  const mappedFields = inputType.fields.filter(field => field.hasMappedName);
+  const fieldsToEmit = inputType.fields.filter(field => !field.isOmitted);
+  const mappedFields = fieldsToEmit.filter(field => field.hasMappedName);
 
   sourceFile.addClass({
     name: inputType.typeName,
@@ -143,36 +145,37 @@ export function generateInputTypeClassFromType(
       {
         name: "InputType",
         arguments: [
+          `"${inputType.typeName}"`,
           Writers.object({
             isAbstract: "true",
           }),
         ],
       },
     ],
-    properties: inputType.fields.map<
-      OptionalKind<PropertyDeclarationStructure>
-    >(field => {
-      return {
-        name: field.name,
-        type: field.fieldTSType,
-        hasExclamationToken: !!field.isRequired,
-        hasQuestionToken: !field.isRequired,
-        trailingTrivia: "\r\n",
-        decorators: field.hasMappedName
-          ? []
-          : [
-              {
-                name: "Field",
-                arguments: [
-                  `_type => ${field.typeGraphQLType}`,
-                  Writers.object({
-                    nullable: `${!field.isRequired}`,
-                  }),
-                ],
-              },
-            ],
-      };
-    }),
+    properties: fieldsToEmit.map<OptionalKind<PropertyDeclarationStructure>>(
+      field => {
+        return {
+          name: field.name,
+          type: field.fieldTSType,
+          hasExclamationToken: !!field.isRequired,
+          hasQuestionToken: !field.isRequired,
+          trailingTrivia: "\r\n",
+          decorators: field.hasMappedName
+            ? []
+            : [
+                {
+                  name: "Field",
+                  arguments: [
+                    `_type => ${field.typeGraphQLType}`,
+                    Writers.object({
+                      nullable: `${!field.isRequired}`,
+                    }),
+                  ],
+                },
+              ],
+        };
+      },
+    ),
     getAccessors: mappedFields.map<
       OptionalKind<GetAccessorDeclarationStructure>
     >(field => {

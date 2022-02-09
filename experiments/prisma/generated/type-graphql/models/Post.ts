@@ -2,15 +2,21 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../client";
 import { DecimalJSScalar } from "../scalars";
-import { Client } from "../models/Client";
+import { MainUser } from "../models/MainUser";
 import { PostKind } from "../enums/PostKind";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("Post", {
   isAbstract: true
 })
 export class Post {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  /**
+   * first line of comment
+   * second line of comment
+   * third line of comment
+   */
+  @TypeGraphQL.Field(_type => TypeGraphQL.ID, {
+    nullable: false,
+    description: "first line of comment\nsecond line of comment\nthird line of comment"
   })
   uuid!: string;
 
@@ -41,14 +47,14 @@ export class Post {
   })
   content?: string | null;
 
-  author?: Client;
+  author?: MainUser;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
   authorId!: number;
 
-  editor?: Client | null;
+  editor?: MainUser | null;
 
   editorId?: number | null;
 

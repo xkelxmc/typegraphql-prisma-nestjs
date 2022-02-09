@@ -11,7 +11,7 @@ import { JsonWithAggregatesFilter } from "../inputs/JsonWithAggregatesFilter";
 import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PostScalarWhereWithAggregatesInput", {
   isAbstract: true
 })
 export class PostScalarWhereWithAggregatesInput {
@@ -44,11 +44,6 @@ export class PostScalarWhereWithAggregatesInput {
     nullable: true
   })
   updatedAt?: DateTimeWithAggregatesFilter | undefined;
-
-  @TypeGraphQL.Field(_type => BoolWithAggregatesFilter, {
-    nullable: true
-  })
-  published?: BoolWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
     nullable: true

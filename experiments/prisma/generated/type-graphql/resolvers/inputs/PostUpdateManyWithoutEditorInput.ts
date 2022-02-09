@@ -11,7 +11,7 @@ import { PostUpdateWithWhereUniqueWithoutEditorInput } from "../inputs/PostUpdat
 import { PostUpsertWithWhereUniqueWithoutEditorInput } from "../inputs/PostUpsertWithWhereUniqueWithoutEditorInput";
 import { PostWhereUniqueInput } from "../inputs/PostWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PostUpdateManyWithoutEditorInput", {
   isAbstract: true
 })
 export class PostUpdateManyWithoutEditorInput {
@@ -38,11 +38,6 @@ export class PostUpdateManyWithoutEditorInput {
   @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
-  connect?: PostWhereUniqueInput[] | undefined;
-
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
-    nullable: true
-  })
   set?: PostWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
@@ -54,6 +49,11 @@ export class PostUpdateManyWithoutEditorInput {
     nullable: true
   })
   delete?: PostWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: PostWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [PostUpdateWithWhereUniqueWithoutEditorInput], {
     nullable: true

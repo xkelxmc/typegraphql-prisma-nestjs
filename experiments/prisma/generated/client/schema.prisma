@@ -3,21 +3,24 @@ datasource postgres {
   url      = env("DATABASE_URL")
 }
 
-type Numeric = Float
-
 generator client {
   provider        = "prisma-client-js"
   binaryTargets   = ["windows", "debian-openssl-1.1.x"]
   output          = "../prisma/generated/client"
-  previewFeatures = ["orderByRelation", "napi", "selectRelationCount", "orderByAggregateGroup"]
+  previewFeatures = ["filterJson", "fullTextSearch"]
 }
 
 generator typegraphql {
   provider                 = "node ../src/cli/dev.ts"
   output                   = "../prisma/generated/type-graphql"
   emitDMMF                 = true
+  // emitTranspiledCode       = true
   simpleResolvers          = false
+  // useOriginalMapping       = true
   useUncheckedScalarInputs = false
+  emitIdAsIDType           = true
+  // emitOnly                 = "crudResolvers"
+  customPrismaImportPath   = "../client"
 }
 
 // Role enum comment
@@ -29,7 +32,7 @@ enum Role {
 
 // User model comment
 /// User model doc
-/// @@TypeGraphQL.type(name: "Client")
+/// @@TypeGraphQL.type(name: "MainUser")
 model User {
   // User model field comment
   /// User model field doc
@@ -40,7 +43,7 @@ model User {
   name        String?
   age         Int
   /// @TypeGraphQL.field(name: "accountBalance")
-  balance     Numeric
+  balance     Float
   amount      Float
   /// @TypeGraphQL.field(name: "clientPosts")
   posts       post[]   @relation("posts")
@@ -57,18 +60,22 @@ enum PostKind {
 }
 
 model post {
+  /// first line of comment
+  /// second line of comment
+  /// third line of comment
   uuid      String    @id @default(uuid())
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  published Boolean
+  /// @TypeGraphQL.omit(input: true)
+  published Boolean   @default(false)
   title     String
   /// @TypeGraphQL.omit(output: true)
   subtitle  String
   content   String?
-  author    User      @relation(fields: [authorId], references: [id], name: "posts")
+  author    User      @relation(fields: [authorId], references: [id], name: "posts", onDelete: Cascade)
   authorId  Int
   /// @TypeGraphQL.omit(output: true)
-  editor    User?     @relation(fields: [editorId], references: [id], name: "editorPosts")
+  editor    User?     @relation(fields: [editorId], references: [id], name: "editorPosts", onDelete: Cascade)
   /// @TypeGraphQL.omit(output: true)
   editorId  Int?
   kind      PostKind?
@@ -80,7 +87,7 @@ model Category {
   slug   String
   number Int
 
-  @@unique([slug, number])
+  @@unique([slug, number], name: "categoryCompoundUnique")
 }
 
 model Patient {
@@ -94,10 +101,10 @@ model Patient {
 model Movie {
   directorFirstName String
   directorLastName  String
-  director          Director @relation(fields: [directorFirstName, directorLastName], references: [firstName, lastName])
+  director          Director @relation(fields: [directorFirstName, directorLastName], references: [firstName, lastName], onDelete: Cascade)
   title             String
 
-  @@id([directorFirstName, directorLastName, title])
+  @@id([directorFirstName, directorLastName, title], name: "movieCompoundId")
 }
 
 model Director {
@@ -112,7 +119,7 @@ model Problem {
   id          Int       @id @default(autoincrement())
   problemText String
   likedBy     Creator[]
-  creator     Creator?  @relation(name: "creator", fields: [creatorId], references: [id])
+  creator     Creator?  @relation(name: "creator", fields: [creatorId], references: [id], onDelete: Cascade)
   creatorId   Int?
 }
 

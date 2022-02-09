@@ -11,7 +11,7 @@ import { JsonFilter } from "../inputs/JsonFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PostScalarWhereInput", {
   isAbstract: true
 })
 export class PostScalarWhereInput {
@@ -44,11 +44,6 @@ export class PostScalarWhereInput {
     nullable: true
   })
   updatedAt?: DateTimeFilter | undefined;
-
-  @TypeGraphQL.Field(_type => BoolFilter, {
-    nullable: true
-  })
-  published?: BoolFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true

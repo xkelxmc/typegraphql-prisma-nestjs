@@ -11,7 +11,7 @@ import { MovieUpdateWithWhereUniqueWithoutDirectorInput } from "../inputs/MovieU
 import { MovieUpsertWithWhereUniqueWithoutDirectorInput } from "../inputs/MovieUpsertWithWhereUniqueWithoutDirectorInput";
 import { MovieWhereUniqueInput } from "../inputs/MovieWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MovieUpdateManyWithoutDirectorInput", {
   isAbstract: true
 })
 export class MovieUpdateManyWithoutDirectorInput {
@@ -38,11 +38,6 @@ export class MovieUpdateManyWithoutDirectorInput {
   @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
     nullable: true
   })
-  connect?: MovieWhereUniqueInput[] | undefined;
-
-  @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
-    nullable: true
-  })
   set?: MovieWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
@@ -54,6 +49,11 @@ export class MovieUpdateManyWithoutDirectorInput {
     nullable: true
   })
   delete?: MovieWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: MovieWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [MovieUpdateWithWhereUniqueWithoutDirectorInput], {
     nullable: true

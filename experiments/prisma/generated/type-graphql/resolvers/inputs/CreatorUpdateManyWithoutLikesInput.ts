@@ -10,7 +10,7 @@ import { CreatorUpdateWithWhereUniqueWithoutLikesInput } from "../inputs/Creator
 import { CreatorUpsertWithWhereUniqueWithoutLikesInput } from "../inputs/CreatorUpsertWithWhereUniqueWithoutLikesInput";
 import { CreatorWhereUniqueInput } from "../inputs/CreatorWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("CreatorUpdateManyWithoutLikesInput", {
   isAbstract: true
 })
 export class CreatorUpdateManyWithoutLikesInput {
@@ -32,11 +32,6 @@ export class CreatorUpdateManyWithoutLikesInput {
   @TypeGraphQL.Field(_type => [CreatorWhereUniqueInput], {
     nullable: true
   })
-  connect?: CreatorWhereUniqueInput[] | undefined;
-
-  @TypeGraphQL.Field(_type => [CreatorWhereUniqueInput], {
-    nullable: true
-  })
   set?: CreatorWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [CreatorWhereUniqueInput], {
@@ -48,6 +43,11 @@ export class CreatorUpdateManyWithoutLikesInput {
     nullable: true
   })
   delete?: CreatorWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [CreatorWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: CreatorWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [CreatorUpdateWithWhereUniqueWithoutLikesInput], {
     nullable: true

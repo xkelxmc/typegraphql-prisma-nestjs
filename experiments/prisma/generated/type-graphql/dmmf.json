@@ -34,7 +34,6 @@
     "models": [
       {
         "name": "User",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -135,7 +134,6 @@
             "relationName": "posts",
             "relationFromFields": [],
             "relationToFields": [],
-            "relationOnDelete": "NONE",
             "isGenerated": false,
             "isUpdatedAt": false,
             "documentation": "@TypeGraphQL.field(name: \"clientPosts\")"
@@ -166,7 +164,6 @@
             "relationName": "editorPosts",
             "relationFromFields": [],
             "relationToFields": [],
-            "relationOnDelete": "NONE",
             "isGenerated": false,
             "isUpdatedAt": false,
             "documentation": "@TypeGraphQL.omit(output: true)"
@@ -199,14 +196,13 @@
           }
         ],
         "isGenerated": false,
-        "documentation": "User model doc\n@@TypeGraphQL.type(name: \"Client\")",
-        "idFields": [],
+        "documentation": "User model doc\n@@TypeGraphQL.type(name: \"MainUser\")",
+        "primaryKey": null,
         "uniqueFields": [],
         "uniqueIndexes": []
       },
       {
         "name": "post",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -224,7 +220,8 @@
               "args": []
             },
             "isGenerated": false,
-            "isUpdatedAt": false
+            "isUpdatedAt": false,
+            "documentation": "first line of comment\nsecond line of comment\nthird line of comment"
           },
           {
             "name": "createdAt",
@@ -265,9 +262,11 @@
             "isId": false,
             "isReadOnly": false,
             "type": "Boolean",
-            "hasDefaultValue": false,
+            "hasDefaultValue": true,
+            "default": false,
             "isGenerated": false,
-            "isUpdatedAt": false
+            "isUpdatedAt": false,
+            "documentation": "@TypeGraphQL.omit(input: true)"
           },
           {
             "name": "title",
@@ -326,7 +325,7 @@
             "relationToFields": [
               "id"
             ],
-            "relationOnDelete": "NONE",
+            "relationOnDelete": "Cascade",
             "isGenerated": false,
             "isUpdatedAt": false
           },
@@ -360,7 +359,7 @@
             "relationToFields": [
               "id"
             ],
-            "relationOnDelete": "NONE",
+            "relationOnDelete": "Cascade",
             "isGenerated": false,
             "isUpdatedAt": false,
             "documentation": "@TypeGraphQL.omit(output: true)"
@@ -407,13 +406,12 @@
           }
         ],
         "isGenerated": false,
-        "idFields": [],
+        "primaryKey": null,
         "uniqueFields": [],
         "uniqueIndexes": []
       },
       {
         "name": "Category",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -457,7 +455,7 @@
           }
         ],
         "isGenerated": false,
-        "idFields": [],
+        "primaryKey": null,
         "uniqueFields": [
           [
             "slug",
@@ -466,7 +464,7 @@
         ],
         "uniqueIndexes": [
           {
-            "name": null,
+            "name": "categoryCompoundUnique",
             "fields": [
               "slug",
               "number"
@@ -476,7 +474,6 @@
       },
       {
         "name": "Patient",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -520,16 +517,18 @@
           }
         ],
         "isGenerated": false,
-        "idFields": [
-          "firstName",
-          "lastName"
-        ],
+        "primaryKey": {
+          "name": null,
+          "fields": [
+            "firstName",
+            "lastName"
+          ]
+        },
         "uniqueFields": [],
         "uniqueIndexes": []
       },
       {
         "name": "Movie",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -577,7 +576,7 @@
               "firstName",
               "lastName"
             ],
-            "relationOnDelete": "NONE",
+            "relationOnDelete": "Cascade",
             "isGenerated": false,
             "isUpdatedAt": false
           },
@@ -596,17 +595,19 @@
           }
         ],
         "isGenerated": false,
-        "idFields": [
-          "directorFirstName",
-          "directorLastName",
-          "title"
-        ],
+        "primaryKey": {
+          "name": "movieCompoundId",
+          "fields": [
+            "directorFirstName",
+            "directorLastName",
+            "title"
+          ]
+        },
         "uniqueFields": [],
         "uniqueIndexes": []
       },
       {
         "name": "Director",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -648,22 +649,23 @@
             "relationName": "DirectorToMovie",
             "relationFromFields": [],
             "relationToFields": [],
-            "relationOnDelete": "NONE",
             "isGenerated": false,
             "isUpdatedAt": false
           }
         ],
         "isGenerated": false,
-        "idFields": [
-          "firstName",
-          "lastName"
-        ],
+        "primaryKey": {
+          "name": null,
+          "fields": [
+            "firstName",
+            "lastName"
+          ]
+        },
         "uniqueFields": [],
         "uniqueIndexes": []
       },
       {
         "name": "Problem",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -711,7 +713,6 @@
             "relationToFields": [
               "id"
             ],
-            "relationOnDelete": "NONE",
             "isGenerated": false,
             "isUpdatedAt": false
           },
@@ -732,7 +733,7 @@
             "relationToFields": [
               "id"
             ],
-            "relationOnDelete": "NONE",
+            "relationOnDelete": "Cascade",
             "isGenerated": false,
             "isUpdatedAt": false
           },
@@ -751,13 +752,12 @@
           }
         ],
         "isGenerated": false,
-        "idFields": [],
+        "primaryKey": null,
         "uniqueFields": [],
         "uniqueIndexes": []
       },
       {
         "name": "Creator",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -805,7 +805,6 @@
             "relationToFields": [
               "id"
             ],
-            "relationOnDelete": "NONE",
             "isGenerated": false,
             "isUpdatedAt": false
           },
@@ -822,19 +821,17 @@
             "relationName": "creator",
             "relationFromFields": [],
             "relationToFields": [],
-            "relationOnDelete": "NONE",
             "isGenerated": false,
             "isUpdatedAt": false
           }
         ],
         "isGenerated": false,
-        "idFields": [],
+        "primaryKey": null,
         "uniqueFields": [],
         "uniqueIndexes": []
       },
       {
         "name": "NativeTypeModel",
-        "isEmbedded": false,
         "dbName": null,
         "fields": [
           {
@@ -895,7 +892,7 @@
           }
         ],
         "isGenerated": false,
-        "idFields": [],
+        "primaryKey": null,
         "uniqueFields": [],
         "uniqueIndexes": []
       }
@@ -1149,7 +1146,7 @@
           ]
         },
         {
-          "name": "UserOrderByWithRelationInput",
+          "name": "UserOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -1294,6 +1291,19 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserOrderByRelevanceInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -2055,7 +2065,7 @@
           ]
         },
         {
-          "name": "postOrderByWithRelationInput",
+          "name": "postOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -2158,7 +2168,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "UserOrderByWithRelationInput",
+                  "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -2184,7 +2194,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "UserOrderByWithRelationInput",
+                  "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -2226,6 +2236,19 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postOrderByRelevanceInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -2854,7 +2877,7 @@
           ]
         },
         {
-          "name": "CategoryOrderByWithRelationInput",
+          "name": "CategoryOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -2898,6 +2921,19 @@
                   "isList": false
                 }
               ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CategoryOrderByRelevanceInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
             }
           ]
         },
@@ -2909,12 +2945,12 @@
           },
           "fields": [
             {
-              "name": "slug_number",
+              "name": "categoryCompoundUnique",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "CategorySlugNumberCompoundUniqueInput",
+                  "type": "CategoryCategoryCompoundUniqueCompoundUniqueInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -3265,7 +3301,7 @@
           ]
         },
         {
-          "name": "PatientOrderByWithRelationInput",
+          "name": "PatientOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -3306,6 +3342,19 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "PatientOrderByRelevanceInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -3669,7 +3718,7 @@
           ]
         },
         {
-          "name": "MovieOrderByWithRelationInput",
+          "name": "MovieOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -3707,7 +3756,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "DirectorOrderByWithRelationInput",
+                  "type": "DirectorOrderByWithRelationAndSearchRelevanceInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -3726,6 +3775,19 @@
                   "isList": false
                 }
               ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieOrderByRelevanceInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
             }
           ]
         },
@@ -3737,12 +3799,12 @@
           },
           "fields": [
             {
-              "name": "directorFirstName_directorLastName_title",
+              "name": "movieCompoundId",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "MovieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInput",
+                  "type": "MovieMovieCompoundIdCompoundUniqueInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -4062,7 +4124,7 @@
           ]
         },
         {
-          "name": "DirectorOrderByWithRelationInput",
+          "name": "DirectorOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -4101,6 +4163,19 @@
               "inputTypes": [
                 {
                   "type": "MovieOrderByRelationAggregateInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorOrderByRelevanceInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -4458,7 +4533,7 @@
           ]
         },
         {
-          "name": "ProblemOrderByWithRelationInput",
+          "name": "ProblemOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -4509,7 +4584,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "CreatorOrderByWithRelationInput",
+                  "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -4525,6 +4600,19 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemOrderByRelevanceInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -4907,7 +4995,7 @@
           ]
         },
         {
-          "name": "CreatorOrderByWithRelationInput",
+          "name": "CreatorOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -4959,6 +5047,19 @@
               "inputTypes": [
                 {
                   "type": "ProblemOrderByRelationAggregateInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorOrderByRelevanceInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -5332,7 +5433,7 @@
           ]
         },
         {
-          "name": "NativeTypeModelOrderByWithRelationInput",
+          "name": "NativeTypeModelOrderByWithRelationAndSearchRelevanceInput",
           "constraints": {
             "maxNumFields": 1,
             "minNumFields": 0
@@ -6900,7 +7001,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -6974,6 +7075,12 @@
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -7054,7 +7161,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -7157,6 +7264,12 @@
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -7333,6 +7446,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -7577,6 +7696,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -7630,7 +7755,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -7733,6 +7858,12 @@
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -7909,6 +8040,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -8126,6 +8263,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -11020,6 +11163,18 @@
               ]
             },
             {
+              "name": "search",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "mode",
               "isRequired": false,
               "isNullable": false,
@@ -11184,6 +11339,18 @@
             },
             {
               "name": "endsWith",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -11624,7 +11791,48 @@
           },
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UserOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "UserOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
@@ -11632,6 +11840,18 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
@@ -12222,7 +12442,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12235,7 +12455,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12248,7 +12468,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12261,7 +12481,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12274,7 +12494,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12416,6 +12636,18 @@
               ]
             },
             {
+              "name": "search",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "mode",
               "isRequired": false,
               "isNullable": false,
@@ -12447,7 +12679,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12460,7 +12692,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12473,7 +12705,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12630,6 +12862,18 @@
               ]
             },
             {
+              "name": "search",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "mode",
               "isRequired": false,
               "isNullable": false,
@@ -12666,7 +12910,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12679,7 +12923,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12692,7 +12936,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12816,7 +13060,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12829,7 +13073,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12842,7 +13086,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12855,7 +13099,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12868,7 +13112,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12961,7 +13205,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -12974,7 +13218,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -13404,6 +13648,159 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "path",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "string_contains",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "string_starts_with",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "string_ends_with",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_contains",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_starts_with",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_ends_with",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lte",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "gt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "gte",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -13416,7 +13813,66 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "postOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "postOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
                   "location": "scalar",
                   "isList": false
                 }
@@ -14034,7 +14490,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14047,7 +14503,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14060,7 +14516,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14112,7 +14568,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14125,7 +14581,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14138,7 +14594,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14282,7 +14738,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14295,7 +14751,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14308,7 +14764,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14321,7 +14777,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14334,7 +14790,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14434,7 +14890,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14447,7 +14903,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14460,7 +14916,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14487,6 +14943,159 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "path",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "string_contains",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "string_starts_with",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "string_ends_with",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_contains",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_starts_with",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_ends_with",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lte",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "gt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "gte",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -14499,6 +15108,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -14506,7 +15121,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14519,7 +15134,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14532,7 +15147,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -14547,7 +15162,60 @@
           ]
         },
         {
-          "name": "CategorySlugNumberCompoundUniqueInput",
+          "name": "CategoryOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CategoryOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CategoryOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CategoryCategoryCompoundUniqueCompoundUniqueInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -14768,6 +15436,59 @@
           ]
         },
         {
+          "name": "PatientOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "PatientOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "PatientOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "PatientFirstNameLastNameCompoundUniqueInput",
           "constraints": {
             "maxNumFields": null,
@@ -14980,7 +15701,60 @@
           ]
         },
         {
-          "name": "MovieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInput",
+          "name": "MovieOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "MovieOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "MovieMovieCompoundIdCompoundUniqueInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -15224,7 +15998,48 @@
           },
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "DirectorOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "DirectorOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
@@ -15232,6 +16047,18 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
@@ -15477,7 +16304,48 @@
           },
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ProblemOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "ProblemOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
@@ -15485,6 +16353,18 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
@@ -15761,7 +16641,48 @@
           },
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CreatorOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CreatorOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
@@ -15769,6 +16690,18 @@
                   "type": "SortOrder",
                   "namespace": "prisma",
                   "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
@@ -16071,6 +17004,40 @@
                   "type": "Bytes",
                   "location": "scalar",
                   "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "in",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "notIn",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
                 },
                 {
                   "type": "Null",
@@ -16644,7 +17611,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16657,7 +17624,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16670,7 +17637,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16683,7 +17650,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16696,7 +17663,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16735,6 +17702,40 @@
               ]
             },
             {
+              "name": "in",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "notIn",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "not",
               "isRequired": false,
               "isNullable": true,
@@ -16758,7 +17759,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16771,7 +17772,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16784,7 +17785,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16941,7 +17942,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16954,7 +17955,29 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "NestedDecimalNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UserCreategradesInput",
+          "constraints": {
+            "maxNumFields": 1,
+            "minNumFields": 1
+          },
+          "fields": [
+            {
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -16967,20 +17990,7 @@
               ]
             },
             {
-              "name": "min",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "NestedDecimalNullableFilter",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                }
-              ]
-            },
-            {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -17773,25 +18783,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -17831,6 +18822,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -17997,25 +19007,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -18055,6 +19046,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -18221,25 +19231,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -18279,6 +19270,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -18445,25 +19455,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "postWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -18503,6 +19494,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "postWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -18937,19 +19947,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "UserWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                }
-              ]
-            },
-            {
               "name": "disconnect",
               "isRequired": false,
               "isNullable": false,
@@ -18969,6 +19966,19 @@
                 {
                   "type": "Boolean",
                   "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "connect",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -19480,25 +20490,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "MovieWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "MovieWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -19538,6 +20529,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "MovieWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -19704,25 +20714,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "MovieWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "MovieWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -19762,6 +20753,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "MovieWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -20047,25 +21057,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "CreatorWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "CreatorWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -20105,6 +21096,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CreatorWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -20234,19 +21244,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "CreatorWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                }
-              ]
-            },
-            {
               "name": "disconnect",
               "isRequired": false,
               "isNullable": false,
@@ -20266,6 +21263,19 @@
                 {
                   "type": "Boolean",
                   "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "connect",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -20628,25 +21638,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "ProblemWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "ProblemWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -20686,6 +21677,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "ProblemWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -20852,25 +21862,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "ProblemWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "ProblemWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -20910,6 +21901,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "ProblemWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -21076,25 +22086,6 @@
               ]
             },
             {
-              "name": "connect",
-              "isRequired": false,
-              "isNullable": false,
-              "inputTypes": [
-                {
-                  "type": "ProblemWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": false
-                },
-                {
-                  "type": "ProblemWhereUniqueInput",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
-                  "isList": true
-                }
-              ]
-            },
-            {
               "name": "set",
               "isRequired": false,
               "isNullable": false,
@@ -21134,6 +22125,25 @@
             },
             {
               "name": "delete",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "ProblemWhereUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "connect",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -21623,6 +22633,18 @@
               ]
             },
             {
+              "name": "search",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "not",
               "isRequired": false,
               "isNullable": false,
@@ -21774,6 +22796,18 @@
             },
             {
               "name": "endsWith",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22097,7 +23131,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22110,7 +23144,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22123,7 +23157,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22136,7 +23170,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22149,7 +23183,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22291,6 +23325,18 @@
               ]
             },
             {
+              "name": "search",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "not",
               "isRequired": false,
               "isNullable": false,
@@ -22309,7 +23355,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22322,7 +23368,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22335,7 +23381,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22492,6 +23538,18 @@
               ]
             },
             {
+              "name": "search",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "not",
               "isRequired": false,
               "isNullable": true,
@@ -22515,7 +23573,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22528,7 +23586,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22541,7 +23599,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22809,7 +23867,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22822,7 +23880,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22835,7 +23893,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22848,7 +23906,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22928,7 +23986,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22941,7 +23999,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -22954,7 +24012,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23315,7 +24373,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23328,7 +24386,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23341,7 +24399,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23393,7 +24451,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23406,7 +24464,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23419,7 +24477,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23563,7 +24621,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23576,7 +24634,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23589,7 +24647,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23602,20 +24660,24 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
-              "isNullable": false,
+              "isNullable": true,
               "inputTypes": [
                 {
-                  "type": "NestedIntNullableFilter",
-                  "namespace": "prisma",
-                  "location": "inputObjectTypes",
+                  "type": "Float",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23846,7 +24908,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23859,7 +24921,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23872,7 +24934,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -23899,6 +24961,159 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "path",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "string_contains",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "string_starts_with",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "string_ends_with",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_contains",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_starts_with",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "array_ends_with",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lte",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "gt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "Json",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "gte",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -23910,6 +25125,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -24066,6 +25287,40 @@
                   "type": "Bytes",
                   "location": "scalar",
                   "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "in",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "notIn",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
                 },
                 {
                   "type": "Null",
@@ -24360,7 +25615,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24373,7 +25628,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24386,7 +25641,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24399,7 +25654,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24412,7 +25667,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24451,6 +25706,40 @@
               ]
             },
             {
+              "name": "in",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "notIn",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": true
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
               "name": "not",
               "isRequired": false,
               "isNullable": true,
@@ -24474,7 +25763,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24487,7 +25776,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24500,7 +25789,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24644,7 +25933,7 @@
               ]
             },
             {
-              "name": "count",
+              "name": "_count",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24657,7 +25946,7 @@
               ]
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24670,7 +25959,7 @@
               ]
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24683,7 +25972,7 @@
               ]
             },
             {
-              "name": "min",
+              "name": "_min",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24696,7 +25985,7 @@
               ]
             },
             {
-              "name": "max",
+              "name": "_max",
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
@@ -24755,7 +26044,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -24830,6 +26119,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -24896,7 +26191,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -24987,6 +26282,12 @@
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -25116,7 +26417,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -25191,6 +26492,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -25257,7 +26564,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -25343,6 +26650,12 @@
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -29379,7 +30692,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -29471,6 +30784,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -29524,7 +30843,7 @@
             },
             {
               "name": "published",
-              "isRequired": true,
+              "isRequired": false,
               "isNullable": false,
               "inputTypes": [
                 {
@@ -29610,6 +30929,12 @@
               "isRequired": true,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -29786,6 +31111,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -29999,6 +31330,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -30198,6 +31535,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -30373,6 +31716,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -30581,6 +31930,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
                   "type": "Json",
                   "location": "scalar",
                   "isList": false
@@ -30774,6 +32129,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "JsonNullValueInput",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
                 {
                   "type": "Json",
                   "location": "scalar",
@@ -31396,13 +32757,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "UserOrderByWithRelationInput",
+                      "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "UserOrderByWithRelationInput",
+                      "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -31490,13 +32851,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "UserOrderByWithRelationInput",
+                      "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "UserOrderByWithRelationInput",
+                      "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -31584,13 +32945,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "UserOrderByWithRelationInput",
+                      "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "UserOrderByWithRelationInput",
+                      "type": "UserOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -31790,13 +33151,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -31884,13 +33245,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -31978,13 +33339,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -32184,13 +33545,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "CategoryOrderByWithRelationInput",
+                      "type": "CategoryOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "CategoryOrderByWithRelationInput",
+                      "type": "CategoryOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -32278,13 +33639,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "CategoryOrderByWithRelationInput",
+                      "type": "CategoryOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "CategoryOrderByWithRelationInput",
+                      "type": "CategoryOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -32372,13 +33733,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "CategoryOrderByWithRelationInput",
+                      "type": "CategoryOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "CategoryOrderByWithRelationInput",
+                      "type": "CategoryOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -32578,13 +33939,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "PatientOrderByWithRelationInput",
+                      "type": "PatientOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "PatientOrderByWithRelationInput",
+                      "type": "PatientOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -32672,13 +34033,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "PatientOrderByWithRelationInput",
+                      "type": "PatientOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "PatientOrderByWithRelationInput",
+                      "type": "PatientOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -32766,13 +34127,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "PatientOrderByWithRelationInput",
+                      "type": "PatientOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "PatientOrderByWithRelationInput",
+                      "type": "PatientOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -32972,13 +34333,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33066,13 +34427,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33160,13 +34521,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33366,13 +34727,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "DirectorOrderByWithRelationInput",
+                      "type": "DirectorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "DirectorOrderByWithRelationInput",
+                      "type": "DirectorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33460,13 +34821,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "DirectorOrderByWithRelationInput",
+                      "type": "DirectorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "DirectorOrderByWithRelationInput",
+                      "type": "DirectorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33554,13 +34915,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "DirectorOrderByWithRelationInput",
+                      "type": "DirectorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "DirectorOrderByWithRelationInput",
+                      "type": "DirectorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33760,13 +35121,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33854,13 +35215,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -33948,13 +35309,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -34154,13 +35515,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -34248,13 +35609,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -34342,13 +35703,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -34548,13 +35909,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "NativeTypeModelOrderByWithRelationInput",
+                      "type": "NativeTypeModelOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "NativeTypeModelOrderByWithRelationInput",
+                      "type": "NativeTypeModelOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -34642,13 +36003,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "NativeTypeModelOrderByWithRelationInput",
+                      "type": "NativeTypeModelOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "NativeTypeModelOrderByWithRelationInput",
+                      "type": "NativeTypeModelOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -34736,13 +36097,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "NativeTypeModelOrderByWithRelationInput",
+                      "type": "NativeTypeModelOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "NativeTypeModelOrderByWithRelationInput",
+                      "type": "NativeTypeModelOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -37422,7 +38783,7 @@
           "name": "AggregateUser",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37433,7 +38794,7 @@
               }
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37444,7 +38805,7 @@
               }
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37455,7 +38816,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37466,7 +38827,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37633,7 +38994,7 @@
           "name": "AggregatePost",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37644,7 +39005,7 @@
               }
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37655,7 +39016,7 @@
               }
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37666,7 +39027,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37677,7 +39038,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37864,7 +39225,7 @@
           "name": "AggregateCategory",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37875,7 +39236,7 @@
               }
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37886,7 +39247,7 @@
               }
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37897,7 +39258,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -37908,7 +39269,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38025,7 +39386,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38036,7 +39397,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38120,7 +39481,7 @@
           "name": "AggregateMovie",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38131,7 +39492,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38188,7 +39549,7 @@
               }
             },
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38199,7 +39560,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38210,7 +39571,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38226,7 +39587,7 @@
           "name": "AggregateDirector",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38237,7 +39598,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38248,7 +39609,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38322,7 +39683,7 @@
           "name": "AggregateProblem",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38333,7 +39694,7 @@
               }
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38344,7 +39705,7 @@
               }
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38355,7 +39716,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38366,7 +39727,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38472,7 +39833,7 @@
           "name": "AggregateCreator",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38483,7 +39844,7 @@
               }
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38494,7 +39855,7 @@
               }
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38505,7 +39866,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38516,7 +39877,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38612,7 +39973,7 @@
           "name": "AggregateNativeTypeModel",
           "fields": [
             {
-              "name": "count",
+              "name": "_count",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38623,7 +39984,7 @@
               }
             },
             {
-              "name": "avg",
+              "name": "_avg",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38634,7 +39995,7 @@
               }
             },
             {
-              "name": "sum",
+              "name": "_sum",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38645,7 +40006,7 @@
               }
             },
             {
-              "name": "min",
+              "name": "_min",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -38656,7 +40017,7 @@
               }
             },
             {
-              "name": "max",
+              "name": "_max",
               "args": [],
               "isNullable": true,
               "outputType": {
@@ -40659,13 +42020,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -40764,13 +42125,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "postOrderByWithRelationInput",
+                      "type": "postOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -40859,7 +42220,7 @@
             {
               "name": "_count",
               "args": [],
-              "isNullable": true,
+              "isNullable": false,
               "outputType": {
                 "type": "UserCountOutputType",
                 "namespace": "prisma",
@@ -41168,13 +42529,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "MovieOrderByWithRelationInput",
+                      "type": "MovieOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -41243,7 +42604,7 @@
             {
               "name": "_count",
               "args": [],
-              "isNullable": true,
+              "isNullable": false,
               "outputType": {
                 "type": "DirectorCountOutputType",
                 "namespace": "prisma",
@@ -41298,13 +42659,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "CreatorOrderByWithRelationInput",
+                      "type": "CreatorOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -41394,7 +42755,7 @@
             {
               "name": "_count",
               "args": [],
-              "isNullable": true,
+              "isNullable": false,
               "outputType": {
                 "type": "ProblemCountOutputType",
                 "namespace": "prisma",
@@ -41449,13 +42810,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -41543,13 +42904,13 @@
                   "isNullable": false,
                   "inputTypes": [
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": true
                     },
                     {
-                      "type": "ProblemOrderByWithRelationInput",
+                      "type": "ProblemOrderByWithRelationAndSearchRelevanceInput",
                       "namespace": "prisma",
                       "location": "inputObjectTypes",
                       "isList": false
@@ -41618,7 +42979,7 @@
             {
               "name": "_count",
               "args": [],
-              "isNullable": true,
+              "isNullable": false,
               "outputType": {
                 "type": "CreatorCountOutputType",
                 "namespace": "prisma",
@@ -41770,10 +43131,83 @@
           ]
         },
         {
+          "name": "JsonNullValueInput",
+          "values": [
+            "JsonNull"
+          ]
+        },
+        {
           "name": "QueryMode",
           "values": [
             "default",
             "insensitive"
+          ]
+        },
+        {
+          "name": "UserOrderByRelevanceFieldEnum",
+          "values": [
+            "email",
+            "name",
+            "aliases"
+          ]
+        },
+        {
+          "name": "JsonNullValueFilter",
+          "values": [
+            "DbNull",
+            "JsonNull",
+            "AnyNull"
+          ]
+        },
+        {
+          "name": "postOrderByRelevanceFieldEnum",
+          "values": [
+            "uuid",
+            "title",
+            "subtitle",
+            "content"
+          ]
+        },
+        {
+          "name": "CategoryOrderByRelevanceFieldEnum",
+          "values": [
+            "name",
+            "slug"
+          ]
+        },
+        {
+          "name": "PatientOrderByRelevanceFieldEnum",
+          "values": [
+            "firstName",
+            "lastName",
+            "email"
+          ]
+        },
+        {
+          "name": "MovieOrderByRelevanceFieldEnum",
+          "values": [
+            "directorFirstName",
+            "directorLastName",
+            "title"
+          ]
+        },
+        {
+          "name": "DirectorOrderByRelevanceFieldEnum",
+          "values": [
+            "firstName",
+            "lastName"
+          ]
+        },
+        {
+          "name": "ProblemOrderByRelevanceFieldEnum",
+          "values": [
+            "problemText"
+          ]
+        },
+        {
+          "name": "CreatorOrderByRelevanceFieldEnum",
+          "values": [
+            "name"
           ]
         }
       ],

@@ -4,11 +4,11 @@ import {
   generatePrismaNamespaceImport,
 } from "./imports";
 
-import { GenerateCodeOptions } from "./options";
+import { GeneratorOptions } from "./options";
 
 export function generateCustomScalars(
   sourceFile: SourceFile,
-  options: GenerateCodeOptions,
+  options: GeneratorOptions,
 ) {
   generatePrismaNamespaceImport(sourceFile, options);
   generateGraphQLScalarTypeImport(sourceFile);
@@ -18,10 +18,10 @@ export function generateCustomScalars(
       name: "Decimal",
       description: "GraphQL Scalar representing the Prisma.Decimal type, based on Decimal.js library.",
       serialize: (value: unknown) => {
-        if (!(value instanceof Prisma.Decimal)) {
-          throw new Error(\`[DecimalError] Invalid argument: \${typeof value}. Expected Prisma.Decimal instance.\`);
+        if (!(Prisma.Decimal.isDecimal(value))) {
+          throw new Error(\`[DecimalError] Invalid argument: \${Object.prototype.toString.call(value)}. Expected Prisma.Decimal.\`);
         }
-        return value.toString();
+        return (value as Prisma.Decimal).toString();
       },
       parseValue: (value: unknown) => {
         if (!(typeof value === "string")) {

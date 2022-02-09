@@ -8,7 +8,7 @@ import { NullableEnumPostKindFieldUpdateOperationsInput } from "../inputs/Nullab
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PostUpdateManyMutationInput", {
   isAbstract: true
 })
 export class PostUpdateManyMutationInput {
@@ -26,11 +26,6 @@ export class PostUpdateManyMutationInput {
     nullable: true
   })
   updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
-
-  @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  published?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true

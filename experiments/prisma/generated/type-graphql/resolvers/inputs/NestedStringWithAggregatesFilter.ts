@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { NestedIntFilter } from "../inputs/NestedIntFilter";
 import { NestedStringFilter } from "../inputs/NestedStringFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("NestedStringWithAggregatesFilter", {
   isAbstract: true
 })
 export class NestedStringWithAggregatesFilter {
@@ -58,6 +58,11 @@ export class NestedStringWithAggregatesFilter {
     nullable: true
   })
   endsWith?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  search?: string | undefined;
 
   @TypeGraphQL.Field(_type => NestedStringWithAggregatesFilter, {
     nullable: true

@@ -104,6 +104,9 @@ describe("models", () => {
         stringField String
         // field comment
         intField    Int
+        /// multiline doc 1
+        /// multiline doc 2
+        boolField   Boolean
         /// relation doc
         posts       Post[]
       }
@@ -170,13 +173,30 @@ describe("models", () => {
     expect(userModelTSFile).toMatchSnapshot("User");
   });
 
-  it("should properly generate object type class for prisma model with omitted field", async () => {
+  it("should properly generate object type class for prisma model without omitted output field", async () => {
     const schema = /* prisma */ `
       model User {
         id           Int       @id @default(autoincrement())
         dateOfBirth  DateTime
         name         String
         /// @TypeGraphQL.omit(output: true)
+        balance      Float?
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const userModelTSFile = await readGeneratedFile("/models/User.ts");
+
+    expect(userModelTSFile).toMatchSnapshot("User");
+  });
+
+  it("should properly generate object type class for prisma model with omitted input field", async () => {
+    const schema = /* prisma */ `
+      model User {
+        id           Int       @id @default(autoincrement())
+        dateOfBirth  DateTime
+        name         String
+        /// @TypeGraphQL.omit(input: true)
         balance      Float?
       }
     `;
@@ -223,31 +243,54 @@ describe("models", () => {
     expect(nativeTypeModelTSFile).toMatchSnapshot("NativeTypeModel");
   });
 
-  describe("when selectRelationCount preview feature is enabled", () => {
-    it("should properly generate model  object type class", async () => {
+  describe("when emitIdAsIDType is set to true", () => {
+    it("should properly generate model object type class", async () => {
       const schema = /* prisma */ `
         model FirstModel {
-          idField            Int            @id @default(autoincrement())
-          uniqueStringField  String         @unique
-          floatField         Float
-          secondModelsField  SecondModel[]
+          intIdField Int   @id @default(autoincrement())
+          intField   Int   @unique
+          floatField Float
         }
         model SecondModel {
-          idField            Int          @id @default(autoincrement())
-          uniqueStringField  String       @unique
-          floatField         Float
-          firstModelFieldId  Int
-          firstModelField    FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
+          stringIdField String  @id @default(cuid())
+          stringField   String  @unique
+          booleanField  Boolean
         }
       `;
 
       await generateCodeFromSchema(schema, {
         outputDirPath,
-        previewFeatures: ["selectRelationCount"],
+        emitIdAsIDType: true,
       });
       const firstModelTSFile = await readGeneratedFile("/models/FirstModel.ts");
+      const secondModelTSFile = await readGeneratedFile(
+        "/models/SecondModel.ts",
+      );
 
       expect(firstModelTSFile).toMatchSnapshot("FirstModel");
+      expect(secondModelTSFile).toMatchSnapshot("SecondModel");
+    });
+  });
+
+  describe("when customPrismaImportPath is set", () => {
+    it("should properly generate Prisma import path for model object type class", async () => {
+      const schema = /* prisma */ `
+        model SampleModel {
+          intIdField Int   @id @default(autoincrement())
+          intField   Int   @unique
+          floatField Float
+        }
+      `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        customPrismaImportPath: "../test/import",
+      });
+      const firstModelTSFile = await readGeneratedFile(
+        "/models/SampleModel.ts",
+      );
+
+      expect(firstModelTSFile).toMatchSnapshot("SampleModel");
     });
   });
 });

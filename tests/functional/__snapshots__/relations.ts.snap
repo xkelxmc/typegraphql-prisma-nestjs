@@ -1,6 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`relations resolvers execution composite unique key should properly call PrismaClient on fetching array relations: findUniquePost relations call args 1`] = `
+exports[`relations resolvers execution composite primary key with name should properly call PrismaClient on fetching single relation: findUniquePost relations call args 1`] = `
+Array [
+  Array [
+    Object {
+      "where": Object {
+        "postIdCompoundName": Object {
+          "color": "BLUE",
+          "title": "Post 1",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`relations resolvers execution composite primary key with name should properly call PrismaClient on fetching single relation: post with author mocked response 1`] = `
+Object {
+  "post": Object {
+    "author": Object {
+      "id": 1,
+      "name": "User 1",
+    },
+    "color": "BLUE",
+    "text": "Post text",
+    "title": "Post 1",
+  },
+}
+`;
+
+exports[`relations resolvers execution composite unique key should properly call PrismaClient on fetching single relation: findUniquePost relations call args 1`] = `
 Array [
   Array [
     Object {
@@ -15,7 +44,36 @@ Array [
 ]
 `;
 
-exports[`relations resolvers execution composite unique key should properly call PrismaClient on fetching array relations: post with author mocked response 1`] = `
+exports[`relations resolvers execution composite unique key should properly call PrismaClient on fetching single relation: post with author mocked response 1`] = `
+Object {
+  "post": Object {
+    "author": Object {
+      "id": 1,
+      "name": "User 1",
+    },
+    "color": "BLUE",
+    "text": "Post text",
+    "title": "Post 1",
+  },
+}
+`;
+
+exports[`relations resolvers execution composite unique key with name should properly call PrismaClient on fetching single relation: findUniquePost relations call args 1`] = `
+Array [
+  Array [
+    Object {
+      "where": Object {
+        "postUniqueCompoundName": Object {
+          "color": "BLUE",
+          "title": "Post 1",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`relations resolvers execution composite unique key with name should properly call PrismaClient on fetching single relation: post with author mocked response 1`] = `
 Object {
   "post": Object {
     "author": Object {

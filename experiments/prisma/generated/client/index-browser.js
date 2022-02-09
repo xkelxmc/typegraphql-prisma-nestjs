@@ -11,12 +11,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 2.22.0
- * Query Engine version: 60cc71d884972ab4e897f0277c4b84383dddaf6c
+ * Prisma Client JS version: 3.8.1
+ * Query Engine version: 34df67547cf5598f5a6cd3eb45f14ee70c3fb86f
  */
 Prisma.prismaVersion = {
-  client: "2.22.0",
-  engine: "60cc71d884972ab4e897f0277c4b84383dddaf6c"
+  client: "3.8.1",
+  engine: "34df67547cf5598f5a6cd3eb45f14ee70c3fb86f"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -44,7 +44,6 @@ Prisma.Decimal = Decimal
 /**
  * Re-export of sql-template-tag
  */
-
 Prisma.sql = () => {
   throw new Error(`sqltag is unable to be run in the browser.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
@@ -62,6 +61,13 @@ Prisma.raw = () => {
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.validator = () => (val) => val
+
+/**
+ * Shorthand utilities for JSON filtering
+ */
+Prisma.DbNull = 'DbNull'
+Prisma.JsonNull = 'JsonNull'
+Prisma.AnyNull = 'AnyNull'
 
 /**
  * Enums
@@ -142,9 +148,62 @@ exports.Prisma.SortOrder = makeEnum({
   desc: 'desc'
 });
 
+exports.Prisma.JsonNullValueInput = makeEnum({
+  JsonNull: 'JsonNull'
+});
+
 exports.Prisma.QueryMode = makeEnum({
   default: 'default',
   insensitive: 'insensitive'
+});
+
+exports.Prisma.UserOrderByRelevanceFieldEnum = makeEnum({
+  email: 'email',
+  name: 'name',
+  aliases: 'aliases'
+});
+
+exports.Prisma.JsonNullValueFilter = makeEnum({
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+});
+
+exports.Prisma.postOrderByRelevanceFieldEnum = makeEnum({
+  uuid: 'uuid',
+  title: 'title',
+  subtitle: 'subtitle',
+  content: 'content'
+});
+
+exports.Prisma.CategoryOrderByRelevanceFieldEnum = makeEnum({
+  name: 'name',
+  slug: 'slug'
+});
+
+exports.Prisma.PatientOrderByRelevanceFieldEnum = makeEnum({
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email'
+});
+
+exports.Prisma.MovieOrderByRelevanceFieldEnum = makeEnum({
+  directorFirstName: 'directorFirstName',
+  directorLastName: 'directorLastName',
+  title: 'title'
+});
+
+exports.Prisma.DirectorOrderByRelevanceFieldEnum = makeEnum({
+  firstName: 'firstName',
+  lastName: 'lastName'
+});
+
+exports.Prisma.ProblemOrderByRelevanceFieldEnum = makeEnum({
+  problemText: 'problemText'
+});
+
+exports.Prisma.CreatorOrderByRelevanceFieldEnum = makeEnum({
+  name: 'name'
 });
 exports.Role = makeEnum({
   USER: 'USER',

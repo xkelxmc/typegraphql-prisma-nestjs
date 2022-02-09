@@ -11,7 +11,7 @@ import { ProblemUpdateWithWhereUniqueWithoutCreatorInput } from "../inputs/Probl
 import { ProblemUpsertWithWhereUniqueWithoutCreatorInput } from "../inputs/ProblemUpsertWithWhereUniqueWithoutCreatorInput";
 import { ProblemWhereUniqueInput } from "../inputs/ProblemWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ProblemUpdateManyWithoutCreatorInput", {
   isAbstract: true
 })
 export class ProblemUpdateManyWithoutCreatorInput {
@@ -38,11 +38,6 @@ export class ProblemUpdateManyWithoutCreatorInput {
   @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
     nullable: true
   })
-  connect?: ProblemWhereUniqueInput[] | undefined;
-
-  @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
-    nullable: true
-  })
   set?: ProblemWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
@@ -54,6 +49,11 @@ export class ProblemUpdateManyWithoutCreatorInput {
     nullable: true
   })
   delete?: ProblemWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: ProblemWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [ProblemUpdateWithWhereUniqueWithoutCreatorInput], {
     nullable: true

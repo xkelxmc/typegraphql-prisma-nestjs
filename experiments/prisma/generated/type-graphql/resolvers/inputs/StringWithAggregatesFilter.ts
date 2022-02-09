@@ -7,7 +7,7 @@ import { NestedStringFilter } from "../inputs/NestedStringFilter";
 import { NestedStringWithAggregatesFilter } from "../inputs/NestedStringWithAggregatesFilter";
 import { QueryMode } from "../../enums/QueryMode";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("StringWithAggregatesFilter", {
   isAbstract: true
 })
 export class StringWithAggregatesFilter {
@@ -60,6 +60,11 @@ export class StringWithAggregatesFilter {
     nullable: true
   })
   endsWith?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  search?: string | undefined;
 
   @TypeGraphQL.Field(_type => QueryMode, {
     nullable: true

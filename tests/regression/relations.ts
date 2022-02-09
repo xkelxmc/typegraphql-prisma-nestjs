@@ -314,8 +314,147 @@ describe("relations resolvers generation", () => {
     );
   });
 
-  describe("when `orderByRelation` preview feature is enabled", () => {
-    it("should properly generate args classes for sorting by relation fields", async () => {
+  it("should properly generate args classes for sorting by relation fields", async () => {
+    const schema = /* prisma */ `
+        model FirstModel {
+          idField            Int            @id @default(autoincrement())
+          uniqueStringField  String         @unique
+          floatField         Float
+          secondModelsField  SecondModel[]
+        }
+        model SecondModel {
+          idField            Int          @id @default(autoincrement())
+          uniqueStringField  String       @unique
+          floatField         Float
+          firstModelFieldId  Int
+          firstModelField    FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
+        }
+      `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const firstModelSecondModelsFieldArgsTSFile = await readGeneratedFile(
+      "/resolvers/relations/FirstModel/args/FirstModelSecondModelsFieldArgs.ts",
+    );
+    const indexTSFile = await readGeneratedFile(
+      "/resolvers/relations/FirstModel/args/index.ts",
+    );
+
+    expect(firstModelSecondModelsFieldArgsTSFile).toMatchSnapshot(
+      "FirstModelSecondModelsFieldArgs",
+    );
+    expect(indexTSFile).toMatchSnapshot("index");
+  });
+
+  it("should properly generate relation resolver class for model with named compound id with relation", async () => {
+    const schema = /* prisma */ `
+      model Movie {
+        directorFirstName String
+        directorLastName  String
+        director          Director @relation(fields: [directorFirstName, directorLastName], references: [firstName, lastName])
+        title             String
+
+        @@id([directorFirstName, directorLastName, title], name: "movieIdCompoundName")
+      }
+
+      model Director {
+        firstName String
+        lastName  String
+        movies    Movie[]
+
+        @@id([firstName, lastName], name: "directorIdCompoundName")
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+
+    const movieRelationsResolverTSFile = await readGeneratedFile(
+      "/resolvers/relations/Movie/MovieRelationsResolver.ts",
+    );
+
+    expect(movieRelationsResolverTSFile).toMatchSnapshot(
+      "MovieRelationsResolver",
+    );
+  });
+
+  it("should properly generate relation resolver class for model with named compound unique with relation", async () => {
+    const schema = /* prisma */ `
+      model Movie {
+        directorFirstName String
+        directorLastName  String
+        director          Director @relation(fields: [directorFirstName, directorLastName], references: [firstName, lastName])
+        title             String
+
+        @@unique([directorFirstName, directorLastName, title], name: "movieUniqueCompoundName")
+      }
+
+      model Director {
+        firstName String
+        lastName  String
+        movies    Movie[]
+
+        @@unique([firstName, lastName], name: "directorUniqueCompoundName")
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+
+    const movieRelationsResolverTSFile = await readGeneratedFile(
+      "/resolvers/relations/Movie/MovieRelationsResolver.ts",
+    );
+
+    expect(movieRelationsResolverTSFile).toMatchSnapshot(
+      "MovieRelationsResolver",
+    );
+  });
+
+  it("should not emit relation resolver when relation field is ignored", async () => {
+    const schema = /* prisma */ `
+      model User {
+        id        Int       @id @default(autoincrement())
+        name      String
+        addresses Address[] @ignore
+        points    Point[]
+      }
+      model Address {
+        uuid    String @id @default(cuid())
+        content String
+        user    User   @relation(fields: [userId], references: [id])
+        userId  Int
+      }
+      model Point {
+        uuid   String @id @default(cuid())
+        score  Int
+        user   User   @relation(fields: [userId], references: [id])
+        userId Int
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const userRelationsResolverTSFile = await readGeneratedFile(
+      "/resolvers/relations/User/UserRelationsResolver.ts",
+    );
+    const indexTSFile = await readGeneratedFile(
+      "/resolvers/relations/index.ts",
+    );
+    const argsIndexTSFile = await readGeneratedFile(
+      "/resolvers/relations/args.index.ts",
+    );
+    const resolversIndexTSFile = await readGeneratedFile(
+      "/resolvers/relations/resolvers.index.ts",
+    );
+    const mainIndexTSFile = await readGeneratedFile("/index.ts");
+
+    expect(userRelationsResolverTSFile).toMatchSnapshot(
+      "UserRelationsResolver",
+    );
+    expect(indexTSFile).toMatchSnapshot("index");
+    expect(argsIndexTSFile).toMatchSnapshot("argsIndex");
+    expect(resolversIndexTSFile).toMatchSnapshot("resolversIndex");
+    expect(mainIndexTSFile).toMatchSnapshot("mainIndex");
+  });
+
+  describe("when `fullTextSearch` preview feature is enabled", () => {
+    it("should properly generate args type classes using SearchRelevanceInput", async () => {
       const schema = /* prisma */ `
         model FirstModel {
           idField            Int            @id @default(autoincrement())
@@ -334,19 +473,15 @@ describe("relations resolvers generation", () => {
 
       await generateCodeFromSchema(schema, {
         outputDirPath,
-        previewFeatures: ["orderByRelation"],
+        previewFeatures: ["fullTextSearch"],
       });
       const firstModelSecondModelsFieldArgsTSFile = await readGeneratedFile(
         "/resolvers/relations/FirstModel/args/FirstModelSecondModelsFieldArgs.ts",
-      );
-      const indexTSFile = await readGeneratedFile(
-        "/resolvers/relations/FirstModel/args/index.ts",
       );
 
       expect(firstModelSecondModelsFieldArgsTSFile).toMatchSnapshot(
         "FirstModelSecondModelsFieldArgs",
       );
-      expect(indexTSFile).toMatchSnapshot("index");
     });
   });
 });

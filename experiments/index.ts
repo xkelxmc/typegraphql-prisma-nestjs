@@ -22,9 +22,9 @@ import {
 } from "class-validator";
 
 import {
-  Client,
-  ClientRelationsResolver,
-  ClientCrudResolver,
+  MainUser,
+  MainUserRelationsResolver,
+  MainUserCrudResolver,
   Post,
   PostRelationsResolver,
   FindUniquePostResolver,
@@ -38,7 +38,7 @@ import {
   DirectorCrudResolver,
   DirectorRelationsResolver,
   MovieRelationsResolver,
-  FindManyClientArgs,
+  FindManyMainUserArgs,
   ProblemRelationsResolver,
   CreatorRelationsResolver,
   CreatePostArgs,
@@ -91,14 +91,14 @@ const modelsEnhanceMap: ModelsEnhanceMap = {
 };
 applyModelsEnhanceMap(modelsEnhanceMap);
 
-const aggregateClientConfig: OutputTypeConfig<"AggregateClient"> = {
+const aggregateMainUserConfig: OutputTypeConfig<"AggregateMainUser"> = {
   fields: {
-    avg: [Extensions({ complexity: 10 })],
+    _avg: [Extensions({ complexity: 10 })],
   },
 };
 applyOutputTypesEnhanceMap({
-  AggregateClient: aggregateClientConfig,
-  ClientAvgAggregate: {
+  AggregateMainUser: aggregateMainUserConfig,
+  MainUserAvgAggregate: {
     fields: {
       age: [Authorized()],
     },
@@ -124,7 +124,7 @@ applyArgsTypesEnhanceMap({
 });
 
 applyInputTypesEnhanceMap({
-  ClientCreateInput: {
+  MainUserCreateInput: {
     fields: {
       _all: [Extensions({ test: true })],
     },
@@ -136,7 +136,7 @@ applyInputTypesEnhanceMap({
   },
 });
 
-const clientRelationEnhanceConfig: RelationResolverActionsConfig<"Client"> = {
+const clientRelationEnhanceConfig: RelationResolverActionsConfig<"MainUser"> = {
   clientPosts: [
     UseMiddleware(({ info }, next) => {
       console.log(`${info.parentType.name}.${info.fieldName} field accessed`);
@@ -146,7 +146,7 @@ const clientRelationEnhanceConfig: RelationResolverActionsConfig<"Client"> = {
 };
 
 applyRelationResolversEnhanceMap({
-  Client: clientRelationEnhanceConfig,
+  MainUser: clientRelationEnhanceConfig,
   Movie: {
     _all: [
       UseMiddleware(({ info }, next) => {
@@ -161,6 +161,22 @@ const directorActionsConfig: ResolverActionsConfig<"Director"> = {
   createDirector: [Authorized()],
 };
 const resolversEnhanceMap: ResolversEnhanceMap = {
+  MainUser: {
+    mainUser: [
+      (target, propertyKey, descriptor): any => {
+        return {
+          value: () => {
+            console.log(
+              `${target.constructor.name}.${String(
+                propertyKey,
+              )} descriptor.value called!`,
+            );
+            return null;
+          },
+        };
+      },
+    ],
+  },
   Patient: {
     _all: [
       UseMiddleware(({ info }, next) => {
@@ -180,16 +196,16 @@ interface Context {
   prisma: Prisma.PrismaClient;
 }
 
-@Resolver(of => Client)
-class ClientResolver {
-  @Query(returns => [Client])
-  async allClients(@Ctx() { prisma }: Context): Promise<Prisma.User[]> {
+@Resolver(of => MainUser)
+class MainUserResolver {
+  @Query(returns => [MainUser])
+  async allMainUsers(@Ctx() { prisma }: Context): Promise<Prisma.User[]> {
     return await prisma.user.findMany();
   }
 
-  @Query(returns => [Client])
-  async customFindClientsWithArgs(
-    @Args() args: FindManyClientArgs,
+  @Query(returns => [MainUser])
+  async customFindMainUsersWithArgs(
+    @Args() args: FindManyMainUserArgs,
     @Ctx() { prisma }: Context,
   ): Promise<Prisma.User[]> {
     return prisma.user.findMany(args);
@@ -220,9 +236,9 @@ class PostResolver {
 async function main() {
   const schema = await buildSchema({
     resolvers: [
-      ClientResolver,
-      ClientRelationsResolver,
-      ClientCrudResolver,
+      MainUserResolver,
+      MainUserRelationsResolver,
+      MainUserCrudResolver,
       PostResolver,
       PostRelationsResolver,
       FindUniquePostResolver,
@@ -263,7 +279,6 @@ async function main() {
 
   const server = new ApolloServer({
     schema,
-    playground: true,
     context: (): Context => ({ prisma }),
   });
   const { port } = await server.listen(4000);

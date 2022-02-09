@@ -27,11 +27,12 @@ export default function generateRelationsResolverClassesFromModel(
   const singleIdField = model.fields.find(field => field.isId);
   const singleUniqueField = model.fields.find(field => field.isUnique);
   const singleFilterField = singleIdField ?? singleUniqueField;
-  const compositeIdFields = model.idFields.map(
-    idField => model.fields.find(field => idField === field.name)!,
-  );
-  const compositeUniqueFields = model.uniqueFields[0]
-    ? model.uniqueFields[0].map(
+  const compositeIdFields =
+    model.primaryKey?.fields.map(
+      idField => model.fields.find(field => idField === field.name)!,
+    ) ?? [];
+  const compositeUniqueFields = model.uniqueIndexes[0]
+    ? model.uniqueIndexes[0].fields.map(
         uniqueField => model.fields.find(field => uniqueField === field.name)!,
       )
     : [];
@@ -52,11 +53,7 @@ export default function generateRelationsResolverClassesFromModel(
   generateTypeGraphQLImport(sourceFile);
   generateModelsImports(
     sourceFile,
-    [...relationFields.map(field => field.type), model.name].map(typeName =>
-      dmmfDocument.isModelName(typeName)
-        ? dmmfDocument.getModelTypeName(typeName)!
-        : typeName,
-    ),
+    [...relationFields.map(field => field.type), model.typeName],
     3,
   );
 
@@ -84,8 +81,12 @@ export default function generateRelationsResolverClassesFromModel(
             ${singleFilterField.name}: ${rootArgName}.${singleFilterField.name},
           `;
         } else if (compositeFilterFields.length > 0) {
+          const filterKeyName =
+            model.primaryKey?.name ??
+            model.uniqueIndexes[0]?.name ??
+            compositeFilterFields.map(it => it.name).join("_");
           whereConditionString = `
-            ${compositeFilterFields.map(it => it.name).join("_")}: {
+            ${filterKeyName}: {
               ${compositeFilterFields
                 .map(
                   idField => `${idField.name}: ${rootArgName}.${idField.name},`,

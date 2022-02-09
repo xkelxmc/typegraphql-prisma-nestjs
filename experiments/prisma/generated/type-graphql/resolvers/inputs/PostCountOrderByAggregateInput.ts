@@ -4,7 +4,7 @@ import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PostCountOrderByAggregateInput", {
   isAbstract: true
 })
 export class PostCountOrderByAggregateInput {
@@ -22,11 +22,6 @@ export class PostCountOrderByAggregateInput {
     nullable: true
   })
   updatedAt?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
-  published?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true

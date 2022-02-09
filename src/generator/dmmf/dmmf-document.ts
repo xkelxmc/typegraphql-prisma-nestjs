@@ -8,7 +8,8 @@ import {
   transformEnums,
   generateRelationModel,
 } from "./transform";
-import { GenerateCodeOptions } from "../options";
+import { GeneratorOptions } from "../options";
+import { EmitBlockKind } from "../emit-block";
 
 export class DmmfDocument implements DMMF.Document {
   private models: DMMF.Model[];
@@ -20,7 +21,7 @@ export class DmmfDocument implements DMMF.Document {
 
   constructor(
     { datamodel, schema, mappings }: PrismaDMMF.Document,
-    public options: GenerateCodeOptions,
+    public options: GeneratorOptions,
   ) {
     const enumTypes = [
       ...(schema.enumTypes.prisma ?? []),
@@ -55,6 +56,22 @@ export class DmmfDocument implements DMMF.Document {
           field => field.relationName !== undefined && !field.isOmitted.output,
         ),
       )
+      .filter(model => {
+        const outputType = this.schema.outputTypes.find(
+          type => type.name === model.name,
+        );
+        return (
+          outputType &&
+          outputType.fields.some(outputTypeField =>
+            model.fields.some(
+              modelField =>
+                modelField.name === outputTypeField.name &&
+                modelField.relationName !== undefined &&
+                !modelField.isOmitted.output,
+            ),
+          )
+        );
+      })
       .map(generateRelationModel(this));
   }
 
@@ -75,5 +92,9 @@ export class DmmfDocument implements DMMF.Document {
   getModelFieldAlias(modelName: string, fieldName: string): string | undefined {
     const model = this.models.find(it => it.name === modelName);
     return model?.fields.find(it => it.name === fieldName)?.typeFieldAlias;
+  }
+
+  shouldGenerateBlock(block: EmitBlockKind): boolean {
+    return this.options.blocksToEmit.includes(block);
   }
 }

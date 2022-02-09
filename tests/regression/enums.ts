@@ -71,10 +71,18 @@ describe("enums", () => {
     await generateCodeFromSchema(schema, { outputDirPath });
     const sortOrderTSFile = await readGeneratedFile("/enums/SortOrder.ts");
     const queryModeTSFile = await readGeneratedFile("/enums/QueryMode.ts");
+    const jsonNullValueFilterTSFile = await readGeneratedFile(
+      "/enums/JsonNullValueFilter.ts",
+    );
+    const jsonNullValueInputTSFile = await readGeneratedFile(
+      "/enums/JsonNullValueInput.ts",
+    );
     const enumsIndexTSFile = await readGeneratedFile("/enums/index.ts");
 
     expect(sortOrderTSFile).toMatchSnapshot("SortOrder");
     expect(queryModeTSFile).toMatchSnapshot("QueryMode");
+    expect(jsonNullValueFilterTSFile).toMatchSnapshot("JsonNullValueFilter");
+    expect(jsonNullValueInputTSFile).toMatchSnapshot("JsonNullValueInput");
     expect(enumsIndexTSFile).toMatchSnapshot("enums index");
   });
 
@@ -141,5 +149,56 @@ describe("enums", () => {
       "SampleModelScalarFieldEnum",
     );
     expect(enumsIndexTSFile).toMatchSnapshot("enums index");
+  });
+
+  describe("when `fullTextSearch` preview feature is enabled", () => {
+    it("should properly generate enums for relevance", async () => {
+      const schema = /* prisma */ `
+        model SampleModel {
+          intIdField   Int     @id @default(autoincrement())
+          stringField  String  @unique
+          intField     Int
+        }
+      `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        previewFeatures: ["fullTextSearch"],
+      });
+      const sampleModelOrderByRelevanceFieldEnumTSFile =
+        await readGeneratedFile(
+          "/enums/SampleModelOrderByRelevanceFieldEnum.ts",
+        );
+
+      expect(sampleModelOrderByRelevanceFieldEnumTSFile).toMatchSnapshot(
+        "SampleModelOrderByRelevanceFieldEnum",
+      );
+    });
+
+    describe("when model is renamed", () => {
+      it("should properly generate enums for relevance", async () => {
+        const schema = /* prisma */ `
+          /// @@TypeGraphQL.type(name: "SampleRenamedModel")
+          model SampleModel {
+            intIdField   Int     @id @default(autoincrement())
+            stringField  String  @unique
+            intField     Int
+          }
+        `;
+
+        await generateCodeFromSchema(schema, {
+          outputDirPath,
+          previewFeatures: ["fullTextSearch"],
+        });
+        const sampleRenamedModelOrderByRelevanceFieldEnumTSFile =
+          await readGeneratedFile(
+            "/enums/SampleRenamedModelOrderByRelevanceFieldEnum.ts",
+          );
+
+        expect(
+          sampleRenamedModelOrderByRelevanceFieldEnumTSFile,
+        ).toMatchSnapshot("SampleRenamedModelOrderByRelevanceFieldEnum");
+      });
+    });
   });
 });

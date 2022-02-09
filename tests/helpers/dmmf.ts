@@ -8,21 +8,22 @@ function getDMMF(options: GetDMMFOptions): Promise<PrismaDMMF.Document> {
 
 export default async function getPrismaClientDmmfFromPrismaSchema(
   prismaSchema: string,
-  previewFeatures?: string[],
+  previewFeatures: string[] = [],
 ): Promise<PrismaDMMF.Document> {
+  const previewFeaturesToEmit = [...previewFeatures];
   const datamodelWithGeneratorBlock = /* prisma */ `
     datasource db {
       provider = "postgresql"
       url      = env("DATABASE_URL")
     }
     generator client {
-      provider        = "prisma-client-js"
+      provider = "prisma-client-js"
       ${
-        !previewFeatures
-          ? ""
-          : `previewFeatures = [${previewFeatures
+        previewFeaturesToEmit.length > 0
+          ? `previewFeatures = [${previewFeaturesToEmit
               .map(it => `"${it}"`)
               .join(", ")}]`
+          : ""
       }
     }
     ${prismaSchema}

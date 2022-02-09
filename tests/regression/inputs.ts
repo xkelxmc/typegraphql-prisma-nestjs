@@ -80,6 +80,9 @@ describe("inputs", () => {
     const jsonFilterTSFile = await readGeneratedFile(
       "/resolvers/inputs/JsonFilter.ts",
     );
+    const nestedJsonFilterTSFile = await readGeneratedFile(
+      "/resolvers/inputs/NestedJsonFilter.ts",
+    );
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
     expect(intFilterTSFile).toMatchSnapshot("IntFilter");
@@ -102,6 +105,7 @@ describe("inputs", () => {
     expect(dateTimeFilterTSFile).toMatchSnapshot("DateTimeFilter");
     expect(nestedDateTimeFilterTSFile).toMatchSnapshot("NestedDateTimeFilter");
     expect(jsonFilterTSFile).toMatchSnapshot("JsonFilter");
+    expect(nestedJsonFilterTSFile).toMatchSnapshot("NestedJsonFilter");
     expect(indexTSFile).toMatchSnapshot("index");
   });
 
@@ -143,15 +147,18 @@ describe("inputs", () => {
     const sampleModelCreateintArrayFieldInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/SampleModelCreateintArrayFieldInput.ts",
     );
-    const sampleModelCreateManyintArrayFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/SampleModelCreateManyintArrayFieldInput.ts",
-    );
-    const sampleModelCreatestringArrayFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/SampleModelCreatestringArrayFieldInput.ts",
-    );
-    const sampleModelCreateManystringArrayFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/SampleModelCreateManystringArrayFieldInput.ts",
-    );
+    const sampleModelCreateManyintArrayFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SampleModelCreateManyintArrayFieldInput.ts",
+      );
+    const sampleModelCreatestringArrayFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SampleModelCreatestringArrayFieldInput.ts",
+      );
+    const sampleModelCreateManystringArrayFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SampleModelCreateManystringArrayFieldInput.ts",
+      );
 
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
@@ -232,9 +239,10 @@ describe("inputs", () => {
     const sampleModelUpdateintArrayFieldInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/SampleModelUpdateintArrayFieldInput.ts",
     );
-    const sampleModelUpdatestringArrayFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/SampleModelUpdatestringArrayFieldInput.ts",
-    );
+    const sampleModelUpdatestringArrayFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SampleModelUpdatestringArrayFieldInput.ts",
+      );
 
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
@@ -329,8 +337,8 @@ describe("inputs", () => {
     const firstModelScalarWhereInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/FirstModelScalarWhereInput.ts",
     );
-    const firstModelOrderByInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/FirstModelOrderByInput.ts",
+    const firstModelOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/FirstModelOrderByWithRelationInput.ts",
     );
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
@@ -341,8 +349,8 @@ describe("inputs", () => {
     expect(firstModelScalarWhereInputTSFile).toMatchSnapshot(
       "FirstModelScalarWhereInput",
     );
-    expect(firstModelOrderByInputTSFile).toMatchSnapshot(
-      "FirstModelOrderByInput",
+    expect(firstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "FirstModelOrderByWithRelationInput",
     );
     expect(indexTSFile).toMatchSnapshot("index");
   });
@@ -371,8 +379,8 @@ describe("inputs", () => {
     const firstModelWhereUniqueInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/FirstModelWhereUniqueInput.ts",
     );
-    const firstModelOrderByInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/FirstModelOrderByInput.ts",
+    const firstModelOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/FirstModelOrderByWithRelationInput.ts",
     );
     const firstModelRelationFilterTSFile = await readGeneratedFile(
       "/resolvers/inputs/FirstModelRelationFilter.ts",
@@ -386,8 +394,8 @@ describe("inputs", () => {
     const secondModelScalarWhereInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/SecondModelScalarWhereInput.ts",
     );
-    const secondModelOrderByInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/SecondModelOrderByInput.ts",
+    const secondModelOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SecondModelOrderByWithRelationInput.ts",
     );
     const secondModelListRelationFilterTSFile = await readGeneratedFile(
       "/resolvers/inputs/SecondModelListRelationFilter.ts",
@@ -398,8 +406,8 @@ describe("inputs", () => {
     expect(firstModelWhereUniqueInputTSFile).toMatchSnapshot(
       "FirstModelWhereUniqueInput",
     );
-    expect(firstModelOrderByInputTSFile).toMatchSnapshot(
-      "FirstModelOrderByInput",
+    expect(firstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "FirstModelOrderByWithRelationInput",
     );
     expect(firstModelRelationFilterTSFile).toMatchSnapshot(
       "FirstModelRelationFilter",
@@ -413,8 +421,8 @@ describe("inputs", () => {
     expect(secondModelScalarWhereInputTSFile).toMatchSnapshot(
       "SecondModelScalarWhereInput",
     );
-    expect(secondModelOrderByInputTSFile).toMatchSnapshot(
-      "SecondModelOrderByInput",
+    expect(secondModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "SecondModelOrderByWithRelationInput",
     );
     expect(secondModelListRelationFilterTSFile).toMatchSnapshot(
       "SecondModelListRelationFilter",
@@ -481,19 +489,22 @@ describe("inputs", () => {
     const directorWhereUniqueInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/DirectorWhereUniqueInput.ts",
     );
-    const directorOrderByInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/DirectorOrderByInput.ts",
+    const directorOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/DirectorOrderByWithRelationInput.ts",
     );
-    const directorFirstNameLastNameCompoundUniqueInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/DirectorFirstNameLastNameCompoundUniqueInput.ts",
-    );
+    const directorFirstNameLastNameCompoundUniqueInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/DirectorFirstNameLastNameCompoundUniqueInput.ts",
+      );
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
     expect(directorWhereInputTSFile).toMatchSnapshot("DirectorWhereInput");
     expect(directorWhereUniqueInputTSFile).toMatchSnapshot(
       "DirectorWhereUniqueInput",
     );
-    expect(directorOrderByInputTSFile).toMatchSnapshot("DirectorOrderByInput");
+    expect(directorOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "DirectorOrderByWithRelationInput",
+    );
     expect(directorFirstNameLastNameCompoundUniqueInputTSFile).toMatchSnapshot(
       "DirectorFirstNameLastNameCompoundUniqueInput",
     );
@@ -532,12 +543,13 @@ describe("inputs", () => {
     const movieScalarWhereInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/MovieScalarWhereInput.ts",
     );
-    const movieOrderByInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/MovieOrderByInput.ts",
+    const movieOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/MovieOrderByWithRelationInput.ts",
     );
-    const movieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/MovieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInput.ts",
-    );
+    const movieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/MovieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInput.ts",
+      );
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
     expect(movieWhereInputTSFile).toMatchSnapshot("MovieWhereInput");
@@ -547,7 +559,9 @@ describe("inputs", () => {
     expect(movieScalarWhereInputTSFile).toMatchSnapshot(
       "MovieScalarWhereInput",
     );
-    expect(movieOrderByInputTSFile).toMatchSnapshot("MovieOrderByInput");
+    expect(movieOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "MovieOrderByWithRelationInput",
+    );
     expect(
       movieDirectorFirstNameDirectorLastNameTitleCompoundUniqueInputTSFile,
     ).toMatchSnapshot(
@@ -572,15 +586,18 @@ describe("inputs", () => {
     `;
 
     await generateCodeFromSchema(schema, { outputDirPath });
-    const userUpdateOneRequiredWithoutPostsFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/UserUpdateOneRequiredWithoutPostsFieldInput.ts",
-    );
-    const userCreateOrConnectWithoutPostsFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/UserCreateOrConnectWithoutPostsFieldInput.ts",
-    );
-    const userCreateNestedOneWithoutPostsFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/UserCreateNestedOneWithoutPostsFieldInput.ts",
-    );
+    const userUpdateOneRequiredWithoutPostsFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/UserUpdateOneRequiredWithoutPostsFieldInput.ts",
+      );
+    const userCreateOrConnectWithoutPostsFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/UserCreateOrConnectWithoutPostsFieldInput.ts",
+      );
+    const userCreateNestedOneWithoutPostsFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/UserCreateNestedOneWithoutPostsFieldInput.ts",
+      );
 
     expect(userUpdateOneRequiredWithoutPostsFieldInputTSFile).toMatchSnapshot(
       "UserUpdateOneRequiredWithoutPostsFieldInput",
@@ -625,24 +642,29 @@ describe("inputs", () => {
     const nestedBytesNullableFilterTSFile = await readGeneratedFile(
       "/resolvers/inputs/NestedBytesNullableFilter.ts",
     );
-    const nestedBytesNullableWithAggregatesFilterTSFile = await readGeneratedFile(
-      "/resolvers/inputs/NestedBytesNullableWithAggregatesFilter.ts",
-    );
+    const nestedBytesNullableWithAggregatesFilterTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/NestedBytesNullableWithAggregatesFilter.ts",
+      );
     const nestedDecimalNullableFilterTSFile = await readGeneratedFile(
       "/resolvers/inputs/NestedDecimalNullableFilter.ts",
     );
-    const nestedDecimalNullableWithAggregatesFilterTSFile = await readGeneratedFile(
-      "/resolvers/inputs/NestedDecimalNullableWithAggregatesFilter.ts",
-    );
-    const nullableBigIntFieldUpdateOperationsInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/NullableBigIntFieldUpdateOperationsInput.ts",
-    );
-    const nullableBytesFieldUpdateOperationsInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/NullableBytesFieldUpdateOperationsInput.ts",
-    );
-    const nullableDecimalFieldUpdateOperationsInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/NullableDecimalFieldUpdateOperationsInput.ts",
-    );
+    const nestedDecimalNullableWithAggregatesFilterTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/NestedDecimalNullableWithAggregatesFilter.ts",
+      );
+    const nullableBigIntFieldUpdateOperationsInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/NullableBigIntFieldUpdateOperationsInput.ts",
+      );
+    const nullableBytesFieldUpdateOperationsInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/NullableBytesFieldUpdateOperationsInput.ts",
+      );
+    const nullableDecimalFieldUpdateOperationsInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/NullableDecimalFieldUpdateOperationsInput.ts",
+      );
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
     expect(bigIntNullableFilterTSFile).toMatchSnapshot("BigIntNullableFilter");
@@ -776,15 +798,17 @@ describe("inputs", () => {
     const nativeTypeModelCreateInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/NativeTypeModelCreateInput.ts",
     );
-    const nativeTypeModelOrderByInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/NativeTypeModelOrderByInput.ts",
-    );
+    const nativeTypeModelOrderByWithRelationInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/NativeTypeModelOrderByWithRelationInput.ts",
+      );
     const nativeTypeModelUpdateInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/NativeTypeModelUpdateInput.ts",
     );
-    const nativeTypeModelUpdateManyMutationInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/NativeTypeModelUpdateManyMutationInput.ts",
-    );
+    const nativeTypeModelUpdateManyMutationInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/NativeTypeModelUpdateManyMutationInput.ts",
+      );
     const nativeTypeModelWhereInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/NativeTypeModelWhereInput.ts",
     );
@@ -796,8 +820,8 @@ describe("inputs", () => {
     expect(nativeTypeModelCreateInputTSFile).toMatchSnapshot(
       "NativeTypeModelCreateInput",
     );
-    expect(nativeTypeModelOrderByInputTSFile).toMatchSnapshot(
-      "NativeTypeModelOrderByInput",
+    expect(nativeTypeModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "NativeTypeModelOrderByWithRelationInput",
     );
     expect(nativeTypeModelUpdateInputTSFile).toMatchSnapshot(
       "NativeTypeModelUpdateInput",
@@ -838,12 +862,14 @@ describe("inputs", () => {
     const secondModelCreateManyInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/SecondModelCreateManyInput.ts",
     );
-    const secondModelCreateManyFirstModelFieldInputTSFile = await readGeneratedFile(
-      "/resolvers/inputs/SecondModelCreateManyFirstModelFieldInput.ts",
-    );
-    const secondModelCreateManyFirstModelFieldInputEnvelopeTSFile = await readGeneratedFile(
-      "/resolvers/inputs/SecondModelCreateManyFirstModelFieldInputEnvelope.ts",
-    );
+    const secondModelCreateManyFirstModelFieldInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SecondModelCreateManyFirstModelFieldInput.ts",
+      );
+    const secondModelCreateManyFirstModelFieldInputEnvelopeTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SecondModelCreateManyFirstModelFieldInputEnvelope.ts",
+      );
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
     expect(firstModelCreateManyInputTSFile).toMatchSnapshot(
@@ -889,8 +915,8 @@ describe("inputs", () => {
       const exampleWhereUniqueInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/ExampleWhereUniqueInput.ts",
       );
-      const exampleOrderByInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/ExampleOrderByInput.ts",
+      const exampleOrderByWithRelationInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/ExampleOrderByWithRelationInput.ts",
       );
       const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
@@ -898,7 +924,9 @@ describe("inputs", () => {
       expect(exampleWhereUniqueInputTSFile).toMatchSnapshot(
         "ExampleWhereUniqueInput",
       );
-      expect(exampleOrderByInputTSFile).toMatchSnapshot("ExampleOrderByInput");
+      expect(exampleOrderByWithRelationInputTSFile).toMatchSnapshot(
+        "ExampleOrderByWithRelationInput",
+      );
       expect(indexTSFile).toMatchSnapshot("index");
     });
 
@@ -930,9 +958,10 @@ describe("inputs", () => {
       const renamedFirstModelScalarWhereInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/RenamedFirstModelScalarWhereInput.ts",
       );
-      const renamedFirstModelOrderByInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/RenamedFirstModelOrderByInput.ts",
-      );
+      const renamedFirstModelOrderByWithRelationInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/RenamedFirstModelOrderByWithRelationInput.ts",
+        );
       const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
       expect(renamedFirstModelWhereInputTSFile).toMatchSnapshot(
@@ -944,8 +973,8 @@ describe("inputs", () => {
       expect(renamedFirstModelScalarWhereInputTSFile).toMatchSnapshot(
         "RenamedFirstModelScalarWhereInput",
       );
-      expect(renamedFirstModelOrderByInputTSFile).toMatchSnapshot(
-        "RenamedFirstModelOrderByInput",
+      expect(renamedFirstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+        "RenamedFirstModelOrderByWithRelationInput",
       );
       expect(indexTSFile).toMatchSnapshot("index");
     });
@@ -976,9 +1005,10 @@ describe("inputs", () => {
       const renamedFirstModelWhereUniqueInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/RenamedFirstModelWhereUniqueInput.ts",
       );
-      const renamedFirstModelOrderByInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/RenamedFirstModelOrderByInput.ts",
-      );
+      const renamedFirstModelOrderByWithRelationInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/RenamedFirstModelOrderByWithRelationInput.ts",
+        );
       const renamedFirstModelRelationFilterTSFile = await readGeneratedFile(
         "/resolvers/inputs/RenamedFirstModelRelationFilter.ts",
       );
@@ -991,12 +1021,14 @@ describe("inputs", () => {
       const renamedSecondModelScalarWhereInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/RenamedSecondModelScalarWhereInput.ts",
       );
-      const renamedSecondModelOrderByInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/RenamedSecondModelOrderByInput.ts",
-      );
-      const renamedSecondModelListRelationFilterTSFile = await readGeneratedFile(
-        "/resolvers/inputs/RenamedSecondModelListRelationFilter.ts",
-      );
+      const renamedSecondModelOrderByWithRelationInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/RenamedSecondModelOrderByWithRelationInput.ts",
+        );
+      const renamedSecondModelListRelationFilterTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/RenamedSecondModelListRelationFilter.ts",
+        );
       const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
       expect(renamedFirstModelWhereInputTSFile).toMatchSnapshot(
@@ -1005,8 +1037,8 @@ describe("inputs", () => {
       expect(renamedFirstModelWhereUniqueInputTSFile).toMatchSnapshot(
         "RenamedFirstModelWhereUniqueInput",
       );
-      expect(renamedFirstModelOrderByInputTSFile).toMatchSnapshot(
-        "RenamedFirstModelOrderByInput",
+      expect(renamedFirstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+        "RenamedFirstModelOrderByWithRelationInput",
       );
       expect(renamedFirstModelRelationFilterTSFile).toMatchSnapshot(
         "RenamedFirstModelRelationFilter",
@@ -1020,8 +1052,8 @@ describe("inputs", () => {
       expect(renamedSecondModelScalarWhereInputTSFile).toMatchSnapshot(
         "RenamedSecondModelScalarWhereInput",
       );
-      expect(renamedSecondModelOrderByInputTSFile).toMatchSnapshot(
-        "RenamedSecondModelOrderByInput",
+      expect(renamedSecondModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+        "RenamedSecondModelOrderByWithRelationInput",
       );
       expect(renamedSecondModelListRelationFilterTSFile).toMatchSnapshot(
         "RenamedSecondModelListRelationFilter",
@@ -1044,14 +1076,130 @@ describe("inputs", () => {
       const sampleWhereInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/SampleWhereInput.ts",
       );
-      const sampleOrderByInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SampleOrderByInput.ts",
+      const sampleOrderByWithRelationInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/SampleOrderByWithRelationInput.ts",
       );
       const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
       expect(sampleWhereInputTSFile).toMatchSnapshot("SampleWhereInput");
-      expect(sampleOrderByInputTSFile).toMatchSnapshot("SampleOrderByInput");
+      expect(sampleOrderByWithRelationInputTSFile).toMatchSnapshot(
+        "SampleOrderByWithRelationInput",
+      );
       expect(indexTSFile).toMatchSnapshot("index");
+    });
+  });
+
+  describe("when model field has `omit(input: true)` set", () => {
+    it("should properly generate input type class for prisma model without the omitted field", async () => {
+      const schema = /* prisma */ `
+        model User {
+          id           Int       @id @default(autoincrement())
+          dateOfBirth  DateTime
+          name         String
+          /// @TypeGraphQL.omit(input: true)
+          balance      Float?
+        }
+      `;
+
+      await generateCodeFromSchema(schema, { outputDirPath });
+      const userCreateInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserCreateInput.ts",
+      );
+      const userCreateManyInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserCreateManyInput.ts",
+      );
+      const userOrderByWithRelationInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserOrderByWithRelationInput.ts",
+      );
+      const userScalarWhereWithAggregatesInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserScalarWhereWithAggregatesInput.ts",
+      );
+      const userUpdateInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserUpdateInput.ts",
+      );
+      const userUpdateManyMutationInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserUpdateManyMutationInput.ts",
+      );
+      const userWhereInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserWhereInput.ts",
+      );
+      const userWhereUniqueInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserWhereUniqueInput.ts",
+      );
+
+      expect(userCreateInputTSFile).toMatchSnapshot("UserCreateInput");
+      expect(userCreateManyInputTSFile).toMatchSnapshot("UserCreateManyInput");
+      expect(userOrderByWithRelationInputTSFile).toMatchSnapshot(
+        "UserOrderByWithRelationInput",
+      );
+      expect(userScalarWhereWithAggregatesInputTSFile).toMatchSnapshot(
+        "UserScalarWhereWithAggregatesInput",
+      );
+      expect(userUpdateInputTSFile).toMatchSnapshot("UserUpdateInput");
+      expect(userUpdateManyMutationInputTSFile).toMatchSnapshot(
+        "UserUpdateManyMutationInput",
+      );
+      expect(userWhereInputTSFile).toMatchSnapshot("UserWhereInput");
+      expect(userWhereUniqueInputTSFile).toMatchSnapshot(
+        "UserWhereUniqueInput",
+      );
+    });
+  });
+
+  describe("when model field has `omit(output: true)` set", () => {
+    it("should properly generate input type class for prisma model with the omitted field", async () => {
+      const schema = /* prisma */ `
+        model User {
+          id           Int       @id @default(autoincrement())
+          dateOfBirth  DateTime
+          name         String
+          /// @TypeGraphQL.omit(output: true)
+          balance      Float?
+        }
+      `;
+
+      await generateCodeFromSchema(schema, { outputDirPath });
+      const userCreateInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserCreateInput.ts",
+      );
+      const userCreateManyInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserCreateManyInput.ts",
+      );
+      const userOrderByWithRelationInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserOrderByWithRelationInput.ts",
+      );
+      const userScalarWhereWithAggregatesInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserScalarWhereWithAggregatesInput.ts",
+      );
+      const userUpdateInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserUpdateInput.ts",
+      );
+      const userUpdateManyMutationInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserUpdateManyMutationInput.ts",
+      );
+      const userWhereInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserWhereInput.ts",
+      );
+      const userWhereUniqueInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/UserWhereUniqueInput.ts",
+      );
+
+      expect(userCreateInputTSFile).toMatchSnapshot("UserCreateInput");
+      expect(userCreateManyInputTSFile).toMatchSnapshot("UserCreateManyInput");
+      expect(userOrderByWithRelationInputTSFile).toMatchSnapshot(
+        "UserOrderByWithRelationInput",
+      );
+      expect(userScalarWhereWithAggregatesInputTSFile).toMatchSnapshot(
+        "UserScalarWhereWithAggregatesInput",
+      );
+      expect(userUpdateInputTSFile).toMatchSnapshot("UserUpdateInput");
+      expect(userUpdateManyMutationInputTSFile).toMatchSnapshot(
+        "UserUpdateManyMutationInput",
+      );
+      expect(userWhereInputTSFile).toMatchSnapshot("UserWhereInput");
+      expect(userWhereUniqueInputTSFile).toMatchSnapshot(
+        "UserWhereUniqueInput",
+      );
     });
   });
 
@@ -1078,8 +1226,6 @@ describe("inputs", () => {
     });
   });
 
-  describe("when preview feature `groupBy` is enabled", () => {});
-
   describe("when useUncheckedScalarInputs mode is enabled", () => {
     it("should properly generate input type classes for filtering models by one to many relation fields", async () => {
       const schema = /* prisma */ `
@@ -1105,36 +1251,44 @@ describe("inputs", () => {
       const firstModelUncheckedCreateInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/FirstModelUncheckedCreateInput.ts",
       );
-      const firstModelUncheckedCreateWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelUncheckedCreateWithoutSecondModelsFieldInput.ts",
-      );
+      const firstModelUncheckedCreateWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelUncheckedCreateWithoutSecondModelsFieldInput.ts",
+        );
       const firstModelUncheckedUpdateInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/FirstModelUncheckedUpdateInput.ts",
       );
       const firstModelUncheckedUpdateManyInputTSFile = await readGeneratedFile(
         "/resolvers/inputs/FirstModelUncheckedUpdateManyInput.ts",
       );
-      const firstModelUncheckedUpdateWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelUncheckedUpdateWithoutSecondModelsFieldInput.ts",
-      );
-      const firstModelCreateNestedOneWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelCreateNestedOneWithoutSecondModelsFieldInput.ts",
-      );
-      const firstModelCreateOrConnectWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelCreateOrConnectWithoutSecondModelsFieldInput.ts",
-      );
-      const firstModelCreateWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelCreateWithoutSecondModelsFieldInput.ts",
-      );
-      const firstModelUpdateOneRequiredWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput.ts",
-      );
-      const firstModelUpdateWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelUpdateWithoutSecondModelsFieldInput.ts",
-      );
-      const firstModelUpsertWithoutSecondModelsFieldInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelUpsertWithoutSecondModelsFieldInput.ts",
-      );
+      const firstModelUncheckedUpdateWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelUncheckedUpdateWithoutSecondModelsFieldInput.ts",
+        );
+      const firstModelCreateNestedOneWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelCreateNestedOneWithoutSecondModelsFieldInput.ts",
+        );
+      const firstModelCreateOrConnectWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelCreateOrConnectWithoutSecondModelsFieldInput.ts",
+        );
+      const firstModelCreateWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelCreateWithoutSecondModelsFieldInput.ts",
+        );
+      const firstModelUpdateOneRequiredWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput.ts",
+        );
+      const firstModelUpdateWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelUpdateWithoutSecondModelsFieldInput.ts",
+        );
+      const firstModelUpsertWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelUpsertWithoutSecondModelsFieldInput.ts",
+        );
       const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
       expect(firstModelUncheckedCreateInputTSFile).toMatchSnapshot(
@@ -1184,9 +1338,8 @@ describe("inputs", () => {
     });
   });
 
-  describe("when `orderByRelation` preview feature is enabled", () => {
-    it("should properly generate input type classes for sorting by many-to-many relation fields", async () => {
-      const schema = /* prisma */ `
+  it("should properly generate input type classes for sorting by many-to-many relation fields", async () => {
+    const schema = /* prisma */ `
         model FirstModel {
           idField            Int            @id @default(autoincrement())
           uniqueStringField  String         @unique
@@ -1201,28 +1354,156 @@ describe("inputs", () => {
         }
       `;
 
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const firstModelOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/FirstModelOrderByWithRelationInput.ts",
+    );
+    const secondModelOrderByRelationAggregateInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SecondModelOrderByRelationAggregateInput.ts",
+      );
+    const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
+
+    expect(firstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "FirstModelOrderByWithRelationInput",
+    );
+    expect(secondModelOrderByRelationAggregateInputTSFile).toMatchSnapshot(
+      "SecondModelOrderByRelationAggregateInput",
+    );
+    expect(indexTSFile).toMatchSnapshot("index");
+  });
+
+  it("should properly generate input type classes for sorting by one-to-many relation fields", async () => {
+    const schema = /* prisma */ `
+      model FirstModel {
+        idField            Int            @id @default(autoincrement())
+        uniqueStringField  String         @unique
+        floatField         Float
+        secondModelsField  SecondModel[]
+      }
+      model SecondModel {
+        idField            Int          @id @default(autoincrement())
+        uniqueStringField  String       @unique
+        floatField         Float
+        firstModelFieldId  Int
+        firstModelField    FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const firstModelOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/FirstModelOrderByWithRelationInput.ts",
+    );
+    const secondModelOrderByRelationAggregateInputTSFile =
+      await readGeneratedFile(
+        "/resolvers/inputs/SecondModelOrderByRelationAggregateInput.ts",
+      );
+    const secondModelOrderByWithRelationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SecondModelOrderByWithRelationInput.ts",
+    );
+    const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
+
+    expect(firstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "FirstModelOrderByWithRelationInput",
+    );
+    expect(secondModelOrderByRelationAggregateInputTSFile).toMatchSnapshot(
+      "SecondModelOrderByRelationAggregateInput",
+    );
+    expect(secondModelOrderByWithRelationInputTSFile).toMatchSnapshot(
+      "SecondModelOrderByWithRelationInput",
+    );
+    expect(indexTSFile).toMatchSnapshot("index");
+  });
+
+  it("should properly generate input type classes for sorting by many-to-many relation fields", async () => {
+    const schema = /* prisma */ `
+      model Sample {
+        idField       Int     @id @default(autoincrement())
+        stringField   String
+        floatField    Float
+        intField      Int
+        booleanField  Boolean
+        dateField     DateTime
+        jsonField     Json
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const sampleOrderByWithAggregationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleOrderByWithAggregationInput.ts",
+    );
+    const sampleMaxOrderByAggregateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleMaxOrderByAggregateInput.ts",
+    );
+    const sampleMinOrderByAggregateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleMinOrderByAggregateInput.ts",
+    );
+    const sampleAvgOrderByAggregateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleAvgOrderByAggregateInput.ts",
+    );
+    const sampleCountOrderByAggregateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleCountOrderByAggregateInput.ts",
+    );
+    const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
+
+    expect(sampleOrderByWithAggregationInputTSFile).toMatchSnapshot(
+      "SampleOrderByWithAggregationInput",
+    );
+    expect(sampleMaxOrderByAggregateInputTSFile).toMatchSnapshot(
+      "SampleMaxOrderByAggregateInput",
+    );
+    expect(sampleMinOrderByAggregateInputTSFile).toMatchSnapshot(
+      "SampleMinOrderByAggregateInput",
+    );
+    expect(sampleAvgOrderByAggregateInputTSFile).toMatchSnapshot(
+      "SampleAvgOrderByAggregateInput",
+    );
+    expect(sampleCountOrderByAggregateInputTSFile).toMatchSnapshot(
+      "SampleCountOrderByAggregateInput",
+    );
+    expect(indexTSFile).toMatchSnapshot("index");
+  });
+
+  describe("when `filterJson` preview feature is enabled", () => {
+    it("should properly generate input type classes for filtering json fields", async () => {
+      const schema = /* prisma */ `
+        model Sample {
+          idField       Int     @id @default(autoincrement())
+          stringField   String
+          floatField    Float
+          intField      Int
+          booleanField  Boolean
+          dateField     DateTime
+          jsonField     Json
+        }
+      `;
+
       await generateCodeFromSchema(schema, {
         outputDirPath,
-        previewFeatures: ["orderByRelation"],
+        previewFeatures: ["filterJson"],
       });
-      const firstModelOrderByWithRelationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelOrderByWithRelationInput.ts",
+      const jsonFilterTSFile = await readGeneratedFile(
+        "/resolvers/inputs/JsonFilter.ts",
       );
-      const secondModelOrderByRelationAggregateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SecondModelOrderByRelationAggregateInput.ts",
+      const jsonWithAggregatesFilterTSFile = await readGeneratedFile(
+        "/resolvers/inputs/JsonWithAggregatesFilter.ts",
+      );
+      const nestedJsonFilterTSFile = await readGeneratedFile(
+        "/resolvers/inputs/NestedJsonFilter.ts",
       );
       const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
-      expect(firstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
-        "FirstModelOrderByWithRelationInput",
+      expect(jsonFilterTSFile).toMatchSnapshot("JsonFilter");
+      expect(jsonWithAggregatesFilterTSFile).toMatchSnapshot(
+        "JsonWithAggregatesFilter",
       );
-      expect(secondModelOrderByRelationAggregateInputTSFile).toMatchSnapshot(
-        "SecondModelOrderByRelationAggregateInput",
-      );
+      expect(nestedJsonFilterTSFile).toMatchSnapshot("NestedJsonFilter");
       expect(indexTSFile).toMatchSnapshot("index");
     });
+  });
 
-    it("should properly generate input type classes for sorting by one-to-many relation fields", async () => {
+  describe("when `fullTextSearch` preview feature is enabled", () => {
+    it("should properly generate input type classes with relevance and string search field", async () => {
       const schema = /* prisma */ `
         model FirstModel {
           idField            Int            @id @default(autoincrement())
@@ -1241,82 +1522,31 @@ describe("inputs", () => {
 
       await generateCodeFromSchema(schema, {
         outputDirPath,
-        previewFeatures: ["orderByRelation"],
+        previewFeatures: ["fullTextSearch"],
       });
-      const firstModelOrderByWithRelationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/FirstModelOrderByWithRelationInput.ts",
+      const orderByRelevanceInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/FirstModelOrderByRelevanceInput.ts",
       );
-      const secondModelOrderByRelationAggregateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SecondModelOrderByRelationAggregateInput.ts",
+      const orderByWithRelationAndSearchRelevanceInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelOrderByWithRelationAndSearchRelevanceInput.ts",
+        );
+      const nestedStringFilterTSFile = await readGeneratedFile(
+        "/resolvers/inputs/NestedStringFilter.ts",
       );
-      const secondModelOrderByWithRelationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SecondModelOrderByWithRelationInput.ts",
+      const stringFilterTSFile = await readGeneratedFile(
+        "/resolvers/inputs/StringFilter.ts",
       );
       const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
 
-      expect(firstModelOrderByWithRelationInputTSFile).toMatchSnapshot(
-        "FirstModelOrderByWithRelationInput",
+      expect(orderByRelevanceInputTSFile).toMatchSnapshot(
+        "FirstModelOrderByRelevanceInput",
       );
-      expect(secondModelOrderByRelationAggregateInputTSFile).toMatchSnapshot(
-        "SecondModelOrderByRelationAggregateInput",
+      expect(orderByWithRelationAndSearchRelevanceInputTSFile).toMatchSnapshot(
+        "FirstModelOrderByWithRelationAndSearchRelevanceInput",
       );
-      expect(secondModelOrderByWithRelationInputTSFile).toMatchSnapshot(
-        "SecondModelOrderByWithRelationInput",
-      );
-      expect(indexTSFile).toMatchSnapshot("index");
-    });
-  });
-
-  describe("when `orderByAggregateGroup` preview feature is enabled", () => {
-    it("should properly generate input type classes for sorting by many-to-many relation fields", async () => {
-      const schema = /* prisma */ `
-        model Sample {
-          idField       Int     @id @default(autoincrement())
-          stringField   String
-          floatField    Float
-          intField      Int
-          booleanField  Boolean
-          dateField     DateTime
-          jsonField     Json
-        }
-      `;
-
-      await generateCodeFromSchema(schema, {
-        outputDirPath,
-        previewFeatures: ["orderByAggregateGroup"],
-      });
-      const sampleOrderByWithAggregationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SampleOrderByWithAggregationInput.ts",
-      );
-      const sampleMaxOrderByAggregateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SampleMaxOrderByAggregateInput.ts",
-      );
-      const sampleMinOrderByAggregateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SampleMinOrderByAggregateInput.ts",
-      );
-      const sampleAvgOrderByAggregateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SampleAvgOrderByAggregateInput.ts",
-      );
-      const sampleCountOrderByAggregateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/SampleCountOrderByAggregateInput.ts",
-      );
-      const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
-
-      expect(sampleOrderByWithAggregationInputTSFile).toMatchSnapshot(
-        "SampleOrderByWithAggregationInput",
-      );
-      expect(sampleMaxOrderByAggregateInputTSFile).toMatchSnapshot(
-        "SampleMaxOrderByAggregateInput",
-      );
-      expect(sampleMinOrderByAggregateInputTSFile).toMatchSnapshot(
-        "SampleMinOrderByAggregateInput",
-      );
-      expect(sampleAvgOrderByAggregateInputTSFile).toMatchSnapshot(
-        "SampleAvgOrderByAggregateInput",
-      );
-      expect(sampleCountOrderByAggregateInputTSFile).toMatchSnapshot(
-        "SampleCountOrderByAggregateInput",
-      );
+      expect(nestedStringFilterTSFile).toMatchSnapshot("NestedStringFilter");
+      expect(stringFilterTSFile).toMatchSnapshot("StringFilter");
       expect(indexTSFile).toMatchSnapshot("index");
     });
   });

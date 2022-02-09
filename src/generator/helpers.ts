@@ -1,5 +1,6 @@
 import { DmmfDocument } from "./dmmf/dmmf-document";
 import { modelAttributeRegex, fieldAttributeRegex } from "./dmmf/helpers";
+import { getMappedOutputTypeName } from "./dmmf/transform";
 import { DMMF } from "./dmmf/types";
 
 enum PrismaScalars {
@@ -24,20 +25,15 @@ export function getFieldTSType(
   modelName?: string,
   typeName?: string,
 ) {
-  let TSType: string;
+  let TSType: string = typeInfo.type;
   if (typeInfo.location === "scalar") {
     TSType = mapScalarToTSType(typeInfo.type, isInputType);
   } else if (
     typeInfo.location === "inputObjectTypes" ||
     typeInfo.location === "outputObjectTypes"
   ) {
-    if (dmmfDocument.isModelName(typeInfo.type)) {
-      TSType = dmmfDocument.getModelTypeName(typeInfo.type)!;
-    } else {
-      TSType =
-        !typeName || !modelName
-          ? getInputTypeName(typeInfo.type, dmmfDocument)
-          : typeInfo.type.replace(modelName, typeName);
+    if (!dmmfDocument.isModelName(typeInfo.type) && (!typeName || !modelName)) {
+      TSType = getInputTypeName(typeInfo.type, dmmfDocument);
     }
   } else if (typeInfo.location === "enumTypes") {
     const enumDef = dmmfDocument.enums.find(
@@ -100,24 +96,22 @@ export function getTypeGraphQLType(
   dmmfDocument: DmmfDocument,
   modelName?: string,
   typeName?: string,
+  isIdField?: boolean,
 ) {
-  let GraphQLType: string;
+  let GraphQLType: string = typeInfo.type;
   if (typeInfo.location === "scalar") {
-    GraphQLType = mapScalarToTypeGraphQLType(typeInfo.type);
+    GraphQLType = mapScalarToTypeGraphQLType(
+      typeInfo.type,
+      dmmfDocument.options.emitIdAsIDType,
+      isIdField,
+    );
   } else if (
-    typeInfo.location === "inputObjectTypes" ||
-    typeInfo.location === "outputObjectTypes"
+    (typeInfo.location === "inputObjectTypes" ||
+      typeInfo.location === "outputObjectTypes") &&
+    (!typeName || !modelName) &&
+    !dmmfDocument.isModelName(typeInfo.type)
   ) {
-    if (dmmfDocument.isModelName(typeInfo.type)) {
-      GraphQLType = dmmfDocument.getModelTypeName(typeInfo.type)!;
-    } else {
-      GraphQLType =
-        !typeName || !modelName
-          ? getInputTypeName(typeInfo.type, dmmfDocument)
-          : typeInfo.type.replace(modelName, typeName);
-    }
-  } else {
-    GraphQLType = typeInfo.type;
+    GraphQLType = getInputTypeName(typeInfo.type, dmmfDocument);
   }
   if (typeInfo.isList) {
     GraphQLType = `[${GraphQLType}]`;
@@ -125,7 +119,14 @@ export function getTypeGraphQLType(
   return GraphQLType;
 }
 
-export function mapScalarToTypeGraphQLType(scalar: string) {
+export function mapScalarToTypeGraphQLType(
+  scalar: string,
+  emitIdAsIDType: boolean | undefined,
+  isIdField?: boolean,
+) {
+  if (emitIdAsIDType && isIdField) {
+    return `TypeGraphQL.ID`;
+  }
   switch (scalar) {
     case PrismaScalars.String:
     case PrismaScalars.Boolean: {
@@ -206,9 +207,8 @@ export function getInputTypeName(
   originalInputName: string,
   dmmfDocument: DmmfDocument,
 ): string {
-  const keywordPhrasePosition = getInputKeywordPhrasePosition(
-    originalInputName,
-  );
+  const keywordPhrasePosition =
+    getInputKeywordPhrasePosition(originalInputName);
   if (!keywordPhrasePosition) {
     return originalInputName;
   }
@@ -233,11 +233,23 @@ export function cleanDocsString(
   cleanedDocs = cleanedDocs.replace(modelAttributeRegex, "");
   cleanedDocs = cleanedDocs.replace(fieldAttributeRegex, "");
   cleanedDocs = cleanedDocs.split('"').join('\\"');
-  cleanedDocs = cleanedDocs.split("\r").join("");
-  cleanedDocs = cleanedDocs.split("\\r").join("");
-  cleanedDocs = cleanedDocs.split("\n").join("");
-  cleanedDocs = cleanedDocs.split("\\n").join("");
+  if (cleanedDocs.endsWith("\r")) {
+    cleanedDocs = cleanedDocs.slice(0, -1);
+  }
+  if (cleanedDocs.endsWith("\\r")) {
+    cleanedDocs = cleanedDocs.slice(0, -2);
+  }
+  if (cleanedDocs.endsWith("\n")) {
+    cleanedDocs = cleanedDocs.slice(0, -1);
+  }
+  if (cleanedDocs.endsWith("\\n")) {
+    cleanedDocs = cleanedDocs.slice(0, -2);
+  }
   return cleanedDocs;
+}
+
+export function convertNewLines(str: string) {
+  return str.split("\\n").join("\n");
 }
 
 export function toUnixPath(maybeWindowsPath: string) {
