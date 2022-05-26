@@ -1,3 +1,5 @@
+import { InputOmitSetting } from "../config";
+
 export namespace DMMF {
   export interface Document {
     datamodel: Datamodel;
@@ -6,7 +8,7 @@ export namespace DMMF {
   }
   export interface Enum {
     name: string;
-    // values: string[];
+    // values: EnumValue[];
     dbName?: string | null;
     // documentation?: string;
     // additional props
@@ -17,6 +19,7 @@ export namespace DMMF {
   export interface Datamodel {
     models: Model[];
     enums: Enum[];
+    types: Model[];
   }
   export interface UniqueIndex {
     name: string;
@@ -55,9 +58,11 @@ export namespace DMMF {
     isList: boolean;
     isUnique: boolean;
     isId: boolean;
-    // type: string | DMMF.SchemaEnum | DMMF.OutputType | DMMF.SchemaArg;
+    isReadOnly: boolean;
+    isGenerated?: boolean;
+    isUpdatedAt?: boolean;
+    // type: string;
     dbNames?: string[] | null;
-    isGenerated: boolean;
     hasDefaultValue: boolean;
     default?: FieldDefault | string | boolean | number;
     relationToFields?: any[];
@@ -72,7 +77,7 @@ export namespace DMMF {
     typeGraphQLType: string;
     fieldTSType: string;
     docs: string | undefined;
-    isOmitted: { input: boolean; output: boolean };
+    isOmitted: { input: boolean | InputOmitSetting[]; output: boolean };
   }
   export interface FieldDefault {
     name: string;
@@ -123,7 +128,6 @@ export namespace DMMF {
     name: string;
     // fields: SchemaField[];
     // fieldMap?: Record<string, SchemaField>;
-    isEmbedded?: boolean;
     // additional props
     fields: OutputSchemaField[];
     // modelName: string;
@@ -153,7 +157,7 @@ export namespace DMMF {
   }
   // named subtype of SchemaField->outputType
   export interface TypeInfo {
-    // type: string | OutputType | Enum;
+    // type: string | OutputType | SchemaEnum;
     isList: boolean;
     location: FieldLocation;
     namespace?: FieldNamespace;
@@ -198,19 +202,6 @@ export namespace DMMF {
     resolverName: string;
     modelTypeName: string;
   }
-  // additional type
-  export interface Action {
-    name: string;
-    fieldName: string;
-    kind: ModelAction;
-    operation: "Query" | "Mutation";
-    method: OutputSchemaField;
-    argsTypeName: string | undefined;
-    outputTypeName: string;
-    actionResolverName: string;
-    returnTSType: string;
-    typeGraphQLType: string;
-  }
   export enum ModelAction {
     findUnique = "findUnique",
     findFirst = "findFirst",
@@ -225,6 +216,19 @@ export namespace DMMF {
     groupBy = "groupBy",
     // count = "count",
     aggregate = "aggregate",
+  }
+  // additional type
+  export interface Action {
+    name: string;
+    fieldName: string;
+    kind: ModelAction;
+    operation: "Query" | "Mutation";
+    method: OutputSchemaField;
+    argsTypeName: string | undefined;
+    outputTypeName: string;
+    actionResolverName: string;
+    returnTSType: string;
+    typeGraphQLType: string;
   }
   // additional type
   export interface RelationModel {

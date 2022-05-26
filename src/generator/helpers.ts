@@ -125,7 +125,7 @@ export function mapScalarToTypeGraphQLType(
   isIdField?: boolean,
 ) {
   if (emitIdAsIDType && isIdField) {
-    return `TypeGraphQL.ID`;
+    return `ID`;
   }
   switch (scalar) {
     case PrismaScalars.String:
@@ -134,7 +134,7 @@ export function mapScalarToTypeGraphQLType(
     }
     case PrismaScalars.Int:
     case PrismaScalars.Float: {
-      return `TypeGraphQL.${scalar}`;
+      return `${scalar}`;
     }
     case PrismaScalars.DateTime: {
       return "Date";

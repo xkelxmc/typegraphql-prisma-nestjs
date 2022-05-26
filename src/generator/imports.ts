@@ -42,10 +42,6 @@ export function generateTypeGraphQLImport(sourceFile: SourceFile) {
       "Info",
     ].sort(),
   });
-  sourceFile.addImportDeclaration({
-    moduleSpecifier: "type-graphql",
-    namespaceImport: "TypeGraphQL",
-  });
 }
 
 export function generateGraphQLFieldsImport(sourceFile: SourceFile) {

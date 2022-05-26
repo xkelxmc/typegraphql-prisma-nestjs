@@ -147,17 +147,9 @@ describe("inputs", () => {
     const sampleModelCreateintArrayFieldInputTSFile = await readGeneratedFile(
       "/resolvers/inputs/SampleModelCreateintArrayFieldInput.ts",
     );
-    const sampleModelCreateManyintArrayFieldInputTSFile =
-      await readGeneratedFile(
-        "/resolvers/inputs/SampleModelCreateManyintArrayFieldInput.ts",
-      );
     const sampleModelCreatestringArrayFieldInputTSFile =
       await readGeneratedFile(
         "/resolvers/inputs/SampleModelCreatestringArrayFieldInput.ts",
-      );
-    const sampleModelCreateManystringArrayFieldInputTSFile =
-      await readGeneratedFile(
-        "/resolvers/inputs/SampleModelCreateManystringArrayFieldInput.ts",
       );
 
     const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
@@ -171,14 +163,8 @@ describe("inputs", () => {
     expect(sampleModelCreateintArrayFieldInputTSFile).toMatchSnapshot(
       "SampleModelCreateintArrayFieldInput",
     );
-    expect(sampleModelCreateManyintArrayFieldInputTSFile).toMatchSnapshot(
-      "SampleModelCreateManyintArrayFieldInput",
-    );
     expect(sampleModelCreatestringArrayFieldInputTSFile).toMatchSnapshot(
       "SampleModelCreatestringArrayFieldInput",
-    );
-    expect(sampleModelCreateManystringArrayFieldInputTSFile).toMatchSnapshot(
-      "SampleModelCreateManystringArrayFieldInput",
     );
     expect(indexTSFile).toMatchSnapshot("index");
   });
@@ -1086,120 +1072,6 @@ describe("inputs", () => {
         "SampleOrderByWithRelationInput",
       );
       expect(indexTSFile).toMatchSnapshot("index");
-    });
-  });
-
-  describe("when model field has `omit(input: true)` set", () => {
-    it("should properly generate input type class for prisma model without the omitted field", async () => {
-      const schema = /* prisma */ `
-        model User {
-          id           Int       @id @default(autoincrement())
-          dateOfBirth  DateTime
-          name         String
-          /// @TypeGraphQL.omit(input: true)
-          balance      Float?
-        }
-      `;
-
-      await generateCodeFromSchema(schema, { outputDirPath });
-      const userCreateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserCreateInput.ts",
-      );
-      const userCreateManyInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserCreateManyInput.ts",
-      );
-      const userOrderByWithRelationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserOrderByWithRelationInput.ts",
-      );
-      const userScalarWhereWithAggregatesInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserScalarWhereWithAggregatesInput.ts",
-      );
-      const userUpdateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserUpdateInput.ts",
-      );
-      const userUpdateManyMutationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserUpdateManyMutationInput.ts",
-      );
-      const userWhereInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserWhereInput.ts",
-      );
-      const userWhereUniqueInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserWhereUniqueInput.ts",
-      );
-
-      expect(userCreateInputTSFile).toMatchSnapshot("UserCreateInput");
-      expect(userCreateManyInputTSFile).toMatchSnapshot("UserCreateManyInput");
-      expect(userOrderByWithRelationInputTSFile).toMatchSnapshot(
-        "UserOrderByWithRelationInput",
-      );
-      expect(userScalarWhereWithAggregatesInputTSFile).toMatchSnapshot(
-        "UserScalarWhereWithAggregatesInput",
-      );
-      expect(userUpdateInputTSFile).toMatchSnapshot("UserUpdateInput");
-      expect(userUpdateManyMutationInputTSFile).toMatchSnapshot(
-        "UserUpdateManyMutationInput",
-      );
-      expect(userWhereInputTSFile).toMatchSnapshot("UserWhereInput");
-      expect(userWhereUniqueInputTSFile).toMatchSnapshot(
-        "UserWhereUniqueInput",
-      );
-    });
-  });
-
-  describe("when model field has `omit(output: true)` set", () => {
-    it("should properly generate input type class for prisma model with the omitted field", async () => {
-      const schema = /* prisma */ `
-        model User {
-          id           Int       @id @default(autoincrement())
-          dateOfBirth  DateTime
-          name         String
-          /// @TypeGraphQL.omit(output: true)
-          balance      Float?
-        }
-      `;
-
-      await generateCodeFromSchema(schema, { outputDirPath });
-      const userCreateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserCreateInput.ts",
-      );
-      const userCreateManyInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserCreateManyInput.ts",
-      );
-      const userOrderByWithRelationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserOrderByWithRelationInput.ts",
-      );
-      const userScalarWhereWithAggregatesInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserScalarWhereWithAggregatesInput.ts",
-      );
-      const userUpdateInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserUpdateInput.ts",
-      );
-      const userUpdateManyMutationInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserUpdateManyMutationInput.ts",
-      );
-      const userWhereInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserWhereInput.ts",
-      );
-      const userWhereUniqueInputTSFile = await readGeneratedFile(
-        "/resolvers/inputs/UserWhereUniqueInput.ts",
-      );
-
-      expect(userCreateInputTSFile).toMatchSnapshot("UserCreateInput");
-      expect(userCreateManyInputTSFile).toMatchSnapshot("UserCreateManyInput");
-      expect(userOrderByWithRelationInputTSFile).toMatchSnapshot(
-        "UserOrderByWithRelationInput",
-      );
-      expect(userScalarWhereWithAggregatesInputTSFile).toMatchSnapshot(
-        "UserScalarWhereWithAggregatesInput",
-      );
-      expect(userUpdateInputTSFile).toMatchSnapshot("UserUpdateInput");
-      expect(userUpdateManyMutationInputTSFile).toMatchSnapshot(
-        "UserUpdateManyMutationInput",
-      );
-      expect(userWhereInputTSFile).toMatchSnapshot("UserWhereInput");
-      expect(userWhereUniqueInputTSFile).toMatchSnapshot(
-        "UserWhereUniqueInput",
-      );
     });
   });
 
