@@ -3,5 +3,10 @@
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/.hg/store/**": true
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#2665B9",
+    "titleBar.activeBackground": "#B02A80",
+    "titleBar.activeForeground": "#FAFAFC"
   }
 }

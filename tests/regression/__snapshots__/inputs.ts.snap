@@ -360,6 +360,61 @@ export class JsonWithAggregatesFilter {
   })
   equals?: Prisma.InputJsonValue | undefined;
 
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  path?: string[] | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_contains?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_starts_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_ends_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_contains?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_starts_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_ends_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gte?: Prisma.InputJsonValue | undefined;
+
   @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
     nullable: true
   })
@@ -675,7 +730,7 @@ export class UserCreateOrConnectWithoutPostsFieldInput {
 "
 `;
 
-exports[`inputs should properly generate input type classes for connectOrCreate: UserUpdateOneRequiredWithoutPostsFieldInput 1`] = `
+exports[`inputs should properly generate input type classes for connectOrCreate: UserUpdateOneRequiredWithoutPostsFieldNestedInput 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
 import * as GraphQLScalars from \\"graphql-scalars\\";
 import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
@@ -686,10 +741,10 @@ import { UserUpdateWithoutPostsFieldInput } from \\"../inputs/UserUpdateWithoutP
 import { UserUpsertWithoutPostsFieldInput } from \\"../inputs/UserUpsertWithoutPostsFieldInput\\";
 import { UserWhereUniqueInput } from \\"../inputs/UserWhereUniqueInput\\";
 
-@TypeGraphQL.InputType(\\"UserUpdateOneRequiredWithoutPostsFieldInput\\", {
+@TypeGraphQL.InputType(\\"UserUpdateOneRequiredWithoutPostsFieldNestedInput\\", {
   isAbstract: true
 })
-export class UserUpdateOneRequiredWithoutPostsFieldInput {
+export class UserUpdateOneRequiredWithoutPostsFieldNestedInput {
   @TypeGraphQL.Field(_type => UserCreateWithoutPostsFieldInput, {
     nullable: true
   })
@@ -1041,6 +1096,303 @@ export { StringWithAggregatesFilter } from \\"./StringWithAggregatesFilter\\";
 "
 `;
 
+exports[`inputs should properly generate input type classes for filtering json fields: JsonFilter 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import * as GraphQLScalars from \\"graphql-scalars\\";
+import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
+import { DecimalJSScalar } from \\"../../scalars\\";
+
+@TypeGraphQL.InputType(\\"JsonFilter\\", {
+  isAbstract: true
+})
+export class JsonFilter {
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  equals?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  path?: string[] | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_contains?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_starts_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_ends_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_contains?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_starts_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_ends_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  not?: Prisma.InputJsonValue | undefined;
+}
+"
+`;
+
+exports[`inputs should properly generate input type classes for filtering json fields: JsonWithAggregatesFilter 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import * as GraphQLScalars from \\"graphql-scalars\\";
+import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
+import { DecimalJSScalar } from \\"../../scalars\\";
+import { NestedIntFilter } from \\"../inputs/NestedIntFilter\\";
+import { NestedJsonFilter } from \\"../inputs/NestedJsonFilter\\";
+
+@TypeGraphQL.InputType(\\"JsonWithAggregatesFilter\\", {
+  isAbstract: true
+})
+export class JsonWithAggregatesFilter {
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  equals?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  path?: string[] | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_contains?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_starts_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_ends_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_contains?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_starts_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_ends_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  not?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => NestedIntFilter, {
+    nullable: true
+  })
+  _count?: NestedIntFilter | undefined;
+
+  @TypeGraphQL.Field(_type => NestedJsonFilter, {
+    nullable: true
+  })
+  _min?: NestedJsonFilter | undefined;
+
+  @TypeGraphQL.Field(_type => NestedJsonFilter, {
+    nullable: true
+  })
+  _max?: NestedJsonFilter | undefined;
+}
+"
+`;
+
+exports[`inputs should properly generate input type classes for filtering json fields: NestedJsonFilter 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import * as GraphQLScalars from \\"graphql-scalars\\";
+import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
+import { DecimalJSScalar } from \\"../../scalars\\";
+
+@TypeGraphQL.InputType(\\"NestedJsonFilter\\", {
+  isAbstract: true
+})
+export class NestedJsonFilter {
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  equals?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  path?: string[] | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_contains?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_starts_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_ends_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_contains?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_starts_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_ends_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  not?: Prisma.InputJsonValue | undefined;
+}
+"
+`;
+
+exports[`inputs should properly generate input type classes for filtering json fields: index 1`] = `
+"export { BoolFieldUpdateOperationsInput } from \\"./BoolFieldUpdateOperationsInput\\";
+export { BoolFilter } from \\"./BoolFilter\\";
+export { BoolWithAggregatesFilter } from \\"./BoolWithAggregatesFilter\\";
+export { DateTimeFieldUpdateOperationsInput } from \\"./DateTimeFieldUpdateOperationsInput\\";
+export { DateTimeFilter } from \\"./DateTimeFilter\\";
+export { DateTimeWithAggregatesFilter } from \\"./DateTimeWithAggregatesFilter\\";
+export { FloatFieldUpdateOperationsInput } from \\"./FloatFieldUpdateOperationsInput\\";
+export { FloatFilter } from \\"./FloatFilter\\";
+export { FloatWithAggregatesFilter } from \\"./FloatWithAggregatesFilter\\";
+export { IntFieldUpdateOperationsInput } from \\"./IntFieldUpdateOperationsInput\\";
+export { IntFilter } from \\"./IntFilter\\";
+export { IntWithAggregatesFilter } from \\"./IntWithAggregatesFilter\\";
+export { JsonFilter } from \\"./JsonFilter\\";
+export { JsonWithAggregatesFilter } from \\"./JsonWithAggregatesFilter\\";
+export { NestedBoolFilter } from \\"./NestedBoolFilter\\";
+export { NestedBoolWithAggregatesFilter } from \\"./NestedBoolWithAggregatesFilter\\";
+export { NestedDateTimeFilter } from \\"./NestedDateTimeFilter\\";
+export { NestedDateTimeWithAggregatesFilter } from \\"./NestedDateTimeWithAggregatesFilter\\";
+export { NestedFloatFilter } from \\"./NestedFloatFilter\\";
+export { NestedFloatWithAggregatesFilter } from \\"./NestedFloatWithAggregatesFilter\\";
+export { NestedIntFilter } from \\"./NestedIntFilter\\";
+export { NestedIntWithAggregatesFilter } from \\"./NestedIntWithAggregatesFilter\\";
+export { NestedJsonFilter } from \\"./NestedJsonFilter\\";
+export { NestedStringFilter } from \\"./NestedStringFilter\\";
+export { NestedStringWithAggregatesFilter } from \\"./NestedStringWithAggregatesFilter\\";
+export { SampleAvgOrderByAggregateInput } from \\"./SampleAvgOrderByAggregateInput\\";
+export { SampleCountOrderByAggregateInput } from \\"./SampleCountOrderByAggregateInput\\";
+export { SampleCreateInput } from \\"./SampleCreateInput\\";
+export { SampleCreateManyInput } from \\"./SampleCreateManyInput\\";
+export { SampleMaxOrderByAggregateInput } from \\"./SampleMaxOrderByAggregateInput\\";
+export { SampleMinOrderByAggregateInput } from \\"./SampleMinOrderByAggregateInput\\";
+export { SampleOrderByWithAggregationInput } from \\"./SampleOrderByWithAggregationInput\\";
+export { SampleOrderByWithRelationInput } from \\"./SampleOrderByWithRelationInput\\";
+export { SampleScalarWhereWithAggregatesInput } from \\"./SampleScalarWhereWithAggregatesInput\\";
+export { SampleSumOrderByAggregateInput } from \\"./SampleSumOrderByAggregateInput\\";
+export { SampleUpdateInput } from \\"./SampleUpdateInput\\";
+export { SampleUpdateManyMutationInput } from \\"./SampleUpdateManyMutationInput\\";
+export { SampleWhereInput } from \\"./SampleWhereInput\\";
+export { SampleWhereUniqueInput } from \\"./SampleWhereUniqueInput\\";
+export { StringFieldUpdateOperationsInput } from \\"./StringFieldUpdateOperationsInput\\";
+export { StringFilter } from \\"./StringFilter\\";
+export { StringWithAggregatesFilter } from \\"./StringWithAggregatesFilter\\";
+"
+`;
+
 exports[`inputs should properly generate input type classes for filtering models by fields: SampleModelWhereInput 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
 import * as GraphQLScalars from \\"graphql-scalars\\";
@@ -1367,7 +1719,7 @@ export { FirstModelSumOrderByAggregateInput } from \\"./FirstModelSumOrderByAggr
 export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
 export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
 export { FirstModelUpdateManyWithWhereWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateManyWithWhereWithoutSecondModelsFieldInput\\";
-export { FirstModelUpdateManyWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateManyWithoutSecondModelsFieldInput\\";
+export { FirstModelUpdateManyWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateManyWithoutSecondModelsFieldNestedInput\\";
 export { FirstModelUpdateWithWhereUniqueWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithWhereUniqueWithoutSecondModelsFieldInput\\";
 export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpsertWithWhereUniqueWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithWhereUniqueWithoutSecondModelsFieldInput\\";
@@ -1404,7 +1756,7 @@ export { SecondModelSumOrderByAggregateInput } from \\"./SecondModelSumOrderByAg
 export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
 export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
 export { SecondModelUpdateManyWithWhereWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelsFieldInput\\";
-export { SecondModelUpdateManyWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateManyWithoutFirstModelsFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelsFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelsFieldNestedInput\\";
 export { SecondModelUpdateWithWhereUniqueWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelsFieldInput\\";
 export { SecondModelUpdateWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateWithoutFirstModelsFieldInput\\";
 export { SecondModelUpsertWithWhereUniqueWithoutFirstModelsFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelsFieldInput\\";
@@ -1767,7 +2119,7 @@ export { FirstModelScalarWhereWithAggregatesInput } from \\"./FirstModelScalarWh
 export { FirstModelSumOrderByAggregateInput } from \\"./FirstModelSumOrderByAggregateInput\\";
 export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
 export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
-export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput\\";
+export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\";
 export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpsertWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithoutSecondModelsFieldInput\\";
 export { FirstModelWhereInput } from \\"./FirstModelWhereInput\\";
@@ -1805,7 +2157,7 @@ export { SecondModelSumOrderByAggregateInput } from \\"./SecondModelSumOrderByAg
 export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
 export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
 export { SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput\\";
-export { SecondModelUpdateManyWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldNestedInput\\";
 export { SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput\\";
 export { SecondModelUpdateWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithoutFirstModelFieldInput\\";
 export { SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput\\";
@@ -2056,6 +2408,61 @@ export class JsonFilter {
   })
   equals?: Prisma.InputJsonValue | undefined;
 
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  path?: string[] | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_contains?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_starts_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_ends_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_contains?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_starts_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_ends_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gte?: Prisma.InputJsonValue | undefined;
+
   @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
     nullable: true
   })
@@ -2260,6 +2667,61 @@ export class NestedJsonFilter {
     nullable: true
   })
   equals?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: true
+  })
+  path?: string[] | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_contains?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_starts_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  string_ends_with?: string | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_contains?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_starts_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  array_ends_with?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  lte?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gt?: Prisma.InputJsonValue | undefined;
+
+  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+    nullable: true
+  })
+  gte?: Prisma.InputJsonValue | undefined;
 
   @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
     nullable: true
@@ -2735,7 +3197,7 @@ export { FirstModelScalarWhereWithAggregatesInput } from \\"./FirstModelScalarWh
 export { FirstModelSumOrderByAggregateInput } from \\"./FirstModelSumOrderByAggregateInput\\";
 export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
 export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
-export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput\\";
+export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\";
 export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpsertWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithoutSecondModelsFieldInput\\";
 export { FirstModelWhereInput } from \\"./FirstModelWhereInput\\";
@@ -2773,7 +3235,7 @@ export { SecondModelSumOrderByAggregateInput } from \\"./SecondModelSumOrderByAg
 export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
 export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
 export { SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput\\";
-export { SecondModelUpdateManyWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldNestedInput\\";
 export { SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput\\";
 export { SecondModelUpdateWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithoutFirstModelFieldInput\\";
 export { SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput\\";
@@ -2931,7 +3393,7 @@ export { DirectorScalarWhereWithAggregatesInput } from \\"./DirectorScalarWhereW
 export { DirectorSumOrderByAggregateInput } from \\"./DirectorSumOrderByAggregateInput\\";
 export { DirectorUpdateInput } from \\"./DirectorUpdateInput\\";
 export { DirectorUpdateManyMutationInput } from \\"./DirectorUpdateManyMutationInput\\";
-export { DirectorUpdateOneRequiredWithoutMoviesInput } from \\"./DirectorUpdateOneRequiredWithoutMoviesInput\\";
+export { DirectorUpdateOneRequiredWithoutMoviesNestedInput } from \\"./DirectorUpdateOneRequiredWithoutMoviesNestedInput\\";
 export { DirectorUpdateWithoutMoviesInput } from \\"./DirectorUpdateWithoutMoviesInput\\";
 export { DirectorUpsertWithoutMoviesInput } from \\"./DirectorUpsertWithoutMoviesInput\\";
 export { DirectorWhereInput } from \\"./DirectorWhereInput\\";
@@ -2964,7 +3426,7 @@ export { MovieSumOrderByAggregateInput } from \\"./MovieSumOrderByAggregateInput
 export { MovieUpdateInput } from \\"./MovieUpdateInput\\";
 export { MovieUpdateManyMutationInput } from \\"./MovieUpdateManyMutationInput\\";
 export { MovieUpdateManyWithWhereWithoutDirectorInput } from \\"./MovieUpdateManyWithWhereWithoutDirectorInput\\";
-export { MovieUpdateManyWithoutDirectorInput } from \\"./MovieUpdateManyWithoutDirectorInput\\";
+export { MovieUpdateManyWithoutDirectorNestedInput } from \\"./MovieUpdateManyWithoutDirectorNestedInput\\";
 export { MovieUpdateWithWhereUniqueWithoutDirectorInput } from \\"./MovieUpdateWithWhereUniqueWithoutDirectorInput\\";
 export { MovieUpdateWithoutDirectorInput } from \\"./MovieUpdateWithoutDirectorInput\\";
 export { MovieUpsertWithWhereUniqueWithoutDirectorInput } from \\"./MovieUpsertWithWhereUniqueWithoutDirectorInput\\";
@@ -3193,7 +3655,7 @@ export { DirectorScalarWhereWithAggregatesInput } from \\"./DirectorScalarWhereW
 export { DirectorSumOrderByAggregateInput } from \\"./DirectorSumOrderByAggregateInput\\";
 export { DirectorUpdateInput } from \\"./DirectorUpdateInput\\";
 export { DirectorUpdateManyMutationInput } from \\"./DirectorUpdateManyMutationInput\\";
-export { DirectorUpdateOneRequiredWithoutMoviesInput } from \\"./DirectorUpdateOneRequiredWithoutMoviesInput\\";
+export { DirectorUpdateOneRequiredWithoutMoviesNestedInput } from \\"./DirectorUpdateOneRequiredWithoutMoviesNestedInput\\";
 export { DirectorUpdateWithoutMoviesInput } from \\"./DirectorUpdateWithoutMoviesInput\\";
 export { DirectorUpsertWithoutMoviesInput } from \\"./DirectorUpsertWithoutMoviesInput\\";
 export { DirectorWhereInput } from \\"./DirectorWhereInput\\";
@@ -3226,7 +3688,7 @@ export { MovieSumOrderByAggregateInput } from \\"./MovieSumOrderByAggregateInput
 export { MovieUpdateInput } from \\"./MovieUpdateInput\\";
 export { MovieUpdateManyMutationInput } from \\"./MovieUpdateManyMutationInput\\";
 export { MovieUpdateManyWithWhereWithoutDirectorInput } from \\"./MovieUpdateManyWithWhereWithoutDirectorInput\\";
-export { MovieUpdateManyWithoutDirectorInput } from \\"./MovieUpdateManyWithoutDirectorInput\\";
+export { MovieUpdateManyWithoutDirectorNestedInput } from \\"./MovieUpdateManyWithoutDirectorNestedInput\\";
 export { MovieUpdateWithWhereUniqueWithoutDirectorInput } from \\"./MovieUpdateWithWhereUniqueWithoutDirectorInput\\";
 export { MovieUpdateWithoutDirectorInput } from \\"./MovieUpdateWithoutDirectorInput\\";
 export { MovieUpsertWithWhereUniqueWithoutDirectorInput } from \\"./MovieUpsertWithWhereUniqueWithoutDirectorInput\\";
@@ -3798,7 +4260,7 @@ export { FirstModelSumOrderByAggregateInput } from \\"./FirstModelSumOrderByAggr
 export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
 export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
 export { FirstModelUpdateManyWithWhereWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateManyWithWhereWithoutSecondModelsFieldInput\\";
-export { FirstModelUpdateManyWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateManyWithoutSecondModelsFieldInput\\";
+export { FirstModelUpdateManyWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateManyWithoutSecondModelsFieldNestedInput\\";
 export { FirstModelUpdateWithWhereUniqueWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithWhereUniqueWithoutSecondModelsFieldInput\\";
 export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpsertWithWhereUniqueWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithWhereUniqueWithoutSecondModelsFieldInput\\";
@@ -3835,7 +4297,7 @@ export { SecondModelSumOrderByAggregateInput } from \\"./SecondModelSumOrderByAg
 export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
 export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
 export { SecondModelUpdateManyWithWhereWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelsFieldInput\\";
-export { SecondModelUpdateManyWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateManyWithoutFirstModelsFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelsFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelsFieldNestedInput\\";
 export { SecondModelUpdateWithWhereUniqueWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelsFieldInput\\";
 export { SecondModelUpdateWithoutFirstModelsFieldInput } from \\"./SecondModelUpdateWithoutFirstModelsFieldInput\\";
 export { SecondModelUpsertWithWhereUniqueWithoutFirstModelsFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelsFieldInput\\";
@@ -4004,7 +4466,7 @@ export { FirstModelScalarWhereWithAggregatesInput } from \\"./FirstModelScalarWh
 export { FirstModelSumOrderByAggregateInput } from \\"./FirstModelSumOrderByAggregateInput\\";
 export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
 export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
-export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput\\";
+export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\";
 export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpsertWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithoutSecondModelsFieldInput\\";
 export { FirstModelWhereInput } from \\"./FirstModelWhereInput\\";
@@ -4042,7 +4504,7 @@ export { SecondModelSumOrderByAggregateInput } from \\"./SecondModelSumOrderByAg
 export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
 export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
 export { SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput\\";
-export { SecondModelUpdateManyWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldNestedInput\\";
 export { SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput\\";
 export { SecondModelUpdateWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithoutFirstModelFieldInput\\";
 export { SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput\\";
@@ -5260,303 +5722,6 @@ export { NullableDecimalFieldUpdateOperationsInput } from \\"./NullableDecimalFi
 "
 `;
 
-exports[`inputs when \`filterJson\` preview feature is enabled should properly generate input type classes for filtering json fields: JsonFilter 1`] = `
-"import * as TypeGraphQL from \\"type-graphql\\";
-import * as GraphQLScalars from \\"graphql-scalars\\";
-import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
-import { DecimalJSScalar } from \\"../../scalars\\";
-
-@TypeGraphQL.InputType(\\"JsonFilter\\", {
-  isAbstract: true
-})
-export class JsonFilter {
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  equals?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: true
-  })
-  path?: string[] | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_contains?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_starts_with?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_ends_with?: string | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_contains?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_starts_with?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_ends_with?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  lt?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  lte?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  gt?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  gte?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  not?: Prisma.InputJsonValue | undefined;
-}
-"
-`;
-
-exports[`inputs when \`filterJson\` preview feature is enabled should properly generate input type classes for filtering json fields: JsonWithAggregatesFilter 1`] = `
-"import * as TypeGraphQL from \\"type-graphql\\";
-import * as GraphQLScalars from \\"graphql-scalars\\";
-import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
-import { DecimalJSScalar } from \\"../../scalars\\";
-import { NestedIntFilter } from \\"../inputs/NestedIntFilter\\";
-import { NestedJsonFilter } from \\"../inputs/NestedJsonFilter\\";
-
-@TypeGraphQL.InputType(\\"JsonWithAggregatesFilter\\", {
-  isAbstract: true
-})
-export class JsonWithAggregatesFilter {
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  equals?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: true
-  })
-  path?: string[] | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_contains?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_starts_with?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_ends_with?: string | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_contains?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_starts_with?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_ends_with?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  lt?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  lte?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  gt?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  gte?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  not?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => NestedIntFilter, {
-    nullable: true
-  })
-  _count?: NestedIntFilter | undefined;
-
-  @TypeGraphQL.Field(_type => NestedJsonFilter, {
-    nullable: true
-  })
-  _min?: NestedJsonFilter | undefined;
-
-  @TypeGraphQL.Field(_type => NestedJsonFilter, {
-    nullable: true
-  })
-  _max?: NestedJsonFilter | undefined;
-}
-"
-`;
-
-exports[`inputs when \`filterJson\` preview feature is enabled should properly generate input type classes for filtering json fields: NestedJsonFilter 1`] = `
-"import * as TypeGraphQL from \\"type-graphql\\";
-import * as GraphQLScalars from \\"graphql-scalars\\";
-import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
-import { DecimalJSScalar } from \\"../../scalars\\";
-
-@TypeGraphQL.InputType(\\"NestedJsonFilter\\", {
-  isAbstract: true
-})
-export class NestedJsonFilter {
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  equals?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: true
-  })
-  path?: string[] | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_contains?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_starts_with?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  string_ends_with?: string | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_contains?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_starts_with?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  array_ends_with?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  lt?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  lte?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  gt?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  gte?: Prisma.InputJsonValue | undefined;
-
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
-    nullable: true
-  })
-  not?: Prisma.InputJsonValue | undefined;
-}
-"
-`;
-
-exports[`inputs when \`filterJson\` preview feature is enabled should properly generate input type classes for filtering json fields: index 1`] = `
-"export { BoolFieldUpdateOperationsInput } from \\"./BoolFieldUpdateOperationsInput\\";
-export { BoolFilter } from \\"./BoolFilter\\";
-export { BoolWithAggregatesFilter } from \\"./BoolWithAggregatesFilter\\";
-export { DateTimeFieldUpdateOperationsInput } from \\"./DateTimeFieldUpdateOperationsInput\\";
-export { DateTimeFilter } from \\"./DateTimeFilter\\";
-export { DateTimeWithAggregatesFilter } from \\"./DateTimeWithAggregatesFilter\\";
-export { FloatFieldUpdateOperationsInput } from \\"./FloatFieldUpdateOperationsInput\\";
-export { FloatFilter } from \\"./FloatFilter\\";
-export { FloatWithAggregatesFilter } from \\"./FloatWithAggregatesFilter\\";
-export { IntFieldUpdateOperationsInput } from \\"./IntFieldUpdateOperationsInput\\";
-export { IntFilter } from \\"./IntFilter\\";
-export { IntWithAggregatesFilter } from \\"./IntWithAggregatesFilter\\";
-export { JsonFilter } from \\"./JsonFilter\\";
-export { JsonWithAggregatesFilter } from \\"./JsonWithAggregatesFilter\\";
-export { NestedBoolFilter } from \\"./NestedBoolFilter\\";
-export { NestedBoolWithAggregatesFilter } from \\"./NestedBoolWithAggregatesFilter\\";
-export { NestedDateTimeFilter } from \\"./NestedDateTimeFilter\\";
-export { NestedDateTimeWithAggregatesFilter } from \\"./NestedDateTimeWithAggregatesFilter\\";
-export { NestedFloatFilter } from \\"./NestedFloatFilter\\";
-export { NestedFloatWithAggregatesFilter } from \\"./NestedFloatWithAggregatesFilter\\";
-export { NestedIntFilter } from \\"./NestedIntFilter\\";
-export { NestedIntWithAggregatesFilter } from \\"./NestedIntWithAggregatesFilter\\";
-export { NestedJsonFilter } from \\"./NestedJsonFilter\\";
-export { NestedStringFilter } from \\"./NestedStringFilter\\";
-export { NestedStringWithAggregatesFilter } from \\"./NestedStringWithAggregatesFilter\\";
-export { SampleAvgOrderByAggregateInput } from \\"./SampleAvgOrderByAggregateInput\\";
-export { SampleCountOrderByAggregateInput } from \\"./SampleCountOrderByAggregateInput\\";
-export { SampleCreateInput } from \\"./SampleCreateInput\\";
-export { SampleCreateManyInput } from \\"./SampleCreateManyInput\\";
-export { SampleMaxOrderByAggregateInput } from \\"./SampleMaxOrderByAggregateInput\\";
-export { SampleMinOrderByAggregateInput } from \\"./SampleMinOrderByAggregateInput\\";
-export { SampleOrderByWithAggregationInput } from \\"./SampleOrderByWithAggregationInput\\";
-export { SampleOrderByWithRelationInput } from \\"./SampleOrderByWithRelationInput\\";
-export { SampleScalarWhereWithAggregatesInput } from \\"./SampleScalarWhereWithAggregatesInput\\";
-export { SampleSumOrderByAggregateInput } from \\"./SampleSumOrderByAggregateInput\\";
-export { SampleUpdateInput } from \\"./SampleUpdateInput\\";
-export { SampleUpdateManyMutationInput } from \\"./SampleUpdateManyMutationInput\\";
-export { SampleWhereInput } from \\"./SampleWhereInput\\";
-export { SampleWhereUniqueInput } from \\"./SampleWhereUniqueInput\\";
-export { StringFieldUpdateOperationsInput } from \\"./StringFieldUpdateOperationsInput\\";
-export { StringFilter } from \\"./StringFilter\\";
-export { StringWithAggregatesFilter } from \\"./StringWithAggregatesFilter\\";
-"
-`;
-
 exports[`inputs when \`fullTextSearch\` preview feature is enabled should properly generate input type classes with relevance and string search field: FirstModelOrderByRelevanceInput 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
 import * as GraphQLScalars from \\"graphql-scalars\\";
@@ -5799,7 +5964,7 @@ export { FirstModelScalarWhereWithAggregatesInput } from \\"./FirstModelScalarWh
 export { FirstModelSumOrderByAggregateInput } from \\"./FirstModelSumOrderByAggregateInput\\";
 export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
 export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
-export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput\\";
+export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\";
 export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpsertWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithoutSecondModelsFieldInput\\";
 export { FirstModelWhereInput } from \\"./FirstModelWhereInput\\";
@@ -5838,12 +6003,167 @@ export { SecondModelSumOrderByAggregateInput } from \\"./SecondModelSumOrderByAg
 export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
 export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
 export { SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput\\";
-export { SecondModelUpdateManyWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldNestedInput\\";
 export { SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput\\";
 export { SecondModelUpdateWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithoutFirstModelFieldInput\\";
 export { SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput\\";
 export { SecondModelWhereInput } from \\"./SecondModelWhereInput\\";
 export { SecondModelWhereUniqueInput } from \\"./SecondModelWhereUniqueInput\\";
+export { StringFieldUpdateOperationsInput } from \\"./StringFieldUpdateOperationsInput\\";
+export { StringFilter } from \\"./StringFilter\\";
+export { StringWithAggregatesFilter } from \\"./StringWithAggregatesFilter\\";
+"
+`;
+
+exports[`inputs when \`orderByNulls\` preview feature is enabled should properly generate input type classes with SortOrderInput type fields: FirstModelOrderByWithAggregationInput 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import * as GraphQLScalars from \\"graphql-scalars\\";
+import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
+import { DecimalJSScalar } from \\"../../scalars\\";
+import { FirstModelAvgOrderByAggregateInput } from \\"../inputs/FirstModelAvgOrderByAggregateInput\\";
+import { FirstModelCountOrderByAggregateInput } from \\"../inputs/FirstModelCountOrderByAggregateInput\\";
+import { FirstModelMaxOrderByAggregateInput } from \\"../inputs/FirstModelMaxOrderByAggregateInput\\";
+import { FirstModelMinOrderByAggregateInput } from \\"../inputs/FirstModelMinOrderByAggregateInput\\";
+import { FirstModelSumOrderByAggregateInput } from \\"../inputs/FirstModelSumOrderByAggregateInput\\";
+import { SortOrderInput } from \\"../inputs/SortOrderInput\\";
+import { SortOrder } from \\"../../enums/SortOrder\\";
+
+@TypeGraphQL.InputType(\\"FirstModelOrderByWithAggregationInput\\", {
+  isAbstract: true
+})
+export class FirstModelOrderByWithAggregationInput {
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  idField?: \\"asc\\" | \\"desc\\" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  uniqueStringField?: \\"asc\\" | \\"desc\\" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrderInput, {
+    nullable: true
+  })
+  optionalFloatField?: SortOrderInput | undefined;
+
+  @TypeGraphQL.Field(_type => FirstModelCountOrderByAggregateInput, {
+    nullable: true
+  })
+  _count?: FirstModelCountOrderByAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => FirstModelAvgOrderByAggregateInput, {
+    nullable: true
+  })
+  _avg?: FirstModelAvgOrderByAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => FirstModelMaxOrderByAggregateInput, {
+    nullable: true
+  })
+  _max?: FirstModelMaxOrderByAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => FirstModelMinOrderByAggregateInput, {
+    nullable: true
+  })
+  _min?: FirstModelMinOrderByAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => FirstModelSumOrderByAggregateInput, {
+    nullable: true
+  })
+  _sum?: FirstModelSumOrderByAggregateInput | undefined;
+}
+"
+`;
+
+exports[`inputs when \`orderByNulls\` preview feature is enabled should properly generate input type classes with SortOrderInput type fields: SortOrderInput 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import * as GraphQLScalars from \\"graphql-scalars\\";
+import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
+import { DecimalJSScalar } from \\"../../scalars\\";
+import { NullsOrder } from \\"../../enums/NullsOrder\\";
+import { SortOrder } from \\"../../enums/SortOrder\\";
+
+@TypeGraphQL.InputType(\\"SortOrderInput\\", {
+  isAbstract: true
+})
+export class SortOrderInput {
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: false
+  })
+  sort!: \\"asc\\" | \\"desc\\";
+
+  @TypeGraphQL.Field(_type => NullsOrder, {
+    nullable: true
+  })
+  nulls?: \\"first\\" | \\"last\\" | undefined;
+}
+"
+`;
+
+exports[`inputs when \`orderByNulls\` preview feature is enabled should properly generate input type classes with SortOrderInput type fields: index 1`] = `
+"export { FirstModelAvgOrderByAggregateInput } from \\"./FirstModelAvgOrderByAggregateInput\\";
+export { FirstModelCountOrderByAggregateInput } from \\"./FirstModelCountOrderByAggregateInput\\";
+export { FirstModelCreateInput } from \\"./FirstModelCreateInput\\";
+export { FirstModelCreateManyInput } from \\"./FirstModelCreateManyInput\\";
+export { FirstModelCreateNestedOneWithoutSecondModelsFieldInput } from \\"./FirstModelCreateNestedOneWithoutSecondModelsFieldInput\\";
+export { FirstModelCreateOrConnectWithoutSecondModelsFieldInput } from \\"./FirstModelCreateOrConnectWithoutSecondModelsFieldInput\\";
+export { FirstModelCreateWithoutSecondModelsFieldInput } from \\"./FirstModelCreateWithoutSecondModelsFieldInput\\";
+export { FirstModelMaxOrderByAggregateInput } from \\"./FirstModelMaxOrderByAggregateInput\\";
+export { FirstModelMinOrderByAggregateInput } from \\"./FirstModelMinOrderByAggregateInput\\";
+export { FirstModelOrderByWithAggregationInput } from \\"./FirstModelOrderByWithAggregationInput\\";
+export { FirstModelOrderByWithRelationInput } from \\"./FirstModelOrderByWithRelationInput\\";
+export { FirstModelRelationFilter } from \\"./FirstModelRelationFilter\\";
+export { FirstModelScalarWhereWithAggregatesInput } from \\"./FirstModelScalarWhereWithAggregatesInput\\";
+export { FirstModelSumOrderByAggregateInput } from \\"./FirstModelSumOrderByAggregateInput\\";
+export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
+export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
+export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\";
+export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
+export { FirstModelUpsertWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithoutSecondModelsFieldInput\\";
+export { FirstModelWhereInput } from \\"./FirstModelWhereInput\\";
+export { FirstModelWhereUniqueInput } from \\"./FirstModelWhereUniqueInput\\";
+export { FloatNullableFilter } from \\"./FloatNullableFilter\\";
+export { FloatNullableWithAggregatesFilter } from \\"./FloatNullableWithAggregatesFilter\\";
+export { IntFieldUpdateOperationsInput } from \\"./IntFieldUpdateOperationsInput\\";
+export { IntFilter } from \\"./IntFilter\\";
+export { IntWithAggregatesFilter } from \\"./IntWithAggregatesFilter\\";
+export { NestedFloatFilter } from \\"./NestedFloatFilter\\";
+export { NestedFloatNullableFilter } from \\"./NestedFloatNullableFilter\\";
+export { NestedFloatNullableWithAggregatesFilter } from \\"./NestedFloatNullableWithAggregatesFilter\\";
+export { NestedIntFilter } from \\"./NestedIntFilter\\";
+export { NestedIntNullableFilter } from \\"./NestedIntNullableFilter\\";
+export { NestedIntWithAggregatesFilter } from \\"./NestedIntWithAggregatesFilter\\";
+export { NestedStringFilter } from \\"./NestedStringFilter\\";
+export { NestedStringWithAggregatesFilter } from \\"./NestedStringWithAggregatesFilter\\";
+export { NullableFloatFieldUpdateOperationsInput } from \\"./NullableFloatFieldUpdateOperationsInput\\";
+export { SecondModelAvgOrderByAggregateInput } from \\"./SecondModelAvgOrderByAggregateInput\\";
+export { SecondModelCountOrderByAggregateInput } from \\"./SecondModelCountOrderByAggregateInput\\";
+export { SecondModelCreateInput } from \\"./SecondModelCreateInput\\";
+export { SecondModelCreateManyFirstModelFieldInput } from \\"./SecondModelCreateManyFirstModelFieldInput\\";
+export { SecondModelCreateManyFirstModelFieldInputEnvelope } from \\"./SecondModelCreateManyFirstModelFieldInputEnvelope\\";
+export { SecondModelCreateManyInput } from \\"./SecondModelCreateManyInput\\";
+export { SecondModelCreateNestedManyWithoutFirstModelFieldInput } from \\"./SecondModelCreateNestedManyWithoutFirstModelFieldInput\\";
+export { SecondModelCreateOrConnectWithoutFirstModelFieldInput } from \\"./SecondModelCreateOrConnectWithoutFirstModelFieldInput\\";
+export { SecondModelCreateWithoutFirstModelFieldInput } from \\"./SecondModelCreateWithoutFirstModelFieldInput\\";
+export { SecondModelListRelationFilter } from \\"./SecondModelListRelationFilter\\";
+export { SecondModelMaxOrderByAggregateInput } from \\"./SecondModelMaxOrderByAggregateInput\\";
+export { SecondModelMinOrderByAggregateInput } from \\"./SecondModelMinOrderByAggregateInput\\";
+export { SecondModelOrderByRelationAggregateInput } from \\"./SecondModelOrderByRelationAggregateInput\\";
+export { SecondModelOrderByWithAggregationInput } from \\"./SecondModelOrderByWithAggregationInput\\";
+export { SecondModelOrderByWithRelationInput } from \\"./SecondModelOrderByWithRelationInput\\";
+export { SecondModelScalarWhereInput } from \\"./SecondModelScalarWhereInput\\";
+export { SecondModelScalarWhereWithAggregatesInput } from \\"./SecondModelScalarWhereWithAggregatesInput\\";
+export { SecondModelSumOrderByAggregateInput } from \\"./SecondModelSumOrderByAggregateInput\\";
+export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
+export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
+export { SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldNestedInput\\";
+export { SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput\\";
+export { SecondModelUpdateWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithoutFirstModelFieldInput\\";
+export { SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput\\";
+export { SecondModelWhereInput } from \\"./SecondModelWhereInput\\";
+export { SecondModelWhereUniqueInput } from \\"./SecondModelWhereUniqueInput\\";
+export { SortOrderInput } from \\"./SortOrderInput\\";
 export { StringFieldUpdateOperationsInput } from \\"./StringFieldUpdateOperationsInput\\";
 export { StringFilter } from \\"./StringFilter\\";
 export { StringWithAggregatesFilter } from \\"./StringWithAggregatesFilter\\";
@@ -6141,7 +6461,7 @@ export { RenamedFirstModelSumOrderByAggregateInput } from \\"./RenamedFirstModel
 export { RenamedFirstModelUpdateInput } from \\"./RenamedFirstModelUpdateInput\\";
 export { RenamedFirstModelUpdateManyMutationInput } from \\"./RenamedFirstModelUpdateManyMutationInput\\";
 export { RenamedFirstModelUpdateManyWithWhereWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpdateManyWithWhereWithoutSecondModelsFieldInput\\";
-export { RenamedFirstModelUpdateManyWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpdateManyWithoutSecondModelsFieldInput\\";
+export { RenamedFirstModelUpdateManyWithoutSecondModelsFieldNestedInput } from \\"./RenamedFirstModelUpdateManyWithoutSecondModelsFieldNestedInput\\";
 export { RenamedFirstModelUpdateWithWhereUniqueWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpdateWithWhereUniqueWithoutSecondModelsFieldInput\\";
 export { RenamedFirstModelUpdateWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { RenamedFirstModelUpsertWithWhereUniqueWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpsertWithWhereUniqueWithoutSecondModelsFieldInput\\";
@@ -6166,7 +6486,7 @@ export { RenamedSecondModelSumOrderByAggregateInput } from \\"./RenamedSecondMod
 export { RenamedSecondModelUpdateInput } from \\"./RenamedSecondModelUpdateInput\\";
 export { RenamedSecondModelUpdateManyMutationInput } from \\"./RenamedSecondModelUpdateManyMutationInput\\";
 export { RenamedSecondModelUpdateManyWithWhereWithoutFirstModelsFieldInput } from \\"./RenamedSecondModelUpdateManyWithWhereWithoutFirstModelsFieldInput\\";
-export { RenamedSecondModelUpdateManyWithoutFirstModelsFieldInput } from \\"./RenamedSecondModelUpdateManyWithoutFirstModelsFieldInput\\";
+export { RenamedSecondModelUpdateManyWithoutFirstModelsFieldNestedInput } from \\"./RenamedSecondModelUpdateManyWithoutFirstModelsFieldNestedInput\\";
 export { RenamedSecondModelUpdateWithWhereUniqueWithoutFirstModelsFieldInput } from \\"./RenamedSecondModelUpdateWithWhereUniqueWithoutFirstModelsFieldInput\\";
 export { RenamedSecondModelUpdateWithoutFirstModelsFieldInput } from \\"./RenamedSecondModelUpdateWithoutFirstModelsFieldInput\\";
 export { RenamedSecondModelUpsertWithWhereUniqueWithoutFirstModelsFieldInput } from \\"./RenamedSecondModelUpsertWithWhereUniqueWithoutFirstModelsFieldInput\\";
@@ -6541,7 +6861,7 @@ export { RenamedFirstModelScalarWhereWithAggregatesInput } from \\"./RenamedFirs
 export { RenamedFirstModelSumOrderByAggregateInput } from \\"./RenamedFirstModelSumOrderByAggregateInput\\";
 export { RenamedFirstModelUpdateInput } from \\"./RenamedFirstModelUpdateInput\\";
 export { RenamedFirstModelUpdateManyMutationInput } from \\"./RenamedFirstModelUpdateManyMutationInput\\";
-export { RenamedFirstModelUpdateOneRequiredWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpdateOneRequiredWithoutSecondModelsFieldInput\\";
+export { RenamedFirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput } from \\"./RenamedFirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\";
 export { RenamedFirstModelUpdateWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { RenamedFirstModelUpsertWithoutSecondModelsFieldInput } from \\"./RenamedFirstModelUpsertWithoutSecondModelsFieldInput\\";
 export { RenamedFirstModelWhereInput } from \\"./RenamedFirstModelWhereInput\\";
@@ -6567,7 +6887,7 @@ export { RenamedSecondModelSumOrderByAggregateInput } from \\"./RenamedSecondMod
 export { RenamedSecondModelUpdateInput } from \\"./RenamedSecondModelUpdateInput\\";
 export { RenamedSecondModelUpdateManyMutationInput } from \\"./RenamedSecondModelUpdateManyMutationInput\\";
 export { RenamedSecondModelUpdateManyWithWhereWithoutFirstModelFieldInput } from \\"./RenamedSecondModelUpdateManyWithWhereWithoutFirstModelFieldInput\\";
-export { RenamedSecondModelUpdateManyWithoutFirstModelFieldInput } from \\"./RenamedSecondModelUpdateManyWithoutFirstModelFieldInput\\";
+export { RenamedSecondModelUpdateManyWithoutFirstModelFieldNestedInput } from \\"./RenamedSecondModelUpdateManyWithoutFirstModelFieldNestedInput\\";
 export { RenamedSecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput } from \\"./RenamedSecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput\\";
 export { RenamedSecondModelUpdateWithoutFirstModelFieldInput } from \\"./RenamedSecondModelUpdateWithoutFirstModelFieldInput\\";
 export { RenamedSecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput } from \\"./RenamedSecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput\\";
@@ -6749,7 +7069,7 @@ export { ExampleSumOrderByAggregateInput } from \\"./ExampleSumOrderByAggregateI
 export { ExampleUpdateInput } from \\"./ExampleUpdateInput\\";
 export { ExampleUpdateManyMutationInput } from \\"./ExampleUpdateManyMutationInput\\";
 export { ExampleUpdateManyWithWhereWithoutOtherInput } from \\"./ExampleUpdateManyWithWhereWithoutOtherInput\\";
-export { ExampleUpdateManyWithoutOtherInput } from \\"./ExampleUpdateManyWithoutOtherInput\\";
+export { ExampleUpdateManyWithoutOtherNestedInput } from \\"./ExampleUpdateManyWithoutOtherNestedInput\\";
 export { ExampleUpdateWithWhereUniqueWithoutOtherInput } from \\"./ExampleUpdateWithWhereUniqueWithoutOtherInput\\";
 export { ExampleUpdateWithoutOtherInput } from \\"./ExampleUpdateWithoutOtherInput\\";
 export { ExampleUpsertWithWhereUniqueWithoutOtherInput } from \\"./ExampleUpsertWithWhereUniqueWithoutOtherInput\\";
@@ -6787,7 +7107,7 @@ export { OtherModelScalarWhereWithAggregatesInput } from \\"./OtherModelScalarWh
 export { OtherModelSumOrderByAggregateInput } from \\"./OtherModelSumOrderByAggregateInput\\";
 export { OtherModelUpdateInput } from \\"./OtherModelUpdateInput\\";
 export { OtherModelUpdateManyMutationInput } from \\"./OtherModelUpdateManyMutationInput\\";
-export { OtherModelUpdateOneRequiredWithoutSampleModelInput } from \\"./OtherModelUpdateOneRequiredWithoutSampleModelInput\\";
+export { OtherModelUpdateOneRequiredWithoutSampleModelNestedInput } from \\"./OtherModelUpdateOneRequiredWithoutSampleModelNestedInput\\";
 export { OtherModelUpdateWithoutSampleModelInput } from \\"./OtherModelUpdateWithoutSampleModelInput\\";
 export { OtherModelUpsertWithoutSampleModelInput } from \\"./OtherModelUpsertWithoutSampleModelInput\\";
 export { OtherModelWhereInput } from \\"./OtherModelWhereInput\\";
@@ -7015,7 +7335,7 @@ import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
 import { DecimalJSScalar } from \\"../../scalars\\";
 import { FloatFieldUpdateOperationsInput } from \\"../inputs/FloatFieldUpdateOperationsInput\\";
 import { IntFieldUpdateOperationsInput } from \\"../inputs/IntFieldUpdateOperationsInput\\";
-import { SecondModelUncheckedUpdateManyWithoutFirstModelFieldInput } from \\"../inputs/SecondModelUncheckedUpdateManyWithoutFirstModelFieldInput\\";
+import { SecondModelUncheckedUpdateManyWithoutFirstModelFieldNestedInput } from \\"../inputs/SecondModelUncheckedUpdateManyWithoutFirstModelFieldNestedInput\\";
 import { StringFieldUpdateOperationsInput } from \\"../inputs/StringFieldUpdateOperationsInput\\";
 
 @TypeGraphQL.InputType(\\"FirstModelUncheckedUpdateInput\\", {
@@ -7037,10 +7357,10 @@ export class FirstModelUncheckedUpdateInput {
   })
   floatField?: FloatFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => SecondModelUncheckedUpdateManyWithoutFirstModelFieldInput, {
+  @TypeGraphQL.Field(_type => SecondModelUncheckedUpdateManyWithoutFirstModelFieldNestedInput, {
     nullable: true
   })
-  secondModelsField?: SecondModelUncheckedUpdateManyWithoutFirstModelFieldInput | undefined;
+  secondModelsField?: SecondModelUncheckedUpdateManyWithoutFirstModelFieldNestedInput | undefined;
 }
 "
 `;
@@ -7107,7 +7427,7 @@ export class FirstModelUncheckedUpdateWithoutSecondModelsFieldInput {
 "
 `;
 
-exports[`inputs when useUncheckedScalarInputs mode is enabled should properly generate input type classes for filtering models by one to many relation fields: FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput 1`] = `
+exports[`inputs when useUncheckedScalarInputs mode is enabled should properly generate input type classes for filtering models by one to many relation fields: FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
 import * as GraphQLScalars from \\"graphql-scalars\\";
 import { Prisma } from \\"../../../../helpers/prisma-client-mock\\";
@@ -7118,10 +7438,10 @@ import { FirstModelUncheckedUpdateWithoutSecondModelsFieldInput } from \\"../inp
 import { FirstModelUpsertWithoutSecondModelsFieldInput } from \\"../inputs/FirstModelUpsertWithoutSecondModelsFieldInput\\";
 import { FirstModelWhereUniqueInput } from \\"../inputs/FirstModelWhereUniqueInput\\";
 
-@TypeGraphQL.InputType(\\"FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput\\", {
+@TypeGraphQL.InputType(\\"FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\", {
   isAbstract: true
 })
-export class FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput {
+export class FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput {
   @TypeGraphQL.Field(_type => FirstModelUncheckedCreateWithoutSecondModelsFieldInput, {
     nullable: true
   })
@@ -7222,7 +7542,7 @@ export { FirstModelUncheckedUpdateManyInput } from \\"./FirstModelUncheckedUpdat
 export { FirstModelUncheckedUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUncheckedUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpdateInput } from \\"./FirstModelUpdateInput\\";
 export { FirstModelUpdateManyMutationInput } from \\"./FirstModelUpdateManyMutationInput\\";
-export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldInput\\";
+export { FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput } from \\"./FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput\\";
 export { FirstModelUpdateWithoutSecondModelsFieldInput } from \\"./FirstModelUpdateWithoutSecondModelsFieldInput\\";
 export { FirstModelUpsertWithoutSecondModelsFieldInput } from \\"./FirstModelUpsertWithoutSecondModelsFieldInput\\";
 export { FirstModelWhereInput } from \\"./FirstModelWhereInput\\";
@@ -7262,13 +7582,13 @@ export { SecondModelUncheckedCreateNestedManyWithoutFirstModelFieldInput } from 
 export { SecondModelUncheckedCreateWithoutFirstModelFieldInput } from \\"./SecondModelUncheckedCreateWithoutFirstModelFieldInput\\";
 export { SecondModelUncheckedUpdateInput } from \\"./SecondModelUncheckedUpdateInput\\";
 export { SecondModelUncheckedUpdateManyInput } from \\"./SecondModelUncheckedUpdateManyInput\\";
-export { SecondModelUncheckedUpdateManyWithoutFirstModelFieldInput } from \\"./SecondModelUncheckedUpdateManyWithoutFirstModelFieldInput\\";
+export { SecondModelUncheckedUpdateManyWithoutFirstModelFieldNestedInput } from \\"./SecondModelUncheckedUpdateManyWithoutFirstModelFieldNestedInput\\";
 export { SecondModelUncheckedUpdateManyWithoutSecondModelsFieldInput } from \\"./SecondModelUncheckedUpdateManyWithoutSecondModelsFieldInput\\";
 export { SecondModelUncheckedUpdateWithoutFirstModelFieldInput } from \\"./SecondModelUncheckedUpdateWithoutFirstModelFieldInput\\";
 export { SecondModelUpdateInput } from \\"./SecondModelUpdateInput\\";
 export { SecondModelUpdateManyMutationInput } from \\"./SecondModelUpdateManyMutationInput\\";
 export { SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithWhereWithoutFirstModelFieldInput\\";
-export { SecondModelUpdateManyWithoutFirstModelFieldInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldInput\\";
+export { SecondModelUpdateManyWithoutFirstModelFieldNestedInput } from \\"./SecondModelUpdateManyWithoutFirstModelFieldNestedInput\\";
 export { SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithWhereUniqueWithoutFirstModelFieldInput\\";
 export { SecondModelUpdateWithoutFirstModelFieldInput } from \\"./SecondModelUpdateWithoutFirstModelFieldInput\\";
 export { SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput } from \\"./SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput\\";

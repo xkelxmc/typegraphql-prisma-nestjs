@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
-  Decimal
+  Decimal,
+  objectEnumValues
 } = require('./runtime/index-browser')
 
 
@@ -11,12 +12,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 3.14.0
- * Query Engine version: 2b0c12756921c891fec4f68d9444e18c7d5d4a6a
+ * Prisma Client JS version: 4.1.0
+ * Query Engine version: 8d8414deb360336e4698a65aa45a1fbaf1ce13d8
  */
 Prisma.prismaVersion = {
-  client: "3.14.0",
-  engine: "2b0c12756921c891fec4f68d9444e18c7d5d4a6a"
+  client: "4.1.0",
+  engine: "8d8414deb360336e4698a65aa45a1fbaf1ce13d8"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -37,6 +38,10 @@ In case this error is unexpected for you, please report it in https://github.com
 )}
 Prisma.PrismaClientValidationError = () => {
   throw new Error(`PrismaClientValidationError is unable to be run in the browser.
+In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
+)}
+Prisma.NotFoundError = () => {
+  throw new Error(`NotFoundError is unable to be run in the browser.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.Decimal = Decimal
@@ -65,9 +70,15 @@ Prisma.validator = () => (val) => val
 /**
  * Shorthand utilities for JSON filtering
  */
-Prisma.DbNull = 'DbNull'
-Prisma.JsonNull = 'JsonNull'
-Prisma.AnyNull = 'AnyNull'
+Prisma.DbNull = objectEnumValues.instances.DbNull
+Prisma.JsonNull = objectEnumValues.instances.JsonNull
+Prisma.AnyNull = objectEnumValues.instances.AnyNull
+
+Prisma.NullTypes = {
+  DbNull: objectEnumValues.classes.DbNull,
+  JsonNull: objectEnumValues.classes.JsonNull,
+  AnyNull: objectEnumValues.classes.AnyNull
+}
 
 /**
  * Enums
@@ -149,12 +160,17 @@ exports.Prisma.SortOrder = makeEnum({
 });
 
 exports.Prisma.JsonNullValueInput = makeEnum({
-  JsonNull: 'JsonNull'
+  JsonNull: Prisma.JsonNull
 });
 
 exports.Prisma.QueryMode = makeEnum({
   default: 'default',
   insensitive: 'insensitive'
+});
+
+exports.Prisma.NullsOrder = makeEnum({
+  first: 'first',
+  last: 'last'
 });
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = makeEnum({
@@ -164,9 +180,9 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = makeEnum({
 });
 
 exports.Prisma.JsonNullValueFilter = makeEnum({
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 });
 
 exports.Prisma.postOrderByRelevanceFieldEnum = makeEnum({

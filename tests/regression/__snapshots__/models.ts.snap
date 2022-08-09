@@ -11,11 +11,6 @@ import { UserAddress } from \\"../models/UserAddress\\";
   isAbstract: true
 })
 export class User {
-  @TypeGraphQL.Field(_type => UserAddress, {
-    nullable: false
-  })
-  address!: UserAddress;
-
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
@@ -25,6 +20,11 @@ export class User {
     nullable: true
   })
   age?: number | null;
+
+  @TypeGraphQL.Field(_type => UserAddress, {
+    nullable: false
+  })
+  address!: UserAddress;
 }
 "
 `;
@@ -127,8 +127,7 @@ export class User {
    */
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false,
-    description: \\"multiline doc 1
-            multiline doc 2\\"
+    description: \\"multiline doc 1\\\\nmultiline doc 2\\"
   })
   boolField!: boolean;
 
@@ -213,11 +212,6 @@ export class User {
     nullable: false
   })
   intIdField!: number;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: false
-  })
-  aliasField!: number;
 
   @TypeGraphQL.Field(_type => Sample, {
     nullable: false
@@ -524,7 +518,35 @@ export class Service {
 "
 `;
 
-exports[`models when customPrismaImportPath is set should properly generate Prisma import path for model object type class: SampleModel 1`] = `
+exports[`models when customPrismaImportPath is set to custom directory in node_modules should properly generate Prisma import path for model object type class: SampleModel 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import * as GraphQLScalars from \\"graphql-scalars\\";
+import { Prisma } from \\"../../prisma-client\\";
+import { DecimalJSScalar } from \\"../scalars\\";
+
+@TypeGraphQL.ObjectType(\\"SampleModel\\", {
+  isAbstract: true
+})
+export class SampleModel {
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  intIdField!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  intField!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: false
+  })
+  floatField!: number;
+}
+"
+`;
+
+exports[`models when customPrismaImportPath is set to custom repository directory should properly generate Prisma import path for model object type class: SampleModel 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
 import * as GraphQLScalars from \\"graphql-scalars\\";
 import { Prisma } from \\"../../test/import\\";

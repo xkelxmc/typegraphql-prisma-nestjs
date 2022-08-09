@@ -409,6 +409,7 @@ export namespace Prisma {
   export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
   export import PrismaClientInitializationError = runtime.PrismaClientInitializationError
   export import PrismaClientValidationError = runtime.PrismaClientValidationError
+  export import NotFoundError = runtime.NotFoundError
 
   /**
    * Re-export of sql-template-tag
@@ -424,9 +425,19 @@ export namespace Prisma {
    */
   export import Decimal = runtime.Decimal
 
+  export type DecimalJsLike = runtime.DecimalJsLike
+
   /**
-   * Prisma Client JS version: 3.14.0
-   * Query Engine version: 2b0c12756921c891fec4f68d9444e18c7d5d4a6a
+   * Metrics 
+   */
+  export import Metrics = runtime.Metrics
+  export import Metric = runtime.Metric
+  export import MetricHistogram = runtime.MetricHistogram
+  export import MetricHistogramBucket = runtime.MetricHistogramBucket
+
+  /**
+   * Prisma Client JS version: 4.1.0
+   * Query Engine version: 8d8414deb360336e4698a65aa45a1fbaf1ce13d8
    */
   export type PrismaVersion = {
     client: string
@@ -485,25 +496,68 @@ export namespace Prisma {
   export type InputJsonValue = string | number | boolean | InputJsonObject | InputJsonArray
 
   /**
+   * Types of the values used to represent different kinds of `null` values when working with JSON fields.
+   * 
+   * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+   */
+  namespace NullTypes {
+    /**
+    * Type of `Prisma.DbNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class DbNull {
+      private DbNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.JsonNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class JsonNull {
+      private JsonNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.AnyNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class AnyNull {
+      private AnyNull: never
+      private constructor()
+    }
+  }
+
+  /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const DbNull: 'DbNull'
+  export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const JsonNull: 'JsonNull'
+  export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const AnyNull: 'AnyNull'
+  export const AnyNull: NullTypes.AnyNull
 
   type SelectAndInclude = {
     select: any
@@ -826,7 +880,8 @@ export namespace Prisma {
   export interface PrismaClientOptions {
     /**
      * Configure findUnique/findFirst to throw an error if the query returns null. 
-     *  * @example
+     * @deprecated since 4.0.0. Use `findUniqueOrThrow`/`findFirstOrThrow` methods instead.
+     * @example
      * ```
      * // Reject on both findUnique/findFirst
      * rejectOnNotFound: true
@@ -1615,6 +1670,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__UserClient<User>, Prisma__UserClient<UserGetPayload<T>>>
 
     /**
+     * Find one User that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, UserFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__UserClient<User>, Prisma__UserClient<UserGetPayload<T>>>
+
+    /**
+     * Find the first User that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, UserFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__UserClient<User>, Prisma__UserClient<UserGetPayload<T>>>
+
+    /**
      * Count the number of Users.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -1794,9 +1883,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * User findUnique
+   * User base type for findUnique actions
    */
-  export type UserFindUniqueArgs = {
+  export type UserFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the User
     **/
@@ -1807,6 +1896,7 @@ export namespace Prisma {
     include?: UserInclude | null
     /**
      * Throw an Error if a User can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -1815,11 +1905,22 @@ export namespace Prisma {
     where: UserWhereUniqueInput
   }
 
+  /**
+   * User: findUnique
+   */
+  export interface UserFindUniqueArgs extends UserFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * User findFirst
+   * User base type for findFirst actions
    */
-  export type UserFindFirstArgs = {
+  export type UserFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the User
     **/
@@ -1830,6 +1931,7 @@ export namespace Prisma {
     include?: UserInclude | null
     /**
      * Throw an Error if a User can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -1868,6 +1970,17 @@ export namespace Prisma {
     distinct?: Enumerable<UserScalarFieldEnum>
   }
 
+  /**
+   * User: findFirst
+   */
+  export interface UserFindFirstArgs extends UserFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * User findMany
@@ -2042,6 +2155,18 @@ export namespace Prisma {
     where?: UserWhereInput
   }
 
+
+  /**
+   * User: findUniqueOrThrow
+   */
+  export type UserFindUniqueOrThrowArgs = UserFindUniqueArgsBase
+      
+
+  /**
+   * User: findFirstOrThrow
+   */
+  export type UserFindFirstOrThrowArgs = UserFindFirstArgsBase
+      
 
   /**
    * User without action
@@ -2531,6 +2656,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__postClient<post>, Prisma__postClient<postGetPayload<T>>>
 
     /**
+     * Find one Post that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {postFindUniqueOrThrowArgs} args - Arguments to find a Post
+     * @example
+     * // Get one Post
+     * const post = await prisma.post.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends postFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, postFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__postClient<post>, Prisma__postClient<postGetPayload<T>>>
+
+    /**
+     * Find the first Post that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {postFindFirstOrThrowArgs} args - Arguments to find a Post
+     * @example
+     * // Get one Post
+     * const post = await prisma.post.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends postFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, postFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__postClient<post>, Prisma__postClient<postGetPayload<T>>>
+
+    /**
      * Count the number of Posts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -2710,9 +2869,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * post findUnique
+   * post base type for findUnique actions
    */
-  export type postFindUniqueArgs = {
+  export type postFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the post
     **/
@@ -2723,6 +2882,7 @@ export namespace Prisma {
     include?: postInclude | null
     /**
      * Throw an Error if a post can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -2731,11 +2891,22 @@ export namespace Prisma {
     where: postWhereUniqueInput
   }
 
+  /**
+   * post: findUnique
+   */
+  export interface postFindUniqueArgs extends postFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * post findFirst
+   * post base type for findFirst actions
    */
-  export type postFindFirstArgs = {
+  export type postFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the post
     **/
@@ -2746,6 +2917,7 @@ export namespace Prisma {
     include?: postInclude | null
     /**
      * Throw an Error if a post can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -2784,6 +2956,17 @@ export namespace Prisma {
     distinct?: Enumerable<PostScalarFieldEnum>
   }
 
+  /**
+   * post: findFirst
+   */
+  export interface postFindFirstArgs extends postFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * post findMany
@@ -2958,6 +3141,18 @@ export namespace Prisma {
     where?: postWhereInput
   }
 
+
+  /**
+   * post: findUniqueOrThrow
+   */
+  export type postFindUniqueOrThrowArgs = postFindUniqueArgsBase
+      
+
+  /**
+   * post: findFirstOrThrow
+   */
+  export type postFindFirstOrThrowArgs = postFindFirstArgsBase
+      
 
   /**
    * post without action
@@ -3371,6 +3566,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>>
 
     /**
+     * Find one Category that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {CategoryFindUniqueOrThrowArgs} args - Arguments to find a Category
+     * @example
+     * // Get one Category
+     * const category = await prisma.category.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CategoryFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, CategoryFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>>
+
+    /**
+     * Find the first Category that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CategoryFindFirstOrThrowArgs} args - Arguments to find a Category
+     * @example
+     * // Get one Category
+     * const category = await prisma.category.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CategoryFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, CategoryFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>>
+
+    /**
      * Count the number of Categories.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -3547,15 +3776,16 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Category findUnique
+   * Category base type for findUnique actions
    */
-  export type CategoryFindUniqueArgs = {
+  export type CategoryFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Category
     **/
     select?: CategorySelect | null
     /**
      * Throw an Error if a Category can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -3564,17 +3794,29 @@ export namespace Prisma {
     where: CategoryWhereUniqueInput
   }
 
+  /**
+   * Category: findUnique
+   */
+  export interface CategoryFindUniqueArgs extends CategoryFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Category findFirst
+   * Category base type for findFirst actions
    */
-  export type CategoryFindFirstArgs = {
+  export type CategoryFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Category
     **/
     select?: CategorySelect | null
     /**
      * Throw an Error if a Category can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -3613,6 +3855,17 @@ export namespace Prisma {
     distinct?: Enumerable<CategoryScalarFieldEnum>
   }
 
+  /**
+   * Category: findFirst
+   */
+  export interface CategoryFindFirstArgs extends CategoryFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Category findMany
@@ -3767,6 +4020,18 @@ export namespace Prisma {
     where?: CategoryWhereInput
   }
 
+
+  /**
+   * Category: findUniqueOrThrow
+   */
+  export type CategoryFindUniqueOrThrowArgs = CategoryFindUniqueArgsBase
+      
+
+  /**
+   * Category: findFirstOrThrow
+   */
+  export type CategoryFindFirstOrThrowArgs = CategoryFindFirstArgsBase
+      
 
   /**
    * Category without action
@@ -4142,6 +4407,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__PatientClient<Patient>, Prisma__PatientClient<PatientGetPayload<T>>>
 
     /**
+     * Find one Patient that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {PatientFindUniqueOrThrowArgs} args - Arguments to find a Patient
+     * @example
+     * // Get one Patient
+     * const patient = await prisma.patient.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends PatientFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, PatientFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__PatientClient<Patient>, Prisma__PatientClient<PatientGetPayload<T>>>
+
+    /**
+     * Find the first Patient that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientFindFirstOrThrowArgs} args - Arguments to find a Patient
+     * @example
+     * // Get one Patient
+     * const patient = await prisma.patient.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends PatientFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, PatientFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__PatientClient<Patient>, Prisma__PatientClient<PatientGetPayload<T>>>
+
+    /**
      * Count the number of Patients.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -4318,15 +4617,16 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Patient findUnique
+   * Patient base type for findUnique actions
    */
-  export type PatientFindUniqueArgs = {
+  export type PatientFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Patient
     **/
     select?: PatientSelect | null
     /**
      * Throw an Error if a Patient can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -4335,17 +4635,29 @@ export namespace Prisma {
     where: PatientWhereUniqueInput
   }
 
+  /**
+   * Patient: findUnique
+   */
+  export interface PatientFindUniqueArgs extends PatientFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Patient findFirst
+   * Patient base type for findFirst actions
    */
-  export type PatientFindFirstArgs = {
+  export type PatientFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Patient
     **/
     select?: PatientSelect | null
     /**
      * Throw an Error if a Patient can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -4384,6 +4696,17 @@ export namespace Prisma {
     distinct?: Enumerable<PatientScalarFieldEnum>
   }
 
+  /**
+   * Patient: findFirst
+   */
+  export interface PatientFindFirstArgs extends PatientFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Patient findMany
@@ -4538,6 +4861,18 @@ export namespace Prisma {
     where?: PatientWhereInput
   }
 
+
+  /**
+   * Patient: findUniqueOrThrow
+   */
+  export type PatientFindUniqueOrThrowArgs = PatientFindUniqueArgsBase
+      
+
+  /**
+   * Patient: findFirstOrThrow
+   */
+  export type PatientFindFirstOrThrowArgs = PatientFindFirstArgsBase
+      
 
   /**
    * Patient without action
@@ -4921,6 +5256,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__MovieClient<Movie>, Prisma__MovieClient<MovieGetPayload<T>>>
 
     /**
+     * Find one Movie that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {MovieFindUniqueOrThrowArgs} args - Arguments to find a Movie
+     * @example
+     * // Get one Movie
+     * const movie = await prisma.movie.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends MovieFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, MovieFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__MovieClient<Movie>, Prisma__MovieClient<MovieGetPayload<T>>>
+
+    /**
+     * Find the first Movie that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieFindFirstOrThrowArgs} args - Arguments to find a Movie
+     * @example
+     * // Get one Movie
+     * const movie = await prisma.movie.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends MovieFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, MovieFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__MovieClient<Movie>, Prisma__MovieClient<MovieGetPayload<T>>>
+
+    /**
      * Count the number of Movies.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -5098,9 +5467,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Movie findUnique
+   * Movie base type for findUnique actions
    */
-  export type MovieFindUniqueArgs = {
+  export type MovieFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Movie
     **/
@@ -5111,6 +5480,7 @@ export namespace Prisma {
     include?: MovieInclude | null
     /**
      * Throw an Error if a Movie can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -5119,11 +5489,22 @@ export namespace Prisma {
     where: MovieWhereUniqueInput
   }
 
+  /**
+   * Movie: findUnique
+   */
+  export interface MovieFindUniqueArgs extends MovieFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Movie findFirst
+   * Movie base type for findFirst actions
    */
-  export type MovieFindFirstArgs = {
+  export type MovieFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Movie
     **/
@@ -5134,6 +5515,7 @@ export namespace Prisma {
     include?: MovieInclude | null
     /**
      * Throw an Error if a Movie can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -5172,6 +5554,17 @@ export namespace Prisma {
     distinct?: Enumerable<MovieScalarFieldEnum>
   }
 
+  /**
+   * Movie: findFirst
+   */
+  export interface MovieFindFirstArgs extends MovieFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Movie findMany
@@ -5346,6 +5739,18 @@ export namespace Prisma {
     where?: MovieWhereInput
   }
 
+
+  /**
+   * Movie: findUniqueOrThrow
+   */
+  export type MovieFindUniqueOrThrowArgs = MovieFindUniqueArgsBase
+      
+
+  /**
+   * Movie: findFirstOrThrow
+   */
+  export type MovieFindFirstOrThrowArgs = MovieFindFirstArgsBase
+      
 
   /**
    * Movie without action
@@ -5729,6 +6134,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__DirectorClient<Director>, Prisma__DirectorClient<DirectorGetPayload<T>>>
 
     /**
+     * Find one Director that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {DirectorFindUniqueOrThrowArgs} args - Arguments to find a Director
+     * @example
+     * // Get one Director
+     * const director = await prisma.director.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends DirectorFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, DirectorFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__DirectorClient<Director>, Prisma__DirectorClient<DirectorGetPayload<T>>>
+
+    /**
+     * Find the first Director that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectorFindFirstOrThrowArgs} args - Arguments to find a Director
+     * @example
+     * // Get one Director
+     * const director = await prisma.director.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends DirectorFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, DirectorFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__DirectorClient<Director>, Prisma__DirectorClient<DirectorGetPayload<T>>>
+
+    /**
      * Count the number of Directors.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -5906,9 +6345,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Director findUnique
+   * Director base type for findUnique actions
    */
-  export type DirectorFindUniqueArgs = {
+  export type DirectorFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Director
     **/
@@ -5919,6 +6358,7 @@ export namespace Prisma {
     include?: DirectorInclude | null
     /**
      * Throw an Error if a Director can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -5927,11 +6367,22 @@ export namespace Prisma {
     where: DirectorWhereUniqueInput
   }
 
+  /**
+   * Director: findUnique
+   */
+  export interface DirectorFindUniqueArgs extends DirectorFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Director findFirst
+   * Director base type for findFirst actions
    */
-  export type DirectorFindFirstArgs = {
+  export type DirectorFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Director
     **/
@@ -5942,6 +6393,7 @@ export namespace Prisma {
     include?: DirectorInclude | null
     /**
      * Throw an Error if a Director can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -5980,6 +6432,17 @@ export namespace Prisma {
     distinct?: Enumerable<DirectorScalarFieldEnum>
   }
 
+  /**
+   * Director: findFirst
+   */
+  export interface DirectorFindFirstArgs extends DirectorFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Director findMany
@@ -6154,6 +6617,18 @@ export namespace Prisma {
     where?: DirectorWhereInput
   }
 
+
+  /**
+   * Director: findUniqueOrThrow
+   */
+  export type DirectorFindUniqueOrThrowArgs = DirectorFindUniqueArgsBase
+      
+
+  /**
+   * Director: findFirstOrThrow
+   */
+  export type DirectorFindFirstOrThrowArgs = DirectorFindFirstArgsBase
+      
 
   /**
    * Director without action
@@ -6587,6 +7062,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__ProblemClient<Problem>, Prisma__ProblemClient<ProblemGetPayload<T>>>
 
     /**
+     * Find one Problem that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {ProblemFindUniqueOrThrowArgs} args - Arguments to find a Problem
+     * @example
+     * // Get one Problem
+     * const problem = await prisma.problem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ProblemFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, ProblemFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__ProblemClient<Problem>, Prisma__ProblemClient<ProblemGetPayload<T>>>
+
+    /**
+     * Find the first Problem that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemFindFirstOrThrowArgs} args - Arguments to find a Problem
+     * @example
+     * // Get one Problem
+     * const problem = await prisma.problem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ProblemFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, ProblemFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__ProblemClient<Problem>, Prisma__ProblemClient<ProblemGetPayload<T>>>
+
+    /**
      * Count the number of Problems.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -6766,9 +7275,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Problem findUnique
+   * Problem base type for findUnique actions
    */
-  export type ProblemFindUniqueArgs = {
+  export type ProblemFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Problem
     **/
@@ -6779,6 +7288,7 @@ export namespace Prisma {
     include?: ProblemInclude | null
     /**
      * Throw an Error if a Problem can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -6787,11 +7297,22 @@ export namespace Prisma {
     where: ProblemWhereUniqueInput
   }
 
+  /**
+   * Problem: findUnique
+   */
+  export interface ProblemFindUniqueArgs extends ProblemFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Problem findFirst
+   * Problem base type for findFirst actions
    */
-  export type ProblemFindFirstArgs = {
+  export type ProblemFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Problem
     **/
@@ -6802,6 +7323,7 @@ export namespace Prisma {
     include?: ProblemInclude | null
     /**
      * Throw an Error if a Problem can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -6840,6 +7362,17 @@ export namespace Prisma {
     distinct?: Enumerable<ProblemScalarFieldEnum>
   }
 
+  /**
+   * Problem: findFirst
+   */
+  export interface ProblemFindFirstArgs extends ProblemFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Problem findMany
@@ -7014,6 +7547,18 @@ export namespace Prisma {
     where?: ProblemWhereInput
   }
 
+
+  /**
+   * Problem: findUniqueOrThrow
+   */
+  export type ProblemFindUniqueOrThrowArgs = ProblemFindUniqueArgsBase
+      
+
+  /**
+   * Problem: findFirstOrThrow
+   */
+  export type ProblemFindFirstOrThrowArgs = ProblemFindFirstArgsBase
+      
 
   /**
    * Problem without action
@@ -7435,6 +7980,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__CreatorClient<Creator>, Prisma__CreatorClient<CreatorGetPayload<T>>>
 
     /**
+     * Find one Creator that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {CreatorFindUniqueOrThrowArgs} args - Arguments to find a Creator
+     * @example
+     * // Get one Creator
+     * const creator = await prisma.creator.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CreatorFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, CreatorFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__CreatorClient<Creator>, Prisma__CreatorClient<CreatorGetPayload<T>>>
+
+    /**
+     * Find the first Creator that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CreatorFindFirstOrThrowArgs} args - Arguments to find a Creator
+     * @example
+     * // Get one Creator
+     * const creator = await prisma.creator.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CreatorFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, CreatorFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__CreatorClient<Creator>, Prisma__CreatorClient<CreatorGetPayload<T>>>
+
+    /**
      * Count the number of Creators.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -7614,9 +8193,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Creator findUnique
+   * Creator base type for findUnique actions
    */
-  export type CreatorFindUniqueArgs = {
+  export type CreatorFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Creator
     **/
@@ -7627,6 +8206,7 @@ export namespace Prisma {
     include?: CreatorInclude | null
     /**
      * Throw an Error if a Creator can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -7635,11 +8215,22 @@ export namespace Prisma {
     where: CreatorWhereUniqueInput
   }
 
+  /**
+   * Creator: findUnique
+   */
+  export interface CreatorFindUniqueArgs extends CreatorFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Creator findFirst
+   * Creator base type for findFirst actions
    */
-  export type CreatorFindFirstArgs = {
+  export type CreatorFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Creator
     **/
@@ -7650,6 +8241,7 @@ export namespace Prisma {
     include?: CreatorInclude | null
     /**
      * Throw an Error if a Creator can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -7688,6 +8280,17 @@ export namespace Prisma {
     distinct?: Enumerable<CreatorScalarFieldEnum>
   }
 
+  /**
+   * Creator: findFirst
+   */
+  export interface CreatorFindFirstArgs extends CreatorFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Creator findMany
@@ -7862,6 +8465,18 @@ export namespace Prisma {
     where?: CreatorWhereInput
   }
 
+
+  /**
+   * Creator: findUniqueOrThrow
+   */
+  export type CreatorFindUniqueOrThrowArgs = CreatorFindUniqueArgsBase
+      
+
+  /**
+   * Creator: findFirstOrThrow
+   */
+  export type CreatorFindFirstOrThrowArgs = CreatorFindFirstArgsBase
+      
 
   /**
    * Creator without action
@@ -8285,6 +8900,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T>>>
 
     /**
+     * Find one NativeTypeModel that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {NativeTypeModelFindUniqueOrThrowArgs} args - Arguments to find a NativeTypeModel
+     * @example
+     * // Get one NativeTypeModel
+     * const nativeTypeModel = await prisma.nativeTypeModel.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends NativeTypeModelFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, NativeTypeModelFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T>>>
+
+    /**
+     * Find the first NativeTypeModel that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NativeTypeModelFindFirstOrThrowArgs} args - Arguments to find a NativeTypeModel
+     * @example
+     * // Get one NativeTypeModel
+     * const nativeTypeModel = await prisma.nativeTypeModel.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends NativeTypeModelFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, NativeTypeModelFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T>>>
+
+    /**
      * Count the number of NativeTypeModels.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -8461,15 +9110,16 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * NativeTypeModel findUnique
+   * NativeTypeModel base type for findUnique actions
    */
-  export type NativeTypeModelFindUniqueArgs = {
+  export type NativeTypeModelFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the NativeTypeModel
     **/
     select?: NativeTypeModelSelect | null
     /**
      * Throw an Error if a NativeTypeModel can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -8478,17 +9128,29 @@ export namespace Prisma {
     where: NativeTypeModelWhereUniqueInput
   }
 
+  /**
+   * NativeTypeModel: findUnique
+   */
+  export interface NativeTypeModelFindUniqueArgs extends NativeTypeModelFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * NativeTypeModel findFirst
+   * NativeTypeModel base type for findFirst actions
    */
-  export type NativeTypeModelFindFirstArgs = {
+  export type NativeTypeModelFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the NativeTypeModel
     **/
     select?: NativeTypeModelSelect | null
     /**
      * Throw an Error if a NativeTypeModel can't be found
+     * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
@@ -8527,6 +9189,17 @@ export namespace Prisma {
     distinct?: Enumerable<NativeTypeModelScalarFieldEnum>
   }
 
+  /**
+   * NativeTypeModel: findFirst
+   */
+  export interface NativeTypeModelFindFirstArgs extends NativeTypeModelFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * NativeTypeModel findMany
@@ -8683,6 +9356,18 @@ export namespace Prisma {
 
 
   /**
+   * NativeTypeModel: findUniqueOrThrow
+   */
+  export type NativeTypeModelFindUniqueOrThrowArgs = NativeTypeModelFindUniqueArgsBase
+      
+
+  /**
+   * NativeTypeModel: findFirstOrThrow
+   */
+  export type NativeTypeModelFindFirstOrThrowArgs = NativeTypeModelFindFirstArgsBase
+      
+
+  /**
    * NativeTypeModel without action
    */
   export type NativeTypeModelArgs = {
@@ -8804,7 +9489,7 @@ export namespace Prisma {
 
 
   export const JsonNullValueInput: {
-    JsonNull: 'JsonNull'
+    JsonNull: typeof JsonNull
   };
 
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
@@ -8818,6 +9503,14 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
   export const UserOrderByRelevanceFieldEnum: {
     email: 'email',
     name: 'name',
@@ -8828,9 +9521,9 @@ export namespace Prisma {
 
 
   export const JsonNullValueFilter: {
-    DbNull: 'DbNull',
-    JsonNull: 'JsonNull',
-    AnyNull: 'AnyNull'
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
   };
 
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
@@ -8919,7 +9612,7 @@ export namespace Prisma {
   export type UserOrderByWithRelationAndSearchRelevanceInput = {
     id?: SortOrder
     email?: SortOrder
-    name?: SortOrder
+    name?: SortOrderInput | SortOrder
     age?: SortOrder
     balance?: SortOrder
     amount?: SortOrder
@@ -8939,7 +9632,7 @@ export namespace Prisma {
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
-    name?: SortOrder
+    name?: SortOrderInput | SortOrder
     age?: SortOrder
     balance?: SortOrder
     amount?: SortOrder
@@ -8994,12 +9687,12 @@ export namespace Prisma {
     published?: SortOrder
     title?: SortOrder
     subtitle?: SortOrder
-    content?: SortOrder
+    content?: SortOrderInput | SortOrder
     author?: UserOrderByWithRelationAndSearchRelevanceInput
     authorId?: SortOrder
     editor?: UserOrderByWithRelationAndSearchRelevanceInput
-    editorId?: SortOrder
-    kind?: SortOrder
+    editorId?: SortOrderInput | SortOrder
+    kind?: SortOrderInput | SortOrder
     metadata?: SortOrder
     _relevance?: postOrderByRelevanceInput
   }
@@ -9015,10 +9708,10 @@ export namespace Prisma {
     published?: SortOrder
     title?: SortOrder
     subtitle?: SortOrder
-    content?: SortOrder
+    content?: SortOrderInput | SortOrder
     authorId?: SortOrder
-    editorId?: SortOrder
-    kind?: SortOrder
+    editorId?: SortOrderInput | SortOrder
+    kind?: SortOrderInput | SortOrder
     metadata?: SortOrder
     _count?: postCountOrderByAggregateInput
     _avg?: postAvgOrderByAggregateInput
@@ -9214,7 +9907,7 @@ export namespace Prisma {
     problemText?: SortOrder
     likedBy?: CreatorOrderByRelationAggregateInput
     creator?: CreatorOrderByWithRelationAndSearchRelevanceInput
-    creatorId?: SortOrder
+    creatorId?: SortOrderInput | SortOrder
     _relevance?: ProblemOrderByRelevanceInput
   }
 
@@ -9225,7 +9918,7 @@ export namespace Prisma {
   export type ProblemOrderByWithAggregationInput = {
     id?: SortOrder
     problemText?: SortOrder
-    creatorId?: SortOrder
+    creatorId?: SortOrderInput | SortOrder
     _count?: ProblemCountOrderByAggregateInput
     _avg?: ProblemAvgOrderByAggregateInput
     _max?: ProblemMaxOrderByAggregateInput
@@ -9289,14 +9982,14 @@ export namespace Prisma {
     id?: IntFilter | number
     bigInt?: BigIntNullableFilter | bigint | number | null
     byteA?: BytesNullableFilter | Buffer | null
-    decimal?: DecimalNullableFilter | Decimal | number | string | null
+    decimal?: DecimalNullableFilter | Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelOrderByWithRelationAndSearchRelevanceInput = {
     id?: SortOrder
-    bigInt?: SortOrder
-    byteA?: SortOrder
-    decimal?: SortOrder
+    bigInt?: SortOrderInput | SortOrder
+    byteA?: SortOrderInput | SortOrder
+    decimal?: SortOrderInput | SortOrder
   }
 
   export type NativeTypeModelWhereUniqueInput = {
@@ -9305,9 +9998,9 @@ export namespace Prisma {
 
   export type NativeTypeModelOrderByWithAggregationInput = {
     id?: SortOrder
-    bigInt?: SortOrder
-    byteA?: SortOrder
-    decimal?: SortOrder
+    bigInt?: SortOrderInput | SortOrder
+    byteA?: SortOrderInput | SortOrder
+    decimal?: SortOrderInput | SortOrder
     _count?: NativeTypeModelCountOrderByAggregateInput
     _avg?: NativeTypeModelAvgOrderByAggregateInput
     _max?: NativeTypeModelMaxOrderByAggregateInput
@@ -9322,7 +10015,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter | number
     bigInt?: BigIntNullableWithAggregatesFilter | bigint | number | null
     byteA?: BytesNullableWithAggregatesFilter | Buffer | null
-    decimal?: DecimalNullableWithAggregatesFilter | Decimal | number | string | null
+    decimal?: DecimalNullableWithAggregatesFilter | Decimal | DecimalJsLike | number | string | null
   }
 
   export type UserCreateInput = {
@@ -9358,9 +10051,9 @@ export namespace Prisma {
     age?: IntFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    posts?: postUpdateManyWithoutAuthorInput
+    posts?: postUpdateManyWithoutAuthorNestedInput
     role?: EnumRoleFieldUpdateOperationsInput | Role
-    editorPosts?: postUpdateManyWithoutEditorInput
+    editorPosts?: postUpdateManyWithoutEditorNestedInput
     grades?: UserUpdategradesInput | Enumerable<number>
     aliases?: UserUpdatealiasesInput | Enumerable<string>
   }
@@ -9372,9 +10065,9 @@ export namespace Prisma {
     age?: IntFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    posts?: postUncheckedUpdateManyWithoutAuthorInput
+    posts?: postUncheckedUpdateManyWithoutAuthorNestedInput
     role?: EnumRoleFieldUpdateOperationsInput | Role
-    editorPosts?: postUncheckedUpdateManyWithoutEditorInput
+    editorPosts?: postUncheckedUpdateManyWithoutEditorNestedInput
     grades?: UserUpdategradesInput | Enumerable<number>
     aliases?: UserUpdatealiasesInput | Enumerable<string>
   }
@@ -9450,8 +10143,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     subtitle?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
-    author?: UserUpdateOneRequiredWithoutPostsInput
-    editor?: UserUpdateOneWithoutEditorPostsInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    editor?: UserUpdateOneWithoutEditorPostsNestedInput
     kind?: NullableEnumPostKindFieldUpdateOperationsInput | PostKind | null
     metadata?: JsonNullValueInput | InputJsonValue
   }
@@ -9606,7 +10299,7 @@ export namespace Prisma {
   }
 
   export type MovieUpdateInput = {
-    director?: DirectorUpdateOneRequiredWithoutMoviesInput
+    director?: DirectorUpdateOneRequiredWithoutMoviesNestedInput
     title?: StringFieldUpdateOperationsInput | string
   }
 
@@ -9647,13 +10340,13 @@ export namespace Prisma {
   export type DirectorUpdateInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    movies?: MovieUpdateManyWithoutDirectorInput
+    movies?: MovieUpdateManyWithoutDirectorNestedInput
   }
 
   export type DirectorUncheckedUpdateInput = {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    movies?: MovieUncheckedUpdateManyWithoutDirectorInput
+    movies?: MovieUncheckedUpdateManyWithoutDirectorNestedInput
   }
 
   export type DirectorCreateManyInput = {
@@ -9686,14 +10379,14 @@ export namespace Prisma {
 
   export type ProblemUpdateInput = {
     problemText?: StringFieldUpdateOperationsInput | string
-    likedBy?: CreatorUpdateManyWithoutLikesInput
-    creator?: CreatorUpdateOneWithoutProblemsInput
+    likedBy?: CreatorUpdateManyWithoutLikesNestedInput
+    creator?: CreatorUpdateOneWithoutProblemsNestedInput
   }
 
   export type ProblemUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     problemText?: StringFieldUpdateOperationsInput | string
-    likedBy?: CreatorUncheckedUpdateManyWithoutLikesInput
+    likedBy?: CreatorUncheckedUpdateManyWithoutLikesNestedInput
     creatorId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -9728,15 +10421,15 @@ export namespace Prisma {
 
   export type CreatorUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
-    likes?: ProblemUpdateManyWithoutLikedByInput
-    problems?: ProblemUpdateManyWithoutCreatorInput
+    likes?: ProblemUpdateManyWithoutLikedByNestedInput
+    problems?: ProblemUpdateManyWithoutCreatorNestedInput
   }
 
   export type CreatorUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    likes?: ProblemUncheckedUpdateManyWithoutLikedByInput
-    problems?: ProblemUncheckedUpdateManyWithoutCreatorInput
+    likes?: ProblemUncheckedUpdateManyWithoutLikedByNestedInput
+    problems?: ProblemUncheckedUpdateManyWithoutCreatorNestedInput
   }
 
   export type CreatorCreateManyInput = {
@@ -9756,47 +10449,47 @@ export namespace Prisma {
   export type NativeTypeModelCreateInput = {
     bigInt?: bigint | number | null
     byteA?: Buffer | null
-    decimal?: Decimal | number | string | null
+    decimal?: Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelUncheckedCreateInput = {
     id?: number
     bigInt?: bigint | number | null
     byteA?: Buffer | null
-    decimal?: Decimal | number | string | null
+    decimal?: Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelUpdateInput = {
     bigInt?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     byteA?: NullableBytesFieldUpdateOperationsInput | Buffer | null
-    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | number | string | null
+    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     bigInt?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     byteA?: NullableBytesFieldUpdateOperationsInput | Buffer | null
-    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | number | string | null
+    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelCreateManyInput = {
     id?: number
     bigInt?: bigint | number | null
     byteA?: Buffer | null
-    decimal?: Decimal | number | string | null
+    decimal?: Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelUpdateManyMutationInput = {
     bigInt?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     byteA?: NullableBytesFieldUpdateOperationsInput | Buffer | null
-    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | number | string | null
+    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     bigInt?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     byteA?: NullableBytesFieldUpdateOperationsInput | Buffer | null
-    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | number | string | null
+    decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type IntFilter = {
@@ -9880,6 +10573,11 @@ export namespace Prisma {
     hasEvery?: Enumerable<string>
     hasSome?: Enumerable<string>
     isEmpty?: boolean
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type postOrderByRelationAggregateInput = {
@@ -10442,14 +11140,14 @@ export namespace Prisma {
   }
 
   export type DecimalNullableFilter = {
-    equals?: Decimal | number | string | null
-    in?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    notIn?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    lt?: Decimal | number | string
-    lte?: Decimal | number | string
-    gt?: Decimal | number | string
-    gte?: Decimal | number | string
-    not?: NestedDecimalNullableFilter | Decimal | number | string | null
+    equals?: Decimal | DecimalJsLike | number | string | null
+    in?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    notIn?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    lt?: Decimal | DecimalJsLike | number | string
+    lte?: Decimal | DecimalJsLike | number | string
+    gt?: Decimal | DecimalJsLike | number | string
+    gte?: Decimal | DecimalJsLike | number | string
+    not?: NestedDecimalNullableFilter | Decimal | DecimalJsLike | number | string | null
   }
 
   export type NativeTypeModelCountOrderByAggregateInput = {
@@ -10512,14 +11210,14 @@ export namespace Prisma {
   }
 
   export type DecimalNullableWithAggregatesFilter = {
-    equals?: Decimal | number | string | null
-    in?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    notIn?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    lt?: Decimal | number | string
-    lte?: Decimal | number | string
-    gt?: Decimal | number | string
-    gte?: Decimal | number | string
-    not?: NestedDecimalNullableWithAggregatesFilter | Decimal | number | string | null
+    equals?: Decimal | DecimalJsLike | number | string | null
+    in?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    notIn?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    lt?: Decimal | DecimalJsLike | number | string
+    lte?: Decimal | DecimalJsLike | number | string
+    gt?: Decimal | DecimalJsLike | number | string
+    gte?: Decimal | DecimalJsLike | number | string
+    not?: NestedDecimalNullableWithAggregatesFilter | Decimal | DecimalJsLike | number | string | null
     _count?: NestedIntNullableFilter
     _avg?: NestedDecimalNullableFilter
     _sum?: NestedDecimalNullableFilter
@@ -10587,7 +11285,7 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type postUpdateManyWithoutAuthorInput = {
+  export type postUpdateManyWithoutAuthorNestedInput = {
     create?: XOR<Enumerable<postCreateWithoutAuthorInput>, Enumerable<postUncheckedCreateWithoutAuthorInput>>
     connectOrCreate?: Enumerable<postCreateOrConnectWithoutAuthorInput>
     upsert?: Enumerable<postUpsertWithWhereUniqueWithoutAuthorInput>
@@ -10605,7 +11303,7 @@ export namespace Prisma {
     set?: Role
   }
 
-  export type postUpdateManyWithoutEditorInput = {
+  export type postUpdateManyWithoutEditorNestedInput = {
     create?: XOR<Enumerable<postCreateWithoutEditorInput>, Enumerable<postUncheckedCreateWithoutEditorInput>>
     connectOrCreate?: Enumerable<postCreateOrConnectWithoutEditorInput>
     upsert?: Enumerable<postUpsertWithWhereUniqueWithoutEditorInput>
@@ -10629,7 +11327,7 @@ export namespace Prisma {
     push?: string | Enumerable<string>
   }
 
-  export type postUncheckedUpdateManyWithoutAuthorInput = {
+  export type postUncheckedUpdateManyWithoutAuthorNestedInput = {
     create?: XOR<Enumerable<postCreateWithoutAuthorInput>, Enumerable<postUncheckedCreateWithoutAuthorInput>>
     connectOrCreate?: Enumerable<postCreateOrConnectWithoutAuthorInput>
     upsert?: Enumerable<postUpsertWithWhereUniqueWithoutAuthorInput>
@@ -10643,7 +11341,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<postScalarWhereInput>
   }
 
-  export type postUncheckedUpdateManyWithoutEditorInput = {
+  export type postUncheckedUpdateManyWithoutEditorNestedInput = {
     create?: XOR<Enumerable<postCreateWithoutEditorInput>, Enumerable<postUncheckedCreateWithoutEditorInput>>
     connectOrCreate?: Enumerable<postCreateOrConnectWithoutEditorInput>
     upsert?: Enumerable<postUpsertWithWhereUniqueWithoutEditorInput>
@@ -10677,7 +11375,7 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type UserUpdateOneRequiredWithoutPostsInput = {
+  export type UserUpdateOneRequiredWithoutPostsNestedInput = {
     create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
     connectOrCreate?: UserCreateOrConnectWithoutPostsInput
     upsert?: UserUpsertWithoutPostsInput
@@ -10685,7 +11383,7 @@ export namespace Prisma {
     update?: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
   }
 
-  export type UserUpdateOneWithoutEditorPostsInput = {
+  export type UserUpdateOneWithoutEditorPostsNestedInput = {
     create?: XOR<UserCreateWithoutEditorPostsInput, UserUncheckedCreateWithoutEditorPostsInput>
     connectOrCreate?: UserCreateOrConnectWithoutEditorPostsInput
     upsert?: UserUpsertWithoutEditorPostsInput
@@ -10713,7 +11411,7 @@ export namespace Prisma {
     connect?: DirectorWhereUniqueInput
   }
 
-  export type DirectorUpdateOneRequiredWithoutMoviesInput = {
+  export type DirectorUpdateOneRequiredWithoutMoviesNestedInput = {
     create?: XOR<DirectorCreateWithoutMoviesInput, DirectorUncheckedCreateWithoutMoviesInput>
     connectOrCreate?: DirectorCreateOrConnectWithoutMoviesInput
     upsert?: DirectorUpsertWithoutMoviesInput
@@ -10735,7 +11433,7 @@ export namespace Prisma {
     connect?: Enumerable<MovieWhereUniqueInput>
   }
 
-  export type MovieUpdateManyWithoutDirectorInput = {
+  export type MovieUpdateManyWithoutDirectorNestedInput = {
     create?: XOR<Enumerable<MovieCreateWithoutDirectorInput>, Enumerable<MovieUncheckedCreateWithoutDirectorInput>>
     connectOrCreate?: Enumerable<MovieCreateOrConnectWithoutDirectorInput>
     upsert?: Enumerable<MovieUpsertWithWhereUniqueWithoutDirectorInput>
@@ -10749,7 +11447,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<MovieScalarWhereInput>
   }
 
-  export type MovieUncheckedUpdateManyWithoutDirectorInput = {
+  export type MovieUncheckedUpdateManyWithoutDirectorNestedInput = {
     create?: XOR<Enumerable<MovieCreateWithoutDirectorInput>, Enumerable<MovieUncheckedCreateWithoutDirectorInput>>
     connectOrCreate?: Enumerable<MovieCreateOrConnectWithoutDirectorInput>
     upsert?: Enumerable<MovieUpsertWithWhereUniqueWithoutDirectorInput>
@@ -10781,7 +11479,7 @@ export namespace Prisma {
     connect?: Enumerable<CreatorWhereUniqueInput>
   }
 
-  export type CreatorUpdateManyWithoutLikesInput = {
+  export type CreatorUpdateManyWithoutLikesNestedInput = {
     create?: XOR<Enumerable<CreatorCreateWithoutLikesInput>, Enumerable<CreatorUncheckedCreateWithoutLikesInput>>
     connectOrCreate?: Enumerable<CreatorCreateOrConnectWithoutLikesInput>
     upsert?: Enumerable<CreatorUpsertWithWhereUniqueWithoutLikesInput>
@@ -10794,7 +11492,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<CreatorScalarWhereInput>
   }
 
-  export type CreatorUpdateOneWithoutProblemsInput = {
+  export type CreatorUpdateOneWithoutProblemsNestedInput = {
     create?: XOR<CreatorCreateWithoutProblemsInput, CreatorUncheckedCreateWithoutProblemsInput>
     connectOrCreate?: CreatorCreateOrConnectWithoutProblemsInput
     upsert?: CreatorUpsertWithoutProblemsInput
@@ -10804,7 +11502,7 @@ export namespace Prisma {
     update?: XOR<CreatorUpdateWithoutProblemsInput, CreatorUncheckedUpdateWithoutProblemsInput>
   }
 
-  export type CreatorUncheckedUpdateManyWithoutLikesInput = {
+  export type CreatorUncheckedUpdateManyWithoutLikesNestedInput = {
     create?: XOR<Enumerable<CreatorCreateWithoutLikesInput>, Enumerable<CreatorUncheckedCreateWithoutLikesInput>>
     connectOrCreate?: Enumerable<CreatorCreateOrConnectWithoutLikesInput>
     upsert?: Enumerable<CreatorUpsertWithWhereUniqueWithoutLikesInput>
@@ -10843,7 +11541,7 @@ export namespace Prisma {
     connect?: Enumerable<ProblemWhereUniqueInput>
   }
 
-  export type ProblemUpdateManyWithoutLikedByInput = {
+  export type ProblemUpdateManyWithoutLikedByNestedInput = {
     create?: XOR<Enumerable<ProblemCreateWithoutLikedByInput>, Enumerable<ProblemUncheckedCreateWithoutLikedByInput>>
     connectOrCreate?: Enumerable<ProblemCreateOrConnectWithoutLikedByInput>
     upsert?: Enumerable<ProblemUpsertWithWhereUniqueWithoutLikedByInput>
@@ -10856,7 +11554,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<ProblemScalarWhereInput>
   }
 
-  export type ProblemUpdateManyWithoutCreatorInput = {
+  export type ProblemUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<Enumerable<ProblemCreateWithoutCreatorInput>, Enumerable<ProblemUncheckedCreateWithoutCreatorInput>>
     connectOrCreate?: Enumerable<ProblemCreateOrConnectWithoutCreatorInput>
     upsert?: Enumerable<ProblemUpsertWithWhereUniqueWithoutCreatorInput>
@@ -10870,7 +11568,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<ProblemScalarWhereInput>
   }
 
-  export type ProblemUncheckedUpdateManyWithoutLikedByInput = {
+  export type ProblemUncheckedUpdateManyWithoutLikedByNestedInput = {
     create?: XOR<Enumerable<ProblemCreateWithoutLikedByInput>, Enumerable<ProblemUncheckedCreateWithoutLikedByInput>>
     connectOrCreate?: Enumerable<ProblemCreateOrConnectWithoutLikedByInput>
     upsert?: Enumerable<ProblemUpsertWithWhereUniqueWithoutLikedByInput>
@@ -10883,7 +11581,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<ProblemScalarWhereInput>
   }
 
-  export type ProblemUncheckedUpdateManyWithoutCreatorInput = {
+  export type ProblemUncheckedUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<Enumerable<ProblemCreateWithoutCreatorInput>, Enumerable<ProblemUncheckedCreateWithoutCreatorInput>>
     connectOrCreate?: Enumerable<ProblemCreateOrConnectWithoutCreatorInput>
     upsert?: Enumerable<ProblemUpsertWithWhereUniqueWithoutCreatorInput>
@@ -10910,11 +11608,11 @@ export namespace Prisma {
   }
 
   export type NullableDecimalFieldUpdateOperationsInput = {
-    set?: Decimal | number | string | null
-    increment?: Decimal | number | string
-    decrement?: Decimal | number | string
-    multiply?: Decimal | number | string
-    divide?: Decimal | number | string
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
   }
 
   export type NestedIntFilter = {
@@ -11182,14 +11880,14 @@ export namespace Prisma {
   }
 
   export type NestedDecimalNullableFilter = {
-    equals?: Decimal | number | string | null
-    in?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    notIn?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    lt?: Decimal | number | string
-    lte?: Decimal | number | string
-    gt?: Decimal | number | string
-    gte?: Decimal | number | string
-    not?: NestedDecimalNullableFilter | Decimal | number | string | null
+    equals?: Decimal | DecimalJsLike | number | string | null
+    in?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    notIn?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    lt?: Decimal | DecimalJsLike | number | string
+    lte?: Decimal | DecimalJsLike | number | string
+    gt?: Decimal | DecimalJsLike | number | string
+    gte?: Decimal | DecimalJsLike | number | string
+    not?: NestedDecimalNullableFilter | Decimal | DecimalJsLike | number | string | null
   }
 
   export type NestedBigIntNullableWithAggregatesFilter = {
@@ -11219,14 +11917,14 @@ export namespace Prisma {
   }
 
   export type NestedDecimalNullableWithAggregatesFilter = {
-    equals?: Decimal | number | string | null
-    in?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    notIn?: Enumerable<Decimal> | Enumerable<number> | Enumerable<string> | null
-    lt?: Decimal | number | string
-    lte?: Decimal | number | string
-    gt?: Decimal | number | string
-    gte?: Decimal | number | string
-    not?: NestedDecimalNullableWithAggregatesFilter | Decimal | number | string | null
+    equals?: Decimal | DecimalJsLike | number | string | null
+    in?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    notIn?: Enumerable<Decimal> | Enumerable<DecimalJsLike> | Enumerable<number> | Enumerable<string> | null
+    lt?: Decimal | DecimalJsLike | number | string
+    lte?: Decimal | DecimalJsLike | number | string
+    gt?: Decimal | DecimalJsLike | number | string
+    gte?: Decimal | DecimalJsLike | number | string
+    not?: NestedDecimalNullableWithAggregatesFilter | Decimal | DecimalJsLike | number | string | null
     _count?: NestedIntNullableFilter
     _avg?: NestedDecimalNullableFilter
     _sum?: NestedDecimalNullableFilter
@@ -11427,7 +12125,7 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
-    editorPosts?: postUpdateManyWithoutEditorInput
+    editorPosts?: postUpdateManyWithoutEditorNestedInput
     grades?: UserUpdategradesInput | Enumerable<number>
     aliases?: UserUpdatealiasesInput | Enumerable<string>
   }
@@ -11440,7 +12138,7 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | Role
-    editorPosts?: postUncheckedUpdateManyWithoutEditorInput
+    editorPosts?: postUncheckedUpdateManyWithoutEditorNestedInput
     grades?: UserUpdategradesInput | Enumerable<number>
     aliases?: UserUpdatealiasesInput | Enumerable<string>
   }
@@ -11456,7 +12154,7 @@ export namespace Prisma {
     age?: IntFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    posts?: postUpdateManyWithoutAuthorInput
+    posts?: postUpdateManyWithoutAuthorNestedInput
     role?: EnumRoleFieldUpdateOperationsInput | Role
     grades?: UserUpdategradesInput | Enumerable<number>
     aliases?: UserUpdatealiasesInput | Enumerable<string>
@@ -11469,7 +12167,7 @@ export namespace Prisma {
     age?: IntFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    posts?: postUncheckedUpdateManyWithoutAuthorInput
+    posts?: postUncheckedUpdateManyWithoutAuthorNestedInput
     role?: EnumRoleFieldUpdateOperationsInput | Role
     grades?: UserUpdategradesInput | Enumerable<number>
     aliases?: UserUpdatealiasesInput | Enumerable<string>
@@ -11611,13 +12309,13 @@ export namespace Prisma {
 
   export type CreatorUpdateWithoutProblemsInput = {
     name?: StringFieldUpdateOperationsInput | string
-    likes?: ProblemUpdateManyWithoutLikedByInput
+    likes?: ProblemUpdateManyWithoutLikedByNestedInput
   }
 
   export type CreatorUncheckedUpdateWithoutProblemsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    likes?: ProblemUncheckedUpdateManyWithoutLikedByInput
+    likes?: ProblemUncheckedUpdateManyWithoutLikedByNestedInput
   }
 
   export type ProblemCreateWithoutLikedByInput = {
@@ -11732,7 +12430,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     subtitle?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
-    editor?: UserUpdateOneWithoutEditorPostsInput
+    editor?: UserUpdateOneWithoutEditorPostsNestedInput
     kind?: NullableEnumPostKindFieldUpdateOperationsInput | PostKind | null
     metadata?: JsonNullValueInput | InputJsonValue
   }
@@ -11771,7 +12469,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     subtitle?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
-    author?: UserUpdateOneRequiredWithoutPostsInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
     kind?: NullableEnumPostKindFieldUpdateOperationsInput | PostKind | null
     metadata?: JsonNullValueInput | InputJsonValue
   }
@@ -11820,13 +12518,13 @@ export namespace Prisma {
 
   export type CreatorUpdateWithoutLikesInput = {
     name?: StringFieldUpdateOperationsInput | string
-    problems?: ProblemUpdateManyWithoutCreatorInput
+    problems?: ProblemUpdateManyWithoutCreatorNestedInput
   }
 
   export type CreatorUncheckedUpdateWithoutLikesInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    problems?: ProblemUncheckedUpdateManyWithoutCreatorInput
+    problems?: ProblemUncheckedUpdateManyWithoutCreatorNestedInput
   }
 
   export type CreatorUncheckedUpdateManyWithoutLikedByInput = {
@@ -11841,7 +12539,7 @@ export namespace Prisma {
 
   export type ProblemUpdateWithoutLikedByInput = {
     problemText?: StringFieldUpdateOperationsInput | string
-    creator?: CreatorUpdateOneWithoutProblemsInput
+    creator?: CreatorUpdateOneWithoutProblemsNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutLikedByInput = {
@@ -11858,13 +12556,13 @@ export namespace Prisma {
 
   export type ProblemUpdateWithoutCreatorInput = {
     problemText?: StringFieldUpdateOperationsInput | string
-    likedBy?: CreatorUpdateManyWithoutLikesInput
+    likedBy?: CreatorUpdateManyWithoutLikesNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutCreatorInput = {
     id?: IntFieldUpdateOperationsInput | number
     problemText?: StringFieldUpdateOperationsInput | string
-    likedBy?: CreatorUncheckedUpdateManyWithoutLikesInput
+    likedBy?: CreatorUncheckedUpdateManyWithoutLikesNestedInput
   }
 
   export type ProblemUncheckedUpdateManyWithoutProblemsInput = {
@@ -11885,5 +12583,5 @@ export namespace Prisma {
   /**
    * DMMF
    */
-  export const dmmf: runtime.DMMF.Document;
+  export const dmmf: runtime.BaseDMMF
 }
