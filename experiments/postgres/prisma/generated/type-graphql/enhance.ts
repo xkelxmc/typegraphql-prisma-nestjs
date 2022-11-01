@@ -17,7 +17,8 @@ const crudResolversMap = {
   Director: crudResolvers.DirectorCrudResolver,
   Problem: crudResolvers.ProblemCrudResolver,
   Creator: crudResolvers.CreatorCrudResolver,
-  NativeTypeModel: crudResolvers.NativeTypeModelCrudResolver
+  NativeTypeModel: crudResolvers.NativeTypeModelCrudResolver,
+  Equipment: crudResolvers.EquipmentCrudResolver
 };
 const actionResolversMap = {
   MainUser: {
@@ -145,6 +146,20 @@ const actionResolversMap = {
     updateManyNativeTypeModel: actionResolvers.UpdateManyNativeTypeModelResolver,
     updateOneNativeTypeModel: actionResolvers.UpdateOneNativeTypeModelResolver,
     upsertOneNativeTypeModel: actionResolvers.UpsertOneNativeTypeModelResolver
+  },
+  Equipment: {
+    aggregateEquipment: actionResolvers.AggregateEquipmentResolver,
+    createManyEquipment: actionResolvers.CreateManyEquipmentResolver,
+    createOneEquipment: actionResolvers.CreateOneEquipmentResolver,
+    deleteManyEquipment: actionResolvers.DeleteManyEquipmentResolver,
+    deleteOneEquipment: actionResolvers.DeleteOneEquipmentResolver,
+    findFirstEquipment: actionResolvers.FindFirstEquipmentResolver,
+    equipments: actionResolvers.FindManyEquipmentResolver,
+    equipment: actionResolvers.FindUniqueEquipmentResolver,
+    groupByEquipment: actionResolvers.GroupByEquipmentResolver,
+    updateManyEquipment: actionResolvers.UpdateManyEquipmentResolver,
+    updateOneEquipment: actionResolvers.UpdateOneEquipmentResolver,
+    upsertOneEquipment: actionResolvers.UpsertOneEquipmentResolver
   }
 };
 const crudResolversInfo = {
@@ -156,7 +171,8 @@ const crudResolversInfo = {
   Director: ["aggregateDirector", "createManyDirector", "createOneDirector", "deleteManyDirector", "deleteOneDirector", "findFirstDirector", "directors", "director", "groupByDirector", "updateManyDirector", "updateOneDirector", "upsertOneDirector"],
   Problem: ["aggregateProblem", "createManyProblem", "createOneProblem", "deleteManyProblem", "deleteOneProblem", "findFirstProblem", "problems", "problem", "groupByProblem", "updateManyProblem", "updateOneProblem", "upsertOneProblem"],
   Creator: ["aggregateCreator", "createManyCreator", "createOneCreator", "deleteManyCreator", "deleteOneCreator", "findFirstCreator", "creators", "creator", "groupByCreator", "updateManyCreator", "updateOneCreator", "upsertOneCreator"],
-  NativeTypeModel: ["aggregateNativeTypeModel", "createManyNativeTypeModel", "createOneNativeTypeModel", "deleteManyNativeTypeModel", "deleteOneNativeTypeModel", "findFirstNativeTypeModel", "nativeTypeModels", "nativeTypeModel", "groupByNativeTypeModel", "updateManyNativeTypeModel", "updateOneNativeTypeModel", "upsertOneNativeTypeModel"]
+  NativeTypeModel: ["aggregateNativeTypeModel", "createManyNativeTypeModel", "createOneNativeTypeModel", "deleteManyNativeTypeModel", "deleteOneNativeTypeModel", "findFirstNativeTypeModel", "nativeTypeModels", "nativeTypeModel", "groupByNativeTypeModel", "updateManyNativeTypeModel", "updateOneNativeTypeModel", "upsertOneNativeTypeModel"],
+  Equipment: ["aggregateEquipment", "createManyEquipment", "createOneEquipment", "deleteManyEquipment", "deleteOneEquipment", "findFirstEquipment", "equipments", "equipment", "groupByEquipment", "updateManyEquipment", "updateOneEquipment", "upsertOneEquipment"]
 };
 const argsInfo = {
   AggregateMainUserArgs: ["where", "orderBy", "cursor", "take", "skip"],
@@ -266,18 +282,30 @@ const argsInfo = {
   GroupByNativeTypeModelArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyNativeTypeModelArgs: ["data", "where"],
   UpdateOneNativeTypeModelArgs: ["data", "where"],
-  UpsertOneNativeTypeModelArgs: ["where", "create", "update"]
+  UpsertOneNativeTypeModelArgs: ["where", "create", "update"],
+  AggregateEquipmentArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyEquipmentArgs: ["data", "skipDuplicates"],
+  CreateOneEquipmentArgs: ["data"],
+  DeleteManyEquipmentArgs: ["where"],
+  DeleteOneEquipmentArgs: ["where"],
+  FindFirstEquipmentArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindManyEquipmentArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindUniqueEquipmentArgs: ["where"],
+  GroupByEquipmentArgs: ["where", "orderBy", "by", "having", "take", "skip"],
+  UpdateManyEquipmentArgs: ["data", "where"],
+  UpdateOneEquipmentArgs: ["data", "where"],
+  UpsertOneEquipmentArgs: ["where", "create", "update"]
 };
 
 type ResolverModelNames = keyof typeof crudResolversMap;
 
 type ModelResolverActionNames<
   TModel extends ResolverModelNames
-  > = keyof typeof crudResolversMap[TModel]["prototype"];
+> = keyof typeof crudResolversMap[TModel]["prototype"];
 
 export type ResolverActionsConfig<
   TModel extends ResolverModelNames
-  > = Partial<Record<ModelResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
+> = Partial<Record<ModelResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
 
 export type ResolversEnhanceMap = {
   [TModel in ResolverModelNames]?: ResolverActionsConfig<TModel>;
@@ -327,7 +355,7 @@ type ArgFieldNames<TArgsType extends ArgsTypesNames> = Exclude<
 
 type ArgFieldsConfig<
   TArgsType extends ArgsTypesNames
-  > = FieldsConfig<ArgFieldNames<TArgsType>>;
+> = FieldsConfig<ArgFieldNames<TArgsType>>;
 
 export type ArgConfig<TArgsType extends ArgsTypesNames> = {
   class?: ClassDecorator[];
@@ -376,7 +404,7 @@ type RelationResolverModelNames = keyof typeof relationResolversMap;
 
 type RelationResolverActionNames<
   TModel extends RelationResolverModelNames
-  > = keyof typeof relationResolversMap[TModel]["prototype"];
+> = keyof typeof relationResolversMap[TModel]["prototype"];
 
 export type RelationResolverActionsConfig<TModel extends RelationResolverModelNames>
   = Partial<Record<RelationResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
@@ -458,7 +486,8 @@ const modelsInfo = {
   Director: ["firstName", "lastName"],
   Problem: ["id", "problemText", "creatorId"],
   Creator: ["id", "name"],
-  NativeTypeModel: ["id", "bigInt", "byteA", "decimal"]
+  NativeTypeModel: ["id", "bigInt", "byteA", "decimal"],
+  Equipment: ["id"]
 };
 
 type ModelNames = keyof typeof models;
@@ -515,6 +544,8 @@ const outputsInfo = {
   CreatorGroupBy: ["id", "name", "_count", "_avg", "_sum", "_min", "_max"],
   AggregateNativeTypeModel: ["_count", "_avg", "_sum", "_min", "_max"],
   NativeTypeModelGroupBy: ["id", "bigInt", "byteA", "decimal", "_count", "_avg", "_sum", "_min", "_max"],
+  AggregateEquipment: ["_count", "_min", "_max"],
+  EquipmentGroupBy: ["id", "_count", "_min", "_max"],
   AffectedRowsOutput: ["count"],
   MainUserCount: ["posts", "editorPosts"],
   MainUserCountAggregate: ["id", "email", "name", "age", "balance", "amount", "role", "grades", "aliases", "_all"],
@@ -558,7 +589,10 @@ const outputsInfo = {
   NativeTypeModelAvgAggregate: ["id", "bigInt", "decimal"],
   NativeTypeModelSumAggregate: ["id", "bigInt", "decimal"],
   NativeTypeModelMinAggregate: ["id", "bigInt", "byteA", "decimal"],
-  NativeTypeModelMaxAggregate: ["id", "bigInt", "byteA", "decimal"]
+  NativeTypeModelMaxAggregate: ["id", "bigInt", "byteA", "decimal"],
+  EquipmentCountAggregate: ["id", "_all"],
+  EquipmentMinAggregate: ["id"],
+  EquipmentMaxAggregate: ["id"]
 };
 
 type OutputTypesNames = keyof typeof outputTypes;
@@ -570,7 +604,7 @@ type OutputTypeFieldNames<TOutput extends OutputTypesNames> = Exclude<
 
 type OutputTypeFieldsConfig<
   TOutput extends OutputTypesNames
-  > = FieldsConfig<OutputTypeFieldNames<TOutput>>;
+> = FieldsConfig<OutputTypeFieldNames<TOutput>>;
 
 export type OutputTypeConfig<TOutput extends OutputTypesNames> = {
   class?: ClassDecorator[];
@@ -601,49 +635,54 @@ export function applyOutputTypesEnhanceMap(
 const inputsInfo = {
   MainUserWhereInput: ["AND", "OR", "NOT", "id", "email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
   MainUserOrderByWithRelationAndSearchRelevanceInput: ["id", "email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases", "_relevance"],
-  MainUserWhereUniqueInput: ["id", "email"],
+  MainUserWhereUniqueInput: ["id", "email", "AND", "OR", "NOT", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
   MainUserOrderByWithAggregationInput: ["id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "_count", "_avg", "_max", "_min", "_sum"],
   MainUserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases"],
   PostWhereInput: ["AND", "OR", "NOT", "uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "authorId", "editor", "editorId", "kind", "metadata"],
   PostOrderByWithRelationAndSearchRelevanceInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "authorId", "editor", "editorId", "kind", "metadata", "_relevance"],
-  PostWhereUniqueInput: ["uuid"],
+  PostWhereUniqueInput: ["uuid", "AND", "OR", "NOT", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "authorId", "editor", "editorId", "kind", "metadata"],
   PostOrderByWithAggregationInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata", "_count", "_avg", "_max", "_min", "_sum"],
   PostScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata"],
   CategoryWhereInput: ["AND", "OR", "NOT", "name", "slug", "number"],
   CategoryOrderByWithRelationAndSearchRelevanceInput: ["name", "slug", "number", "_relevance"],
-  CategoryWhereUniqueInput: ["categoryCompoundUnique"],
+  CategoryWhereUniqueInput: ["categoryCompoundUnique", "AND", "OR", "NOT", "name", "slug", "number"],
   CategoryOrderByWithAggregationInput: ["name", "slug", "number", "_count", "_avg", "_max", "_min", "_sum"],
   CategoryScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "name", "slug", "number"],
   PatientWhereInput: ["AND", "OR", "NOT", "firstName", "lastName", "email"],
   PatientOrderByWithRelationAndSearchRelevanceInput: ["firstName", "lastName", "email", "_relevance"],
-  PatientWhereUniqueInput: ["firstName_lastName"],
+  PatientWhereUniqueInput: ["firstName_lastName", "AND", "OR", "NOT", "firstName", "lastName", "email"],
   PatientOrderByWithAggregationInput: ["firstName", "lastName", "email", "_count", "_max", "_min"],
   PatientScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "firstName", "lastName", "email"],
   MovieWhereInput: ["AND", "OR", "NOT", "directorFirstName", "directorLastName", "director", "title"],
   MovieOrderByWithRelationAndSearchRelevanceInput: ["directorFirstName", "directorLastName", "director", "title", "_relevance"],
-  MovieWhereUniqueInput: ["movieCompoundId"],
+  MovieWhereUniqueInput: ["movieCompoundId", "AND", "OR", "NOT", "directorFirstName", "directorLastName", "director", "title"],
   MovieOrderByWithAggregationInput: ["directorFirstName", "directorLastName", "title", "_count", "_max", "_min"],
   MovieScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "directorFirstName", "directorLastName", "title"],
   DirectorWhereInput: ["AND", "OR", "NOT", "firstName", "lastName", "movies"],
   DirectorOrderByWithRelationAndSearchRelevanceInput: ["firstName", "lastName", "movies", "_relevance"],
-  DirectorWhereUniqueInput: ["firstName_lastName"],
+  DirectorWhereUniqueInput: ["firstName_lastName", "AND", "OR", "NOT", "firstName", "lastName", "movies"],
   DirectorOrderByWithAggregationInput: ["firstName", "lastName", "_count", "_max", "_min"],
   DirectorScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "firstName", "lastName"],
   ProblemWhereInput: ["AND", "OR", "NOT", "id", "problemText", "likedBy", "creator", "creatorId"],
   ProblemOrderByWithRelationAndSearchRelevanceInput: ["id", "problemText", "likedBy", "creator", "creatorId", "_relevance"],
-  ProblemWhereUniqueInput: ["id"],
+  ProblemWhereUniqueInput: ["id", "AND", "OR", "NOT", "problemText", "likedBy", "creator", "creatorId"],
   ProblemOrderByWithAggregationInput: ["id", "problemText", "creatorId", "_count", "_avg", "_max", "_min", "_sum"],
   ProblemScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "problemText", "creatorId"],
   CreatorWhereInput: ["AND", "OR", "NOT", "id", "name", "likes", "problems"],
   CreatorOrderByWithRelationAndSearchRelevanceInput: ["id", "name", "likes", "problems", "_relevance"],
-  CreatorWhereUniqueInput: ["id"],
+  CreatorWhereUniqueInput: ["id", "AND", "OR", "NOT", "name", "likes", "problems"],
   CreatorOrderByWithAggregationInput: ["id", "name", "_count", "_avg", "_max", "_min", "_sum"],
   CreatorScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name"],
   NativeTypeModelWhereInput: ["AND", "OR", "NOT", "id", "bigInt", "byteA", "decimal"],
   NativeTypeModelOrderByWithRelationAndSearchRelevanceInput: ["id", "bigInt", "byteA", "decimal"],
-  NativeTypeModelWhereUniqueInput: ["id"],
+  NativeTypeModelWhereUniqueInput: ["id", "AND", "OR", "NOT", "bigInt", "byteA", "decimal"],
   NativeTypeModelOrderByWithAggregationInput: ["id", "bigInt", "byteA", "decimal", "_count", "_avg", "_max", "_min", "_sum"],
   NativeTypeModelScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "bigInt", "byteA", "decimal"],
+  EquipmentWhereInput: ["AND", "OR", "NOT", "id"],
+  EquipmentOrderByWithRelationAndSearchRelevanceInput: ["id", "_relevance"],
+  EquipmentWhereUniqueInput: ["id", "AND", "OR", "NOT"],
+  EquipmentOrderByWithAggregationInput: ["id", "_count", "_max", "_min"],
+  EquipmentScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id"],
   MainUserCreateInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
   MainUserUpdateInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
   MainUserCreateManyInput: ["id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases"],
@@ -680,6 +719,10 @@ const inputsInfo = {
   NativeTypeModelUpdateInput: ["bigInt", "byteA", "decimal"],
   NativeTypeModelCreateManyInput: ["id", "bigInt", "byteA", "decimal"],
   NativeTypeModelUpdateManyMutationInput: ["bigInt", "byteA", "decimal"],
+  EquipmentCreateInput: ["id"],
+  EquipmentUpdateInput: ["id"],
+  EquipmentCreateManyInput: ["id"],
+  EquipmentUpdateManyMutationInput: ["id"],
   IntFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   StringFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "search", "mode", "not"],
   StringNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "search", "mode", "not"],
@@ -771,6 +814,10 @@ const inputsInfo = {
   BigIntNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
   BytesNullableWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   DecimalNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
+  EquipmentOrderByRelevanceInput: ["fields", "sort", "search"],
+  EquipmentCountOrderByAggregateInput: ["id"],
+  EquipmentMaxOrderByAggregateInput: ["id"],
+  EquipmentMinOrderByAggregateInput: ["id"],
   PostCreateNestedManyWithoutAuthorInput: ["create", "connectOrCreate", "createMany", "connect"],
   PostCreateNestedManyWithoutEditorInput: ["create", "connectOrCreate", "createMany", "connect"],
   MainUserCreategradesInput: ["set"],
@@ -850,13 +897,16 @@ const inputsInfo = {
   MainUserCreateOrConnectWithoutPostsInput: ["where", "create"],
   MainUserCreateWithoutEditorPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "grades", "aliases"],
   MainUserCreateOrConnectWithoutEditorPostsInput: ["where", "create"],
-  MainUserUpsertWithoutPostsInput: ["update", "create"],
+  MainUserUpsertWithoutPostsInput: ["update", "create", "where"],
+  MainUserUpdateToOneWithWhereWithoutPostsInput: ["where", "data"],
   MainUserUpdateWithoutPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "editorPosts", "grades", "aliases"],
-  MainUserUpsertWithoutEditorPostsInput: ["update", "create"],
+  MainUserUpsertWithoutEditorPostsInput: ["update", "create", "where"],
+  MainUserUpdateToOneWithWhereWithoutEditorPostsInput: ["where", "data"],
   MainUserUpdateWithoutEditorPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "grades", "aliases"],
   DirectorCreateWithoutMoviesInput: ["firstName", "lastName"],
   DirectorCreateOrConnectWithoutMoviesInput: ["where", "create"],
-  DirectorUpsertWithoutMoviesInput: ["update", "create"],
+  DirectorUpsertWithoutMoviesInput: ["update", "create", "where"],
+  DirectorUpdateToOneWithWhereWithoutMoviesInput: ["where", "data"],
   DirectorUpdateWithoutMoviesInput: ["firstName", "lastName"],
   MovieCreateWithoutDirectorInput: ["title"],
   MovieCreateOrConnectWithoutDirectorInput: ["where", "create"],
@@ -873,7 +923,8 @@ const inputsInfo = {
   CreatorUpdateWithWhereUniqueWithoutLikesInput: ["where", "data"],
   CreatorUpdateManyWithWhereWithoutLikesInput: ["where", "data"],
   CreatorScalarWhereInput: ["AND", "OR", "NOT", "id", "name"],
-  CreatorUpsertWithoutProblemsInput: ["update", "create"],
+  CreatorUpsertWithoutProblemsInput: ["update", "create", "where"],
+  CreatorUpdateToOneWithWhereWithoutProblemsInput: ["where", "data"],
   CreatorUpdateWithoutProblemsInput: ["name", "likes"],
   ProblemCreateWithoutLikedByInput: ["problemText", "creator"],
   ProblemCreateOrConnectWithoutLikedByInput: ["where", "create"],
@@ -908,7 +959,7 @@ type InputTypeFieldNames<TInput extends InputTypesNames> = Exclude<
 
 type InputTypeFieldsConfig<
   TInput extends InputTypesNames
-  > = FieldsConfig<InputTypeFieldNames<TInput>>;
+> = FieldsConfig<InputTypeFieldNames<TInput>>;
 
 export type InputTypeConfig<TInput extends InputTypesNames> = {
   class?: ClassDecorator[];

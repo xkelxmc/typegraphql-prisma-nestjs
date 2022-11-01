@@ -42,6 +42,7 @@ export namespace DMMF {
     // additional props
     typeName: string;
     docs: string | undefined;
+    plural: string | undefined;
   }
   export type FieldKind = "scalar" | "object" | "enum" | "unsupported";
   export type FieldNamespace = "model" | "prisma";
@@ -49,7 +50,8 @@ export namespace DMMF {
     | "scalar"
     | "inputObjectTypes"
     | "outputObjectTypes"
-    | "enumTypes";
+    | "enumTypes"
+    | "fieldRefTypes";
   // Field
   export interface ModelField {
     // kind: FieldKind;
@@ -65,6 +67,7 @@ export namespace DMMF {
     dbNames?: string[] | null;
     hasDefaultValue: boolean;
     default?: FieldDefault | FieldDefaultScalar | FieldDefaultScalar[];
+    relationFromFields?: string[];
     relationToFields?: any[];
     relationOnDelete?: string;
     relationName?: string;
@@ -176,13 +179,16 @@ export namespace DMMF {
       maxNumFields: number | null;
       minNumFields: number | null;
     };
+    meta?: {
+      source?: string;
+    };
     fields: SchemaArg[];
     // fieldMap?: Record<string, SchemaArg>;
     // additional props
     typeName: string;
   }
   export interface ModelMapping {
-    model: string;
+    // model: string;
     // plural: string;
     // findUnique?: string | null;
     // findFirst?: string | null;
@@ -201,6 +207,7 @@ export namespace DMMF {
     // aggregateRaw?: string | null;
 
     // additional props
+    modelName: string;
     actions: Action[];
     collectionName: string;
     resolverName: string;

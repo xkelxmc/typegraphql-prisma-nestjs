@@ -143,6 +143,14 @@ export type NativeTypeModel = {
   decimal: Prisma.Decimal | null
 }
 
+/**
+ * Model Equipment
+ * @@TypeGraphQL.type(plural: "equipments")
+ */
+export type Equipment = {
+  id: string
+}
+
 
 /**
  * Enums
@@ -151,20 +159,20 @@ export type NativeTypeModel = {
 // Based on
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 
-export const Role: {
-  USER: 'USER',
-  ADMIN: 'ADMIN'
-};
-
-export type Role = (typeof Role)[keyof typeof Role]
-
-
 export const PostKind: {
   BLOG: 'BLOG',
   ADVERT: 'ADVERT'
 };
 
 export type PostKind = (typeof PostKind)[keyof typeof PostKind]
+
+
+export const Role: {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
 
 
 /**
@@ -184,7 +192,7 @@ export type PostKind = (typeof PostKind)[keyof typeof PostKind]
 export class PrismaClient<
   T extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
   U = 'log' extends keyof T ? T['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<T['log']> : never : never,
-  GlobalReject = 'rejectOnNotFound' extends keyof T
+  GlobalReject extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined = 'rejectOnNotFound' extends keyof T
     ? T['rejectOnNotFound']
     : false
       > {
@@ -305,7 +313,7 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends PrismaPromise<any>[]>(arg: [...P]): Promise<UnwrapTuple<P>>;
+  $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>;
 
       /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -396,6 +404,16 @@ export class PrismaClient<
     * ```
     */
   get nativeTypeModel(): Prisma.NativeTypeModelDelegate<GlobalReject>;
+
+  /**
+   * `prisma.equipment`: Exposes CRUD operations for the **Equipment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Equipment
+    * const equipment = await prisma.equipment.findMany()
+    * ```
+    */
+  get equipment(): Prisma.EquipmentDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -436,8 +454,13 @@ export namespace Prisma {
   export import MetricHistogramBucket = runtime.MetricHistogramBucket
 
   /**
-   * Prisma Client JS version: 4.1.0
-   * Query Engine version: 8d8414deb360336e4698a65aa45a1fbaf1ce13d8
+   * Extensions
+   */
+  export type Extension = runtime.Extension 
+
+  /**
+   * Prisma Client JS version: 4.5.0
+   * Query Engine version: 0362da9eebca54d94c8ef5edd3b2e90af99ba452
    */
   export type PrismaVersion = {
     client: string
@@ -656,7 +679,7 @@ export namespace Prisma {
   ? False
   : T extends Date
   ? False
-  : T extends Buffer
+  : T extends Uint8Array
   ? False
   : T extends BigInt
   ? False
@@ -711,6 +734,16 @@ export namespace Prisma {
   type _Record<K extends keyof any, T> = {
     [P in K]: T;
   };
+
+  // cause typescript not to expand types and preserve names
+  type NoExpand<T> = T extends unknown ? T : never;
+
+  // this type assumes the passed object is entirely optional
+  type AtLeast<O extends object, K extends string> = NoExpand<
+    O extends unknown
+    ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
+      | {[P in keyof O as P extends K ? K : never]-?: O[P]} & O
+    : never>;
 
   type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
 
@@ -824,6 +857,11 @@ export namespace Prisma {
    */
   type ExcludeUnderscoreKeys<T extends string> = T extends `_${string}` ? never : T
 
+
+  export import FieldRef = runtime.FieldRef
+
+  type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>
+
   class PrismaClientFetcher {
     private readonly prisma;
     private readonly debug;
@@ -843,7 +881,8 @@ export namespace Prisma {
     Director: 'Director',
     Problem: 'Problem',
     Creator: 'Creator',
-    NativeTypeModel: 'NativeTypeModel'
+    NativeTypeModel: 'NativeTypeModel',
+    Equipment: 'Equipment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -893,7 +932,7 @@ export namespace Prisma {
      */
     rejectOnNotFound?: RejectOnNotFound | RejectPerOperation
     /**
-     * Overwrites the datasource url from your prisma.schema file
+     * Overwrites the datasource url from your schema.prisma file
      */
     datasources?: Datasources
 
@@ -972,7 +1011,7 @@ export namespace Prisma {
     | 'findRaw'
 
   /**
-   * These options are being passed in to the middleware as "params"
+   * These options are being passed into the middleware as "params"
    */
   export type MiddlewareParams = {
     model?: ModelName
@@ -1013,8 +1052,8 @@ export namespace Prisma {
   }
 
   export type UserCountOutputTypeSelect = {
-    posts?: boolean
-    editorPosts?: boolean
+    posts?: boolean | UserCountOutputTypeCountPostsArgs
+    editorPosts?: boolean | UserCountOutputTypeCountEditorPostsArgs
   }
 
   export type UserCountOutputTypeGetPayload<
@@ -1051,6 +1090,22 @@ export namespace Prisma {
   }
 
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPostsArgs = {
+    where?: postWhereInput
+  }
+
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEditorPostsArgs = {
+    where?: postWhereInput
+  }
+
+
 
   /**
    * Count Type DirectorCountOutputType
@@ -1062,7 +1117,7 @@ export namespace Prisma {
   }
 
   export type DirectorCountOutputTypeSelect = {
-    movies?: boolean
+    movies?: boolean | DirectorCountOutputTypeCountMoviesArgs
   }
 
   export type DirectorCountOutputTypeGetPayload<
@@ -1099,6 +1154,14 @@ export namespace Prisma {
   }
 
 
+  /**
+   * DirectorCountOutputType without action
+   */
+  export type DirectorCountOutputTypeCountMoviesArgs = {
+    where?: MovieWhereInput
+  }
+
+
 
   /**
    * Count Type ProblemCountOutputType
@@ -1110,7 +1173,7 @@ export namespace Prisma {
   }
 
   export type ProblemCountOutputTypeSelect = {
-    likedBy?: boolean
+    likedBy?: boolean | ProblemCountOutputTypeCountLikedByArgs
   }
 
   export type ProblemCountOutputTypeGetPayload<
@@ -1147,6 +1210,14 @@ export namespace Prisma {
   }
 
 
+  /**
+   * ProblemCountOutputType without action
+   */
+  export type ProblemCountOutputTypeCountLikedByArgs = {
+    where?: CreatorWhereInput
+  }
+
+
 
   /**
    * Count Type CreatorCountOutputType
@@ -1159,8 +1230,8 @@ export namespace Prisma {
   }
 
   export type CreatorCountOutputTypeSelect = {
-    likes?: boolean
-    problems?: boolean
+    likes?: boolean | CreatorCountOutputTypeCountLikesArgs
+    problems?: boolean | CreatorCountOutputTypeCountProblemsArgs
   }
 
   export type CreatorCountOutputTypeGetPayload<
@@ -1194,6 +1265,22 @@ export namespace Prisma {
      * Select specific fields to fetch from the CreatorCountOutputType
     **/
     select?: CreatorCountOutputTypeSelect | null
+  }
+
+
+  /**
+   * CreatorCountOutputType without action
+   */
+  export type CreatorCountOutputTypeCountLikesArgs = {
+    where?: ProblemWhereInput
+  }
+
+
+  /**
+   * CreatorCountOutputType without action
+   */
+  export type CreatorCountOutputTypeCountProblemsArgs = {
+    where?: ProblemWhereInput
   }
 
 
@@ -1470,16 +1557,16 @@ export namespace Prisma {
     ?'include' extends U
     ? User  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'posts' ? Array < postGetPayload<S['include'][P]>>  :
-        P extends 'editorPosts' ? Array < postGetPayload<S['include'][P]>>  :
-        P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
+        P extends 'posts' ? Array < postGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'editorPosts' ? Array < postGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends '_count' ? UserCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'posts' ? Array < postGetPayload<S['select'][P]>>  :
-        P extends 'editorPosts' ? Array < postGetPayload<S['select'][P]>>  :
-        P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
+        P extends 'posts' ? Array < postGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'editorPosts' ? Array < postGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends '_count' ? UserCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof User ? User[P] : never
   } 
     : User
   : User
@@ -1491,7 +1578,7 @@ export namespace Prisma {
     }
   >
 
-  export interface UserDelegate<GlobalRejectSettings> {
+  export interface UserDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one User that matches the filter.
      * @param {UserFindUniqueArgs} args - Arguments to find a User
@@ -1505,7 +1592,7 @@ export namespace Prisma {
     **/
     findUnique<T extends UserFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, UserFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'User'> extends True ? CheckSelect<T, Prisma__UserClient<User>, Prisma__UserClient<UserGetPayload<T>>> : CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'User'> extends True ? CheckSelect<T, Prisma__UserClient<User>, Prisma__UserClient<UserGetPayload<T>>> : CheckSelect<T, Prisma__UserClient<User | null, null>, Prisma__UserClient<UserGetPayload<T> | null, null>>
 
     /**
      * Find the first User that matches the filter.
@@ -1522,7 +1609,7 @@ export namespace Prisma {
     **/
     findFirst<T extends UserFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, UserFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'User'> extends True ? CheckSelect<T, Prisma__UserClient<User>, Prisma__UserClient<UserGetPayload<T>>> : CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'User'> extends True ? CheckSelect<T, Prisma__UserClient<User>, Prisma__UserClient<UserGetPayload<T>>> : CheckSelect<T, Prisma__UserClient<User | null, null>, Prisma__UserClient<UserGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Users that matches the filter.
@@ -1828,6 +1915,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -1836,7 +1924,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__UserClient<T> implements PrismaPromise<T> {
+  export class Prisma__UserClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -1853,9 +1941,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    posts<T extends postFindManyArgs = {}>(args?: Subset<T, postFindManyArgs>): CheckSelect<T, PrismaPromise<Array<post>>, PrismaPromise<Array<postGetPayload<T>>>>;
+    posts<T extends postFindManyArgs = {}>(args?: Subset<T, postFindManyArgs>): CheckSelect<T, PrismaPromise<Array<post>| Null>, PrismaPromise<Array<postGetPayload<T>>| Null>>;
 
-    editorPosts<T extends postFindManyArgs = {}>(args?: Subset<T, postFindManyArgs>): CheckSelect<T, PrismaPromise<Array<post>>, PrismaPromise<Array<postGetPayload<T>>>>;
+    editorPosts<T extends postFindManyArgs = {}>(args?: Subset<T, postFindManyArgs>): CheckSelect<T, PrismaPromise<Array<post>| Null>, PrismaPromise<Array<postGetPayload<T>>| Null>>;
 
     private get _document();
     /**
@@ -1879,6 +1967,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -2458,14 +2548,14 @@ export namespace Prisma {
     ?'include' extends U
     ? post  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'author' ? UserGetPayload<S['include'][P]> :
-        P extends 'editor' ? UserGetPayload<S['include'][P]> | null :  never
+        P extends 'author' ? UserGetPayload<Exclude<S['include'], undefined | null>[P]> :
+        P extends 'editor' ? UserGetPayload<Exclude<S['include'], undefined | null>[P]> | null :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'author' ? UserGetPayload<S['select'][P]> :
-        P extends 'editor' ? UserGetPayload<S['select'][P]> | null :  P extends keyof post ? post[P] : never
+        P extends 'author' ? UserGetPayload<Exclude<S['select'], undefined | null>[P]> :
+        P extends 'editor' ? UserGetPayload<Exclude<S['select'], undefined | null>[P]> | null :  P extends keyof post ? post[P] : never
   } 
     : post
   : post
@@ -2477,7 +2567,7 @@ export namespace Prisma {
     }
   >
 
-  export interface postDelegate<GlobalRejectSettings> {
+  export interface postDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one Post that matches the filter.
      * @param {postFindUniqueArgs} args - Arguments to find a Post
@@ -2491,7 +2581,7 @@ export namespace Prisma {
     **/
     findUnique<T extends postFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, postFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'post'> extends True ? CheckSelect<T, Prisma__postClient<post>, Prisma__postClient<postGetPayload<T>>> : CheckSelect<T, Prisma__postClient<post | null >, Prisma__postClient<postGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'post'> extends True ? CheckSelect<T, Prisma__postClient<post>, Prisma__postClient<postGetPayload<T>>> : CheckSelect<T, Prisma__postClient<post | null, null>, Prisma__postClient<postGetPayload<T> | null, null>>
 
     /**
      * Find the first Post that matches the filter.
@@ -2508,7 +2598,7 @@ export namespace Prisma {
     **/
     findFirst<T extends postFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, postFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'post'> extends True ? CheckSelect<T, Prisma__postClient<post>, Prisma__postClient<postGetPayload<T>>> : CheckSelect<T, Prisma__postClient<post | null >, Prisma__postClient<postGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'post'> extends True ? CheckSelect<T, Prisma__postClient<post>, Prisma__postClient<postGetPayload<T>>> : CheckSelect<T, Prisma__postClient<post | null, null>, Prisma__postClient<postGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Posts that matches the filter.
@@ -2814,6 +2904,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, PostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPostGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -2822,7 +2913,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__postClient<T> implements PrismaPromise<T> {
+  export class Prisma__postClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -2839,9 +2930,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    author<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
+    author<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | Null>, Prisma__UserClient<UserGetPayload<T> | Null>>;
 
-    editor<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
+    editor<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | Null>, Prisma__UserClient<UserGetPayload<T> | Null>>;
 
     private get _document();
     /**
@@ -2865,6 +2956,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -3387,7 +3480,7 @@ export namespace Prisma {
     }
   >
 
-  export interface CategoryDelegate<GlobalRejectSettings> {
+  export interface CategoryDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one Category that matches the filter.
      * @param {CategoryFindUniqueArgs} args - Arguments to find a Category
@@ -3401,7 +3494,7 @@ export namespace Prisma {
     **/
     findUnique<T extends CategoryFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, CategoryFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Category'> extends True ? CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>> : CheckSelect<T, Prisma__CategoryClient<Category | null >, Prisma__CategoryClient<CategoryGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Category'> extends True ? CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>> : CheckSelect<T, Prisma__CategoryClient<Category | null, null>, Prisma__CategoryClient<CategoryGetPayload<T> | null, null>>
 
     /**
      * Find the first Category that matches the filter.
@@ -3418,7 +3511,7 @@ export namespace Prisma {
     **/
     findFirst<T extends CategoryFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, CategoryFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Category'> extends True ? CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>> : CheckSelect<T, Prisma__CategoryClient<Category | null >, Prisma__CategoryClient<CategoryGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Category'> extends True ? CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>> : CheckSelect<T, Prisma__CategoryClient<Category | null, null>, Prisma__CategoryClient<CategoryGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Categories that matches the filter.
@@ -3724,6 +3817,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, CategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCategoryGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -3732,7 +3826,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__CategoryClient<T> implements PrismaPromise<T> {
+  export class Prisma__CategoryClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -3772,6 +3866,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -4228,7 +4324,7 @@ export namespace Prisma {
     }
   >
 
-  export interface PatientDelegate<GlobalRejectSettings> {
+  export interface PatientDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one Patient that matches the filter.
      * @param {PatientFindUniqueArgs} args - Arguments to find a Patient
@@ -4242,7 +4338,7 @@ export namespace Prisma {
     **/
     findUnique<T extends PatientFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, PatientFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Patient'> extends True ? CheckSelect<T, Prisma__PatientClient<Patient>, Prisma__PatientClient<PatientGetPayload<T>>> : CheckSelect<T, Prisma__PatientClient<Patient | null >, Prisma__PatientClient<PatientGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Patient'> extends True ? CheckSelect<T, Prisma__PatientClient<Patient>, Prisma__PatientClient<PatientGetPayload<T>>> : CheckSelect<T, Prisma__PatientClient<Patient | null, null>, Prisma__PatientClient<PatientGetPayload<T> | null, null>>
 
     /**
      * Find the first Patient that matches the filter.
@@ -4259,7 +4355,7 @@ export namespace Prisma {
     **/
     findFirst<T extends PatientFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, PatientFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Patient'> extends True ? CheckSelect<T, Prisma__PatientClient<Patient>, Prisma__PatientClient<PatientGetPayload<T>>> : CheckSelect<T, Prisma__PatientClient<Patient | null >, Prisma__PatientClient<PatientGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Patient'> extends True ? CheckSelect<T, Prisma__PatientClient<Patient>, Prisma__PatientClient<PatientGetPayload<T>>> : CheckSelect<T, Prisma__PatientClient<Patient | null, null>, Prisma__PatientClient<PatientGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Patients that matches the filter.
@@ -4565,6 +4661,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, PatientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPatientGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -4573,7 +4670,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__PatientClient<T> implements PrismaPromise<T> {
+  export class Prisma__PatientClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -4613,6 +4710,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -5060,12 +5159,12 @@ export namespace Prisma {
     ?'include' extends U
     ? Movie  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'director' ? DirectorGetPayload<S['include'][P]> :  never
+        P extends 'director' ? DirectorGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'director' ? DirectorGetPayload<S['select'][P]> :  P extends keyof Movie ? Movie[P] : never
+        P extends 'director' ? DirectorGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof Movie ? Movie[P] : never
   } 
     : Movie
   : Movie
@@ -5077,7 +5176,7 @@ export namespace Prisma {
     }
   >
 
-  export interface MovieDelegate<GlobalRejectSettings> {
+  export interface MovieDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one Movie that matches the filter.
      * @param {MovieFindUniqueArgs} args - Arguments to find a Movie
@@ -5091,7 +5190,7 @@ export namespace Prisma {
     **/
     findUnique<T extends MovieFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, MovieFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Movie'> extends True ? CheckSelect<T, Prisma__MovieClient<Movie>, Prisma__MovieClient<MovieGetPayload<T>>> : CheckSelect<T, Prisma__MovieClient<Movie | null >, Prisma__MovieClient<MovieGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Movie'> extends True ? CheckSelect<T, Prisma__MovieClient<Movie>, Prisma__MovieClient<MovieGetPayload<T>>> : CheckSelect<T, Prisma__MovieClient<Movie | null, null>, Prisma__MovieClient<MovieGetPayload<T> | null, null>>
 
     /**
      * Find the first Movie that matches the filter.
@@ -5108,7 +5207,7 @@ export namespace Prisma {
     **/
     findFirst<T extends MovieFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, MovieFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Movie'> extends True ? CheckSelect<T, Prisma__MovieClient<Movie>, Prisma__MovieClient<MovieGetPayload<T>>> : CheckSelect<T, Prisma__MovieClient<Movie | null >, Prisma__MovieClient<MovieGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Movie'> extends True ? CheckSelect<T, Prisma__MovieClient<Movie>, Prisma__MovieClient<MovieGetPayload<T>>> : CheckSelect<T, Prisma__MovieClient<Movie | null, null>, Prisma__MovieClient<MovieGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Movies that matches the filter.
@@ -5414,6 +5513,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, MovieGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMovieGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -5422,7 +5522,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__MovieClient<T> implements PrismaPromise<T> {
+  export class Prisma__MovieClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -5439,7 +5539,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    director<T extends DirectorArgs = {}>(args?: Subset<T, DirectorArgs>): CheckSelect<T, Prisma__DirectorClient<Director | null >, Prisma__DirectorClient<DirectorGetPayload<T> | null >>;
+    director<T extends DirectorArgs = {}>(args?: Subset<T, DirectorArgs>): CheckSelect<T, Prisma__DirectorClient<Director | Null>, Prisma__DirectorClient<DirectorGetPayload<T> | Null>>;
 
     private get _document();
     /**
@@ -5463,6 +5563,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -5936,14 +6038,14 @@ export namespace Prisma {
     ?'include' extends U
     ? Director  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'movies' ? Array < MovieGetPayload<S['include'][P]>>  :
-        P extends '_count' ? DirectorCountOutputTypeGetPayload<S['include'][P]> :  never
+        P extends 'movies' ? Array < MovieGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends '_count' ? DirectorCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'movies' ? Array < MovieGetPayload<S['select'][P]>>  :
-        P extends '_count' ? DirectorCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Director ? Director[P] : never
+        P extends 'movies' ? Array < MovieGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends '_count' ? DirectorCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof Director ? Director[P] : never
   } 
     : Director
   : Director
@@ -5955,7 +6057,7 @@ export namespace Prisma {
     }
   >
 
-  export interface DirectorDelegate<GlobalRejectSettings> {
+  export interface DirectorDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one Director that matches the filter.
      * @param {DirectorFindUniqueArgs} args - Arguments to find a Director
@@ -5969,7 +6071,7 @@ export namespace Prisma {
     **/
     findUnique<T extends DirectorFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, DirectorFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Director'> extends True ? CheckSelect<T, Prisma__DirectorClient<Director>, Prisma__DirectorClient<DirectorGetPayload<T>>> : CheckSelect<T, Prisma__DirectorClient<Director | null >, Prisma__DirectorClient<DirectorGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Director'> extends True ? CheckSelect<T, Prisma__DirectorClient<Director>, Prisma__DirectorClient<DirectorGetPayload<T>>> : CheckSelect<T, Prisma__DirectorClient<Director | null, null>, Prisma__DirectorClient<DirectorGetPayload<T> | null, null>>
 
     /**
      * Find the first Director that matches the filter.
@@ -5986,7 +6088,7 @@ export namespace Prisma {
     **/
     findFirst<T extends DirectorFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, DirectorFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Director'> extends True ? CheckSelect<T, Prisma__DirectorClient<Director>, Prisma__DirectorClient<DirectorGetPayload<T>>> : CheckSelect<T, Prisma__DirectorClient<Director | null >, Prisma__DirectorClient<DirectorGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Director'> extends True ? CheckSelect<T, Prisma__DirectorClient<Director>, Prisma__DirectorClient<DirectorGetPayload<T>>> : CheckSelect<T, Prisma__DirectorClient<Director | null, null>, Prisma__DirectorClient<DirectorGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Directors that matches the filter.
@@ -6292,6 +6394,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, DirectorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDirectorGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -6300,7 +6403,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__DirectorClient<T> implements PrismaPromise<T> {
+  export class Prisma__DirectorClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -6317,7 +6420,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    movies<T extends MovieFindManyArgs = {}>(args?: Subset<T, MovieFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Movie>>, PrismaPromise<Array<MovieGetPayload<T>>>>;
+    movies<T extends MovieFindManyArgs = {}>(args?: Subset<T, MovieFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Movie>| Null>, PrismaPromise<Array<MovieGetPayload<T>>| Null>>;
 
     private get _document();
     /**
@@ -6341,6 +6444,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -6862,16 +6967,16 @@ export namespace Prisma {
     ?'include' extends U
     ? Problem  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'likedBy' ? Array < CreatorGetPayload<S['include'][P]>>  :
-        P extends 'creator' ? CreatorGetPayload<S['include'][P]> | null :
-        P extends '_count' ? ProblemCountOutputTypeGetPayload<S['include'][P]> :  never
+        P extends 'likedBy' ? Array < CreatorGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'creator' ? CreatorGetPayload<Exclude<S['include'], undefined | null>[P]> | null :
+        P extends '_count' ? ProblemCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'likedBy' ? Array < CreatorGetPayload<S['select'][P]>>  :
-        P extends 'creator' ? CreatorGetPayload<S['select'][P]> | null :
-        P extends '_count' ? ProblemCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Problem ? Problem[P] : never
+        P extends 'likedBy' ? Array < CreatorGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'creator' ? CreatorGetPayload<Exclude<S['select'], undefined | null>[P]> | null :
+        P extends '_count' ? ProblemCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof Problem ? Problem[P] : never
   } 
     : Problem
   : Problem
@@ -6883,7 +6988,7 @@ export namespace Prisma {
     }
   >
 
-  export interface ProblemDelegate<GlobalRejectSettings> {
+  export interface ProblemDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one Problem that matches the filter.
      * @param {ProblemFindUniqueArgs} args - Arguments to find a Problem
@@ -6897,7 +7002,7 @@ export namespace Prisma {
     **/
     findUnique<T extends ProblemFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, ProblemFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Problem'> extends True ? CheckSelect<T, Prisma__ProblemClient<Problem>, Prisma__ProblemClient<ProblemGetPayload<T>>> : CheckSelect<T, Prisma__ProblemClient<Problem | null >, Prisma__ProblemClient<ProblemGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Problem'> extends True ? CheckSelect<T, Prisma__ProblemClient<Problem>, Prisma__ProblemClient<ProblemGetPayload<T>>> : CheckSelect<T, Prisma__ProblemClient<Problem | null, null>, Prisma__ProblemClient<ProblemGetPayload<T> | null, null>>
 
     /**
      * Find the first Problem that matches the filter.
@@ -6914,7 +7019,7 @@ export namespace Prisma {
     **/
     findFirst<T extends ProblemFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, ProblemFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Problem'> extends True ? CheckSelect<T, Prisma__ProblemClient<Problem>, Prisma__ProblemClient<ProblemGetPayload<T>>> : CheckSelect<T, Prisma__ProblemClient<Problem | null >, Prisma__ProblemClient<ProblemGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Problem'> extends True ? CheckSelect<T, Prisma__ProblemClient<Problem>, Prisma__ProblemClient<ProblemGetPayload<T>>> : CheckSelect<T, Prisma__ProblemClient<Problem | null, null>, Prisma__ProblemClient<ProblemGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Problems that matches the filter.
@@ -7220,6 +7325,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, ProblemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProblemGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -7228,7 +7334,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__ProblemClient<T> implements PrismaPromise<T> {
+  export class Prisma__ProblemClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -7245,9 +7351,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    likedBy<T extends CreatorFindManyArgs = {}>(args?: Subset<T, CreatorFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Creator>>, PrismaPromise<Array<CreatorGetPayload<T>>>>;
+    likedBy<T extends CreatorFindManyArgs = {}>(args?: Subset<T, CreatorFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Creator>| Null>, PrismaPromise<Array<CreatorGetPayload<T>>| Null>>;
 
-    creator<T extends CreatorArgs = {}>(args?: Subset<T, CreatorArgs>): CheckSelect<T, Prisma__CreatorClient<Creator | null >, Prisma__CreatorClient<CreatorGetPayload<T> | null >>;
+    creator<T extends CreatorArgs = {}>(args?: Subset<T, CreatorArgs>): CheckSelect<T, Prisma__CreatorClient<Creator | Null>, Prisma__CreatorClient<CreatorGetPayload<T> | Null>>;
 
     private get _document();
     /**
@@ -7271,6 +7377,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -7780,16 +7888,16 @@ export namespace Prisma {
     ?'include' extends U
     ? Creator  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'likes' ? Array < ProblemGetPayload<S['include'][P]>>  :
-        P extends 'problems' ? Array < ProblemGetPayload<S['include'][P]>>  :
-        P extends '_count' ? CreatorCountOutputTypeGetPayload<S['include'][P]> :  never
+        P extends 'likes' ? Array < ProblemGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'problems' ? Array < ProblemGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends '_count' ? CreatorCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'likes' ? Array < ProblemGetPayload<S['select'][P]>>  :
-        P extends 'problems' ? Array < ProblemGetPayload<S['select'][P]>>  :
-        P extends '_count' ? CreatorCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Creator ? Creator[P] : never
+        P extends 'likes' ? Array < ProblemGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'problems' ? Array < ProblemGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends '_count' ? CreatorCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof Creator ? Creator[P] : never
   } 
     : Creator
   : Creator
@@ -7801,7 +7909,7 @@ export namespace Prisma {
     }
   >
 
-  export interface CreatorDelegate<GlobalRejectSettings> {
+  export interface CreatorDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one Creator that matches the filter.
      * @param {CreatorFindUniqueArgs} args - Arguments to find a Creator
@@ -7815,7 +7923,7 @@ export namespace Prisma {
     **/
     findUnique<T extends CreatorFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, CreatorFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Creator'> extends True ? CheckSelect<T, Prisma__CreatorClient<Creator>, Prisma__CreatorClient<CreatorGetPayload<T>>> : CheckSelect<T, Prisma__CreatorClient<Creator | null >, Prisma__CreatorClient<CreatorGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Creator'> extends True ? CheckSelect<T, Prisma__CreatorClient<Creator>, Prisma__CreatorClient<CreatorGetPayload<T>>> : CheckSelect<T, Prisma__CreatorClient<Creator | null, null>, Prisma__CreatorClient<CreatorGetPayload<T> | null, null>>
 
     /**
      * Find the first Creator that matches the filter.
@@ -7832,7 +7940,7 @@ export namespace Prisma {
     **/
     findFirst<T extends CreatorFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, CreatorFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Creator'> extends True ? CheckSelect<T, Prisma__CreatorClient<Creator>, Prisma__CreatorClient<CreatorGetPayload<T>>> : CheckSelect<T, Prisma__CreatorClient<Creator | null >, Prisma__CreatorClient<CreatorGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Creator'> extends True ? CheckSelect<T, Prisma__CreatorClient<Creator>, Prisma__CreatorClient<CreatorGetPayload<T>>> : CheckSelect<T, Prisma__CreatorClient<Creator | null, null>, Prisma__CreatorClient<CreatorGetPayload<T> | null, null>>
 
     /**
      * Find zero or more Creators that matches the filter.
@@ -8138,6 +8246,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, CreatorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCreatorGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -8146,7 +8255,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__CreatorClient<T> implements PrismaPromise<T> {
+  export class Prisma__CreatorClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -8163,9 +8272,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    likes<T extends ProblemFindManyArgs = {}>(args?: Subset<T, ProblemFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Problem>>, PrismaPromise<Array<ProblemGetPayload<T>>>>;
+    likes<T extends ProblemFindManyArgs = {}>(args?: Subset<T, ProblemFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Problem>| Null>, PrismaPromise<Array<ProblemGetPayload<T>>| Null>>;
 
-    problems<T extends ProblemFindManyArgs = {}>(args?: Subset<T, ProblemFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Problem>>, PrismaPromise<Array<ProblemGetPayload<T>>>>;
+    problems<T extends ProblemFindManyArgs = {}>(args?: Subset<T, ProblemFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Problem>| Null>, PrismaPromise<Array<ProblemGetPayload<T>>| Null>>;
 
     private get _document();
     /**
@@ -8189,6 +8298,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -8721,7 +8832,7 @@ export namespace Prisma {
     }
   >
 
-  export interface NativeTypeModelDelegate<GlobalRejectSettings> {
+  export interface NativeTypeModelDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
      * Find zero or one NativeTypeModel that matches the filter.
      * @param {NativeTypeModelFindUniqueArgs} args - Arguments to find a NativeTypeModel
@@ -8735,7 +8846,7 @@ export namespace Prisma {
     **/
     findUnique<T extends NativeTypeModelFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, NativeTypeModelFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'NativeTypeModel'> extends True ? CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T>>> : CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel | null >, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'NativeTypeModel'> extends True ? CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T>>> : CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel | null, null>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T> | null, null>>
 
     /**
      * Find the first NativeTypeModel that matches the filter.
@@ -8752,7 +8863,7 @@ export namespace Prisma {
     **/
     findFirst<T extends NativeTypeModelFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, NativeTypeModelFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'NativeTypeModel'> extends True ? CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T>>> : CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel | null >, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T> | null >>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'NativeTypeModel'> extends True ? CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T>>> : CheckSelect<T, Prisma__NativeTypeModelClient<NativeTypeModel | null, null>, Prisma__NativeTypeModelClient<NativeTypeModelGetPayload<T> | null, null>>
 
     /**
      * Find zero or more NativeTypeModels that matches the filter.
@@ -9058,6 +9169,7 @@ export namespace Prisma {
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
     >(args: SubsetIntersection<T, NativeTypeModelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNativeTypeModelGroupByPayload<T> : PrismaPromise<InputErrors>
+
   }
 
   /**
@@ -9066,7 +9178,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__NativeTypeModelClient<T> implements PrismaPromise<T> {
+  export class Prisma__NativeTypeModelClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -9106,6 +9218,8 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
+
+
 
   // Custom InputTypes
 
@@ -9380,25 +9494,986 @@ export namespace Prisma {
 
 
   /**
+   * Model Equipment
+   */
+
+
+  export type AggregateEquipment = {
+    _count: EquipmentCountAggregateOutputType | null
+    _min: EquipmentMinAggregateOutputType | null
+    _max: EquipmentMaxAggregateOutputType | null
+  }
+
+  export type EquipmentMinAggregateOutputType = {
+    id: string | null
+  }
+
+  export type EquipmentMaxAggregateOutputType = {
+    id: string | null
+  }
+
+  export type EquipmentCountAggregateOutputType = {
+    id: number
+    _all: number
+  }
+
+
+  export type EquipmentMinAggregateInputType = {
+    id?: true
+  }
+
+  export type EquipmentMaxAggregateInputType = {
+    id?: true
+  }
+
+  export type EquipmentCountAggregateInputType = {
+    id?: true
+    _all?: true
+  }
+
+  export type EquipmentAggregateArgs = {
+    /**
+     * Filter which Equipment to aggregate.
+     * 
+    **/
+    where?: EquipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipment to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<EquipmentOrderByWithRelationAndSearchRelevanceInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: EquipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipment from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipment.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Equipment
+    **/
+    _count?: true | EquipmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EquipmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EquipmentMaxAggregateInputType
+  }
+
+  export type GetEquipmentAggregateType<T extends EquipmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateEquipment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEquipment[P]>
+      : GetScalarType<T[P], AggregateEquipment[P]>
+  }
+
+
+
+
+  export type EquipmentGroupByArgs = {
+    where?: EquipmentWhereInput
+    orderBy?: Enumerable<EquipmentOrderByWithAggregationInput>
+    by: Array<EquipmentScalarFieldEnum>
+    having?: EquipmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EquipmentCountAggregateInputType | true
+    _min?: EquipmentMinAggregateInputType
+    _max?: EquipmentMaxAggregateInputType
+  }
+
+
+  export type EquipmentGroupByOutputType = {
+    id: string
+    _count: EquipmentCountAggregateOutputType | null
+    _min: EquipmentMinAggregateOutputType | null
+    _max: EquipmentMaxAggregateOutputType | null
+  }
+
+  type GetEquipmentGroupByPayload<T extends EquipmentGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<EquipmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EquipmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EquipmentGroupByOutputType[P]>
+            : GetScalarType<T[P], EquipmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EquipmentSelect = {
+    id?: boolean
+  }
+
+  export type EquipmentGetPayload<
+    S extends boolean | null | undefined | EquipmentArgs,
+    U = keyof S
+      > = S extends true
+        ? Equipment
+    : S extends undefined
+    ? never
+    : S extends EquipmentArgs | EquipmentFindManyArgs
+    ?'include' extends U
+    ? Equipment 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof Equipment ? Equipment[P] : never
+  } 
+    : Equipment
+  : Equipment
+
+
+  type EquipmentCountArgs = Merge<
+    Omit<EquipmentFindManyArgs, 'select' | 'include'> & {
+      select?: EquipmentCountAggregateInputType | true
+    }
+  >
+
+  export interface EquipmentDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+    /**
+     * Find zero or one Equipment that matches the filter.
+     * @param {EquipmentFindUniqueArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends EquipmentFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, EquipmentFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Equipment'> extends True ? CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>> : CheckSelect<T, Prisma__EquipmentClient<Equipment | null, null>, Prisma__EquipmentClient<EquipmentGetPayload<T> | null, null>>
+
+    /**
+     * Find the first Equipment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentFindFirstArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends EquipmentFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, EquipmentFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Equipment'> extends True ? CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>> : CheckSelect<T, Prisma__EquipmentClient<Equipment | null, null>, Prisma__EquipmentClient<EquipmentGetPayload<T> | null, null>>
+
+    /**
+     * Find zero or more Equipment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Equipment
+     * const equipment = await prisma.equipment.findMany()
+     * 
+     * // Get first 10 Equipment
+     * const equipment = await prisma.equipment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const equipmentWithIdOnly = await prisma.equipment.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends EquipmentFindManyArgs>(
+      args?: SelectSubset<T, EquipmentFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Equipment>>, PrismaPromise<Array<EquipmentGetPayload<T>>>>
+
+    /**
+     * Create a Equipment.
+     * @param {EquipmentCreateArgs} args - Arguments to create a Equipment.
+     * @example
+     * // Create one Equipment
+     * const Equipment = await prisma.equipment.create({
+     *   data: {
+     *     // ... data to create a Equipment
+     *   }
+     * })
+     * 
+    **/
+    create<T extends EquipmentCreateArgs>(
+      args: SelectSubset<T, EquipmentCreateArgs>
+    ): CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>>
+
+    /**
+     * Create many Equipment.
+     *     @param {EquipmentCreateManyArgs} args - Arguments to create many Equipment.
+     *     @example
+     *     // Create many Equipment
+     *     const equipment = await prisma.equipment.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends EquipmentCreateManyArgs>(
+      args?: SelectSubset<T, EquipmentCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Equipment.
+     * @param {EquipmentDeleteArgs} args - Arguments to delete one Equipment.
+     * @example
+     * // Delete one Equipment
+     * const Equipment = await prisma.equipment.delete({
+     *   where: {
+     *     // ... filter to delete one Equipment
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends EquipmentDeleteArgs>(
+      args: SelectSubset<T, EquipmentDeleteArgs>
+    ): CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>>
+
+    /**
+     * Update one Equipment.
+     * @param {EquipmentUpdateArgs} args - Arguments to update one Equipment.
+     * @example
+     * // Update one Equipment
+     * const equipment = await prisma.equipment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends EquipmentUpdateArgs>(
+      args: SelectSubset<T, EquipmentUpdateArgs>
+    ): CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>>
+
+    /**
+     * Delete zero or more Equipment.
+     * @param {EquipmentDeleteManyArgs} args - Arguments to filter Equipment to delete.
+     * @example
+     * // Delete a few Equipment
+     * const { count } = await prisma.equipment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends EquipmentDeleteManyArgs>(
+      args?: SelectSubset<T, EquipmentDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Equipment
+     * const equipment = await prisma.equipment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends EquipmentUpdateManyArgs>(
+      args: SelectSubset<T, EquipmentUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Equipment.
+     * @param {EquipmentUpsertArgs} args - Arguments to update or create a Equipment.
+     * @example
+     * // Update or create a Equipment
+     * const equipment = await prisma.equipment.upsert({
+     *   create: {
+     *     // ... data to create a Equipment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Equipment we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends EquipmentUpsertArgs>(
+      args: SelectSubset<T, EquipmentUpsertArgs>
+    ): CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>>
+
+    /**
+     * Find one Equipment that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {EquipmentFindUniqueOrThrowArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends EquipmentFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, EquipmentFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>>
+
+    /**
+     * Find the first Equipment that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentFindFirstOrThrowArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends EquipmentFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, EquipmentFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__EquipmentClient<Equipment>, Prisma__EquipmentClient<EquipmentGetPayload<T>>>
+
+    /**
+     * Count the number of Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentCountArgs} args - Arguments to filter Equipment to count.
+     * @example
+     * // Count the number of Equipment
+     * const count = await prisma.equipment.count({
+     *   where: {
+     *     // ... the filter for the Equipment we want to count
+     *   }
+     * })
+    **/
+    count<T extends EquipmentCountArgs>(
+      args?: Subset<T, EquipmentCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EquipmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EquipmentAggregateArgs>(args: Subset<T, EquipmentAggregateArgs>): PrismaPromise<GetEquipmentAggregateType<T>>
+
+    /**
+     * Group by Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EquipmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EquipmentGroupByArgs['orderBy'] }
+        : { orderBy?: EquipmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EquipmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEquipmentGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Equipment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__EquipmentClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Equipment base type for findUnique actions
+   */
+  export type EquipmentFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+    /**
+     * Filter, which Equipment to fetch.
+     * 
+    **/
+    where: EquipmentWhereUniqueInput
+  }
+
+  /**
+   * Equipment: findUnique
+   */
+  export interface EquipmentFindUniqueArgs extends EquipmentFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Equipment base type for findFirst actions
+   */
+  export type EquipmentFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+    /**
+     * Filter, which Equipment to fetch.
+     * 
+    **/
+    where?: EquipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipment to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<EquipmentOrderByWithRelationAndSearchRelevanceInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Equipment.
+     * 
+    **/
+    cursor?: EquipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipment from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipment.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Equipment.
+     * 
+    **/
+    distinct?: Enumerable<EquipmentScalarFieldEnum>
+  }
+
+  /**
+   * Equipment: findFirst
+   */
+  export interface EquipmentFindFirstArgs extends EquipmentFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Equipment findMany
+   */
+  export type EquipmentFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+    /**
+     * Filter, which Equipment to fetch.
+     * 
+    **/
+    where?: EquipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipment to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<EquipmentOrderByWithRelationAndSearchRelevanceInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Equipment.
+     * 
+    **/
+    cursor?: EquipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipment from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipment.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<EquipmentScalarFieldEnum>
+  }
+
+
+  /**
+   * Equipment create
+   */
+  export type EquipmentCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+    /**
+     * The data needed to create a Equipment.
+     * 
+    **/
+    data: XOR<EquipmentCreateInput, EquipmentUncheckedCreateInput>
+  }
+
+
+  /**
+   * Equipment createMany
+   */
+  export type EquipmentCreateManyArgs = {
+    /**
+     * The data used to create many Equipment.
+     * 
+    **/
+    data: Enumerable<EquipmentCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Equipment update
+   */
+  export type EquipmentUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+    /**
+     * The data needed to update a Equipment.
+     * 
+    **/
+    data: XOR<EquipmentUpdateInput, EquipmentUncheckedUpdateInput>
+    /**
+     * Choose, which Equipment to update.
+     * 
+    **/
+    where: EquipmentWhereUniqueInput
+  }
+
+
+  /**
+   * Equipment updateMany
+   */
+  export type EquipmentUpdateManyArgs = {
+    /**
+     * The data used to update Equipment.
+     * 
+    **/
+    data: XOR<EquipmentUpdateManyMutationInput, EquipmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Equipment to update
+     * 
+    **/
+    where?: EquipmentWhereInput
+  }
+
+
+  /**
+   * Equipment upsert
+   */
+  export type EquipmentUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+    /**
+     * The filter to search for the Equipment to update in case it exists.
+     * 
+    **/
+    where: EquipmentWhereUniqueInput
+    /**
+     * In case the Equipment found by the `where` argument doesn't exist, create a new Equipment with this data.
+     * 
+    **/
+    create: XOR<EquipmentCreateInput, EquipmentUncheckedCreateInput>
+    /**
+     * In case the Equipment was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<EquipmentUpdateInput, EquipmentUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Equipment delete
+   */
+  export type EquipmentDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+    /**
+     * Filter which Equipment to delete.
+     * 
+    **/
+    where: EquipmentWhereUniqueInput
+  }
+
+
+  /**
+   * Equipment deleteMany
+   */
+  export type EquipmentDeleteManyArgs = {
+    /**
+     * Filter which Equipment to delete
+     * 
+    **/
+    where?: EquipmentWhereInput
+  }
+
+
+  /**
+   * Equipment: findUniqueOrThrow
+   */
+  export type EquipmentFindUniqueOrThrowArgs = EquipmentFindUniqueArgsBase
+      
+
+  /**
+   * Equipment: findFirstOrThrow
+   */
+  export type EquipmentFindFirstOrThrowArgs = EquipmentFindFirstArgsBase
+      
+
+  /**
+   * Equipment without action
+   */
+  export type EquipmentArgs = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     * 
+    **/
+    select?: EquipmentSelect | null
+  }
+
+
+
+  /**
    * Enums
    */
 
   // Based on
   // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 
-  export const UserScalarFieldEnum: {
-    id: 'id',
-    email: 'email',
+  export const CategoryOrderByRelevanceFieldEnum: {
     name: 'name',
-    age: 'age',
-    balance: 'balance',
-    amount: 'amount',
-    role: 'role',
-    grades: 'grades',
-    aliases: 'aliases'
+    slug: 'slug'
   };
 
-  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+  export type CategoryOrderByRelevanceFieldEnum = (typeof CategoryOrderByRelevanceFieldEnum)[keyof typeof CategoryOrderByRelevanceFieldEnum]
+
+
+  export const CategoryScalarFieldEnum: {
+    name: 'name',
+    slug: 'slug',
+    number: 'number'
+  };
+
+  export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+  export const CreatorOrderByRelevanceFieldEnum: {
+    name: 'name'
+  };
+
+  export type CreatorOrderByRelevanceFieldEnum = (typeof CreatorOrderByRelevanceFieldEnum)[keyof typeof CreatorOrderByRelevanceFieldEnum]
+
+
+  export const CreatorScalarFieldEnum: {
+    id: 'id',
+    name: 'name'
+  };
+
+  export type CreatorScalarFieldEnum = (typeof CreatorScalarFieldEnum)[keyof typeof CreatorScalarFieldEnum]
+
+
+  export const DirectorOrderByRelevanceFieldEnum: {
+    firstName: 'firstName',
+    lastName: 'lastName'
+  };
+
+  export type DirectorOrderByRelevanceFieldEnum = (typeof DirectorOrderByRelevanceFieldEnum)[keyof typeof DirectorOrderByRelevanceFieldEnum]
+
+
+  export const DirectorScalarFieldEnum: {
+    firstName: 'firstName',
+    lastName: 'lastName'
+  };
+
+  export type DirectorScalarFieldEnum = (typeof DirectorScalarFieldEnum)[keyof typeof DirectorScalarFieldEnum]
+
+
+  export const EquipmentOrderByRelevanceFieldEnum: {
+    id: 'id'
+  };
+
+  export type EquipmentOrderByRelevanceFieldEnum = (typeof EquipmentOrderByRelevanceFieldEnum)[keyof typeof EquipmentOrderByRelevanceFieldEnum]
+
+
+  export const EquipmentScalarFieldEnum: {
+    id: 'id'
+  };
+
+  export type EquipmentScalarFieldEnum = (typeof EquipmentScalarFieldEnum)[keyof typeof EquipmentScalarFieldEnum]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+  export const MovieOrderByRelevanceFieldEnum: {
+    directorFirstName: 'directorFirstName',
+    directorLastName: 'directorLastName',
+    title: 'title'
+  };
+
+  export type MovieOrderByRelevanceFieldEnum = (typeof MovieOrderByRelevanceFieldEnum)[keyof typeof MovieOrderByRelevanceFieldEnum]
+
+
+  export const MovieScalarFieldEnum: {
+    directorFirstName: 'directorFirstName',
+    directorLastName: 'directorLastName',
+    title: 'title'
+  };
+
+  export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
+
+
+  export const NativeTypeModelScalarFieldEnum: {
+    id: 'id',
+    bigInt: 'bigInt',
+    byteA: 'byteA',
+    decimal: 'decimal'
+  };
+
+  export type NativeTypeModelScalarFieldEnum = (typeof NativeTypeModelScalarFieldEnum)[keyof typeof NativeTypeModelScalarFieldEnum]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const PatientOrderByRelevanceFieldEnum: {
+    firstName: 'firstName',
+    lastName: 'lastName',
+    email: 'email'
+  };
+
+  export type PatientOrderByRelevanceFieldEnum = (typeof PatientOrderByRelevanceFieldEnum)[keyof typeof PatientOrderByRelevanceFieldEnum]
+
+
+  export const PatientScalarFieldEnum: {
+    firstName: 'firstName',
+    lastName: 'lastName',
+    email: 'email'
+  };
+
+  export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
 
 
   export const PostScalarFieldEnum: {
@@ -9418,39 +10493,11 @@ export namespace Prisma {
   export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
 
 
-  export const CategoryScalarFieldEnum: {
-    name: 'name',
-    slug: 'slug',
-    number: 'number'
+  export const ProblemOrderByRelevanceFieldEnum: {
+    problemText: 'problemText'
   };
 
-  export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
-
-  export const PatientScalarFieldEnum: {
-    firstName: 'firstName',
-    lastName: 'lastName',
-    email: 'email'
-  };
-
-  export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
-
-
-  export const MovieScalarFieldEnum: {
-    directorFirstName: 'directorFirstName',
-    directorLastName: 'directorLastName',
-    title: 'title'
-  };
-
-  export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
-
-
-  export const DirectorScalarFieldEnum: {
-    firstName: 'firstName',
-    lastName: 'lastName'
-  };
-
-  export type DirectorScalarFieldEnum = (typeof DirectorScalarFieldEnum)[keyof typeof DirectorScalarFieldEnum]
+  export type ProblemOrderByRelevanceFieldEnum = (typeof ProblemOrderByRelevanceFieldEnum)[keyof typeof ProblemOrderByRelevanceFieldEnum]
 
 
   export const ProblemScalarFieldEnum: {
@@ -9462,22 +10509,12 @@ export namespace Prisma {
   export type ProblemScalarFieldEnum = (typeof ProblemScalarFieldEnum)[keyof typeof ProblemScalarFieldEnum]
 
 
-  export const CreatorScalarFieldEnum: {
-    id: 'id',
-    name: 'name'
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
   };
 
-  export type CreatorScalarFieldEnum = (typeof CreatorScalarFieldEnum)[keyof typeof CreatorScalarFieldEnum]
-
-
-  export const NativeTypeModelScalarFieldEnum: {
-    id: 'id',
-    bigInt: 'bigInt',
-    byteA: 'byteA',
-    decimal: 'decimal'
-  };
-
-  export type NativeTypeModelScalarFieldEnum = (typeof NativeTypeModelScalarFieldEnum)[keyof typeof NativeTypeModelScalarFieldEnum]
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
   export const SortOrder: {
@@ -9488,27 +10525,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const JsonNullValueInput: {
-    JsonNull: typeof JsonNull
+  export const TransactionIsolationLevel: {
+    ReadUncommitted: 'ReadUncommitted',
+    ReadCommitted: 'ReadCommitted',
+    RepeatableRead: 'RepeatableRead',
+    Serializable: 'Serializable'
   };
 
-  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-  export const NullsOrder: {
-    first: 'first',
-    last: 'last'
-  };
-
-  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+  export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
   export const UserOrderByRelevanceFieldEnum: {
@@ -9520,13 +10544,19 @@ export namespace Prisma {
   export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
 
 
-  export const JsonNullValueFilter: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull,
-    AnyNull: typeof AnyNull
+  export const UserScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    name: 'name',
+    age: 'age',
+    balance: 'balance',
+    amount: 'amount',
+    role: 'role',
+    grades: 'grades',
+    aliases: 'aliases'
   };
 
-  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
   export const postOrderByRelevanceFieldEnum: {
@@ -9537,54 +10567,6 @@ export namespace Prisma {
   };
 
   export type postOrderByRelevanceFieldEnum = (typeof postOrderByRelevanceFieldEnum)[keyof typeof postOrderByRelevanceFieldEnum]
-
-
-  export const CategoryOrderByRelevanceFieldEnum: {
-    name: 'name',
-    slug: 'slug'
-  };
-
-  export type CategoryOrderByRelevanceFieldEnum = (typeof CategoryOrderByRelevanceFieldEnum)[keyof typeof CategoryOrderByRelevanceFieldEnum]
-
-
-  export const PatientOrderByRelevanceFieldEnum: {
-    firstName: 'firstName',
-    lastName: 'lastName',
-    email: 'email'
-  };
-
-  export type PatientOrderByRelevanceFieldEnum = (typeof PatientOrderByRelevanceFieldEnum)[keyof typeof PatientOrderByRelevanceFieldEnum]
-
-
-  export const MovieOrderByRelevanceFieldEnum: {
-    directorFirstName: 'directorFirstName',
-    directorLastName: 'directorLastName',
-    title: 'title'
-  };
-
-  export type MovieOrderByRelevanceFieldEnum = (typeof MovieOrderByRelevanceFieldEnum)[keyof typeof MovieOrderByRelevanceFieldEnum]
-
-
-  export const DirectorOrderByRelevanceFieldEnum: {
-    firstName: 'firstName',
-    lastName: 'lastName'
-  };
-
-  export type DirectorOrderByRelevanceFieldEnum = (typeof DirectorOrderByRelevanceFieldEnum)[keyof typeof DirectorOrderByRelevanceFieldEnum]
-
-
-  export const ProblemOrderByRelevanceFieldEnum: {
-    problemText: 'problemText'
-  };
-
-  export type ProblemOrderByRelevanceFieldEnum = (typeof ProblemOrderByRelevanceFieldEnum)[keyof typeof ProblemOrderByRelevanceFieldEnum]
-
-
-  export const CreatorOrderByRelevanceFieldEnum: {
-    name: 'name'
-  };
-
-  export type CreatorOrderByRelevanceFieldEnum = (typeof CreatorOrderByRelevanceFieldEnum)[keyof typeof CreatorOrderByRelevanceFieldEnum]
 
 
   /**
@@ -9624,10 +10606,22 @@ export namespace Prisma {
     _relevance?: UserOrderByRelevanceInput
   }
 
-  export type UserWhereUniqueInput = {
+  export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     email?: string
-  }
+    AND?: Enumerable<UserWhereInput>
+    OR?: Enumerable<UserWhereInput>
+    NOT?: Enumerable<UserWhereInput>
+    name?: StringNullableFilter | string | null
+    age?: IntFilter | number
+    balance?: FloatFilter | number
+    amount?: FloatFilter | number
+    posts?: PostListRelationFilter
+    role?: EnumRoleFilter | Role
+    editorPosts?: PostListRelationFilter
+    grades?: IntNullableListFilter
+    aliases?: StringNullableListFilter
+  }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9697,9 +10691,24 @@ export namespace Prisma {
     _relevance?: postOrderByRelevanceInput
   }
 
-  export type postWhereUniqueInput = {
+  export type postWhereUniqueInput = Prisma.AtLeast<{
     uuid?: string
-  }
+    AND?: Enumerable<postWhereInput>
+    OR?: Enumerable<postWhereInput>
+    NOT?: Enumerable<postWhereInput>
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    published?: BoolFilter | boolean
+    title?: StringFilter | string
+    subtitle?: StringFilter | string
+    content?: StringNullableFilter | string | null
+    author?: XOR<UserRelationFilter, UserWhereInput>
+    authorId?: IntFilter | number
+    editor?: XOR<UserRelationFilter, UserWhereInput> | null
+    editorId?: IntNullableFilter | number | null
+    kind?: EnumPostKindNullableFilter | PostKind | null
+    metadata?: JsonFilter
+  }, "uuid">
 
   export type postOrderByWithAggregationInput = {
     uuid?: SortOrder
@@ -9753,9 +10762,15 @@ export namespace Prisma {
     _relevance?: CategoryOrderByRelevanceInput
   }
 
-  export type CategoryWhereUniqueInput = {
+  export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     categoryCompoundUnique?: CategoryCategoryCompoundUniqueCompoundUniqueInput
-  }
+    AND?: Enumerable<CategoryWhereInput>
+    OR?: Enumerable<CategoryWhereInput>
+    NOT?: Enumerable<CategoryWhereInput>
+    name?: StringFilter | string
+    slug?: StringFilter | string
+    number?: IntFilter | number
+  }, "categoryCompoundUnique">
 
   export type CategoryOrderByWithAggregationInput = {
     name?: SortOrder
@@ -9793,9 +10808,15 @@ export namespace Prisma {
     _relevance?: PatientOrderByRelevanceInput
   }
 
-  export type PatientWhereUniqueInput = {
+  export type PatientWhereUniqueInput = Prisma.AtLeast<{
     firstName_lastName?: PatientFirstNameLastNameCompoundUniqueInput
-  }
+    AND?: Enumerable<PatientWhereInput>
+    OR?: Enumerable<PatientWhereInput>
+    NOT?: Enumerable<PatientWhereInput>
+    firstName?: StringFilter | string
+    lastName?: StringFilter | string
+    email?: StringFilter | string
+  }, "firstName_lastName">
 
   export type PatientOrderByWithAggregationInput = {
     firstName?: SortOrder
@@ -9833,9 +10854,16 @@ export namespace Prisma {
     _relevance?: MovieOrderByRelevanceInput
   }
 
-  export type MovieWhereUniqueInput = {
+  export type MovieWhereUniqueInput = Prisma.AtLeast<{
     movieCompoundId?: MovieMovieCompoundIdCompoundUniqueInput
-  }
+    AND?: Enumerable<MovieWhereInput>
+    OR?: Enumerable<MovieWhereInput>
+    NOT?: Enumerable<MovieWhereInput>
+    directorFirstName?: StringFilter | string
+    directorLastName?: StringFilter | string
+    director?: XOR<DirectorRelationFilter, DirectorWhereInput>
+    title?: StringFilter | string
+  }, "movieCompoundId">
 
   export type MovieOrderByWithAggregationInput = {
     directorFirstName?: SortOrder
@@ -9871,9 +10899,15 @@ export namespace Prisma {
     _relevance?: DirectorOrderByRelevanceInput
   }
 
-  export type DirectorWhereUniqueInput = {
+  export type DirectorWhereUniqueInput = Prisma.AtLeast<{
     firstName_lastName?: DirectorFirstNameLastNameCompoundUniqueInput
-  }
+    AND?: Enumerable<DirectorWhereInput>
+    OR?: Enumerable<DirectorWhereInput>
+    NOT?: Enumerable<DirectorWhereInput>
+    firstName?: StringFilter | string
+    lastName?: StringFilter | string
+    movies?: MovieListRelationFilter
+  }, "firstName_lastName">
 
   export type DirectorOrderByWithAggregationInput = {
     firstName?: SortOrder
@@ -9911,9 +10945,16 @@ export namespace Prisma {
     _relevance?: ProblemOrderByRelevanceInput
   }
 
-  export type ProblemWhereUniqueInput = {
+  export type ProblemWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-  }
+    AND?: Enumerable<ProblemWhereInput>
+    OR?: Enumerable<ProblemWhereInput>
+    NOT?: Enumerable<ProblemWhereInput>
+    problemText?: StringFilter | string
+    likedBy?: CreatorListRelationFilter
+    creator?: XOR<CreatorRelationFilter, CreatorWhereInput> | null
+    creatorId?: IntNullableFilter | number | null
+  }, "id">
 
   export type ProblemOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9953,9 +10994,15 @@ export namespace Prisma {
     _relevance?: CreatorOrderByRelevanceInput
   }
 
-  export type CreatorWhereUniqueInput = {
+  export type CreatorWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-  }
+    AND?: Enumerable<CreatorWhereInput>
+    OR?: Enumerable<CreatorWhereInput>
+    NOT?: Enumerable<CreatorWhereInput>
+    name?: StringFilter | string
+    likes?: ProblemListRelationFilter
+    problems?: ProblemListRelationFilter
+  }, "id">
 
   export type CreatorOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9992,9 +11039,15 @@ export namespace Prisma {
     decimal?: SortOrderInput | SortOrder
   }
 
-  export type NativeTypeModelWhereUniqueInput = {
+  export type NativeTypeModelWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-  }
+    AND?: Enumerable<NativeTypeModelWhereInput>
+    OR?: Enumerable<NativeTypeModelWhereInput>
+    NOT?: Enumerable<NativeTypeModelWhereInput>
+    bigInt?: BigIntNullableFilter | bigint | number | null
+    byteA?: BytesNullableFilter | Buffer | null
+    decimal?: DecimalNullableFilter | Decimal | DecimalJsLike | number | string | null
+  }, "id">
 
   export type NativeTypeModelOrderByWithAggregationInput = {
     id?: SortOrder
@@ -10016,6 +11069,39 @@ export namespace Prisma {
     bigInt?: BigIntNullableWithAggregatesFilter | bigint | number | null
     byteA?: BytesNullableWithAggregatesFilter | Buffer | null
     decimal?: DecimalNullableWithAggregatesFilter | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type EquipmentWhereInput = {
+    AND?: Enumerable<EquipmentWhereInput>
+    OR?: Enumerable<EquipmentWhereInput>
+    NOT?: Enumerable<EquipmentWhereInput>
+    id?: StringFilter | string
+  }
+
+  export type EquipmentOrderByWithRelationAndSearchRelevanceInput = {
+    id?: SortOrder
+    _relevance?: EquipmentOrderByRelevanceInput
+  }
+
+  export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: Enumerable<EquipmentWhereInput>
+    OR?: Enumerable<EquipmentWhereInput>
+    NOT?: Enumerable<EquipmentWhereInput>
+  }, "id">
+
+  export type EquipmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    _count?: EquipmentCountOrderByAggregateInput
+    _max?: EquipmentMaxOrderByAggregateInput
+    _min?: EquipmentMinOrderByAggregateInput
+  }
+
+  export type EquipmentScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<EquipmentScalarWhereWithAggregatesInput>
+    OR?: Enumerable<EquipmentScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<EquipmentScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
   }
 
   export type UserCreateInput = {
@@ -10492,6 +11578,34 @@ export namespace Prisma {
     decimal?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
+  export type EquipmentCreateInput = {
+    id?: string
+  }
+
+  export type EquipmentUncheckedCreateInput = {
+    id?: string
+  }
+
+  export type EquipmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EquipmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EquipmentCreateManyInput = {
+    id?: string
+  }
+
+  export type EquipmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EquipmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
   export type IntFilter = {
     equals?: number
     in?: Enumerable<number>
@@ -10758,7 +11872,7 @@ export namespace Prisma {
   }
 
   export type JsonFilterBase = {
-    equals?: JsonNullValueFilter | InputJsonValue
+    equals?: InputJsonValue | JsonNullValueFilter
     path?: Array<string>
     string_contains?: string
     string_starts_with?: string
@@ -10770,7 +11884,7 @@ export namespace Prisma {
     lte?: InputJsonValue
     gt?: InputJsonValue
     gte?: InputJsonValue
-    not?: JsonNullValueFilter | InputJsonValue
+    not?: InputJsonValue | JsonNullValueFilter
   }
 
   export type postOrderByRelevanceInput = {
@@ -10878,7 +11992,7 @@ export namespace Prisma {
   }
 
   export type JsonWithAggregatesFilterBase = {
-    equals?: JsonNullValueFilter | InputJsonValue
+    equals?: InputJsonValue | JsonNullValueFilter
     path?: Array<string>
     string_contains?: string
     string_starts_with?: string
@@ -10890,7 +12004,7 @@ export namespace Prisma {
     lte?: InputJsonValue
     gt?: InputJsonValue
     gte?: InputJsonValue
-    not?: JsonNullValueFilter | InputJsonValue
+    not?: InputJsonValue | JsonNullValueFilter
     _count?: NestedIntFilter
     _min?: NestedJsonFilter
     _max?: NestedJsonFilter
@@ -11225,6 +12339,24 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter
   }
 
+  export type EquipmentOrderByRelevanceInput = {
+    fields: Enumerable<EquipmentOrderByRelevanceFieldEnum>
+    sort: SortOrder
+    search: string
+  }
+
+  export type EquipmentCountOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EquipmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EquipmentMinOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type postCreateNestedManyWithoutAuthorInput = {
     create?: XOR<Enumerable<postCreateWithoutAuthorInput>, Enumerable<postUncheckedCreateWithoutAuthorInput>>
     connectOrCreate?: Enumerable<postCreateOrConnectWithoutAuthorInput>
@@ -11380,17 +12512,17 @@ export namespace Prisma {
     connectOrCreate?: UserCreateOrConnectWithoutPostsInput
     upsert?: UserUpsertWithoutPostsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostsInput, UserUpdateWithoutPostsInput>, UserUncheckedUpdateWithoutPostsInput>
   }
 
   export type UserUpdateOneWithoutEditorPostsNestedInput = {
     create?: XOR<UserCreateWithoutEditorPostsInput, UserUncheckedCreateWithoutEditorPostsInput>
     connectOrCreate?: UserCreateOrConnectWithoutEditorPostsInput
     upsert?: UserUpsertWithoutEditorPostsInput
-    disconnect?: boolean
-    delete?: boolean
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutEditorPostsInput, UserUncheckedUpdateWithoutEditorPostsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEditorPostsInput, UserUpdateWithoutEditorPostsInput>, UserUncheckedUpdateWithoutEditorPostsInput>
   }
 
   export type NullableEnumPostKindFieldUpdateOperationsInput = {
@@ -11416,7 +12548,7 @@ export namespace Prisma {
     connectOrCreate?: DirectorCreateOrConnectWithoutMoviesInput
     upsert?: DirectorUpsertWithoutMoviesInput
     connect?: DirectorWhereUniqueInput
-    update?: XOR<DirectorUpdateWithoutMoviesInput, DirectorUncheckedUpdateWithoutMoviesInput>
+    update?: XOR<XOR<DirectorUpdateToOneWithWhereWithoutMoviesInput, DirectorUpdateWithoutMoviesInput>, DirectorUncheckedUpdateWithoutMoviesInput>
   }
 
   export type MovieCreateNestedManyWithoutDirectorInput = {
@@ -11496,10 +12628,10 @@ export namespace Prisma {
     create?: XOR<CreatorCreateWithoutProblemsInput, CreatorUncheckedCreateWithoutProblemsInput>
     connectOrCreate?: CreatorCreateOrConnectWithoutProblemsInput
     upsert?: CreatorUpsertWithoutProblemsInput
-    disconnect?: boolean
-    delete?: boolean
+    disconnect?: CreatorWhereInput | boolean
+    delete?: CreatorWhereInput | boolean
     connect?: CreatorWhereUniqueInput
-    update?: XOR<CreatorUpdateWithoutProblemsInput, CreatorUncheckedUpdateWithoutProblemsInput>
+    update?: XOR<XOR<CreatorUpdateToOneWithWhereWithoutProblemsInput, CreatorUpdateWithoutProblemsInput>, CreatorUncheckedUpdateWithoutProblemsInput>
   }
 
   export type CreatorUncheckedUpdateManyWithoutLikesNestedInput = {
@@ -11846,7 +12978,7 @@ export namespace Prisma {
   }
 
   export type NestedJsonFilterBase = {
-    equals?: JsonNullValueFilter | InputJsonValue
+    equals?: InputJsonValue | JsonNullValueFilter
     path?: Array<string>
     string_contains?: string
     string_starts_with?: string
@@ -11858,7 +12990,7 @@ export namespace Prisma {
     lte?: InputJsonValue
     gt?: InputJsonValue
     gte?: InputJsonValue
-    not?: JsonNullValueFilter | InputJsonValue
+    not?: InputJsonValue | JsonNullValueFilter
   }
 
   export type NestedBigIntNullableFilter = {
@@ -12116,6 +13248,12 @@ export namespace Prisma {
   export type UserUpsertWithoutPostsInput = {
     update: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
     create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPostsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
   }
 
   export type UserUpdateWithoutPostsInput = {
@@ -12146,6 +13284,12 @@ export namespace Prisma {
   export type UserUpsertWithoutEditorPostsInput = {
     update: XOR<UserUpdateWithoutEditorPostsInput, UserUncheckedUpdateWithoutEditorPostsInput>
     create: XOR<UserCreateWithoutEditorPostsInput, UserUncheckedCreateWithoutEditorPostsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEditorPostsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEditorPostsInput, UserUncheckedUpdateWithoutEditorPostsInput>
   }
 
   export type UserUpdateWithoutEditorPostsInput = {
@@ -12191,6 +13335,12 @@ export namespace Prisma {
   export type DirectorUpsertWithoutMoviesInput = {
     update: XOR<DirectorUpdateWithoutMoviesInput, DirectorUncheckedUpdateWithoutMoviesInput>
     create: XOR<DirectorCreateWithoutMoviesInput, DirectorUncheckedCreateWithoutMoviesInput>
+    where?: DirectorWhereInput
+  }
+
+  export type DirectorUpdateToOneWithWhereWithoutMoviesInput = {
+    where?: DirectorWhereInput
+    data: XOR<DirectorUpdateWithoutMoviesInput, DirectorUncheckedUpdateWithoutMoviesInput>
   }
 
   export type DirectorUpdateWithoutMoviesInput = {
@@ -12305,6 +13455,12 @@ export namespace Prisma {
   export type CreatorUpsertWithoutProblemsInput = {
     update: XOR<CreatorUpdateWithoutProblemsInput, CreatorUncheckedUpdateWithoutProblemsInput>
     create: XOR<CreatorCreateWithoutProblemsInput, CreatorUncheckedCreateWithoutProblemsInput>
+    where?: CreatorWhereInput
+  }
+
+  export type CreatorUpdateToOneWithWhereWithoutProblemsInput = {
+    where?: CreatorWhereInput
+    data: XOR<CreatorUpdateWithoutProblemsInput, CreatorUncheckedUpdateWithoutProblemsInput>
   }
 
   export type CreatorUpdateWithoutProblemsInput = {

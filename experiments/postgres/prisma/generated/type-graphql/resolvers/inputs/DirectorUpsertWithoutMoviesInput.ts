@@ -4,6 +4,7 @@ import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { DirectorCreateWithoutMoviesInput } from "../inputs/DirectorCreateWithoutMoviesInput";
 import { DirectorUpdateWithoutMoviesInput } from "../inputs/DirectorUpdateWithoutMoviesInput";
+import { DirectorWhereInput } from "../inputs/DirectorWhereInput";
 
 @TypeGraphQL.InputType("DirectorUpsertWithoutMoviesInput", {
   isAbstract: true
@@ -18,4 +19,9 @@ export class DirectorUpsertWithoutMoviesInput {
     nullable: false
   })
   create!: DirectorCreateWithoutMoviesInput;
+
+  @TypeGraphQL.Field(_type => DirectorWhereInput, {
+    nullable: true
+  })
+  where?: DirectorWhereInput | undefined;
 }

@@ -15,7 +15,9 @@ const {
   join,
   raw,
   Decimal,
-  objectEnumValues
+  Debug,
+  objectEnumValues,
+  makeStrictEnum
 } = require('./runtime/index')
 
 
@@ -24,12 +26,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 4.1.0
- * Query Engine version: 8d8414deb360336e4698a65aa45a1fbaf1ce13d8
+ * Prisma Client JS version: 4.5.0
+ * Query Engine version: 0362da9eebca54d94c8ef5edd3b2e90af99ba452
  */
 Prisma.prismaVersion = {
-  client: "4.1.0",
-  engine: "8d8414deb360336e4698a65aa45a1fbaf1ce13d8"
+  client: "4.5.0",
+  engine: "0362da9eebca54d94c8ef5edd3b2e90af99ba452"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -89,16 +91,88 @@ const dirname = regularDirname || foundDirname || __dirname
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
 
-exports.Prisma.UserScalarFieldEnum = makeEnum({
-  id: 'id',
-  email: 'email',
+exports.Prisma.CategoryOrderByRelevanceFieldEnum = makeEnum({
   name: 'name',
-  age: 'age',
-  balance: 'balance',
-  amount: 'amount',
-  role: 'role',
-  grades: 'grades',
-  aliases: 'aliases'
+  slug: 'slug'
+});
+
+exports.Prisma.CategoryScalarFieldEnum = makeEnum({
+  name: 'name',
+  slug: 'slug',
+  number: 'number'
+});
+
+exports.Prisma.CreatorOrderByRelevanceFieldEnum = makeEnum({
+  name: 'name'
+});
+
+exports.Prisma.CreatorScalarFieldEnum = makeEnum({
+  id: 'id',
+  name: 'name'
+});
+
+exports.Prisma.DirectorOrderByRelevanceFieldEnum = makeEnum({
+  firstName: 'firstName',
+  lastName: 'lastName'
+});
+
+exports.Prisma.DirectorScalarFieldEnum = makeEnum({
+  firstName: 'firstName',
+  lastName: 'lastName'
+});
+
+exports.Prisma.EquipmentOrderByRelevanceFieldEnum = makeEnum({
+  id: 'id'
+});
+
+exports.Prisma.EquipmentScalarFieldEnum = makeEnum({
+  id: 'id'
+});
+
+exports.Prisma.JsonNullValueFilter = makeEnum({
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+});
+
+exports.Prisma.JsonNullValueInput = makeEnum({
+  JsonNull: Prisma.JsonNull
+});
+
+exports.Prisma.MovieOrderByRelevanceFieldEnum = makeEnum({
+  directorFirstName: 'directorFirstName',
+  directorLastName: 'directorLastName',
+  title: 'title'
+});
+
+exports.Prisma.MovieScalarFieldEnum = makeEnum({
+  directorFirstName: 'directorFirstName',
+  directorLastName: 'directorLastName',
+  title: 'title'
+});
+
+exports.Prisma.NativeTypeModelScalarFieldEnum = makeEnum({
+  id: 'id',
+  bigInt: 'bigInt',
+  byteA: 'byteA',
+  decimal: 'decimal'
+});
+
+exports.Prisma.NullsOrder = makeEnum({
+  first: 'first',
+  last: 'last'
+});
+
+exports.Prisma.PatientOrderByRelevanceFieldEnum = makeEnum({
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email'
+});
+
+exports.Prisma.PatientScalarFieldEnum = makeEnum({
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email'
 });
 
 exports.Prisma.PostScalarFieldEnum = makeEnum({
@@ -115,27 +189,8 @@ exports.Prisma.PostScalarFieldEnum = makeEnum({
   metadata: 'metadata'
 });
 
-exports.Prisma.CategoryScalarFieldEnum = makeEnum({
-  name: 'name',
-  slug: 'slug',
-  number: 'number'
-});
-
-exports.Prisma.PatientScalarFieldEnum = makeEnum({
-  firstName: 'firstName',
-  lastName: 'lastName',
-  email: 'email'
-});
-
-exports.Prisma.MovieScalarFieldEnum = makeEnum({
-  directorFirstName: 'directorFirstName',
-  directorLastName: 'directorLastName',
-  title: 'title'
-});
-
-exports.Prisma.DirectorScalarFieldEnum = makeEnum({
-  firstName: 'firstName',
-  lastName: 'lastName'
+exports.Prisma.ProblemOrderByRelevanceFieldEnum = makeEnum({
+  problemText: 'problemText'
 });
 
 exports.Prisma.ProblemScalarFieldEnum = makeEnum({
@@ -144,16 +199,9 @@ exports.Prisma.ProblemScalarFieldEnum = makeEnum({
   creatorId: 'creatorId'
 });
 
-exports.Prisma.CreatorScalarFieldEnum = makeEnum({
-  id: 'id',
-  name: 'name'
-});
-
-exports.Prisma.NativeTypeModelScalarFieldEnum = makeEnum({
-  id: 'id',
-  bigInt: 'bigInt',
-  byteA: 'byteA',
-  decimal: 'decimal'
+exports.Prisma.QueryMode = makeEnum({
+  default: 'default',
+  insensitive: 'insensitive'
 });
 
 exports.Prisma.SortOrder = makeEnum({
@@ -161,18 +209,11 @@ exports.Prisma.SortOrder = makeEnum({
   desc: 'desc'
 });
 
-exports.Prisma.JsonNullValueInput = makeEnum({
-  JsonNull: Prisma.JsonNull
-});
-
-exports.Prisma.QueryMode = makeEnum({
-  default: 'default',
-  insensitive: 'insensitive'
-});
-
-exports.Prisma.NullsOrder = makeEnum({
-  first: 'first',
-  last: 'last'
+exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
+  Serializable: 'Serializable'
 });
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = makeEnum({
@@ -181,10 +222,16 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = makeEnum({
   aliases: 'aliases'
 });
 
-exports.Prisma.JsonNullValueFilter = makeEnum({
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
+exports.Prisma.UserScalarFieldEnum = makeEnum({
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  age: 'age',
+  balance: 'balance',
+  amount: 'amount',
+  role: 'role',
+  grades: 'grades',
+  aliases: 'aliases'
 });
 
 exports.Prisma.postOrderByRelevanceFieldEnum = makeEnum({
@@ -193,44 +240,14 @@ exports.Prisma.postOrderByRelevanceFieldEnum = makeEnum({
   subtitle: 'subtitle',
   content: 'content'
 });
-
-exports.Prisma.CategoryOrderByRelevanceFieldEnum = makeEnum({
-  name: 'name',
-  slug: 'slug'
-});
-
-exports.Prisma.PatientOrderByRelevanceFieldEnum = makeEnum({
-  firstName: 'firstName',
-  lastName: 'lastName',
-  email: 'email'
-});
-
-exports.Prisma.MovieOrderByRelevanceFieldEnum = makeEnum({
-  directorFirstName: 'directorFirstName',
-  directorLastName: 'directorLastName',
-  title: 'title'
-});
-
-exports.Prisma.DirectorOrderByRelevanceFieldEnum = makeEnum({
-  firstName: 'firstName',
-  lastName: 'lastName'
-});
-
-exports.Prisma.ProblemOrderByRelevanceFieldEnum = makeEnum({
-  problemText: 'problemText'
-});
-
-exports.Prisma.CreatorOrderByRelevanceFieldEnum = makeEnum({
-  name: 'name'
-});
-exports.Role = makeEnum({
-  USER: 'USER',
-  ADMIN: 'ADMIN'
-});
-
 exports.PostKind = makeEnum({
   BLOG: 'BLOG',
   ADVERT: 'ADVERT'
+});
+
+exports.Role = makeEnum({
+  USER: 'USER',
+  ADMIN: 'ADMIN'
 });
 
 exports.Prisma.ModelName = makeEnum({
@@ -242,10 +259,11 @@ exports.Prisma.ModelName = makeEnum({
   Director: 'Director',
   Problem: 'Problem',
   Creator: 'Creator',
-  NativeTypeModel: 'NativeTypeModel'
+  NativeTypeModel: 'NativeTypeModel',
+  Equipment: 'Equipment'
 });
 
-const dmmfString = "{\"datamodel\":{\"enums\":[{\"name\":\"Role\",\"values\":[{\"name\":\"USER\",\"dbName\":null},{\"name\":\"ADMIN\",\"dbName\":null}],\"dbName\":null,\"documentation\":\"Role enum doc\"},{\"name\":\"PostKind\",\"values\":[{\"name\":\"BLOG\",\"dbName\":null},{\"name\":\"ADVERT\",\"dbName\":null}],\"dbName\":null}],\"models\":[{\"name\":\"User\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"User model field doc\"},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"renamed field doc\\\\n@TypeGraphQL.field(name: \\\"firstName\\\")\"},{\"name\":\"age\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"balance\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.field(name: \\\"accountBalance\\\")\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"posts\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"post\",\"relationName\":\"posts\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.field(name: \\\"clientPosts\\\")\"},{\"name\":\"role\",\"kind\":\"enum\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Role\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"editorPosts\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"post\",\"relationName\":\"editorPosts\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"grades\",\"kind\":\"scalar\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"aliases\",\"kind\":\"scalar\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false,\"documentation\":\"User model doc\\\\n@@TypeGraphQL.type(name: \\\"MainUser\\\")\"},{\"name\":\"post\",\"dbName\":null,\"fields\":[{\"name\":\"uuid\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"uuid\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"first line of comment\\\\nsecond line of comment\\\\nthird line of comment\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"isGenerated\":false,\"isUpdatedAt\":true,\"documentation\":\"@TypeGraphQL.omit(input: [\\\"create\\\", \\\"update\\\"])\"},{\"name\":\"published\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(input: true)\"},{\"name\":\"title\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"subtitle\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"content\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"author\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"relationName\":\"posts\",\"relationFromFields\":[\"authorId\"],\"relationToFields\":[\"id\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"authorId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"editor\",\"kind\":\"object\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"relationName\":\"editorPosts\",\"relationFromFields\":[\"editorId\"],\"relationToFields\":[\"id\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"editorId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"kind\",\"kind\":\"enum\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"PostKind\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"metadata\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Json\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Category\",\"dbName\":null,\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"slug\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"number\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[[\"slug\",\"number\"]],\"uniqueIndexes\":[{\"name\":\"categoryCompoundUnique\",\"fields\":[\"slug\",\"number\"]}],\"isGenerated\":false},{\"name\":\"Patient\",\"dbName\":null,\"fields\":[{\"name\":\"firstName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"lastName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"firstName\",\"lastName\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Movie\",\"dbName\":null,\"fields\":[{\"name\":\"directorFirstName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"directorLastName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"director\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Director\",\"relationName\":\"DirectorToMovie\",\"relationFromFields\":[\"directorFirstName\",\"directorLastName\"],\"relationToFields\":[\"firstName\",\"lastName\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"title\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":\"movieCompoundId\",\"fields\":[\"directorFirstName\",\"directorLastName\",\"title\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Director\",\"dbName\":null,\"fields\":[{\"name\":\"firstName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"lastName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"movies\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Movie\",\"relationName\":\"DirectorToMovie\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"firstName\",\"lastName\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Problem\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"problemText\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"likedBy\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Creator\",\"relationName\":\"CreatorToProblem\",\"relationFromFields\":[],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"creator\",\"kind\":\"object\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Creator\",\"relationName\":\"creator\",\"relationFromFields\":[\"creatorId\"],\"relationToFields\":[\"id\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"creatorId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Creator\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"likes\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Problem\",\"relationName\":\"CreatorToProblem\",\"relationFromFields\":[],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"problems\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Problem\",\"relationName\":\"creator\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"NativeTypeModel\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"bigInt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"BigInt\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"byteA\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Bytes\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"decimal\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Decimal\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}],\"types\":[]},\"mappings\":{\"modelOperations\":[{\"model\":\"User\",\"plural\":\"users\",\"findUnique\":\"findUniqueUser\",\"findFirst\":\"findFirstUser\",\"findMany\":\"findManyUser\",\"create\":\"createOneUser\",\"createMany\":\"createManyUser\",\"delete\":\"deleteOneUser\",\"update\":\"updateOneUser\",\"deleteMany\":\"deleteManyUser\",\"updateMany\":\"updateManyUser\",\"upsert\":\"upsertOneUser\",\"aggregate\":\"aggregateUser\",\"groupBy\":\"groupByUser\"},{\"model\":\"post\",\"plural\":\"posts\",\"findUnique\":\"findUniquepost\",\"findFirst\":\"findFirstpost\",\"findMany\":\"findManypost\",\"create\":\"createOnepost\",\"createMany\":\"createManypost\",\"delete\":\"deleteOnepost\",\"update\":\"updateOnepost\",\"deleteMany\":\"deleteManypost\",\"updateMany\":\"updateManypost\",\"upsert\":\"upsertOnepost\",\"aggregate\":\"aggregatepost\",\"groupBy\":\"groupBypost\"},{\"model\":\"Category\",\"plural\":\"categories\",\"findUnique\":\"findUniqueCategory\",\"findFirst\":\"findFirstCategory\",\"findMany\":\"findManyCategory\",\"create\":\"createOneCategory\",\"createMany\":\"createManyCategory\",\"delete\":\"deleteOneCategory\",\"update\":\"updateOneCategory\",\"deleteMany\":\"deleteManyCategory\",\"updateMany\":\"updateManyCategory\",\"upsert\":\"upsertOneCategory\",\"aggregate\":\"aggregateCategory\",\"groupBy\":\"groupByCategory\"},{\"model\":\"Patient\",\"plural\":\"patients\",\"findUnique\":\"findUniquePatient\",\"findFirst\":\"findFirstPatient\",\"findMany\":\"findManyPatient\",\"create\":\"createOnePatient\",\"createMany\":\"createManyPatient\",\"delete\":\"deleteOnePatient\",\"update\":\"updateOnePatient\",\"deleteMany\":\"deleteManyPatient\",\"updateMany\":\"updateManyPatient\",\"upsert\":\"upsertOnePatient\",\"aggregate\":\"aggregatePatient\",\"groupBy\":\"groupByPatient\"},{\"model\":\"Movie\",\"plural\":\"movies\",\"findUnique\":\"findUniqueMovie\",\"findFirst\":\"findFirstMovie\",\"findMany\":\"findManyMovie\",\"create\":\"createOneMovie\",\"createMany\":\"createManyMovie\",\"delete\":\"deleteOneMovie\",\"update\":\"updateOneMovie\",\"deleteMany\":\"deleteManyMovie\",\"updateMany\":\"updateManyMovie\",\"upsert\":\"upsertOneMovie\",\"aggregate\":\"aggregateMovie\",\"groupBy\":\"groupByMovie\"},{\"model\":\"Director\",\"plural\":\"directors\",\"findUnique\":\"findUniqueDirector\",\"findFirst\":\"findFirstDirector\",\"findMany\":\"findManyDirector\",\"create\":\"createOneDirector\",\"createMany\":\"createManyDirector\",\"delete\":\"deleteOneDirector\",\"update\":\"updateOneDirector\",\"deleteMany\":\"deleteManyDirector\",\"updateMany\":\"updateManyDirector\",\"upsert\":\"upsertOneDirector\",\"aggregate\":\"aggregateDirector\",\"groupBy\":\"groupByDirector\"},{\"model\":\"Problem\",\"plural\":\"problems\",\"findUnique\":\"findUniqueProblem\",\"findFirst\":\"findFirstProblem\",\"findMany\":\"findManyProblem\",\"create\":\"createOneProblem\",\"createMany\":\"createManyProblem\",\"delete\":\"deleteOneProblem\",\"update\":\"updateOneProblem\",\"deleteMany\":\"deleteManyProblem\",\"updateMany\":\"updateManyProblem\",\"upsert\":\"upsertOneProblem\",\"aggregate\":\"aggregateProblem\",\"groupBy\":\"groupByProblem\"},{\"model\":\"Creator\",\"plural\":\"creators\",\"findUnique\":\"findUniqueCreator\",\"findFirst\":\"findFirstCreator\",\"findMany\":\"findManyCreator\",\"create\":\"createOneCreator\",\"createMany\":\"createManyCreator\",\"delete\":\"deleteOneCreator\",\"update\":\"updateOneCreator\",\"deleteMany\":\"deleteManyCreator\",\"updateMany\":\"updateManyCreator\",\"upsert\":\"upsertOneCreator\",\"aggregate\":\"aggregateCreator\",\"groupBy\":\"groupByCreator\"},{\"model\":\"NativeTypeModel\",\"plural\":\"nativeTypeModels\",\"findUnique\":\"findUniqueNativeTypeModel\",\"findFirst\":\"findFirstNativeTypeModel\",\"findMany\":\"findManyNativeTypeModel\",\"create\":\"createOneNativeTypeModel\",\"createMany\":\"createManyNativeTypeModel\",\"delete\":\"deleteOneNativeTypeModel\",\"update\":\"updateOneNativeTypeModel\",\"deleteMany\":\"deleteManyNativeTypeModel\",\"updateMany\":\"updateManyNativeTypeModel\",\"upsert\":\"upsertOneNativeTypeModel\",\"aggregate\":\"aggregateNativeTypeModel\",\"groupBy\":\"groupByNativeTypeModel\"}],\"otherOperations\":{\"read\":[],\"write\":[\"executeRaw\",\"queryRaw\"]}}}"
+const dmmfString = "{\"datamodel\":{\"enums\":[{\"name\":\"Role\",\"values\":[{\"name\":\"USER\",\"dbName\":null},{\"name\":\"ADMIN\",\"dbName\":null}],\"dbName\":null,\"documentation\":\"Role enum doc\"},{\"name\":\"PostKind\",\"values\":[{\"name\":\"BLOG\",\"dbName\":null},{\"name\":\"ADVERT\",\"dbName\":null}],\"dbName\":null}],\"models\":[{\"name\":\"User\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"User model field doc\"},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"renamed field doc\\\\n@TypeGraphQL.field(name: \\\"firstName\\\")\"},{\"name\":\"age\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"balance\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.field(name: \\\"accountBalance\\\")\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"posts\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"post\",\"relationName\":\"posts\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.field(name: \\\"clientPosts\\\")\"},{\"name\":\"role\",\"kind\":\"enum\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Role\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"editorPosts\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"post\",\"relationName\":\"editorPosts\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"grades\",\"kind\":\"scalar\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"aliases\",\"kind\":\"scalar\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false,\"documentation\":\"User model doc\\\\n@@TypeGraphQL.type(name: \\\"MainUser\\\")\"},{\"name\":\"post\",\"dbName\":null,\"fields\":[{\"name\":\"uuid\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"uuid\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"first line of comment\\\\nsecond line of comment\\\\nthird line of comment\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"isGenerated\":false,\"isUpdatedAt\":true,\"documentation\":\"@TypeGraphQL.omit(input: [\\\"create\\\", \\\"update\\\"])\"},{\"name\":\"published\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(input: true)\"},{\"name\":\"title\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"subtitle\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"content\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"author\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"relationName\":\"posts\",\"relationFromFields\":[\"authorId\"],\"relationToFields\":[\"id\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"authorId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"editor\",\"kind\":\"object\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"relationName\":\"editorPosts\",\"relationFromFields\":[\"editorId\"],\"relationToFields\":[\"id\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"editorId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@TypeGraphQL.omit(output: true)\"},{\"name\":\"kind\",\"kind\":\"enum\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"PostKind\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"metadata\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Json\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Category\",\"dbName\":null,\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"slug\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"number\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[[\"slug\",\"number\"]],\"uniqueIndexes\":[{\"name\":\"categoryCompoundUnique\",\"fields\":[\"slug\",\"number\"]}],\"isGenerated\":false},{\"name\":\"Patient\",\"dbName\":null,\"fields\":[{\"name\":\"firstName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"lastName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"firstName\",\"lastName\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Movie\",\"dbName\":null,\"fields\":[{\"name\":\"directorFirstName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"directorLastName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"director\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Director\",\"relationName\":\"DirectorToMovie\",\"relationFromFields\":[\"directorFirstName\",\"directorLastName\"],\"relationToFields\":[\"firstName\",\"lastName\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"title\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":\"movieCompoundId\",\"fields\":[\"directorFirstName\",\"directorLastName\",\"title\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Director\",\"dbName\":null,\"fields\":[{\"name\":\"firstName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"lastName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"movies\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Movie\",\"relationName\":\"DirectorToMovie\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"firstName\",\"lastName\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Problem\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"problemText\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"likedBy\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Creator\",\"relationName\":\"CreatorToProblem\",\"relationFromFields\":[],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"creator\",\"kind\":\"object\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Creator\",\"relationName\":\"creator\",\"relationFromFields\":[\"creatorId\"],\"relationToFields\":[\"id\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"creatorId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Creator\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"likes\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Problem\",\"relationName\":\"CreatorToProblem\",\"relationFromFields\":[],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"problems\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Problem\",\"relationName\":\"creator\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"NativeTypeModel\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"bigInt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"BigInt\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"byteA\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Bytes\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"decimal\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Decimal\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"Equipment\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"cuid\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false,\"documentation\":\"@@TypeGraphQL.type(plural: \\\"equipments\\\")\"}],\"types\":[]},\"mappings\":{\"modelOperations\":[{\"model\":\"User\",\"plural\":\"users\",\"findUnique\":\"findUniqueUser\",\"findFirst\":\"findFirstUser\",\"findMany\":\"findManyUser\",\"create\":\"createOneUser\",\"createMany\":\"createManyUser\",\"delete\":\"deleteOneUser\",\"update\":\"updateOneUser\",\"deleteMany\":\"deleteManyUser\",\"updateMany\":\"updateManyUser\",\"upsert\":\"upsertOneUser\",\"aggregate\":\"aggregateUser\",\"groupBy\":\"groupByUser\"},{\"model\":\"post\",\"plural\":\"posts\",\"findUnique\":\"findUniquepost\",\"findFirst\":\"findFirstpost\",\"findMany\":\"findManypost\",\"create\":\"createOnepost\",\"createMany\":\"createManypost\",\"delete\":\"deleteOnepost\",\"update\":\"updateOnepost\",\"deleteMany\":\"deleteManypost\",\"updateMany\":\"updateManypost\",\"upsert\":\"upsertOnepost\",\"aggregate\":\"aggregatepost\",\"groupBy\":\"groupBypost\"},{\"model\":\"Category\",\"plural\":\"categories\",\"findUnique\":\"findUniqueCategory\",\"findFirst\":\"findFirstCategory\",\"findMany\":\"findManyCategory\",\"create\":\"createOneCategory\",\"createMany\":\"createManyCategory\",\"delete\":\"deleteOneCategory\",\"update\":\"updateOneCategory\",\"deleteMany\":\"deleteManyCategory\",\"updateMany\":\"updateManyCategory\",\"upsert\":\"upsertOneCategory\",\"aggregate\":\"aggregateCategory\",\"groupBy\":\"groupByCategory\"},{\"model\":\"Patient\",\"plural\":\"patients\",\"findUnique\":\"findUniquePatient\",\"findFirst\":\"findFirstPatient\",\"findMany\":\"findManyPatient\",\"create\":\"createOnePatient\",\"createMany\":\"createManyPatient\",\"delete\":\"deleteOnePatient\",\"update\":\"updateOnePatient\",\"deleteMany\":\"deleteManyPatient\",\"updateMany\":\"updateManyPatient\",\"upsert\":\"upsertOnePatient\",\"aggregate\":\"aggregatePatient\",\"groupBy\":\"groupByPatient\"},{\"model\":\"Movie\",\"plural\":\"movies\",\"findUnique\":\"findUniqueMovie\",\"findFirst\":\"findFirstMovie\",\"findMany\":\"findManyMovie\",\"create\":\"createOneMovie\",\"createMany\":\"createManyMovie\",\"delete\":\"deleteOneMovie\",\"update\":\"updateOneMovie\",\"deleteMany\":\"deleteManyMovie\",\"updateMany\":\"updateManyMovie\",\"upsert\":\"upsertOneMovie\",\"aggregate\":\"aggregateMovie\",\"groupBy\":\"groupByMovie\"},{\"model\":\"Director\",\"plural\":\"directors\",\"findUnique\":\"findUniqueDirector\",\"findFirst\":\"findFirstDirector\",\"findMany\":\"findManyDirector\",\"create\":\"createOneDirector\",\"createMany\":\"createManyDirector\",\"delete\":\"deleteOneDirector\",\"update\":\"updateOneDirector\",\"deleteMany\":\"deleteManyDirector\",\"updateMany\":\"updateManyDirector\",\"upsert\":\"upsertOneDirector\",\"aggregate\":\"aggregateDirector\",\"groupBy\":\"groupByDirector\"},{\"model\":\"Problem\",\"plural\":\"problems\",\"findUnique\":\"findUniqueProblem\",\"findFirst\":\"findFirstProblem\",\"findMany\":\"findManyProblem\",\"create\":\"createOneProblem\",\"createMany\":\"createManyProblem\",\"delete\":\"deleteOneProblem\",\"update\":\"updateOneProblem\",\"deleteMany\":\"deleteManyProblem\",\"updateMany\":\"updateManyProblem\",\"upsert\":\"upsertOneProblem\",\"aggregate\":\"aggregateProblem\",\"groupBy\":\"groupByProblem\"},{\"model\":\"Creator\",\"plural\":\"creators\",\"findUnique\":\"findUniqueCreator\",\"findFirst\":\"findFirstCreator\",\"findMany\":\"findManyCreator\",\"create\":\"createOneCreator\",\"createMany\":\"createManyCreator\",\"delete\":\"deleteOneCreator\",\"update\":\"updateOneCreator\",\"deleteMany\":\"deleteManyCreator\",\"updateMany\":\"updateManyCreator\",\"upsert\":\"upsertOneCreator\",\"aggregate\":\"aggregateCreator\",\"groupBy\":\"groupByCreator\"},{\"model\":\"NativeTypeModel\",\"plural\":\"nativeTypeModels\",\"findUnique\":\"findUniqueNativeTypeModel\",\"findFirst\":\"findFirstNativeTypeModel\",\"findMany\":\"findManyNativeTypeModel\",\"create\":\"createOneNativeTypeModel\",\"createMany\":\"createManyNativeTypeModel\",\"delete\":\"deleteOneNativeTypeModel\",\"update\":\"updateOneNativeTypeModel\",\"deleteMany\":\"deleteManyNativeTypeModel\",\"updateMany\":\"updateManyNativeTypeModel\",\"upsert\":\"upsertOneNativeTypeModel\",\"aggregate\":\"aggregateNativeTypeModel\",\"groupBy\":\"groupByNativeTypeModel\"},{\"model\":\"Equipment\",\"plural\":\"equipment\",\"findUnique\":\"findUniqueEquipment\",\"findFirst\":\"findFirstEquipment\",\"findMany\":\"findManyEquipment\",\"create\":\"createOneEquipment\",\"createMany\":\"createManyEquipment\",\"delete\":\"deleteOneEquipment\",\"update\":\"updateOneEquipment\",\"deleteMany\":\"deleteManyEquipment\",\"updateMany\":\"updateManyEquipment\",\"upsert\":\"upsertOneEquipment\",\"aggregate\":\"aggregateEquipment\",\"groupBy\":\"groupByEquipment\"}],\"otherOperations\":{\"read\":[],\"write\":[\"executeRaw\",\"queryRaw\"]}}}"
 const dmmf = JSON.parse(dmmfString)
 exports.Prisma.dmmf = JSON.parse(dmmfString)
 
@@ -260,25 +278,18 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/majkel/development/typegraphql-prisma/experiments/postgres/prisma/generated/client",
+      "value": "/Users/majkel/Development/typegraphql-prisma/experiments/postgres/prisma/generated/client",
       "fromEnvVar": null
     },
     "config": {
       "engineType": "library"
     },
-    "binaryTargets": [
-      {
-        "fromEnvVar": null,
-        "value": "windows"
-      },
-      {
-        "fromEnvVar": null,
-        "value": "debian-openssl-1.1.x"
-      }
-    ],
+    "binaryTargets": [],
     "previewFeatures": [
+      "fullTextSearch",
       "orderByNulls",
-      "fullTextSearch"
+      "filteredRelationCount",
+      "extendedWhereUnique"
     ],
     "isCustomOutput": true
   },
@@ -287,8 +298,8 @@ const config = {
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "../..",
-  "clientVersion": "4.1.0",
-  "engineVersion": "8d8414deb360336e4698a65aa45a1fbaf1ce13d8",
+  "clientVersion": "4.5.0",
+  "engineVersion": "0362da9eebca54d94c8ef5edd3b2e90af99ba452",
   "datasourceNames": [
     "postgres"
   ],
@@ -307,14 +318,12 @@ warnEnvConflicts({
     rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(dirname, config.relativeEnvPaths.rootEnvPath),
     schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(dirname, config.relativeEnvPaths.schemaEnvPath)
 })
+
 const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "prisma/generated/client/query_engine-windows.dll.node")
-
-path.join(__dirname, "libquery_engine-debian-openssl-1.1.x.so.node");
-path.join(process.cwd(), "prisma/generated/client/libquery_engine-debian-openssl-1.1.x.so.node")
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "prisma/generated/client/libquery_engine-darwin-arm64.dylib.node")
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/generated/client/schema.prisma")

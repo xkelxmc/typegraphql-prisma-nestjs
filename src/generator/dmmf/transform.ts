@@ -50,16 +50,16 @@ export function transformMappings(
 }
 
 export function transformBareModel(model: PrismaDMMF.Model): DMMF.Model {
-  const attributeArgs = parseDocumentationAttributes<{ name: string }>(
-    model.documentation,
-    "type",
-    "model",
-  );
+  const attributeArgs = parseDocumentationAttributes<{
+    name: string;
+    plural: string;
+  }>(model.documentation, "type", "model");
   return {
     ...model,
     typeName: attributeArgs.name ?? pascalCase(model.name),
     fields: [],
     docs: cleanDocsString(model.documentation),
+    plural: attributeArgs.plural,
   };
 }
 
@@ -304,69 +304,71 @@ function transformMapping(
   options: GeneratorOptions,
 ) {
   return (mapping: PrismaDMMF.ModelMapping): DMMF.ModelMapping => {
-    const { model, plural, ...availableActions } = mapping;
-    const modelTypeName = dmmfDocument.getModelTypeName(model) ?? model;
-    const actions = Object.entries(availableActions)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .filter(
-        ([actionKind, fieldName]) =>
-          fieldName && getOperationKindName(actionKind),
-      )
-      .map<DMMF.Action>(([modelAction, fieldName]) => {
-        const kind = modelAction as DMMF.ModelAction;
-        const actionOutputType = dmmfDocument.schema.outputTypes.find(type =>
-          type.fields.some(field => field.name === fieldName),
+    const { model: modelName, ...availableActions } = mapping;
+    const modelTypeName = dmmfDocument.getModelTypeName(modelName) ?? modelName;
+    const model = dmmfDocument.datamodel.models.find(
+      it => it.name === modelName,
+    )!;
+    const actions = (
+      Object.entries(availableActions)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .filter(
+          ([actionKind, fieldName]) =>
+            fieldName && getOperationKindName(actionKind),
+        ) as [string, string][]
+    ).map<DMMF.Action>(([modelAction, fieldName]) => {
+      const kind = modelAction as DMMF.ModelAction;
+      const actionOutputType = dmmfDocument.schema.outputTypes.find(type =>
+        type.fields.some(field => field.name === fieldName),
+      );
+      if (!actionOutputType) {
+        throw new Error(
+          `Cannot find type with field ${fieldName} in root types definitions!`,
         );
-        if (!actionOutputType) {
-          throw new Error(
-            `Cannot find type with field ${fieldName} in root types definitions!`,
-          );
-        }
-        const method = actionOutputType.fields.find(
-          field => field.name === fieldName,
-        )!;
-        const argsTypeName =
-          method.args.length > 0
-            ? `${pascalCase(
-                `${kind}${dmmfDocument.getModelTypeName(mapping.model)}`,
-              )}Args`
-            : undefined;
-        const outputTypeName = method.outputType.type as string;
-        const actionResolverName = `${pascalCase(
-          kind,
-        )}${modelTypeName}Resolver`;
-        const returnTSType = getFieldTSType(
-          dmmfDocument,
-          method.outputType,
-          method.isRequired,
-          false,
-          mapping.model,
-          modelTypeName,
-        );
-        const typeGraphQLType = getTypeGraphQLType(
-          method.outputType,
-          dmmfDocument,
-          mapping.model,
-          modelTypeName,
-        );
+      }
+      const method = actionOutputType.fields.find(
+        field => field.name === fieldName,
+      )!;
+      const argsTypeName =
+        method.args.length > 0
+          ? `${pascalCase(
+              `${kind}${dmmfDocument.getModelTypeName(mapping.model)}`,
+            )}Args`
+          : undefined;
+      const outputTypeName = method.outputType.type as string;
+      const actionResolverName = `${pascalCase(kind)}${modelTypeName}Resolver`;
+      const returnTSType = getFieldTSType(
+        dmmfDocument,
+        method.outputType,
+        method.isRequired,
+        false,
+        mapping.model,
+        modelTypeName,
+      );
+      const typeGraphQLType = getTypeGraphQLType(
+        method.outputType,
+        dmmfDocument,
+        mapping.model,
+        modelTypeName,
+      );
 
-        return {
-          name: getMappedActionName(kind, modelTypeName, options),
-          fieldName,
-          kind: kind,
-          operation: getOperationKindName(kind)!,
-          prismaMethod: getPrismaMethodName(kind),
-          method,
-          argsTypeName,
-          outputTypeName,
-          actionResolverName,
-          returnTSType,
-          typeGraphQLType,
-        };
-      });
+      return {
+        name: getMappedActionName(kind, modelTypeName, model.plural, options),
+        fieldName,
+        kind: kind,
+        operation: getOperationKindName(kind)!,
+        prismaMethod: getPrismaMethodName(kind),
+        method,
+        argsTypeName,
+        outputTypeName,
+        actionResolverName,
+        returnTSType,
+        typeGraphQLType,
+      };
+    });
     const resolverName = `${modelTypeName}CrudResolver`;
     return {
-      model,
+      modelName,
       modelTypeName,
       actions,
       collectionName: camelCase(mapping.model),
@@ -379,10 +381,20 @@ function selectInputTypeFromTypes(dmmfDocument: DmmfDocument) {
   return (
     inputTypes: PrismaDMMF.SchemaArgInputType[],
   ): DMMF.SchemaArgInputType => {
-    const { useUncheckedScalarInputs } = dmmfDocument.options;
+    const { useUncheckedScalarInputs, useSimpleInputs } = dmmfDocument.options;
     let possibleInputTypes: PrismaDMMF.SchemaArgInputType[];
     possibleInputTypes = inputTypes.filter(
-      it => it.location === "inputObjectTypes",
+      it =>
+        it.location === "inputObjectTypes" &&
+        // skip inputs with `set` and other fields when simple/flat inputs are enabled
+        (!useSimpleInputs ||
+          !(
+            (it.type as string).includes("OperationsInput") || // postgres specific
+            // mongo specific
+            (it.type as string).includes("CreateEnvelopeInput") ||
+            /.+Create.+Input/.test(it.type as string) ||
+            /.+Update.+Input/.test(it.type as string)
+          )),
     );
     if (possibleInputTypes.length === 0) {
       possibleInputTypes = inputTypes.filter(
@@ -421,6 +433,7 @@ function selectInputTypeFromTypes(dmmfDocument: DmmfDocument) {
 function getMappedActionName(
   actionName: DMMF.ModelAction,
   typeName: string,
+  overriddenPlural: string | undefined,
   options: GeneratorOptions,
 ): string {
   const defaultMappedActionName = `${actionName}${typeName}`;
@@ -428,7 +441,7 @@ function getMappedActionName(
     return defaultMappedActionName;
   }
 
-  const hasNoPlural = typeName === pluralize(typeName);
+  const hasNoPlural = !overriddenPlural && typeName === pluralize(typeName);
   if (hasNoPlural) {
     return defaultMappedActionName;
   }
@@ -438,7 +451,7 @@ function getMappedActionName(
       return camelCase(typeName);
     }
     case "findMany": {
-      return pluralize(camelCase(typeName));
+      return camelCase(overriddenPlural ?? pluralize(typeName));
     }
     default: {
       return defaultMappedActionName;

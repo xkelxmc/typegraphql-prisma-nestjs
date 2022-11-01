@@ -15,101 +15,101 @@ const crudResolversMap = {
 };
 const actionResolversMap = {
   Post: {
-    post: actionResolvers.FindUniquePostResolver,
+    aggregatePost: actionResolvers.AggregatePostResolver,
+    createManyPost: actionResolvers.CreateManyPostResolver,
+    createOnePost: actionResolvers.CreateOnePostResolver,
+    deleteManyPost: actionResolvers.DeleteManyPostResolver,
+    deleteOnePost: actionResolvers.DeleteOnePostResolver,
     findFirstPost: actionResolvers.FindFirstPostResolver,
     posts: actionResolvers.FindManyPostResolver,
-    createPost: actionResolvers.CreatePostResolver,
-    createManyPost: actionResolvers.CreateManyPostResolver,
-    deletePost: actionResolvers.DeletePostResolver,
-    updatePost: actionResolvers.UpdatePostResolver,
-    deleteManyPost: actionResolvers.DeleteManyPostResolver,
+    post: actionResolvers.FindUniquePostResolver,
+    groupByPost: actionResolvers.GroupByPostResolver,
     updateManyPost: actionResolvers.UpdateManyPostResolver,
-    upsertPost: actionResolvers.UpsertPostResolver,
-    aggregatePost: actionResolvers.AggregatePostResolver,
-    groupByPost: actionResolvers.GroupByPostResolver
+    updateOnePost: actionResolvers.UpdateOnePostResolver,
+    upsertOnePost: actionResolvers.UpsertOnePostResolver
   },
   Comment: {
-    comment: actionResolvers.FindUniqueCommentResolver,
+    aggregateComment: actionResolvers.AggregateCommentResolver,
+    createManyComment: actionResolvers.CreateManyCommentResolver,
+    createOneComment: actionResolvers.CreateOneCommentResolver,
+    deleteManyComment: actionResolvers.DeleteManyCommentResolver,
+    deleteOneComment: actionResolvers.DeleteOneCommentResolver,
     findFirstComment: actionResolvers.FindFirstCommentResolver,
     comments: actionResolvers.FindManyCommentResolver,
-    createComment: actionResolvers.CreateCommentResolver,
-    createManyComment: actionResolvers.CreateManyCommentResolver,
-    deleteComment: actionResolvers.DeleteCommentResolver,
-    updateComment: actionResolvers.UpdateCommentResolver,
-    deleteManyComment: actionResolvers.DeleteManyCommentResolver,
+    comment: actionResolvers.FindUniqueCommentResolver,
+    groupByComment: actionResolvers.GroupByCommentResolver,
     updateManyComment: actionResolvers.UpdateManyCommentResolver,
-    upsertComment: actionResolvers.UpsertCommentResolver,
-    aggregateComment: actionResolvers.AggregateCommentResolver,
-    groupByComment: actionResolvers.GroupByCommentResolver
+    updateOneComment: actionResolvers.UpdateOneCommentResolver,
+    upsertOneComment: actionResolvers.UpsertOneCommentResolver
   },
   User: {
-    user: actionResolvers.FindUniqueUserResolver,
+    aggregateUser: actionResolvers.AggregateUserResolver,
+    createManyUser: actionResolvers.CreateManyUserResolver,
+    createOneUser: actionResolvers.CreateOneUserResolver,
+    deleteManyUser: actionResolvers.DeleteManyUserResolver,
+    deleteOneUser: actionResolvers.DeleteOneUserResolver,
     findFirstUser: actionResolvers.FindFirstUserResolver,
     users: actionResolvers.FindManyUserResolver,
-    createUser: actionResolvers.CreateUserResolver,
-    createManyUser: actionResolvers.CreateManyUserResolver,
-    deleteUser: actionResolvers.DeleteUserResolver,
-    updateUser: actionResolvers.UpdateUserResolver,
-    deleteManyUser: actionResolvers.DeleteManyUserResolver,
+    user: actionResolvers.FindUniqueUserResolver,
+    groupByUser: actionResolvers.GroupByUserResolver,
     updateManyUser: actionResolvers.UpdateManyUserResolver,
-    upsertUser: actionResolvers.UpsertUserResolver,
-    aggregateUser: actionResolvers.AggregateUserResolver,
-    groupByUser: actionResolvers.GroupByUserResolver
+    updateOneUser: actionResolvers.UpdateOneUserResolver,
+    upsertOneUser: actionResolvers.UpsertOneUserResolver
   }
 };
 const crudResolversInfo = {
-  Post: ["post", "findFirstPost", "posts", "createPost", "createManyPost", "deletePost", "updatePost", "deleteManyPost", "updateManyPost", "upsertPost", "aggregatePost", "groupByPost"],
-  Comment: ["comment", "findFirstComment", "comments", "createComment", "createManyComment", "deleteComment", "updateComment", "deleteManyComment", "updateManyComment", "upsertComment", "aggregateComment", "groupByComment"],
-  User: ["user", "findFirstUser", "users", "createUser", "createManyUser", "deleteUser", "updateUser", "deleteManyUser", "updateManyUser", "upsertUser", "aggregateUser", "groupByUser"]
+  Post: ["aggregatePost", "createManyPost", "createOnePost", "deleteManyPost", "deleteOnePost", "findFirstPost", "posts", "post", "groupByPost", "updateManyPost", "updateOnePost", "upsertOnePost"],
+  Comment: ["aggregateComment", "createManyComment", "createOneComment", "deleteManyComment", "deleteOneComment", "findFirstComment", "comments", "comment", "groupByComment", "updateManyComment", "updateOneComment", "upsertOneComment"],
+  User: ["aggregateUser", "createManyUser", "createOneUser", "deleteManyUser", "deleteOneUser", "findFirstUser", "users", "user", "groupByUser", "updateManyUser", "updateOneUser", "upsertOneUser"]
 };
 const argsInfo = {
-  FindUniquePostArgs: ["where"],
+  AggregatePostArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyPostArgs: ["data"],
+  CreateOnePostArgs: ["data"],
+  DeleteManyPostArgs: ["where"],
+  DeleteOnePostArgs: ["where"],
   FindFirstPostArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyPostArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
-  CreatePostArgs: ["data"],
-  CreateManyPostArgs: ["data"],
-  DeletePostArgs: ["where"],
-  UpdatePostArgs: ["data", "where"],
-  DeleteManyPostArgs: ["where"],
-  UpdateManyPostArgs: ["data", "where"],
-  UpsertPostArgs: ["where", "create", "update"],
-  AggregatePostArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  FindUniquePostArgs: ["where"],
   GroupByPostArgs: ["where", "orderBy", "by", "having", "take", "skip"],
-  FindUniqueCommentArgs: ["where"],
+  UpdateManyPostArgs: ["data", "where"],
+  UpdateOnePostArgs: ["data", "where"],
+  UpsertOnePostArgs: ["where", "create", "update"],
+  AggregateCommentArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyCommentArgs: ["data"],
+  CreateOneCommentArgs: ["data"],
+  DeleteManyCommentArgs: ["where"],
+  DeleteOneCommentArgs: ["where"],
   FindFirstCommentArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyCommentArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
-  CreateCommentArgs: ["data"],
-  CreateManyCommentArgs: ["data"],
-  DeleteCommentArgs: ["where"],
-  UpdateCommentArgs: ["data", "where"],
-  DeleteManyCommentArgs: ["where"],
-  UpdateManyCommentArgs: ["data", "where"],
-  UpsertCommentArgs: ["where", "create", "update"],
-  AggregateCommentArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  FindUniqueCommentArgs: ["where"],
   GroupByCommentArgs: ["where", "orderBy", "by", "having", "take", "skip"],
-  FindUniqueUserArgs: ["where"],
+  UpdateManyCommentArgs: ["data", "where"],
+  UpdateOneCommentArgs: ["data", "where"],
+  UpsertOneCommentArgs: ["where", "create", "update"],
+  AggregateUserArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyUserArgs: ["data"],
+  CreateOneUserArgs: ["data"],
+  DeleteManyUserArgs: ["where"],
+  DeleteOneUserArgs: ["where"],
   FindFirstUserArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyUserArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
-  CreateUserArgs: ["data"],
-  CreateManyUserArgs: ["data"],
-  DeleteUserArgs: ["where"],
-  UpdateUserArgs: ["data", "where"],
-  DeleteManyUserArgs: ["where"],
+  FindUniqueUserArgs: ["where"],
+  GroupByUserArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyUserArgs: ["data", "where"],
-  UpsertUserArgs: ["where", "create", "update"],
-  AggregateUserArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByUserArgs: ["where", "orderBy", "by", "having", "take", "skip"]
+  UpdateOneUserArgs: ["data", "where"],
+  UpsertOneUserArgs: ["where", "create", "update"]
 };
 
 type ResolverModelNames = keyof typeof crudResolversMap;
 
 type ModelResolverActionNames<
   TModel extends ResolverModelNames
-  > = keyof typeof crudResolversMap[TModel]["prototype"];
+> = keyof typeof crudResolversMap[TModel]["prototype"];
 
 export type ResolverActionsConfig<
   TModel extends ResolverModelNames
-  > = Partial<Record<ModelResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
+> = Partial<Record<ModelResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
 
 export type ResolversEnhanceMap = {
   [TModel in ResolverModelNames]?: ResolverActionsConfig<TModel>;
@@ -159,7 +159,7 @@ type ArgFieldNames<TArgsType extends ArgsTypesNames> = Exclude<
 
 type ArgFieldsConfig<
   TArgsType extends ArgsTypesNames
-  > = FieldsConfig<ArgFieldNames<TArgsType>>;
+> = FieldsConfig<ArgFieldNames<TArgsType>>;
 
 export type ArgConfig<TArgsType extends ArgsTypesNames> = {
   class?: ClassDecorator[];
@@ -202,7 +202,7 @@ type RelationResolverModelNames = keyof typeof relationResolversMap;
 
 type RelationResolverActionNames<
   TModel extends RelationResolverModelNames
-  > = keyof typeof relationResolversMap[TModel]["prototype"];
+> = keyof typeof relationResolversMap[TModel]["prototype"];
 
 export type RelationResolverActionsConfig<TModel extends RelationResolverModelNames>
   = Partial<Record<RelationResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
@@ -349,7 +349,7 @@ type OutputTypeFieldNames<TOutput extends OutputTypesNames> = Exclude<
 
 type OutputTypeFieldsConfig<
   TOutput extends OutputTypesNames
-  > = FieldsConfig<OutputTypeFieldNames<TOutput>>;
+> = FieldsConfig<OutputTypeFieldNames<TOutput>>;
 
 export type OutputTypeConfig<TOutput extends OutputTypesNames> = {
   class?: ClassDecorator[];
@@ -432,16 +432,16 @@ const inputsInfo = {
   CommentCreateNestedManyWithoutPostInput: ["create", "connectOrCreate", "createMany", "connect"],
   UserCreateNestedOneWithoutPostsInput: ["create", "connectOrCreate", "connect"],
   StringFieldUpdateOperationsInput: ["set"],
-  CommentUpdateManyWithoutPostInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
-  UserUpdateOneRequiredWithoutPostsInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
+  CommentUpdateManyWithoutPostNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
+  UserUpdateOneRequiredWithoutPostsNestedInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
   PostCreateNestedOneWithoutCommentsInput: ["create", "connectOrCreate", "connect"],
-  PostUpdateOneRequiredWithoutCommentsInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
+  PostUpdateOneRequiredWithoutCommentsNestedInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
   UserAddressCreateEnvelopeInput: ["set"],
   UserAddressCreateInput: ["street", "number", "city"],
   PostCreateNestedManyWithoutAuthorInput: ["create", "connectOrCreate", "createMany", "connect"],
   NullableIntFieldUpdateOperationsInput: ["set", "increment", "decrement", "multiply", "divide", "unset"],
   UserAddressUpdateEnvelopeInput: ["set", "update"],
-  PostUpdateManyWithoutAuthorInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
+  PostUpdateManyWithoutAuthorNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
   NestedStringFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "not"],
   NestedStringWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "not", "_count", "_min", "_max"],
   NestedIntFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
@@ -487,7 +487,7 @@ type InputTypeFieldNames<TInput extends InputTypesNames> = Exclude<
 
 type InputTypeFieldsConfig<
   TInput extends InputTypesNames
-  > = FieldsConfig<InputTypeFieldNames<TInput>>;
+> = FieldsConfig<InputTypeFieldNames<TInput>>;
 
 export type InputTypeConfig<TInput extends InputTypesNames> = {
   class?: ClassDecorator[];

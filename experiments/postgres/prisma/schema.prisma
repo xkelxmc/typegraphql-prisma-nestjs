@@ -5,9 +5,9 @@ datasource postgres {
 
 generator client {
   provider        = "prisma-client-js"
-  binaryTargets   = ["windows", "debian-openssl-1.1.x"]
+  // binaryTargets   = ["windows", "debian-openssl-1.1.x"]
   output          = "../prisma/generated/client"
-  previewFeatures = ["orderByNulls", "fullTextSearch"]
+  previewFeatures = ["orderByNulls", "fullTextSearch", "extendedWhereUnique", "filteredRelationCount"]
 }
 
 generator typegraphql {
@@ -22,6 +22,7 @@ generator typegraphql {
   // emitOnly                 = "crudResolvers"
   customPrismaImportPath   = "../client"
   contextPrismaKey         = "prismaClient"
+  useSimpleInputs          = true
 }
 
 // Role enum comment
@@ -137,4 +138,9 @@ model NativeTypeModel {
   bigInt  BigInt?  @postgres.BigInt
   byteA   Bytes?   @postgres.ByteA
   decimal Decimal? @postgres.Decimal
+}
+
+/// @@TypeGraphQL.type(plural: "equipments")
+model Equipment {
+  id String @id @default(cuid())
 }

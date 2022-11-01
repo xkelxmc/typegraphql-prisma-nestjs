@@ -4,6 +4,7 @@
     "**/.git/subtree-cache/**": true,
     "**/.hg/store/**": true
   },
+  "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.colorCustomizations": {
     "activityBar.background": "#2665B9",
     "titleBar.activeBackground": "#B02A80",

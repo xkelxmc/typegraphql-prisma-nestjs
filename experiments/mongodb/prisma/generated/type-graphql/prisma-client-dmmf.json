@@ -323,6 +323,9 @@
       "prisma": [
         {
           "name": "PostWhereInput",
+          "meta": {
+            "source": "Post"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -751,6 +754,9 @@
         },
         {
           "name": "PostScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Post"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -901,6 +907,9 @@
         },
         {
           "name": "CommentWhereInput",
+          "meta": {
+            "source": "Comment"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -1203,6 +1212,9 @@
         },
         {
           "name": "CommentScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Comment"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -1317,6 +1329,9 @@
         },
         {
           "name": "UserWhereInput",
+          "meta": {
+            "source": "User"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -1688,6 +1703,9 @@
         },
         {
           "name": "UserScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "User"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -2037,7 +2055,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "CommentUpdateManyWithoutPostInput",
+                  "type": "CommentUpdateManyWithoutPostNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -2050,7 +2068,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "UserUpdateOneRequiredWithoutPostsInput",
+                  "type": "UserUpdateOneRequiredWithoutPostsNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -2126,7 +2144,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "CommentUncheckedUpdateManyWithoutPostInput",
+                  "type": "CommentUncheckedUpdateManyWithoutPostNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -2470,7 +2488,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "PostUpdateOneRequiredWithoutCommentsInput",
+                  "type": "PostUpdateOneRequiredWithoutCommentsNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -2896,7 +2914,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "PostUpdateManyWithoutAuthorInput",
+                  "type": "PostUpdateManyWithoutAuthorNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -2978,7 +2996,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "PostUncheckedUpdateManyWithoutAuthorInput",
+                  "type": "PostUncheckedUpdateManyWithoutAuthorNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -5072,7 +5090,7 @@
           ]
         },
         {
-          "name": "CommentUpdateManyWithoutPostInput",
+          "name": "CommentUpdateManyWithoutPostNestedInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -5296,7 +5314,7 @@
           ]
         },
         {
-          "name": "UserUpdateOneRequiredWithoutPostsInput",
+          "name": "UserUpdateOneRequiredWithoutPostsNestedInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -5382,7 +5400,7 @@
           ]
         },
         {
-          "name": "CommentUncheckedUpdateManyWithoutPostInput",
+          "name": "CommentUncheckedUpdateManyWithoutPostNestedInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -5660,7 +5678,7 @@
           ]
         },
         {
-          "name": "PostUpdateOneRequiredWithoutCommentsInput",
+          "name": "PostUpdateOneRequiredWithoutCommentsNestedInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -6121,7 +6139,7 @@
           ]
         },
         {
-          "name": "PostUpdateManyWithoutAuthorInput",
+          "name": "PostUpdateManyWithoutAuthorNestedInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -6345,7 +6363,7 @@
           ]
         },
         {
-          "name": "PostUncheckedUpdateManyWithoutAuthorInput",
+          "name": "PostUncheckedUpdateManyWithoutAuthorNestedInput",
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -7157,6 +7175,9 @@
         },
         {
           "name": "UserAddressWhereInput",
+          "meta": {
+            "source": "UserAddress"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -8077,6 +8098,9 @@
         },
         {
           "name": "CommentScalarWhereInput",
+          "meta": {
+            "source": "Comment"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -8668,7 +8692,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "UserUpdateOneRequiredWithoutPostsInput",
+                  "type": "UserUpdateOneRequiredWithoutPostsNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -9173,6 +9197,9 @@
         },
         {
           "name": "PostScalarWhereInput",
+          "meta": {
+            "source": "Post"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -9559,7 +9586,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "CommentUpdateManyWithoutPostInput",
+                  "type": "CommentUpdateManyWithoutPostNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -9635,7 +9662,7 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "CommentUncheckedUpdateManyWithoutPostInput",
+                  "type": "CommentUncheckedUpdateManyWithoutPostNestedInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -13179,6 +13206,14 @@
     "enumTypes": {
       "prisma": [
         {
+          "name": "CommentScalarFieldEnum",
+          "values": [
+            "id",
+            "postId",
+            "comment"
+          ]
+        },
+        {
           "name": "PostScalarFieldEnum",
           "values": [
             "id",
@@ -13189,19 +13224,10 @@
           ]
         },
         {
-          "name": "CommentScalarFieldEnum",
+          "name": "QueryMode",
           "values": [
-            "id",
-            "postId",
-            "comment"
-          ]
-        },
-        {
-          "name": "UserScalarFieldEnum",
-          "values": [
-            "id",
-            "email",
-            "age"
+            "default",
+            "insensitive"
           ]
         },
         {
@@ -13212,70 +13238,69 @@
           ]
         },
         {
-          "name": "QueryMode",
+          "name": "UserScalarFieldEnum",
           "values": [
-            "default",
-            "insensitive"
+            "id",
+            "email",
+            "age"
           ]
         }
       ]
-    }
+    },
+    "fieldRefTypes": {}
   },
   "mappings": {
     "modelOperations": [
       {
         "model": "Post",
-        "plural": "posts",
-        "findUnique": "findUniquePost",
+        "aggregate": "aggregatePost",
+        "aggregateRaw": "aggregatePostRaw",
+        "createMany": "createManyPost",
+        "createOne": "createOnePost",
+        "deleteMany": "deleteManyPost",
+        "deleteOne": "deleteOnePost",
         "findFirst": "findFirstPost",
         "findMany": "findManyPost",
-        "create": "createOnePost",
-        "createMany": "createManyPost",
-        "delete": "deleteOnePost",
-        "update": "updateOnePost",
-        "deleteMany": "deleteManyPost",
-        "updateMany": "updateManyPost",
-        "upsert": "upsertOnePost",
-        "aggregate": "aggregatePost",
-        "groupBy": "groupByPost",
         "findRaw": "findPostRaw",
-        "aggregateRaw": "aggregatePostRaw"
+        "findUnique": "findUniquePost",
+        "groupBy": "groupByPost",
+        "updateMany": "updateManyPost",
+        "updateOne": "updateOnePost",
+        "upsertOne": "upsertOnePost"
       },
       {
         "model": "Comment",
-        "plural": "comments",
-        "findUnique": "findUniqueComment",
+        "aggregate": "aggregateComment",
+        "aggregateRaw": "aggregateCommentRaw",
+        "createMany": "createManyComment",
+        "createOne": "createOneComment",
+        "deleteMany": "deleteManyComment",
+        "deleteOne": "deleteOneComment",
         "findFirst": "findFirstComment",
         "findMany": "findManyComment",
-        "create": "createOneComment",
-        "createMany": "createManyComment",
-        "delete": "deleteOneComment",
-        "update": "updateOneComment",
-        "deleteMany": "deleteManyComment",
-        "updateMany": "updateManyComment",
-        "upsert": "upsertOneComment",
-        "aggregate": "aggregateComment",
-        "groupBy": "groupByComment",
         "findRaw": "findCommentRaw",
-        "aggregateRaw": "aggregateCommentRaw"
+        "findUnique": "findUniqueComment",
+        "groupBy": "groupByComment",
+        "updateMany": "updateManyComment",
+        "updateOne": "updateOneComment",
+        "upsertOne": "upsertOneComment"
       },
       {
         "model": "User",
-        "plural": "users",
-        "findUnique": "findUniqueUser",
+        "aggregate": "aggregateUser",
+        "aggregateRaw": "aggregateUserRaw",
+        "createMany": "createManyUser",
+        "createOne": "createOneUser",
+        "deleteMany": "deleteManyUser",
+        "deleteOne": "deleteOneUser",
         "findFirst": "findFirstUser",
         "findMany": "findManyUser",
-        "create": "createOneUser",
-        "createMany": "createManyUser",
-        "delete": "deleteOneUser",
-        "update": "updateOneUser",
-        "deleteMany": "deleteManyUser",
-        "updateMany": "updateManyUser",
-        "upsert": "upsertOneUser",
-        "aggregate": "aggregateUser",
-        "groupBy": "groupByUser",
         "findRaw": "findUserRaw",
-        "aggregateRaw": "aggregateUserRaw"
+        "findUnique": "findUniqueUser",
+        "groupBy": "groupByUser",
+        "updateMany": "updateManyUser",
+        "updateOne": "updateOneUser",
+        "upsertOne": "upsertOneUser"
       }
     ],
     "otherOperations": {

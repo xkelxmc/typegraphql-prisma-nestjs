@@ -4,6 +4,7 @@ import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { CreatorCreateWithoutProblemsInput } from "../inputs/CreatorCreateWithoutProblemsInput";
 import { CreatorUpdateWithoutProblemsInput } from "../inputs/CreatorUpdateWithoutProblemsInput";
+import { CreatorWhereInput } from "../inputs/CreatorWhereInput";
 
 @TypeGraphQL.InputType("CreatorUpsertWithoutProblemsInput", {
   isAbstract: true
@@ -18,4 +19,9 @@ export class CreatorUpsertWithoutProblemsInput {
     nullable: false
   })
   create!: CreatorCreateWithoutProblemsInput;
+
+  @TypeGraphQL.Field(_type => CreatorWhereInput, {
+    nullable: true
+  })
+  where?: CreatorWhereInput | undefined;
 }

@@ -2,36 +2,35 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
-import { CommentUpdateManyWithoutPostInput } from "../inputs/CommentUpdateManyWithoutPostInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
-import { UserUpdateOneRequiredWithoutPostsInput } from "../inputs/UserUpdateOneRequiredWithoutPostsInput";
+import { CommentUpdateManyWithoutPostNestedInput } from "../inputs/CommentUpdateManyWithoutPostNestedInput";
+import { UserUpdateOneRequiredWithoutPostsNestedInput } from "../inputs/UserUpdateOneRequiredWithoutPostsNestedInput";
 
 @TypeGraphQL.InputType("PostUpdateInput", {
   isAbstract: true
 })
 export class PostUpdateInput {
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  slug?: StringFieldUpdateOperationsInput | undefined;
+  slug?: string | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  title?: StringFieldUpdateOperationsInput | undefined;
+  title?: string | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  body?: StringFieldUpdateOperationsInput | undefined;
+  body?: string | undefined;
 
-  @TypeGraphQL.Field(_type => CommentUpdateManyWithoutPostInput, {
+  @TypeGraphQL.Field(_type => CommentUpdateManyWithoutPostNestedInput, {
     nullable: true
   })
-  comments?: CommentUpdateManyWithoutPostInput | undefined;
+  comments?: CommentUpdateManyWithoutPostNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => UserUpdateOneRequiredWithoutPostsInput, {
+  @TypeGraphQL.Field(_type => UserUpdateOneRequiredWithoutPostsNestedInput, {
     nullable: true
   })
-  author?: UserUpdateOneRequiredWithoutPostsInput | undefined;
+  author?: UserUpdateOneRequiredWithoutPostsNestedInput | undefined;
 }

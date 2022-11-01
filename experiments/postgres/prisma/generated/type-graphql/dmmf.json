@@ -896,6 +896,34 @@
         "uniqueFields": [],
         "uniqueIndexes": [],
         "isGenerated": false
+      },
+      {
+        "name": "Equipment",
+        "dbName": null,
+        "fields": [
+          {
+            "name": "id",
+            "kind": "scalar",
+            "isList": false,
+            "isRequired": true,
+            "isUnique": false,
+            "isId": true,
+            "isReadOnly": false,
+            "hasDefaultValue": true,
+            "type": "String",
+            "default": {
+              "name": "cuid",
+              "args": []
+            },
+            "isGenerated": false,
+            "isUpdatedAt": false
+          }
+        ],
+        "primaryKey": null,
+        "uniqueFields": [],
+        "uniqueIndexes": [],
+        "isGenerated": false,
+        "documentation": "@@TypeGraphQL.type(plural: \"equipments\")"
       }
     ],
     "types": []
@@ -905,6 +933,9 @@
       "prisma": [
         {
           "name": "UserWhereInput",
+          "meta": {
+            "source": "User"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -1321,8 +1352,12 @@
         {
           "name": "UserWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "id",
+              "email"
+            ]
           },
           "fields": [
             {
@@ -1345,6 +1380,205 @@
                 {
                   "type": "String",
                   "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "name",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "StringNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "age",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "IntFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Int",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "balance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "FloatFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Float",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "amount",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "FloatFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Float",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "posts",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "PostListRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "role",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EnumRoleFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Role",
+                  "namespace": "model",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "editorPosts",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "PostListRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "grades",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "IntNullableListFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "aliases",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringNullableListFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -1550,6 +1784,9 @@
         },
         {
           "name": "UserScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "User"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -1768,6 +2005,9 @@
         },
         {
           "name": "postWhereInput",
+          "meta": {
+            "source": "post"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -2290,8 +2530,11 @@
         {
           "name": "postWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "uuid"
+            ]
           },
           "fields": [
             {
@@ -2302,6 +2545,291 @@
                 {
                   "type": "String",
                   "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "postWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "postWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "postWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "createdAt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DateTimeFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "DateTime",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "updatedAt",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DateTimeFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "DateTime",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "published",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "BoolFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Boolean",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "title",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "subtitle",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "content",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "StringNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "author",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "authorId",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "IntFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Int",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "editor",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "UserRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "editorId",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "IntNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Int",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "kind",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "EnumPostKindNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "PostKind",
+                  "namespace": "model",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "metadata",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "JsonFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -2545,6 +3073,9 @@
         },
         {
           "name": "postScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "post"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -2814,6 +3345,9 @@
         },
         {
           "name": "CategoryWhereInput",
+          "meta": {
+            "source": "Category"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -2990,8 +3524,11 @@
         {
           "name": "CategoryWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "categoryCompoundUnique"
+            ]
           },
           "fields": [
             {
@@ -3003,6 +3540,111 @@
                   "type": "CategoryCategoryCompoundUniqueCompoundUniqueInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CategoryWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CategoryWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CategoryWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CategoryWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CategoryWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "name",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "slug",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "number",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "IntFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Int",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
@@ -3124,6 +3766,9 @@
         },
         {
           "name": "CategoryScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Category"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -3238,6 +3883,9 @@
         },
         {
           "name": "PatientWhereInput",
+          "meta": {
+            "source": "Patient"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -3414,8 +4062,11 @@
         {
           "name": "PatientWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "firstName_lastName"
+            ]
           },
           "fields": [
             {
@@ -3427,6 +4078,111 @@
                   "type": "PatientFirstNameLastNameCompoundUniqueInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "PatientWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "PatientWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "PatientWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "PatientWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "PatientWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "firstName",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lastName",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "email",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
@@ -3522,6 +4278,9 @@
         },
         {
           "name": "PatientScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Patient"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -3636,6 +4395,9 @@
         },
         {
           "name": "MovieWhereInput",
+          "meta": {
+            "source": "Movie"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -3844,8 +4606,11 @@
         {
           "name": "MovieWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "movieCompoundId"
+            ]
           },
           "fields": [
             {
@@ -3857,6 +4622,130 @@
                   "type": "MovieMovieCompoundIdCompoundUniqueInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "MovieWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "MovieWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "directorFirstName",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "directorLastName",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "director",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "title",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
                   "isList": false
                 }
               ]
@@ -3952,6 +4841,9 @@
         },
         {
           "name": "MovieScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Movie"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -4066,6 +4958,9 @@
         },
         {
           "name": "DirectorWhereInput",
+          "meta": {
+            "source": "Director"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -4237,8 +5132,11 @@
         {
           "name": "DirectorWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "firstName_lastName"
+            ]
           },
           "fields": [
             {
@@ -4248,6 +5146,106 @@
               "inputTypes": [
                 {
                   "type": "DirectorFirstNameLastNameCompoundUniqueInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "firstName",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "lastName",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "movies",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "MovieListRelationFilter",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -4332,6 +5330,9 @@
         },
         {
           "name": "DirectorScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Director"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -4428,6 +5429,9 @@
         },
         {
           "name": "ProblemWhereInput",
+          "meta": {
+            "source": "Problem"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -4678,8 +5682,11 @@
         {
           "name": "ProblemWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "id"
+            ]
           },
           "fields": [
             {
@@ -4689,6 +5696,135 @@
               "inputTypes": [
                 {
                   "type": "Int",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "ProblemWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "ProblemWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "problemText",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "likedBy",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorListRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "creator",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "CreatorRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "creatorId",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "IntNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Int",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
                   "location": "scalar",
                   "isList": false
                 }
@@ -4817,6 +5953,9 @@
         },
         {
           "name": "ProblemScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Problem"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -4936,6 +6075,9 @@
         },
         {
           "name": "CreatorWhereInput",
+          "meta": {
+            "source": "Creator"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -5133,8 +6275,11 @@
         {
           "name": "CreatorWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "id"
+            ]
           },
           "fields": [
             {
@@ -5145,6 +6290,101 @@
                 {
                   "type": "Int",
                   "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "name",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "likes",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemListRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "problems",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "ProblemListRelationFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -5253,6 +6493,9 @@
         },
         {
           "name": "CreatorScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Creator"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -5349,6 +6592,9 @@
         },
         {
           "name": "NativeTypeModelWhereInput",
+          "meta": {
+            "source": "NativeTypeModel"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -5576,8 +6822,11 @@
         {
           "name": "NativeTypeModelWhereUniqueInput",
           "constraints": {
-            "maxNumFields": 1,
-            "minNumFields": 1
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "id"
+            ]
           },
           "fields": [
             {
@@ -5587,6 +6836,126 @@
               "inputTypes": [
                 {
                   "type": "Int",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "NativeTypeModelWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "NativeTypeModelWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "NativeTypeModelWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "NativeTypeModelWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "NativeTypeModelWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "bigInt",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "BigIntNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "BigInt",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "byteA",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "BytesNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Bytes",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "decimal",
+              "isRequired": false,
+              "isNullable": true,
+              "inputTypes": [
+                {
+                  "type": "DecimalNullableFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "Decimal",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "Null",
                   "location": "scalar",
                   "isList": false
                 }
@@ -5740,6 +7109,9 @@
         },
         {
           "name": "NativeTypeModelScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "NativeTypeModel"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -5878,6 +7250,339 @@
                 },
                 {
                   "type": "Null",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentWhereInput",
+          "meta": {
+            "source": "Equipment"
+          },
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentOrderByWithRelationAndSearchRelevanceInput",
+          "constraints": {
+            "maxNumFields": 1,
+            "minNumFields": 0
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_relevance",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentOrderByRelevanceInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentWhereUniqueInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": 1,
+            "fields": [
+              "id"
+            ]
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "EquipmentWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentOrderByWithAggregationInput",
+          "constraints": {
+            "maxNumFields": 1,
+            "minNumFields": 0
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_count",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentCountOrderByAggregateInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_max",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentMaxOrderByAggregateInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "_min",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentMinOrderByAggregateInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentScalarWhereWithAggregatesInput",
+          "meta": {
+            "source": "Equipment"
+          },
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "AND",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentScalarWhereWithAggregatesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "EquipmentScalarWhereWithAggregatesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "OR",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentScalarWhereWithAggregatesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "NOT",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentScalarWhereWithAggregatesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "EquipmentScalarWhereWithAggregatesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "StringWithAggregatesFilter",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "String",
                   "location": "scalar",
                   "isList": false
                 }
@@ -11075,6 +12780,177 @@
           ]
         },
         {
+          "name": "EquipmentCreateInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentUncheckedCreateInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentUpdateInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "StringFieldUpdateOperationsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentUncheckedUpdateInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "StringFieldUpdateOperationsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentCreateManyInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentUpdateManyMutationInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "StringFieldUpdateOperationsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentUncheckedUpdateManyInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "StringFieldUpdateOperationsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "IntFilter",
           "constraints": {
             "maxNumFields": null,
@@ -13833,14 +15709,14 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "JsonNullValueFilter",
-                  "namespace": "prisma",
-                  "location": "enumTypes",
+                  "type": "Json",
+                  "location": "scalar",
                   "isList": false
                 },
                 {
-                  "type": "Json",
-                  "location": "scalar",
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
                   "isList": false
                 }
               ]
@@ -13998,14 +15874,14 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "JsonNullValueFilter",
-                  "namespace": "prisma",
-                  "location": "enumTypes",
+                  "type": "Json",
+                  "location": "scalar",
                   "isList": false
                 },
                 {
-                  "type": "Json",
-                  "location": "scalar",
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
                   "isList": false
                 }
               ]
@@ -15128,14 +17004,14 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "JsonNullValueFilter",
-                  "namespace": "prisma",
-                  "location": "enumTypes",
+                  "type": "Json",
+                  "location": "scalar",
                   "isList": false
                 },
                 {
-                  "type": "Json",
-                  "location": "scalar",
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
                   "isList": false
                 }
               ]
@@ -15293,14 +17169,14 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "JsonNullValueFilter",
-                  "namespace": "prisma",
-                  "location": "enumTypes",
+                  "type": "Json",
+                  "location": "scalar",
                   "isList": false
                 },
                 {
-                  "type": "Json",
-                  "location": "scalar",
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
                   "isList": false
                 }
               ]
@@ -18190,6 +20066,125 @@
           ]
         },
         {
+          "name": "EquipmentOrderByRelevanceInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "fields",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "EquipmentOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                },
+                {
+                  "type": "EquipmentOrderByRelevanceFieldEnum",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": true
+                }
+              ]
+            },
+            {
+              "name": "sort",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "String",
+                  "location": "scalar",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentCountOrderByAggregateInput",
+          "constraints": {
+            "maxNumFields": 1,
+            "minNumFields": 1
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentMaxOrderByAggregateInput",
+          "constraints": {
+            "maxNumFields": 1,
+            "minNumFields": 1
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EquipmentMinOrderByAggregateInput",
+          "constraints": {
+            "maxNumFields": 1,
+            "minNumFields": 1
+          },
+          "fields": [
+            {
+              "name": "id",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "SortOrder",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "postCreateNestedManyWithoutAuthorInput",
           "constraints": {
             "maxNumFields": null,
@@ -19995,6 +21990,12 @@
               "isNullable": false,
               "inputTypes": [
                 {
+                  "type": "UserUpdateToOneWithWhereWithoutPostsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
                   "type": "UserUpdateWithoutPostsInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
@@ -20071,6 +22072,12 @@
                   "type": "Boolean",
                   "location": "scalar",
                   "isList": false
+                },
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
                 }
               ]
             },
@@ -20082,6 +22089,12 @@
                 {
                   "type": "Boolean",
                   "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -20104,6 +22117,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "UserUpdateToOneWithWhereWithoutEditorPostsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
                 {
                   "type": "UserUpdateWithoutEditorPostsInput",
                   "namespace": "prisma",
@@ -20345,6 +22364,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "DirectorUpdateToOneWithWhereWithoutMoviesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
                 {
                   "type": "DirectorUpdateWithoutMoviesInput",
                   "namespace": "prisma",
@@ -21473,6 +23498,12 @@
                   "type": "Boolean",
                   "location": "scalar",
                   "isList": false
+                },
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
                 }
               ]
             },
@@ -21484,6 +23515,12 @@
                 {
                   "type": "Boolean",
                   "location": "scalar",
+                  "isList": false
+                },
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
                   "isList": false
                 }
               ]
@@ -21506,6 +23543,12 @@
               "isRequired": false,
               "isNullable": false,
               "inputTypes": [
+                {
+                  "type": "CreatorUpdateToOneWithWhereWithoutProblemsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
                 {
                   "type": "CreatorUpdateWithoutProblemsInput",
                   "namespace": "prisma",
@@ -25682,14 +27725,14 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "JsonNullValueFilter",
-                  "namespace": "prisma",
-                  "location": "enumTypes",
+                  "type": "Json",
+                  "location": "scalar",
                   "isList": false
                 },
                 {
-                  "type": "Json",
-                  "location": "scalar",
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
                   "isList": false
                 }
               ]
@@ -25847,14 +27890,14 @@
               "isNullable": false,
               "inputTypes": [
                 {
-                  "type": "JsonNullValueFilter",
-                  "namespace": "prisma",
-                  "location": "enumTypes",
+                  "type": "Json",
+                  "location": "scalar",
                   "isList": false
                 },
                 {
-                  "type": "Json",
-                  "location": "scalar",
+                  "type": "JsonNullValueFilter",
+                  "namespace": "prisma",
+                  "location": "enumTypes",
                   "isList": false
                 }
               ]
@@ -27605,6 +29648,9 @@
         },
         {
           "name": "postScalarWhereInput",
+          "meta": {
+            "source": "post"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -28708,6 +30754,60 @@
                   "isList": false
                 }
               ]
+            },
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UserUpdateToOneWithWhereWithoutPostsInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "data",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserUpdateWithoutPostsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "UserUncheckedUpdateWithoutPostsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
             }
           ]
         },
@@ -29112,6 +31212,60 @@
                 },
                 {
                   "type": "UserUncheckedCreateWithoutEditorPostsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UserUpdateToOneWithWhereWithoutEditorPostsInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "data",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "UserUpdateWithoutEditorPostsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "UserUncheckedUpdateWithoutEditorPostsInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -29633,6 +31787,60 @@
                   "isList": false
                 }
               ]
+            },
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "DirectorUpdateToOneWithWhereWithoutMoviesInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "data",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "DirectorUpdateWithoutMoviesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "DirectorUncheckedUpdateWithoutMoviesInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
             }
           ]
         },
@@ -29987,6 +32195,9 @@
         },
         {
           "name": "MovieScalarWhereInput",
+          "meta": {
+            "source": "Movie"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -30485,6 +32696,9 @@
         },
         {
           "name": "CreatorScalarWhereInput",
+          "meta": {
+            "source": "Creator"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -30618,6 +32832,60 @@
                 },
                 {
                   "type": "CreatorUncheckedCreateWithoutProblemsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CreatorUpdateToOneWithWhereWithoutProblemsInput",
+          "constraints": {
+            "maxNumFields": null,
+            "minNumFields": null
+          },
+          "fields": [
+            {
+              "name": "where",
+              "isRequired": false,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorWhereInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                }
+              ]
+            },
+            {
+              "name": "data",
+              "isRequired": true,
+              "isNullable": false,
+              "inputTypes": [
+                {
+                  "type": "CreatorUpdateWithoutProblemsInput",
+                  "namespace": "prisma",
+                  "location": "inputObjectTypes",
+                  "isList": false
+                },
+                {
+                  "type": "CreatorUncheckedUpdateWithoutProblemsInput",
                   "namespace": "prisma",
                   "location": "inputObjectTypes",
                   "isList": false
@@ -31148,6 +33416,9 @@
         },
         {
           "name": "ProblemScalarWhereInput",
+          "meta": {
+            "source": "Problem"
+          },
           "constraints": {
             "maxNumFields": null,
             "minNumFields": null
@@ -37053,6 +39324,400 @@
                 "location": "outputObjectTypes",
                 "isList": false
               }
+            },
+            {
+              "name": "findFirstEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "orderBy",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentOrderByWithRelationAndSearchRelevanceInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": true
+                    },
+                    {
+                      "type": "EquipmentOrderByWithRelationAndSearchRelevanceInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "cursor",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereUniqueInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "take",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "skip",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "distinct",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentScalarFieldEnum",
+                      "namespace": "prisma",
+                      "location": "enumTypes",
+                      "isList": true
+                    }
+                  ]
+                }
+              ],
+              "isNullable": true,
+              "outputType": {
+                "type": "Equipment",
+                "namespace": "model",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "findManyEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "orderBy",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentOrderByWithRelationAndSearchRelevanceInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": true
+                    },
+                    {
+                      "type": "EquipmentOrderByWithRelationAndSearchRelevanceInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "cursor",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereUniqueInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "take",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "skip",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "distinct",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentScalarFieldEnum",
+                      "namespace": "prisma",
+                      "location": "enumTypes",
+                      "isList": true
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "Equipment",
+                "namespace": "model",
+                "location": "outputObjectTypes",
+                "isList": true
+              }
+            },
+            {
+              "name": "aggregateEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "orderBy",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentOrderByWithRelationAndSearchRelevanceInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": true
+                    },
+                    {
+                      "type": "EquipmentOrderByWithRelationAndSearchRelevanceInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "cursor",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereUniqueInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "take",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "skip",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "AggregateEquipment",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "groupByEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "orderBy",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentOrderByWithAggregationInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": true
+                    },
+                    {
+                      "type": "EquipmentOrderByWithAggregationInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "by",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentScalarFieldEnum",
+                      "namespace": "prisma",
+                      "location": "enumTypes",
+                      "isList": true
+                    },
+                    {
+                      "type": "EquipmentScalarFieldEnum",
+                      "namespace": "prisma",
+                      "location": "enumTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "having",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentScalarWhereWithAggregatesInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "take",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "skip",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Int",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "EquipmentGroupByOutputType",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": true
+              }
+            },
+            {
+              "name": "findUniqueEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereUniqueInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": true,
+              "outputType": {
+                "type": "Equipment",
+                "namespace": "model",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
             }
           ]
         },
@@ -39481,6 +42146,275 @@
               }
             },
             {
+              "name": "createOneEquipment",
+              "args": [
+                {
+                  "name": "data",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentCreateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    },
+                    {
+                      "type": "EquipmentUncheckedCreateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "Equipment",
+                "namespace": "model",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "upsertOneEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereUniqueInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "create",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentCreateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    },
+                    {
+                      "type": "EquipmentUncheckedCreateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "update",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentUpdateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    },
+                    {
+                      "type": "EquipmentUncheckedUpdateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "Equipment",
+                "namespace": "model",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "createManyEquipment",
+              "args": [
+                {
+                  "name": "data",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentCreateManyInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": true
+                    }
+                  ]
+                },
+                {
+                  "name": "skipDuplicates",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "Boolean",
+                      "location": "scalar",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "AffectedRowsOutput",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "deleteOneEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereUniqueInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": true,
+              "outputType": {
+                "type": "Equipment",
+                "namespace": "model",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "updateOneEquipment",
+              "args": [
+                {
+                  "name": "data",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentUpdateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    },
+                    {
+                      "type": "EquipmentUncheckedUpdateInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "where",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereUniqueInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": true,
+              "outputType": {
+                "type": "Equipment",
+                "namespace": "model",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "updateManyEquipment",
+              "args": [
+                {
+                  "name": "data",
+                  "isRequired": true,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentUpdateManyMutationInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    },
+                    {
+                      "type": "EquipmentUncheckedUpdateManyInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                },
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "AffectedRowsOutput",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "deleteManyEquipment",
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "EquipmentWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
+              "isNullable": false,
+              "outputType": {
+                "type": "AffectedRowsOutput",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
               "name": "executeRaw",
               "args": [
                 {
@@ -40903,6 +43837,92 @@
           ]
         },
         {
+          "name": "AggregateEquipment",
+          "fields": [
+            {
+              "name": "_count",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "EquipmentCountAggregateOutputType",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "_min",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "EquipmentMinAggregateOutputType",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "_max",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "EquipmentMaxAggregateOutputType",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            }
+          ]
+        },
+        {
+          "name": "EquipmentGroupByOutputType",
+          "fields": [
+            {
+              "name": "id",
+              "args": [],
+              "isNullable": false,
+              "outputType": {
+                "type": "String",
+                "location": "scalar",
+                "isList": false
+              }
+            },
+            {
+              "name": "_count",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "EquipmentCountAggregateOutputType",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "_min",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "EquipmentMinAggregateOutputType",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            },
+            {
+              "name": "_max",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "EquipmentMaxAggregateOutputType",
+                "namespace": "prisma",
+                "location": "outputObjectTypes",
+                "isList": false
+              }
+            }
+          ]
+        },
+        {
           "name": "AffectedRowsOutput",
           "fields": [
             {
@@ -40922,7 +43942,21 @@
           "fields": [
             {
               "name": "posts",
-              "args": [],
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "postWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
               "isNullable": false,
               "outputType": {
                 "type": "Int",
@@ -40932,7 +43966,21 @@
             },
             {
               "name": "editorPosts",
-              "args": [],
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "postWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
               "isNullable": false,
               "outputType": {
                 "type": "Int",
@@ -42076,7 +45124,21 @@
           "fields": [
             {
               "name": "movies",
-              "args": [],
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "MovieWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
               "isNullable": false,
               "outputType": {
                 "type": "Int",
@@ -42176,7 +45238,21 @@
           "fields": [
             {
               "name": "likedBy",
-              "args": [],
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "CreatorWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
               "isNullable": false,
               "outputType": {
                 "type": "Int",
@@ -42356,7 +45432,21 @@
           "fields": [
             {
               "name": "likes",
-              "args": [],
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "ProblemWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
               "isNullable": false,
               "outputType": {
                 "type": "Int",
@@ -42366,7 +45456,21 @@
             },
             {
               "name": "problems",
-              "args": [],
+              "args": [
+                {
+                  "name": "where",
+                  "isRequired": false,
+                  "isNullable": false,
+                  "inputTypes": [
+                    {
+                      "type": "ProblemWhereInput",
+                      "namespace": "prisma",
+                      "location": "inputObjectTypes",
+                      "isList": false
+                    }
+                  ]
+                }
+              ],
               "isNullable": false,
               "outputType": {
                 "type": "Int",
@@ -42700,6 +45804,61 @@
               "isNullable": true,
               "outputType": {
                 "type": "Decimal",
+                "location": "scalar",
+                "isList": false
+              }
+            }
+          ]
+        },
+        {
+          "name": "EquipmentCountAggregateOutputType",
+          "fields": [
+            {
+              "name": "id",
+              "args": [],
+              "isNullable": false,
+              "outputType": {
+                "type": "Int",
+                "location": "scalar",
+                "isList": false
+              }
+            },
+            {
+              "name": "_all",
+              "args": [],
+              "isNullable": false,
+              "outputType": {
+                "type": "Int",
+                "location": "scalar",
+                "isList": false
+              }
+            }
+          ]
+        },
+        {
+          "name": "EquipmentMinAggregateOutputType",
+          "fields": [
+            {
+              "name": "id",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "String",
+                "location": "scalar",
+                "isList": false
+              }
+            }
+          ]
+        },
+        {
+          "name": "EquipmentMaxAggregateOutputType",
+          "fields": [
+            {
+              "name": "id",
+              "args": [],
+              "isNullable": true,
+              "outputType": {
+                "type": "String",
                 "location": "scalar",
                 "isList": false
               }
@@ -43806,23 +46965,140 @@
               }
             }
           ]
+        },
+        {
+          "name": "Equipment",
+          "fields": [
+            {
+              "name": "id",
+              "args": [],
+              "isNullable": false,
+              "outputType": {
+                "type": "String",
+                "location": "scalar",
+                "isList": false
+              }
+            }
+          ]
         }
       ]
     },
     "enumTypes": {
       "prisma": [
         {
-          "name": "UserScalarFieldEnum",
+          "name": "CategoryOrderByRelevanceFieldEnum",
+          "values": [
+            "name",
+            "slug"
+          ]
+        },
+        {
+          "name": "CategoryScalarFieldEnum",
+          "values": [
+            "name",
+            "slug",
+            "number"
+          ]
+        },
+        {
+          "name": "CreatorOrderByRelevanceFieldEnum",
+          "values": [
+            "name"
+          ]
+        },
+        {
+          "name": "CreatorScalarFieldEnum",
           "values": [
             "id",
-            "email",
-            "name",
-            "age",
-            "balance",
-            "amount",
-            "role",
-            "grades",
-            "aliases"
+            "name"
+          ]
+        },
+        {
+          "name": "DirectorOrderByRelevanceFieldEnum",
+          "values": [
+            "firstName",
+            "lastName"
+          ]
+        },
+        {
+          "name": "DirectorScalarFieldEnum",
+          "values": [
+            "firstName",
+            "lastName"
+          ]
+        },
+        {
+          "name": "EquipmentOrderByRelevanceFieldEnum",
+          "values": [
+            "id"
+          ]
+        },
+        {
+          "name": "EquipmentScalarFieldEnum",
+          "values": [
+            "id"
+          ]
+        },
+        {
+          "name": "JsonNullValueFilter",
+          "values": [
+            "DbNull",
+            "JsonNull",
+            "AnyNull"
+          ]
+        },
+        {
+          "name": "JsonNullValueInput",
+          "values": [
+            "JsonNull"
+          ]
+        },
+        {
+          "name": "MovieOrderByRelevanceFieldEnum",
+          "values": [
+            "directorFirstName",
+            "directorLastName",
+            "title"
+          ]
+        },
+        {
+          "name": "MovieScalarFieldEnum",
+          "values": [
+            "directorFirstName",
+            "directorLastName",
+            "title"
+          ]
+        },
+        {
+          "name": "NativeTypeModelScalarFieldEnum",
+          "values": [
+            "id",
+            "bigInt",
+            "byteA",
+            "decimal"
+          ]
+        },
+        {
+          "name": "NullsOrder",
+          "values": [
+            "first",
+            "last"
+          ]
+        },
+        {
+          "name": "PatientOrderByRelevanceFieldEnum",
+          "values": [
+            "firstName",
+            "lastName",
+            "email"
+          ]
+        },
+        {
+          "name": "PatientScalarFieldEnum",
+          "values": [
+            "firstName",
+            "lastName",
+            "email"
           ]
         },
         {
@@ -43842,34 +47118,9 @@
           ]
         },
         {
-          "name": "CategoryScalarFieldEnum",
+          "name": "ProblemOrderByRelevanceFieldEnum",
           "values": [
-            "name",
-            "slug",
-            "number"
-          ]
-        },
-        {
-          "name": "PatientScalarFieldEnum",
-          "values": [
-            "firstName",
-            "lastName",
-            "email"
-          ]
-        },
-        {
-          "name": "MovieScalarFieldEnum",
-          "values": [
-            "directorFirstName",
-            "directorLastName",
-            "title"
-          ]
-        },
-        {
-          "name": "DirectorScalarFieldEnum",
-          "values": [
-            "firstName",
-            "lastName"
+            "problemText"
           ]
         },
         {
@@ -43881,19 +47132,10 @@
           ]
         },
         {
-          "name": "CreatorScalarFieldEnum",
+          "name": "QueryMode",
           "values": [
-            "id",
-            "name"
-          ]
-        },
-        {
-          "name": "NativeTypeModelScalarFieldEnum",
-          "values": [
-            "id",
-            "bigInt",
-            "byteA",
-            "decimal"
+            "default",
+            "insensitive"
           ]
         },
         {
@@ -43904,23 +47146,12 @@
           ]
         },
         {
-          "name": "JsonNullValueInput",
+          "name": "TransactionIsolationLevel",
           "values": [
-            "JsonNull"
-          ]
-        },
-        {
-          "name": "QueryMode",
-          "values": [
-            "default",
-            "insensitive"
-          ]
-        },
-        {
-          "name": "NullsOrder",
-          "values": [
-            "first",
-            "last"
+            "ReadUncommitted",
+            "ReadCommitted",
+            "RepeatableRead",
+            "Serializable"
           ]
         },
         {
@@ -43932,11 +47163,17 @@
           ]
         },
         {
-          "name": "JsonNullValueFilter",
+          "name": "UserScalarFieldEnum",
           "values": [
-            "DbNull",
-            "JsonNull",
-            "AnyNull"
+            "id",
+            "email",
+            "name",
+            "age",
+            "balance",
+            "amount",
+            "role",
+            "grades",
+            "aliases"
           ]
         },
         {
@@ -43947,67 +47184,26 @@
             "subtitle",
             "content"
           ]
-        },
-        {
-          "name": "CategoryOrderByRelevanceFieldEnum",
-          "values": [
-            "name",
-            "slug"
-          ]
-        },
-        {
-          "name": "PatientOrderByRelevanceFieldEnum",
-          "values": [
-            "firstName",
-            "lastName",
-            "email"
-          ]
-        },
-        {
-          "name": "MovieOrderByRelevanceFieldEnum",
-          "values": [
-            "directorFirstName",
-            "directorLastName",
-            "title"
-          ]
-        },
-        {
-          "name": "DirectorOrderByRelevanceFieldEnum",
-          "values": [
-            "firstName",
-            "lastName"
-          ]
-        },
-        {
-          "name": "ProblemOrderByRelevanceFieldEnum",
-          "values": [
-            "problemText"
-          ]
-        },
-        {
-          "name": "CreatorOrderByRelevanceFieldEnum",
-          "values": [
-            "name"
-          ]
         }
       ],
       "model": [
-        {
-          "name": "Role",
-          "values": [
-            "USER",
-            "ADMIN"
-          ]
-        },
         {
           "name": "PostKind",
           "values": [
             "BLOG",
             "ADVERT"
           ]
+        },
+        {
+          "name": "Role",
+          "values": [
+            "USER",
+            "ADMIN"
+          ]
         }
       ]
-    }
+    },
+    "fieldRefTypes": {}
   },
   "mappings": {
     "modelOperations": [
@@ -44145,6 +47341,21 @@
         "updateMany": "updateManyNativeTypeModel",
         "updateOne": "updateOneNativeTypeModel",
         "upsertOne": "upsertOneNativeTypeModel"
+      },
+      {
+        "model": "Equipment",
+        "aggregate": "aggregateEquipment",
+        "createMany": "createManyEquipment",
+        "createOne": "createOneEquipment",
+        "deleteMany": "deleteManyEquipment",
+        "deleteOne": "deleteOneEquipment",
+        "findFirst": "findFirstEquipment",
+        "findMany": "findManyEquipment",
+        "findUnique": "findUniqueEquipment",
+        "groupBy": "groupByEquipment",
+        "updateMany": "updateManyEquipment",
+        "updateOne": "updateOneEquipment",
+        "upsertOne": "upsertOneEquipment"
       }
     ],
     "otherOperations": {

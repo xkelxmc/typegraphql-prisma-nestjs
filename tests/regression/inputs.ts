@@ -1457,4 +1457,198 @@ describe("inputs", () => {
       expect(indexTSFile).toMatchSnapshot("index");
     });
   });
+
+  describe("when useSimpleInputs config option is set to true", () => {
+    it("should properly generate input type classes for updating scalar fields in postgres schema", async () => {
+      const schema = /* prisma */ `
+        enum Color {
+          RED
+          GREEN
+          BLUE
+        }
+        model SampleModel {
+          intIdField            Int     @id @default(autoincrement())
+          stringField           String  @unique
+          optionalStringField   String?
+          intField              Int
+          optionalIntField      Int?
+          floatField            Float
+          optionalFloatField    Float?
+          booleanField          Boolean
+          optionalBooleanField  Boolean?
+          dateField             DateTime
+          optionalDateField     DateTime?
+          jsonField             Json
+          optionalJsonField     Json?
+          enumField             Color
+          optionalEnumField     Color?
+          intArrayField         Int[]
+          stringArrayField      String[]
+        }
+      `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        useSimpleInputs: true,
+      });
+      const sampleModelUpdateInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/SampleModelUpdateInput.ts",
+      );
+      const sampleModelUpdateManyMutationInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/SampleModelUpdateManyMutationInput.ts",
+      );
+
+      const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
+
+      expect(sampleModelUpdateInputTSFile).toMatchSnapshot(
+        "SampleModelUpdateInput",
+      );
+      expect(sampleModelUpdateManyMutationInputTSFile).toMatchSnapshot(
+        "SampleModelUpdateManyMutationInput",
+      );
+      expect(indexTSFile).toMatchSnapshot("index");
+    });
+  });
+
+  it("should properly generate input type classes for updating scalar fields in postgres schema", async () => {
+    const schema = /* prisma */ `
+      enum Color {
+        RED
+        GREEN
+        BLUE
+      }
+      model SampleModel {
+        intIdField           String           @id @default(auto()) @map("_id") @db.ObjectId
+        stringField          String
+        optionalStringField  String?
+        intField             Int
+        optionalIntField     Int?
+        floatField           Float
+        optionalFloatField   Float?
+        booleanField         Boolean
+        optionalBooleanField Boolean?
+        dateField            DateTime
+        optionalDateField    DateTime?
+        jsonField            Json
+        optionalJsonField    Json?
+        enumField            Color
+        optionalEnumField    Color?
+        intArrayField        Int[]
+        stringArrayField     String[]
+        nestedModelField     SampleNestedType
+      }
+      type SampleNestedType {
+        stringField      String
+        stringArrayField String[]
+        intField         Int
+        intArrayField    Int[]
+      }
+    `;
+
+    await generateCodeFromSchema(
+      schema,
+      { outputDirPath, useSimpleInputs: true },
+      "mongodb",
+    );
+    const sampleModelCreateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleModelCreateInput.ts",
+    );
+    const sampleModelCreateManyInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleModelCreateManyInput.ts",
+    );
+    const sampleModelUpdateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleModelUpdateInput.ts",
+    );
+    const sampleModelUpdateManyMutationInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleModelUpdateManyMutationInput.ts",
+    );
+    const sampleNestedTypeCreateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleNestedTypeCreateInput.ts",
+    );
+    const sampleNestedTypeUpdateInputTSFile = await readGeneratedFile(
+      "/resolvers/inputs/SampleNestedTypeUpdateInput.ts",
+    );
+    const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
+
+    expect(sampleModelCreateInputTSFile).toMatchSnapshot(
+      "SampleModelCreateInput",
+    );
+    expect(sampleModelCreateManyInputTSFile).toMatchSnapshot(
+      "SampleModelCreateManyInput",
+    );
+    expect(sampleModelUpdateInputTSFile).toMatchSnapshot(
+      "SampleModelUpdateInput",
+    );
+    expect(sampleModelUpdateManyMutationInputTSFile).toMatchSnapshot(
+      "SampleModelUpdateManyMutationInput",
+    );
+    expect(sampleNestedTypeCreateInputTSFile).toMatchSnapshot(
+      "SampleNestedTypeCreateInput",
+    );
+    expect(sampleNestedTypeUpdateInputTSFile).toMatchSnapshot(
+      "SampleNestedTypeUpdateInput",
+    );
+    expect(indexTSFile).toMatchSnapshot("index");
+  });
+
+  describe("when `extendedWhereUnique` preview feature is enabled", () => {
+    it("should properly generate input type classes with SortOrderInput type fields", async () => {
+      const schema = /* prisma */ `
+        model FirstModel {
+          idField             Int            @id @default(autoincrement())
+          uniqueStringField   String         @unique
+          optionalFloatField  Float?
+          secondModelsField   SecondModel[]
+        }
+        model SecondModel {
+          idField             Int          @id @default(autoincrement())
+          uniqueStringField   String       @unique
+          optionalFloatField  Float?
+          firstModelFieldId   Int
+          firstModelField     FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
+        }
+      `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        previewFeatures: ["extendedWhereUnique"],
+      });
+      const firstModelWhereUniqueInputTSFile = await readGeneratedFile(
+        "/resolvers/inputs/FirstModelWhereUniqueInput.ts",
+      );
+      const firstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput.ts",
+        );
+      const firstModelUpdateToOneWithWhereWithoutSecondModelsFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/FirstModelUpdateToOneWithWhereWithoutSecondModelsFieldInput.ts",
+        );
+      const secondModelUpsertWithWhereUniqueWithoutFirstModelFieldInputTSFile =
+        await readGeneratedFile(
+          "/resolvers/inputs/SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput.ts",
+        );
+      const indexTSFile = await readGeneratedFile("/resolvers/inputs/index.ts");
+
+      expect(firstModelWhereUniqueInputTSFile).toMatchSnapshot(
+        "FirstModelWhereUniqueInput",
+      );
+      expect(
+        firstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInputTSFile,
+      ).toMatchSnapshot(
+        "FirstModelUpdateOneRequiredWithoutSecondModelsFieldNestedInput",
+      );
+      expect(
+        firstModelUpdateToOneWithWhereWithoutSecondModelsFieldInputTSFile,
+      ).toMatchSnapshot(
+        "FirstModelUpdateToOneWithWhereWithoutSecondModelsFieldInput",
+      );
+      expect(
+        secondModelUpsertWithWhereUniqueWithoutFirstModelFieldInputTSFile,
+      ).toMatchSnapshot(
+        "SecondModelUpsertWithWhereUniqueWithoutFirstModelFieldInput",
+      );
+      expect(indexTSFile).toMatchSnapshot("index");
+    });
+  });
 });
