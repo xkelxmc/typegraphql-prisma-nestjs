@@ -2,22 +2,27 @@
 
 exports[`relations resolvers generation should not emit relation resolver when relation field is ignored: UserRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Point } from \\"../../../models/Point\\";
 import { User } from \\"../../../models/User\\";
 import { UserPointsArgs } from \\"./args/UserPointsArgs\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => User)
 export class UserRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => [Point], {
     nullable: false
   })
-  async points(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UserPointsArgs): Promise<Point[]> {
-    return getPrismaFromContext(ctx).user.findUnique({
+  async points(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UserPointsArgs): Promise<Point[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).user.findUniqueOrThrow({
       where: {
         id: user.id,
       },
-    }).points(args);
+    }).points({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -117,39 +122,46 @@ exports[`relations resolvers generation should properly generate args classes fo
 
 exports[`relations resolvers generation should properly generate composite keys where phrase in resolver: UsersOnProjectsRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Project } from \\"../../../models/Project\\";
 import { User } from \\"../../../models/User\\";
 import { UsersOnProjects } from \\"../../../models/UsersOnProjects\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => UsersOnProjects)
 export class UsersOnProjectsRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => Project, {
     nullable: false
   })
-  async project(@TypeGraphQL.Root() usersOnProjects: UsersOnProjects, @TypeGraphQL.Ctx() ctx: any): Promise<Project> {
-    return getPrismaFromContext(ctx).usersOnProjects.findUnique({
+  async project(@TypeGraphQL.Root() usersOnProjects: UsersOnProjects, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<Project> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).usersOnProjects.findUniqueOrThrow({
       where: {
         userId_projectId: {
           userId: usersOnProjects.userId,
           projectId: usersOnProjects.projectId,
         },
       },
-    }).project({});
+    }).project({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 
   @TypeGraphQL.FieldResolver(_type => User, {
     nullable: false
   })
-  async user(@TypeGraphQL.Root() usersOnProjects: UsersOnProjects, @TypeGraphQL.Ctx() ctx: any): Promise<User> {
-    return getPrismaFromContext(ctx).usersOnProjects.findUnique({
+  async user(@TypeGraphQL.Root() usersOnProjects: UsersOnProjects, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<User> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).usersOnProjects.findUniqueOrThrow({
       where: {
         userId_projectId: {
           userId: usersOnProjects.userId,
           projectId: usersOnProjects.projectId,
         },
       },
-    }).user({});
+    }).user({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -239,17 +251,19 @@ export { UserRelationsResolver } from \\"./User/UserRelationsResolver\\";
 
 exports[`relations resolvers generation should properly generate relation resolver class for model with multi id keys with relation: MovieRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Director } from \\"../../../models/Director\\";
 import { Movie } from \\"../../../models/Movie\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => Movie)
 export class MovieRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => Director, {
     nullable: false
   })
-  async director(@TypeGraphQL.Root() movie: Movie, @TypeGraphQL.Ctx() ctx: any): Promise<Director> {
-    return getPrismaFromContext(ctx).movie.findUnique({
+  async director(@TypeGraphQL.Root() movie: Movie, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<Director> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).movie.findUniqueOrThrow({
       where: {
         directorFirstName_directorLastName_title: {
           directorFirstName: movie.directorFirstName,
@@ -257,7 +271,9 @@ export class MovieRelationsResolver {
           title: movie.title,
         },
       },
-    }).director({});
+    }).director({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -265,17 +281,19 @@ export class MovieRelationsResolver {
 
 exports[`relations resolvers generation should properly generate relation resolver class for model with named compound id with relation: MovieRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Director } from \\"../../../models/Director\\";
 import { Movie } from \\"../../../models/Movie\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => Movie)
 export class MovieRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => Director, {
     nullable: false
   })
-  async director(@TypeGraphQL.Root() movie: Movie, @TypeGraphQL.Ctx() ctx: any): Promise<Director> {
-    return getPrismaFromContext(ctx).movie.findUnique({
+  async director(@TypeGraphQL.Root() movie: Movie, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<Director> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).movie.findUniqueOrThrow({
       where: {
         movieIdCompoundName: {
           directorFirstName: movie.directorFirstName,
@@ -283,7 +301,9 @@ export class MovieRelationsResolver {
           title: movie.title,
         },
       },
-    }).director({});
+    }).director({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -291,17 +311,19 @@ export class MovieRelationsResolver {
 
 exports[`relations resolvers generation should properly generate relation resolver class for model with named compound unique with relation: MovieRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Director } from \\"../../../models/Director\\";
 import { Movie } from \\"../../../models/Movie\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => Movie)
 export class MovieRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => Director, {
     nullable: false
   })
-  async director(@TypeGraphQL.Root() movie: Movie, @TypeGraphQL.Ctx() ctx: any): Promise<Director> {
-    return getPrismaFromContext(ctx).movie.findUnique({
+  async director(@TypeGraphQL.Root() movie: Movie, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<Director> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).movie.findUniqueOrThrow({
       where: {
         movieUniqueCompoundName: {
           directorFirstName: movie.directorFirstName,
@@ -309,7 +331,9 @@ export class MovieRelationsResolver {
           title: movie.title,
         },
       },
-    }).director({});
+    }).director({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -317,25 +341,30 @@ export class MovieRelationsResolver {
 
 exports[`relations resolvers generation should properly generate relation resolver class for model with unique fields: DirectorRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Director } from \\"../../../models/Director\\";
 import { Movie } from \\"../../../models/Movie\\";
 import { DirectorMoviesArgs } from \\"./args/DirectorMoviesArgs\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => Director)
 export class DirectorRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => [Movie], {
     nullable: false
   })
-  async movies(@TypeGraphQL.Root() director: Director, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DirectorMoviesArgs): Promise<Movie[]> {
-    return getPrismaFromContext(ctx).director.findUnique({
+  async movies(@TypeGraphQL.Root() director: Director, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: DirectorMoviesArgs): Promise<Movie[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).director.findUniqueOrThrow({
       where: {
         firstName_lastName: {
           firstName: director.firstName,
           lastName: director.lastName,
         },
       },
-    }).movies(args);
+    }).movies({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -343,21 +372,25 @@ export class DirectorRelationsResolver {
 
 exports[`relations resolvers generation should properly generate relation resolvers classes for models with omitted relation field: PostRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Post } from \\"../../../models/Post\\";
 import { User } from \\"../../../models/User\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => Post)
 export class PostRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => User, {
     nullable: true
   })
-  async author(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any): Promise<User | null> {
-    return getPrismaFromContext(ctx).post.findUnique({
+  async author(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<User | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).post.findUniqueOrThrow({
       where: {
         uuid: post.uuid,
       },
-    }).author({});
+    }).author({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -365,22 +398,27 @@ export class PostRelationsResolver {
 
 exports[`relations resolvers generation should properly generate relation resolvers classes for models with omitted relation field: UserRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Post } from \\"../../../models/Post\\";
 import { User } from \\"../../../models/User\\";
 import { UserPostsArgs } from \\"./args/UserPostsArgs\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => User)
 export class UserRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => [Post], {
     nullable: false
   })
-  async posts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
-    return getPrismaFromContext(ctx).user.findUnique({
+  async posts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).user.findUniqueOrThrow({
       where: {
         id: user.id,
       },
-    }).posts(args);
+    }).posts({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -388,9 +426,10 @@ export class UserRelationsResolver {
 
 exports[`relations resolvers generation should properly generate relation resolvers classes for models with renamed relation fields: PostRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Post } from \\"../../../models/Post\\";
 import { User } from \\"../../../models/User\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => Post)
 export class PostRelationsResolver {
@@ -398,12 +437,15 @@ export class PostRelationsResolver {
     nullable: true,
     description: \\"author field doc\\"
   })
-  async postAuthor(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any): Promise<User | null> {
-    return getPrismaFromContext(ctx).post.findUnique({
+  async postAuthor(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<User | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).post.findUniqueOrThrow({
       where: {
         uuid: post.uuid,
       },
-    }).author({});
+    }).author({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -411,22 +453,27 @@ export class PostRelationsResolver {
 
 exports[`relations resolvers generation should properly generate relation resolvers classes for models with renamed relation fields: UserRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Post } from \\"../../../models/Post\\";
 import { User } from \\"../../../models/User\\";
 import { UserPostsArgs } from \\"./args/UserPostsArgs\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => User)
 export class UserRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => [Post], {
     nullable: false
   })
-  async userPosts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
-    return getPrismaFromContext(ctx).user.findUnique({
+  async userPosts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).user.findUniqueOrThrow({
       where: {
         id: user.id,
       },
-    }).posts(args);
+    }).posts({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -477,22 +524,27 @@ export class UserPostsArgs {
 
 exports[`relations resolvers generation should properly generate resolver and args class for array relation resolvers: UserRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Post } from \\"../../../models/Post\\";
 import { User } from \\"../../../models/User\\";
 import { UserPostsArgs } from \\"./args/UserPostsArgs\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => User)
 export class UserRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => [Post], {
     nullable: false
   })
-  async posts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
-    return getPrismaFromContext(ctx).user.findUnique({
+  async posts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).user.findUniqueOrThrow({
       where: {
         id: user.id,
       },
-    }).posts(args);
+    }).posts({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -500,21 +552,25 @@ export class UserRelationsResolver {
 
 exports[`relations resolvers generation should properly generate resolver class for single relation resolvers: UserRelationsResolver 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Address } from \\"../../../models/Address\\";
 import { User } from \\"../../../models/User\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => User)
 export class UserRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => Address, {
     nullable: true
   })
-  async address(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any): Promise<Address | null> {
-    return getPrismaFromContext(ctx).user.findUnique({
+  async address(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<Address | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).user.findUniqueOrThrow({
       where: {
         id: user.id,
       },
-    }).address({});
+    }).address({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -522,9 +578,10 @@ export class UserRelationsResolver {
 
 exports[`relations resolvers generation should properly generate resolvers classes for prisma models with cyclic relations: Post 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Post } from \\"../../../models/Post\\";
 import { User } from \\"../../../models/User\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => Post)
 export class PostRelationsResolver {
@@ -532,12 +589,15 @@ export class PostRelationsResolver {
     nullable: true,
     description: \\"author field doc\\"
   })
-  async author(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any): Promise<User | null> {
-    return getPrismaFromContext(ctx).post.findUnique({
+  async author(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<User | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).post.findUniqueOrThrow({
       where: {
         uuid: post.uuid,
       },
-    }).author({});
+    }).author({
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -545,22 +605,27 @@ export class PostRelationsResolver {
 
 exports[`relations resolvers generation should properly generate resolvers classes for prisma models with cyclic relations: User 1`] = `
 "import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
 import { Post } from \\"../../../models/Post\\";
 import { User } from \\"../../../models/User\\";
 import { UserPostsArgs } from \\"./args/UserPostsArgs\\";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
 
 @TypeGraphQL.Resolver(_of => User)
 export class UserRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => [Post], {
     nullable: false
   })
-  async posts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
-    return getPrismaFromContext(ctx).user.findUnique({
+  async posts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UserPostsArgs): Promise<Post[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).user.findUniqueOrThrow({
       where: {
         id: user.id,
       },
-    }).posts(args);
+    }).posts({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
   }
 }
 "
@@ -605,6 +670,34 @@ export class FirstModelSecondModelsFieldArgs {
     nullable: true
   })
   distinct?: Array<\\"idField\\" | \\"uniqueStringField\\" | \\"floatField\\" | \\"firstModelFieldId\\"> | undefined;
+}
+"
+`;
+
+exports[`relations resolvers generation when emitRedundantTypesInfo is set to true should properly generate type info for @Args decorator: UserRelationsResolver 1`] = `
+"import * as TypeGraphQL from \\"type-graphql\\";
+import type { GraphQLResolveInfo } from \\"graphql\\";
+import { Post } from \\"../../../models/Post\\";
+import { User } from \\"../../../models/User\\";
+import { UserPostsArgs } from \\"./args/UserPostsArgs\\";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from \\"../../../helpers\\";
+
+@TypeGraphQL.Resolver(_of => User)
+export class UserRelationsResolver {
+  @TypeGraphQL.FieldResolver(_type => [Post], {
+    nullable: false
+  })
+  async posts(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UserPostsArgs) args: UserPostsArgs): Promise<Post[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).user.findUniqueOrThrow({
+      where: {
+        id: user.id,
+      },
+    }).posts({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
+  }
 }
 "
 `;

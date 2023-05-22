@@ -2,11 +2,13 @@ import { OptionalKind, MethodDeclarationStructure, Writers } from "ts-morph";
 
 import { DmmfDocument } from "../dmmf/dmmf-document";
 import { DMMF } from "../dmmf/types";
+import { GeneratorOptions } from "../options";
 
 export function generateCrudResolverClassMethodDeclaration(
   action: DMMF.Action,
   mapping: DMMF.ModelMapping,
   dmmfDocument: DmmfDocument,
+  generatorOptions: GeneratorOptions,
 ): OptionalKind<MethodDeclarationStructure> {
   return {
     name: action.name,
@@ -41,7 +43,14 @@ export function generateCrudResolverClassMethodDeclaration(
             {
               name: "args",
               type: action.argsTypeName,
-              decorators: [{ name: "Args", arguments: [] }],
+              decorators: [
+                {
+                  name: "Args",
+                  arguments: generatorOptions.emitRedundantTypesInfo
+                    ? [`_type => ${action.argsTypeName}`]
+                    : [],
+                },
+              ],
             },
           ]),
     ],
@@ -50,14 +59,12 @@ export function generateCrudResolverClassMethodDeclaration(
         ? [
             /* ts */ ` return getPrismaFromContext(ctx).${mapping.collectionName}.${action.prismaMethod}({
               ...args,
-              ...transformFields(graphqlFields(info as any)),
+              ...transformInfoIntoPrismaArgs(info),
             });`,
           ]
         : action.kind === DMMF.ModelAction.groupBy
         ? [
-            /* ts */ ` const { _count, _avg, _sum, _min, _max } = transformFields(
-              graphqlFields(info as any)
-            );`,
+            /* ts */ ` const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);`,
             /* ts */ ` return getPrismaFromContext(ctx).${mapping.collectionName}.${action.prismaMethod}({
               ...args,
               ...Object.fromEntries(
@@ -66,9 +73,7 @@ export function generateCrudResolverClassMethodDeclaration(
             });`,
           ]
         : [
-            /* ts */ ` const { _count } = transformFields(
-              graphqlFields(info as any)
-            );
+            /* ts */ ` const { _count } = transformInfoIntoPrismaArgs(info);
             return getPrismaFromContext(ctx).${mapping.collectionName}.${action.prismaMethod}({
               ...args,
               ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),

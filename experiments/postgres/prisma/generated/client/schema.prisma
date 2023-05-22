@@ -7,7 +7,7 @@ generator client {
   provider        = "prisma-client-js"
   // binaryTargets   = ["windows", "debian-openssl-1.1.x"]
   output          = "../prisma/generated/client"
-  previewFeatures = ["orderByNulls", "fullTextSearch", "extendedWhereUnique", "filteredRelationCount"]
+  previewFeatures = ["orderByNulls", "fullTextSearch", "extendedWhereUnique", "filteredRelationCount", "clientExtensions", "jsonProtocol"]
 }
 
 generator typegraphql {
@@ -23,6 +23,8 @@ generator typegraphql {
   customPrismaImportPath   = "../client"
   contextPrismaKey         = "prismaClient"
   useSimpleInputs          = true
+  emitRedundantTypesInfo   = true
+  formatGeneratedCode      = "tsc"
 }
 
 // Role enum comment
@@ -142,5 +144,12 @@ model NativeTypeModel {
 
 /// @@TypeGraphQL.type(plural: "equipments")
 model Equipment {
-  id String @id @default(cuid())
+  id   String  @id @default(cuid())
+  name String?
+}
+
+/// @@TypeGraphQL.omit(output: true)
+model Hidden {
+  id   String  @id @default(cuid())
+  name String?
 }

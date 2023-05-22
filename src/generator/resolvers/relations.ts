@@ -13,15 +13,18 @@ import {
   generateArgsImports,
   generateModelsImports,
   generateHelpersFileImport,
+  generateGraphQLInfoImport,
 } from "../imports";
 import { DmmfDocument } from "../dmmf/dmmf-document";
 import { DMMF } from "../dmmf/types";
+import { GeneratorOptions } from "../options";
 
 export default function generateRelationsResolverClassesFromModel(
   project: Project,
   baseDirPath: string,
   dmmfDocument: DmmfDocument,
   { model, relationFields, resolverName }: DMMF.RelationModel,
+  generatorOptions: GeneratorOptions,
 ) {
   const rootArgName = camelCase(model.typeName);
   const singleIdField = model.fields.find(field => field.isId);
@@ -51,6 +54,7 @@ export default function generateRelationsResolverClassesFromModel(
   });
 
   generateTypeGraphQLImport(sourceFile);
+  generateGraphQLInfoImport(sourceFile);
   generateModelsImports(
     sourceFile,
     [...relationFields.map(field => field.type), model.typeName],
@@ -127,23 +131,38 @@ export default function generateRelationsResolverClassesFromModel(
               type: "any",
               decorators: [{ name: "Context", arguments: [] }],
             },
+            {
+              name: "info",
+              type: "GraphQLResolveInfo",
+              decorators: [{ name: "Info", arguments: [] }],
+            },
             ...(!field.argsTypeName
               ? []
               : [
                   {
                     name: "args",
                     type: field.argsTypeName,
-                    decorators: [{ name: "Args", arguments: [] }],
+                    decorators: [
+                      {
+                        name: "Args",
+                        arguments: generatorOptions.emitRedundantTypesInfo
+                          ? [`_type => ${field.argsTypeName}`]
+                          : [],
+                      },
+                    ],
                   },
                 ]),
           ],
           // TODO: refactor to AST
           statements: [
-            /* ts */ `return getPrismaFromContext(ctx).${camelCase(
+            /* ts */ ` const { _count } = transformInfoIntoPrismaArgs(info);
+            return getPrismaFromContext(ctx).${camelCase(
               model.name,
-            )}.findUnique({
+            )}.findUniqueOrThrow({
               where: {${whereConditionString}},
-            }).${field.name}(${field.argsTypeName ? "args" : "{}"});`,
+            }).${field.name}({ ${field.argsTypeName ? "\n...args," : ""}
+              ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+            });`,
           ],
         };
       },

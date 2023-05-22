@@ -70,10 +70,16 @@ describe("crud", () => {
     const findUniqueUserResolverTSFile = await readGeneratedFile(
       "/resolvers/crud/User/FindUniqueUserResolver.ts",
     );
+    const findUniqueUserOrThrowResolverTSFile = await readGeneratedFile(
+      "/resolvers/crud/User/FindUniqueUserOrThrowResolver.ts",
+    );
 
     expect(userCrudResolverTSFile).toMatchSnapshot("UserCrudResolver");
     expect(findUniqueUserResolverTSFile).toMatchSnapshot(
       "FindUniqueUserResolver",
+    );
+    expect(findUniqueUserOrThrowResolverTSFile).toMatchSnapshot(
+      "FindUniqueUserOrThrowResolver",
     );
   });
 
@@ -147,8 +153,14 @@ describe("crud", () => {
     const findFirstUserArgsTSFile = await readGeneratedFile(
       "/resolvers/crud/User/args/FindFirstUserArgs.ts",
     );
+    const findFirstUserOrThrowArgsTSFile = await readGeneratedFile(
+      "/resolvers/crud/User/args/FindFirstUserOrThrowArgs.ts",
+    );
     const findUniqueUserArgsTSFile = await readGeneratedFile(
       "/resolvers/crud/User/args/FindUniqueUserArgs.ts",
+    );
+    const findUniqueUserOrThrowArgsTSFile = await readGeneratedFile(
+      "/resolvers/crud/User/args/FindUniqueUserOrThrowArgs.ts",
     );
     const updateManyUserArgsTSFile = await readGeneratedFile(
       "/resolvers/crud/User/args/UpdateManyUserArgs.ts",
@@ -175,7 +187,13 @@ describe("crud", () => {
     expect(deleteOneUserArgsTSFile).toMatchSnapshot("DeleteOneUserArgs");
     expect(findManyUserArgsTSFile).toMatchSnapshot("FindManyUserArgs");
     expect(findFirstUserArgsTSFile).toMatchSnapshot("FindFirstUserArgs");
+    expect(findFirstUserOrThrowArgsTSFile).toMatchSnapshot(
+      "FindFirstUserOrThrowArgs",
+    );
     expect(findUniqueUserArgsTSFile).toMatchSnapshot("FindUniqueUserArgs");
+    expect(findUniqueUserOrThrowArgsTSFile).toMatchSnapshot(
+      "FindUniqueUserOrThrowArgs",
+    );
     expect(updateManyUserArgsTSFile).toMatchSnapshot("UpdateManyUserArgs");
     expect(updateOneUserArgsTSFile).toMatchSnapshot("UpdateOneUserArgs");
     expect(upsertOneUserArgsTSFile).toMatchSnapshot("UpsertOneUserArgs");
@@ -210,8 +228,14 @@ describe("crud", () => {
     const findFirstUserResolverTSFile = await readGeneratedFile(
       "/resolvers/crud/User/FindFirstUserResolver.ts",
     );
+    const findFirstUserOrThrowResolverTSFile = await readGeneratedFile(
+      "/resolvers/crud/User/FindFirstUserOrThrowResolver.ts",
+    );
     const findUniqueUserResolverTSFile = await readGeneratedFile(
       "/resolvers/crud/User/FindUniqueUserResolver.ts",
+    );
+    const findUniqueUserOrThrowResolverTSFile = await readGeneratedFile(
+      "/resolvers/crud/User/FindUniqueUserOrThrowResolver.ts",
     );
     const updateManyUserResolverTSFile = await readGeneratedFile(
       "/resolvers/crud/User/UpdateManyUserResolver.ts",
@@ -252,8 +276,14 @@ describe("crud", () => {
     expect(findFirstUserResolverTSFile).toMatchSnapshot(
       "FindFirstUserResolver",
     );
+    expect(findFirstUserOrThrowResolverTSFile).toMatchSnapshot(
+      "FindFirstUserOrThrowResolver",
+    );
     expect(findUniqueUserResolverTSFile).toMatchSnapshot(
       "FindUniqueUserResolver",
+    );
+    expect(findUniqueUserOrThrowResolverTSFile).toMatchSnapshot(
+      "FindUniqueUserOrThrowResolver",
     );
     expect(updateManyUserResolverTSFile).toMatchSnapshot(
       "UpdateManyUserResolver",
@@ -327,8 +357,14 @@ describe("crud", () => {
       const findFirstClientArgsTSFile = await readGeneratedFile(
         "/resolvers/crud/Client/args/FindFirstClientArgs.ts",
       );
+      const findFirstClientOrThrowArgsTSFile = await readGeneratedFile(
+        "/resolvers/crud/Client/args/FindFirstClientOrThrowArgs.ts",
+      );
       const findUniqueClientArgsTSFile = await readGeneratedFile(
         "/resolvers/crud/Client/args/FindUniqueClientArgs.ts",
+      );
+      const findUniqueClientOrThrowArgsTSFile = await readGeneratedFile(
+        "/resolvers/crud/Client/args/FindUniqueClientOrThrowArgs.ts",
       );
       const updateManyClientArgsTSFile = await readGeneratedFile(
         "/resolvers/crud/Client/args/UpdateManyClientArgs.ts",
@@ -399,8 +435,14 @@ describe("crud", () => {
       const findFirstClientResolverTSFile = await readGeneratedFile(
         "/resolvers/crud/Client/FindFirstClientResolver.ts",
       );
+      const findFirstClientOrThrowResolverTSFile = await readGeneratedFile(
+        "/resolvers/crud/Client/FindFirstClientOrThrowResolver.ts",
+      );
       const findUniqueClientResolverTSFile = await readGeneratedFile(
         "/resolvers/crud/Client/FindUniqueClientResolver.ts",
+      );
+      const findUniqueClientOrThrowResolverTSFile = await readGeneratedFile(
+        "/resolvers/crud/Client/FindUniqueClientOrThrowResolver.ts",
       );
       const updateManyClientResolverTSFile = await readGeneratedFile(
         "/resolvers/crud/Client/UpdateManyClientResolver.ts",
@@ -530,19 +572,19 @@ describe("crud", () => {
 
   it("should properly generate args classes for sorting by many-to-many relation fields", async () => {
     const schema = /* prisma */ `
-        model FirstModel {
-          idField            Int            @id @default(autoincrement())
-          uniqueStringField  String         @unique
-          floatField         Float
-          secondModelsField  SecondModel[]
-        }
-        model SecondModel {
-          idField            Int           @id @default(autoincrement())
-          uniqueStringField  String        @unique
-          floatField         Float
-          firstModelsField   FirstModel[]
-        }
-      `;
+      model FirstModel {
+        idField            Int            @id @default(autoincrement())
+        uniqueStringField  String         @unique
+        floatField         Float
+        secondModelsField  SecondModel[]
+      }
+      model SecondModel {
+        idField            Int           @id @default(autoincrement())
+        uniqueStringField  String        @unique
+        floatField         Float
+        firstModelsField   FirstModel[]
+      }
+    `;
 
     await generateCodeFromSchema(schema, { outputDirPath });
     const aggregateFirstModelArgsTSFile = await readGeneratedFile(
@@ -572,20 +614,20 @@ describe("crud", () => {
 
   it("should properly generate args classes for sorting by one-to-many relation fields", async () => {
     const schema = /* prisma */ `
-        model FirstModel {
-          idField            Int            @id @default(autoincrement())
-          uniqueStringField  String         @unique
-          floatField         Float
-          secondModelsField  SecondModel[]
-        }
-        model SecondModel {
-          idField            Int          @id @default(autoincrement())
-          uniqueStringField  String       @unique
-          floatField         Float
-          firstModelFieldId  Int
-          firstModelField    FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
-        }
-      `;
+      model FirstModel {
+        idField            Int            @id @default(autoincrement())
+        uniqueStringField  String         @unique
+        floatField         Float
+        secondModelsField  SecondModel[]
+      }
+      model SecondModel {
+        idField            Int          @id @default(autoincrement())
+        uniqueStringField  String       @unique
+        floatField         Float
+        firstModelFieldId  Int
+        firstModelField    FirstModel   @relation(fields: [firstModelFieldId], references: [idField])
+      }
+    `;
 
     await generateCodeFromSchema(schema, { outputDirPath });
     const aggregateSecondModelArgsTSFile = await readGeneratedFile(
@@ -613,6 +655,27 @@ describe("crud", () => {
     expect(indexTSFile).toMatchSnapshot("index");
   });
 
+  it("should properly generate args classes for group by action using aggregate input", async () => {
+    const schema = /* prisma */ `
+      model Sample {
+        idField       Int     @id @default(autoincrement())
+        stringField   String
+        floatField    Float
+        intField      Int
+        booleanField  Boolean
+        dateField     DateTime
+        jsonField     Json
+      }
+    `;
+
+    await generateCodeFromSchema(schema, { outputDirPath });
+    const groupBySampleArgsTSFile = await readGeneratedFile(
+      "/resolvers/crud/Sample/args/GroupBySampleArgs.ts",
+    );
+
+    expect(groupBySampleArgsTSFile).toMatchSnapshot("GroupBySampleArgs");
+  });
+
   describe("when emitTranspiledCode is set to true", () => {
     it("should properly generate imports in js files for resolver classes", async () => {
       const schema = /* prisma */ `
@@ -636,24 +699,72 @@ describe("crud", () => {
     }, 20000);
   });
 
-  it("should properly generate args classes for group by action using aggregate input", async () => {
-    const schema = /* prisma */ `
-        model Sample {
-          idField       Int     @id @default(autoincrement())
-          stringField   String
-          floatField    Float
-          intField      Int
-          booleanField  Boolean
-          dateField     DateTime
-          jsonField     Json
+  describe("when formatGeneratedCode is set to 'prettier'", () => {
+    it("should properly format generated files for resolver classes", async () => {
+      const schema = /* prisma */ `
+        model User {
+          intIdField          Int     @id @default(autoincrement())
+          uniqueStringField   String  @unique
+          optionalStringField String?
+          dateField           DateTime
         }
       `;
 
-    await generateCodeFromSchema(schema, { outputDirPath });
-    const groupBySampleArgsTSFile = await readGeneratedFile(
-      "/resolvers/crud/Sample/args/GroupBySampleArgs.ts",
-    );
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        formatGeneratedCode: "prettier",
+      });
+      const userCrudResolverTSFile = await readGeneratedFile(
+        "/resolvers/crud/User/UserCrudResolver.ts",
+      );
 
-    expect(groupBySampleArgsTSFile).toMatchSnapshot("GroupBySampleArgs");
+      expect(userCrudResolverTSFile).toMatchSnapshot("UserCrudResolver");
+    }, 20000);
+  });
+
+  describe("when formatGeneratedCode is set to false", () => {
+    it("should not format generated files for resolver classes", async () => {
+      const schema = /* prisma */ `
+        model User {
+          intIdField          Int     @id @default(autoincrement())
+          uniqueStringField   String  @unique
+          optionalStringField String?
+          dateField           DateTime
+        }
+      `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        formatGeneratedCode: false,
+      });
+      const userCrudResolverTSFile = await readGeneratedFile(
+        "/resolvers/crud/User/UserCrudResolver.ts",
+      );
+
+      expect(userCrudResolverTSFile).toMatchSnapshot("UserCrudResolver");
+    }, 20000);
+  });
+
+  describe("when emitRedundantTypesInfo is set to true", () => {
+    it("should properly generate type info for @Args decorator", async () => {
+      const schema = /* prisma */ `
+        model User {
+          intIdField          Int     @id @default(autoincrement())
+          uniqueStringField   String  @unique
+          optionalStringField String?
+          dateField           DateTime
+        }
+      `;
+
+      await generateCodeFromSchema(schema, {
+        outputDirPath,
+        emitRedundantTypesInfo: true,
+      });
+      const userCrudResolverTSFile = await readGeneratedFile(
+        "/resolvers/crud/User/UserCrudResolver.ts",
+      );
+
+      expect(userCrudResolverTSFile).toMatchSnapshot("UserCrudResolver");
+    });
   });
 });

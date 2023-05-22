@@ -1,6 +1,9 @@
 import { DMMF as PrismaDMMF } from "@prisma/client/runtime";
 import { Project, ScriptTarget, ModuleKind, CompilerOptions } from "ts-morph";
 import path from "path";
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
+const execa = promisify(exec);
 
 import { noop, toUnixPath } from "./helpers";
 import generateEnumFromDef from "./enum";
@@ -76,6 +79,7 @@ export default async function generateCode(
       baseOptions.prismaClientPath.includes("node_modules")
         ? "@prisma/client"
         : undefined,
+    formatGeneratedCode: baseOptions.formatGeneratedCode ?? "tsc", // default for backward compatibility
   };
 
   const baseDirPath = options.outputDirPath;
@@ -91,7 +95,6 @@ export default async function generateCode(
       }),
     },
   });
-  const resolversDirPath = path.resolve(baseDirPath, resolversFolderName);
 
   log("Transforming dmmfDocument...");
   const dmmfDocument = new DmmfDocument(dmmf, options);
@@ -147,6 +150,7 @@ export default async function generateCode(
     );
   }
 
+  const resolversDirPath = path.resolve(baseDirPath, resolversFolderName);
   let outputTypesToGenerate: DMMF.OutputType[] = [];
   if (dmmfDocument.shouldGenerateBlock("outputs")) {
     log("Generating output types...");
@@ -219,13 +223,7 @@ export default async function generateCode(
   if (dmmfDocument.shouldGenerateBlock("inputs")) {
     log("Generating input types...");
     dmmfDocument.schema.inputTypes.forEach(type =>
-      generateInputTypeClassFromType(
-        project,
-        resolversDirPath,
-        type,
-        dmmfDocument,
-        options,
-      ),
+      generateInputTypeClassFromType(project, resolversDirPath, type, options),
     );
     const inputsBarrelExportSourceFile = project.createSourceFile(
       path.resolve(
@@ -254,6 +252,7 @@ export default async function generateCode(
         baseDirPath,
         dmmfDocument,
         relationModel,
+        options,
       ),
     );
     const relationResolversBarrelExportSourceFile = project.createSourceFile(
@@ -360,6 +359,7 @@ export default async function generateCode(
         mapping,
         model,
         dmmfDocument,
+        options,
       );
       mapping.actions.forEach(async action => {
         const model = dmmfDocument.datamodel.models.find(
@@ -372,6 +372,7 @@ export default async function generateCode(
           action,
           mapping,
           dmmfDocument,
+          options,
         );
       });
     });
@@ -530,9 +531,14 @@ export default async function generateCode(
   if (emitTranspiledCode) {
     await project.emit();
   } else {
-    for (const file of project.getSourceFiles()) {
-      file.formatText({ indentSize: 2 });
+    if (options.formatGeneratedCode === "tsc") {
+      for (const file of project.getSourceFiles()) {
+        file.formatText({ indentSize: 2 });
+      }
     }
     await project.save();
+    if (options.formatGeneratedCode === "prettier") {
+      await execa(`npx prettier --write ${baseDirPath}`);
+    }
   }
 }

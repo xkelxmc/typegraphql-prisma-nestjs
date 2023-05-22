@@ -8,6 +8,8 @@ import * as models from "./models";
 import * as outputTypes from "./resolvers/outputs";
 import * as inputTypes from "./resolvers/inputs";
 
+export type MethodDecoratorOverrideFn = (decorators: MethodDecorator[]) => MethodDecorator[];
+
 const crudResolversMap = {
   MainUser: crudResolvers.MainUserCrudResolver,
   Post: crudResolvers.PostCrudResolver,
@@ -18,7 +20,8 @@ const crudResolversMap = {
   Problem: crudResolvers.ProblemCrudResolver,
   Creator: crudResolvers.CreatorCrudResolver,
   NativeTypeModel: crudResolvers.NativeTypeModelCrudResolver,
-  Equipment: crudResolvers.EquipmentCrudResolver
+  Equipment: crudResolvers.EquipmentCrudResolver,
+  Hidden: crudResolvers.HiddenCrudResolver
 };
 const actionResolversMap = {
   MainUser: {
@@ -28,8 +31,10 @@ const actionResolversMap = {
     deleteManyMainUser: actionResolvers.DeleteManyMainUserResolver,
     deleteOneMainUser: actionResolvers.DeleteOneMainUserResolver,
     findFirstMainUser: actionResolvers.FindFirstMainUserResolver,
+    findFirstMainUserOrThrow: actionResolvers.FindFirstMainUserOrThrowResolver,
     mainUsers: actionResolvers.FindManyMainUserResolver,
     mainUser: actionResolvers.FindUniqueMainUserResolver,
+    getMainUser: actionResolvers.FindUniqueMainUserOrThrowResolver,
     groupByMainUser: actionResolvers.GroupByMainUserResolver,
     updateManyMainUser: actionResolvers.UpdateManyMainUserResolver,
     updateOneMainUser: actionResolvers.UpdateOneMainUserResolver,
@@ -42,8 +47,10 @@ const actionResolversMap = {
     deleteManyPost: actionResolvers.DeleteManyPostResolver,
     deleteOnePost: actionResolvers.DeleteOnePostResolver,
     findFirstPost: actionResolvers.FindFirstPostResolver,
+    findFirstPostOrThrow: actionResolvers.FindFirstPostOrThrowResolver,
     posts: actionResolvers.FindManyPostResolver,
     post: actionResolvers.FindUniquePostResolver,
+    getPost: actionResolvers.FindUniquePostOrThrowResolver,
     groupByPost: actionResolvers.GroupByPostResolver,
     updateManyPost: actionResolvers.UpdateManyPostResolver,
     updateOnePost: actionResolvers.UpdateOnePostResolver,
@@ -56,8 +63,10 @@ const actionResolversMap = {
     deleteManyCategory: actionResolvers.DeleteManyCategoryResolver,
     deleteOneCategory: actionResolvers.DeleteOneCategoryResolver,
     findFirstCategory: actionResolvers.FindFirstCategoryResolver,
+    findFirstCategoryOrThrow: actionResolvers.FindFirstCategoryOrThrowResolver,
     categories: actionResolvers.FindManyCategoryResolver,
     category: actionResolvers.FindUniqueCategoryResolver,
+    getCategory: actionResolvers.FindUniqueCategoryOrThrowResolver,
     groupByCategory: actionResolvers.GroupByCategoryResolver,
     updateManyCategory: actionResolvers.UpdateManyCategoryResolver,
     updateOneCategory: actionResolvers.UpdateOneCategoryResolver,
@@ -70,8 +79,10 @@ const actionResolversMap = {
     deleteManyPatient: actionResolvers.DeleteManyPatientResolver,
     deleteOnePatient: actionResolvers.DeleteOnePatientResolver,
     findFirstPatient: actionResolvers.FindFirstPatientResolver,
+    findFirstPatientOrThrow: actionResolvers.FindFirstPatientOrThrowResolver,
     patients: actionResolvers.FindManyPatientResolver,
     patient: actionResolvers.FindUniquePatientResolver,
+    getPatient: actionResolvers.FindUniquePatientOrThrowResolver,
     groupByPatient: actionResolvers.GroupByPatientResolver,
     updateManyPatient: actionResolvers.UpdateManyPatientResolver,
     updateOnePatient: actionResolvers.UpdateOnePatientResolver,
@@ -84,8 +95,10 @@ const actionResolversMap = {
     deleteManyMovie: actionResolvers.DeleteManyMovieResolver,
     deleteOneMovie: actionResolvers.DeleteOneMovieResolver,
     findFirstMovie: actionResolvers.FindFirstMovieResolver,
+    findFirstMovieOrThrow: actionResolvers.FindFirstMovieOrThrowResolver,
     movies: actionResolvers.FindManyMovieResolver,
     movie: actionResolvers.FindUniqueMovieResolver,
+    getMovie: actionResolvers.FindUniqueMovieOrThrowResolver,
     groupByMovie: actionResolvers.GroupByMovieResolver,
     updateManyMovie: actionResolvers.UpdateManyMovieResolver,
     updateOneMovie: actionResolvers.UpdateOneMovieResolver,
@@ -98,8 +111,10 @@ const actionResolversMap = {
     deleteManyDirector: actionResolvers.DeleteManyDirectorResolver,
     deleteOneDirector: actionResolvers.DeleteOneDirectorResolver,
     findFirstDirector: actionResolvers.FindFirstDirectorResolver,
+    findFirstDirectorOrThrow: actionResolvers.FindFirstDirectorOrThrowResolver,
     directors: actionResolvers.FindManyDirectorResolver,
     director: actionResolvers.FindUniqueDirectorResolver,
+    getDirector: actionResolvers.FindUniqueDirectorOrThrowResolver,
     groupByDirector: actionResolvers.GroupByDirectorResolver,
     updateManyDirector: actionResolvers.UpdateManyDirectorResolver,
     updateOneDirector: actionResolvers.UpdateOneDirectorResolver,
@@ -112,8 +127,10 @@ const actionResolversMap = {
     deleteManyProblem: actionResolvers.DeleteManyProblemResolver,
     deleteOneProblem: actionResolvers.DeleteOneProblemResolver,
     findFirstProblem: actionResolvers.FindFirstProblemResolver,
+    findFirstProblemOrThrow: actionResolvers.FindFirstProblemOrThrowResolver,
     problems: actionResolvers.FindManyProblemResolver,
     problem: actionResolvers.FindUniqueProblemResolver,
+    getProblem: actionResolvers.FindUniqueProblemOrThrowResolver,
     groupByProblem: actionResolvers.GroupByProblemResolver,
     updateManyProblem: actionResolvers.UpdateManyProblemResolver,
     updateOneProblem: actionResolvers.UpdateOneProblemResolver,
@@ -126,8 +143,10 @@ const actionResolversMap = {
     deleteManyCreator: actionResolvers.DeleteManyCreatorResolver,
     deleteOneCreator: actionResolvers.DeleteOneCreatorResolver,
     findFirstCreator: actionResolvers.FindFirstCreatorResolver,
+    findFirstCreatorOrThrow: actionResolvers.FindFirstCreatorOrThrowResolver,
     creators: actionResolvers.FindManyCreatorResolver,
     creator: actionResolvers.FindUniqueCreatorResolver,
+    getCreator: actionResolvers.FindUniqueCreatorOrThrowResolver,
     groupByCreator: actionResolvers.GroupByCreatorResolver,
     updateManyCreator: actionResolvers.UpdateManyCreatorResolver,
     updateOneCreator: actionResolvers.UpdateOneCreatorResolver,
@@ -140,8 +159,10 @@ const actionResolversMap = {
     deleteManyNativeTypeModel: actionResolvers.DeleteManyNativeTypeModelResolver,
     deleteOneNativeTypeModel: actionResolvers.DeleteOneNativeTypeModelResolver,
     findFirstNativeTypeModel: actionResolvers.FindFirstNativeTypeModelResolver,
+    findFirstNativeTypeModelOrThrow: actionResolvers.FindFirstNativeTypeModelOrThrowResolver,
     nativeTypeModels: actionResolvers.FindManyNativeTypeModelResolver,
     nativeTypeModel: actionResolvers.FindUniqueNativeTypeModelResolver,
+    getNativeTypeModel: actionResolvers.FindUniqueNativeTypeModelOrThrowResolver,
     groupByNativeTypeModel: actionResolvers.GroupByNativeTypeModelResolver,
     updateManyNativeTypeModel: actionResolvers.UpdateManyNativeTypeModelResolver,
     updateOneNativeTypeModel: actionResolvers.UpdateOneNativeTypeModelResolver,
@@ -154,25 +175,44 @@ const actionResolversMap = {
     deleteManyEquipment: actionResolvers.DeleteManyEquipmentResolver,
     deleteOneEquipment: actionResolvers.DeleteOneEquipmentResolver,
     findFirstEquipment: actionResolvers.FindFirstEquipmentResolver,
+    findFirstEquipmentOrThrow: actionResolvers.FindFirstEquipmentOrThrowResolver,
     equipments: actionResolvers.FindManyEquipmentResolver,
     equipment: actionResolvers.FindUniqueEquipmentResolver,
+    getEquipment: actionResolvers.FindUniqueEquipmentOrThrowResolver,
     groupByEquipment: actionResolvers.GroupByEquipmentResolver,
     updateManyEquipment: actionResolvers.UpdateManyEquipmentResolver,
     updateOneEquipment: actionResolvers.UpdateOneEquipmentResolver,
     upsertOneEquipment: actionResolvers.UpsertOneEquipmentResolver
+  },
+  Hidden: {
+    aggregateHidden: actionResolvers.AggregateHiddenResolver,
+    createManyHidden: actionResolvers.CreateManyHiddenResolver,
+    createOneHidden: actionResolvers.CreateOneHiddenResolver,
+    deleteManyHidden: actionResolvers.DeleteManyHiddenResolver,
+    deleteOneHidden: actionResolvers.DeleteOneHiddenResolver,
+    findFirstHidden: actionResolvers.FindFirstHiddenResolver,
+    findFirstHiddenOrThrow: actionResolvers.FindFirstHiddenOrThrowResolver,
+    hiddens: actionResolvers.FindManyHiddenResolver,
+    hidden: actionResolvers.FindUniqueHiddenResolver,
+    getHidden: actionResolvers.FindUniqueHiddenOrThrowResolver,
+    groupByHidden: actionResolvers.GroupByHiddenResolver,
+    updateManyHidden: actionResolvers.UpdateManyHiddenResolver,
+    updateOneHidden: actionResolvers.UpdateOneHiddenResolver,
+    upsertOneHidden: actionResolvers.UpsertOneHiddenResolver
   }
 };
 const crudResolversInfo = {
-  MainUser: ["aggregateMainUser", "createManyMainUser", "createOneMainUser", "deleteManyMainUser", "deleteOneMainUser", "findFirstMainUser", "mainUsers", "mainUser", "groupByMainUser", "updateManyMainUser", "updateOneMainUser", "upsertOneMainUser"],
-  Post: ["aggregatePost", "createManyPost", "createOnePost", "deleteManyPost", "deleteOnePost", "findFirstPost", "posts", "post", "groupByPost", "updateManyPost", "updateOnePost", "upsertOnePost"],
-  Category: ["aggregateCategory", "createManyCategory", "createOneCategory", "deleteManyCategory", "deleteOneCategory", "findFirstCategory", "categories", "category", "groupByCategory", "updateManyCategory", "updateOneCategory", "upsertOneCategory"],
-  Patient: ["aggregatePatient", "createManyPatient", "createOnePatient", "deleteManyPatient", "deleteOnePatient", "findFirstPatient", "patients", "patient", "groupByPatient", "updateManyPatient", "updateOnePatient", "upsertOnePatient"],
-  Movie: ["aggregateMovie", "createManyMovie", "createOneMovie", "deleteManyMovie", "deleteOneMovie", "findFirstMovie", "movies", "movie", "groupByMovie", "updateManyMovie", "updateOneMovie", "upsertOneMovie"],
-  Director: ["aggregateDirector", "createManyDirector", "createOneDirector", "deleteManyDirector", "deleteOneDirector", "findFirstDirector", "directors", "director", "groupByDirector", "updateManyDirector", "updateOneDirector", "upsertOneDirector"],
-  Problem: ["aggregateProblem", "createManyProblem", "createOneProblem", "deleteManyProblem", "deleteOneProblem", "findFirstProblem", "problems", "problem", "groupByProblem", "updateManyProblem", "updateOneProblem", "upsertOneProblem"],
-  Creator: ["aggregateCreator", "createManyCreator", "createOneCreator", "deleteManyCreator", "deleteOneCreator", "findFirstCreator", "creators", "creator", "groupByCreator", "updateManyCreator", "updateOneCreator", "upsertOneCreator"],
-  NativeTypeModel: ["aggregateNativeTypeModel", "createManyNativeTypeModel", "createOneNativeTypeModel", "deleteManyNativeTypeModel", "deleteOneNativeTypeModel", "findFirstNativeTypeModel", "nativeTypeModels", "nativeTypeModel", "groupByNativeTypeModel", "updateManyNativeTypeModel", "updateOneNativeTypeModel", "upsertOneNativeTypeModel"],
-  Equipment: ["aggregateEquipment", "createManyEquipment", "createOneEquipment", "deleteManyEquipment", "deleteOneEquipment", "findFirstEquipment", "equipments", "equipment", "groupByEquipment", "updateManyEquipment", "updateOneEquipment", "upsertOneEquipment"]
+  MainUser: ["aggregateMainUser", "createManyMainUser", "createOneMainUser", "deleteManyMainUser", "deleteOneMainUser", "findFirstMainUser", "findFirstMainUserOrThrow", "mainUsers", "mainUser", "getMainUser", "groupByMainUser", "updateManyMainUser", "updateOneMainUser", "upsertOneMainUser"],
+  Post: ["aggregatePost", "createManyPost", "createOnePost", "deleteManyPost", "deleteOnePost", "findFirstPost", "findFirstPostOrThrow", "posts", "post", "getPost", "groupByPost", "updateManyPost", "updateOnePost", "upsertOnePost"],
+  Category: ["aggregateCategory", "createManyCategory", "createOneCategory", "deleteManyCategory", "deleteOneCategory", "findFirstCategory", "findFirstCategoryOrThrow", "categories", "category", "getCategory", "groupByCategory", "updateManyCategory", "updateOneCategory", "upsertOneCategory"],
+  Patient: ["aggregatePatient", "createManyPatient", "createOnePatient", "deleteManyPatient", "deleteOnePatient", "findFirstPatient", "findFirstPatientOrThrow", "patients", "patient", "getPatient", "groupByPatient", "updateManyPatient", "updateOnePatient", "upsertOnePatient"],
+  Movie: ["aggregateMovie", "createManyMovie", "createOneMovie", "deleteManyMovie", "deleteOneMovie", "findFirstMovie", "findFirstMovieOrThrow", "movies", "movie", "getMovie", "groupByMovie", "updateManyMovie", "updateOneMovie", "upsertOneMovie"],
+  Director: ["aggregateDirector", "createManyDirector", "createOneDirector", "deleteManyDirector", "deleteOneDirector", "findFirstDirector", "findFirstDirectorOrThrow", "directors", "director", "getDirector", "groupByDirector", "updateManyDirector", "updateOneDirector", "upsertOneDirector"],
+  Problem: ["aggregateProblem", "createManyProblem", "createOneProblem", "deleteManyProblem", "deleteOneProblem", "findFirstProblem", "findFirstProblemOrThrow", "problems", "problem", "getProblem", "groupByProblem", "updateManyProblem", "updateOneProblem", "upsertOneProblem"],
+  Creator: ["aggregateCreator", "createManyCreator", "createOneCreator", "deleteManyCreator", "deleteOneCreator", "findFirstCreator", "findFirstCreatorOrThrow", "creators", "creator", "getCreator", "groupByCreator", "updateManyCreator", "updateOneCreator", "upsertOneCreator"],
+  NativeTypeModel: ["aggregateNativeTypeModel", "createManyNativeTypeModel", "createOneNativeTypeModel", "deleteManyNativeTypeModel", "deleteOneNativeTypeModel", "findFirstNativeTypeModel", "findFirstNativeTypeModelOrThrow", "nativeTypeModels", "nativeTypeModel", "getNativeTypeModel", "groupByNativeTypeModel", "updateManyNativeTypeModel", "updateOneNativeTypeModel", "upsertOneNativeTypeModel"],
+  Equipment: ["aggregateEquipment", "createManyEquipment", "createOneEquipment", "deleteManyEquipment", "deleteOneEquipment", "findFirstEquipment", "findFirstEquipmentOrThrow", "equipments", "equipment", "getEquipment", "groupByEquipment", "updateManyEquipment", "updateOneEquipment", "upsertOneEquipment"],
+  Hidden: ["aggregateHidden", "createManyHidden", "createOneHidden", "deleteManyHidden", "deleteOneHidden", "findFirstHidden", "findFirstHiddenOrThrow", "hiddens", "hidden", "getHidden", "groupByHidden", "updateManyHidden", "updateOneHidden", "upsertOneHidden"]
 };
 const argsInfo = {
   AggregateMainUserArgs: ["where", "orderBy", "cursor", "take", "skip"],
@@ -181,8 +221,10 @@ const argsInfo = {
   DeleteManyMainUserArgs: ["where"],
   DeleteOneMainUserArgs: ["where"],
   FindFirstMainUserArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstMainUserOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyMainUserArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueMainUserArgs: ["where"],
+  FindUniqueMainUserOrThrowArgs: ["where"],
   GroupByMainUserArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyMainUserArgs: ["data", "where"],
   UpdateOneMainUserArgs: ["data", "where"],
@@ -193,8 +235,10 @@ const argsInfo = {
   DeleteManyPostArgs: ["where"],
   DeleteOnePostArgs: ["where"],
   FindFirstPostArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstPostOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyPostArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniquePostArgs: ["where"],
+  FindUniquePostOrThrowArgs: ["where"],
   GroupByPostArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyPostArgs: ["data", "where"],
   UpdateOnePostArgs: ["data", "where"],
@@ -205,8 +249,10 @@ const argsInfo = {
   DeleteManyCategoryArgs: ["where"],
   DeleteOneCategoryArgs: ["where"],
   FindFirstCategoryArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstCategoryOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyCategoryArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueCategoryArgs: ["where"],
+  FindUniqueCategoryOrThrowArgs: ["where"],
   GroupByCategoryArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyCategoryArgs: ["data", "where"],
   UpdateOneCategoryArgs: ["data", "where"],
@@ -217,8 +263,10 @@ const argsInfo = {
   DeleteManyPatientArgs: ["where"],
   DeleteOnePatientArgs: ["where"],
   FindFirstPatientArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstPatientOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyPatientArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniquePatientArgs: ["where"],
+  FindUniquePatientOrThrowArgs: ["where"],
   GroupByPatientArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyPatientArgs: ["data", "where"],
   UpdateOnePatientArgs: ["data", "where"],
@@ -229,8 +277,10 @@ const argsInfo = {
   DeleteManyMovieArgs: ["where"],
   DeleteOneMovieArgs: ["where"],
   FindFirstMovieArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstMovieOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyMovieArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueMovieArgs: ["where"],
+  FindUniqueMovieOrThrowArgs: ["where"],
   GroupByMovieArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyMovieArgs: ["data", "where"],
   UpdateOneMovieArgs: ["data", "where"],
@@ -241,8 +291,10 @@ const argsInfo = {
   DeleteManyDirectorArgs: ["where"],
   DeleteOneDirectorArgs: ["where"],
   FindFirstDirectorArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstDirectorOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyDirectorArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueDirectorArgs: ["where"],
+  FindUniqueDirectorOrThrowArgs: ["where"],
   GroupByDirectorArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyDirectorArgs: ["data", "where"],
   UpdateOneDirectorArgs: ["data", "where"],
@@ -253,8 +305,10 @@ const argsInfo = {
   DeleteManyProblemArgs: ["where"],
   DeleteOneProblemArgs: ["where"],
   FindFirstProblemArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstProblemOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyProblemArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueProblemArgs: ["where"],
+  FindUniqueProblemOrThrowArgs: ["where"],
   GroupByProblemArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyProblemArgs: ["data", "where"],
   UpdateOneProblemArgs: ["data", "where"],
@@ -265,8 +319,10 @@ const argsInfo = {
   DeleteManyCreatorArgs: ["where"],
   DeleteOneCreatorArgs: ["where"],
   FindFirstCreatorArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstCreatorOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyCreatorArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueCreatorArgs: ["where"],
+  FindUniqueCreatorOrThrowArgs: ["where"],
   GroupByCreatorArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyCreatorArgs: ["data", "where"],
   UpdateOneCreatorArgs: ["data", "where"],
@@ -277,8 +333,10 @@ const argsInfo = {
   DeleteManyNativeTypeModelArgs: ["where"],
   DeleteOneNativeTypeModelArgs: ["where"],
   FindFirstNativeTypeModelArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstNativeTypeModelOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyNativeTypeModelArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueNativeTypeModelArgs: ["where"],
+  FindUniqueNativeTypeModelOrThrowArgs: ["where"],
   GroupByNativeTypeModelArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyNativeTypeModelArgs: ["data", "where"],
   UpdateOneNativeTypeModelArgs: ["data", "where"],
@@ -289,12 +347,28 @@ const argsInfo = {
   DeleteManyEquipmentArgs: ["where"],
   DeleteOneEquipmentArgs: ["where"],
   FindFirstEquipmentArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstEquipmentOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyEquipmentArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindUniqueEquipmentArgs: ["where"],
+  FindUniqueEquipmentOrThrowArgs: ["where"],
   GroupByEquipmentArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyEquipmentArgs: ["data", "where"],
   UpdateOneEquipmentArgs: ["data", "where"],
-  UpsertOneEquipmentArgs: ["where", "create", "update"]
+  UpsertOneEquipmentArgs: ["where", "create", "update"],
+  AggregateHiddenArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyHiddenArgs: ["data", "skipDuplicates"],
+  CreateOneHiddenArgs: ["data"],
+  DeleteManyHiddenArgs: ["where"],
+  DeleteOneHiddenArgs: ["where"],
+  FindFirstHiddenArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindFirstHiddenOrThrowArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindManyHiddenArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindUniqueHiddenArgs: ["where"],
+  FindUniqueHiddenOrThrowArgs: ["where"],
+  GroupByHiddenArgs: ["where", "orderBy", "by", "having", "take", "skip"],
+  UpdateManyHiddenArgs: ["data", "where"],
+  UpdateOneHiddenArgs: ["data", "where"],
+  UpsertOneHiddenArgs: ["where", "create", "update"]
 };
 
 type ResolverModelNames = keyof typeof crudResolversMap;
@@ -305,7 +379,12 @@ type ModelResolverActionNames<
 
 export type ResolverActionsConfig<
   TModel extends ResolverModelNames
-> = Partial<Record<ModelResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
+> = Partial<Record<ModelResolverActionNames<TModel>, MethodDecorator[] | MethodDecoratorOverrideFn>>
+  & {
+    _all?: MethodDecorator[];
+    _query?: MethodDecorator[];
+    _mutation?: MethodDecorator[];
+  };
 
 export type ResolversEnhanceMap = {
   [TModel in ResolverModelNames]?: ResolverActionsConfig<TModel>;
@@ -314,29 +393,32 @@ export type ResolversEnhanceMap = {
 export function applyResolversEnhanceMap(
   resolversEnhanceMap: ResolversEnhanceMap,
 ) {
+  const mutationOperationPrefixes = [
+    "createOne", "createMany", "deleteOne", "updateOne", "deleteMany", "updateMany", "upsertOne"
+  ];
   for (const resolversEnhanceMapKey of Object.keys(resolversEnhanceMap)) {
     const modelName = resolversEnhanceMapKey as keyof typeof resolversEnhanceMap;
     const crudTarget = crudResolversMap[modelName].prototype;
     const resolverActionsConfig = resolversEnhanceMap[modelName]!;
     const actionResolversConfig = actionResolversMap[modelName];
-    if (resolverActionsConfig._all) {
-      const allActionsDecorators = resolverActionsConfig._all;
-      const resolverActionNames = crudResolversInfo[modelName as keyof typeof crudResolversInfo];
-      for (const resolverActionName of resolverActionNames) {
-        const actionTarget = (actionResolversConfig[
-          resolverActionName as keyof typeof actionResolversConfig
-        ] as Function).prototype;
-        tslib.__decorate(allActionsDecorators, crudTarget, resolverActionName, null);
-        tslib.__decorate(allActionsDecorators, actionTarget, resolverActionName, null);
-      }
-    }
-    const resolverActionsToApply = Object.keys(resolverActionsConfig).filter(
-      it => it !== "_all"
-    );
-    for (const resolverActionName of resolverActionsToApply) {
-      const decorators = resolverActionsConfig[
+    const allActionsDecorators = resolverActionsConfig._all;
+    const resolverActionNames = crudResolversInfo[modelName as keyof typeof crudResolversInfo];
+    for (const resolverActionName of resolverActionNames) {
+      const maybeDecoratorsOrFn = resolverActionsConfig[
         resolverActionName as keyof typeof resolverActionsConfig
-      ] as MethodDecorator[];
+      ] as MethodDecorator[] | MethodDecoratorOverrideFn | undefined;
+      const isWriteOperation = mutationOperationPrefixes.some(prefix => resolverActionName.startsWith(prefix));
+      const operationKindDecorators = isWriteOperation ? resolverActionsConfig._mutation : resolverActionsConfig._query;
+      const mainDecorators = [
+        ...allActionsDecorators ?? [],
+        ...operationKindDecorators ?? [],
+      ]
+      let decorators: MethodDecorator[];
+      if (typeof maybeDecoratorsOrFn === "function") {
+        decorators = maybeDecoratorsOrFn(mainDecorators);
+      } else {
+        decorators = [...mainDecorators, ...maybeDecoratorsOrFn ?? []];
+      }
       const actionTarget = (actionResolversConfig[
         resolverActionName as keyof typeof actionResolversConfig
       ] as Function).prototype;
@@ -407,7 +489,8 @@ type RelationResolverActionNames<
 > = keyof typeof relationResolversMap[TModel]["prototype"];
 
 export type RelationResolverActionsConfig<TModel extends RelationResolverModelNames>
-  = Partial<Record<RelationResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
+  = Partial<Record<RelationResolverActionNames<TModel>, MethodDecorator[] | MethodDecoratorOverrideFn>>
+  & { _all?: MethodDecorator[] };
 
 export type RelationResolversEnhanceMap = {
   [TModel in RelationResolverModelNames]?: RelationResolverActionsConfig<TModel>;
@@ -420,20 +503,18 @@ export function applyRelationResolversEnhanceMap(
     const modelName = relationResolversEnhanceMapKey as keyof typeof relationResolversEnhanceMap;
     const relationResolverTarget = relationResolversMap[modelName].prototype;
     const relationResolverActionsConfig = relationResolversEnhanceMap[modelName]!;
-    if (relationResolverActionsConfig._all) {
-      const allActionsDecorators = relationResolverActionsConfig._all;
-      const relationResolverActionNames = relationResolversInfo[modelName as keyof typeof relationResolversInfo];
-      for (const relationResolverActionName of relationResolverActionNames) {
-        tslib.__decorate(allActionsDecorators, relationResolverTarget, relationResolverActionName, null);
-      }
-    }
-    const relationResolverActionsToApply = Object.keys(relationResolverActionsConfig).filter(
-      it => it !== "_all"
-    );
-    for (const relationResolverActionName of relationResolverActionsToApply) {
-      const decorators = relationResolverActionsConfig[
+    const allActionsDecorators = relationResolverActionsConfig._all ?? [];
+    const relationResolverActionNames = relationResolversInfo[modelName as keyof typeof relationResolversInfo];
+    for (const relationResolverActionName of relationResolverActionNames) {
+      const maybeDecoratorsOrFn = relationResolverActionsConfig[
         relationResolverActionName as keyof typeof relationResolverActionsConfig
-      ] as MethodDecorator[];
+      ] as MethodDecorator[] | MethodDecoratorOverrideFn | undefined;
+      let decorators: MethodDecorator[];
+      if (typeof maybeDecoratorsOrFn === "function") {
+        decorators = maybeDecoratorsOrFn(allActionsDecorators);
+      } else {
+        decorators = [...allActionsDecorators, ...maybeDecoratorsOrFn ?? []];
+      }
       tslib.__decorate(decorators, relationResolverTarget, relationResolverActionName, null);
     }
   }
@@ -444,9 +525,11 @@ type TypeConfig = {
   fields?: FieldsConfig;
 };
 
+export type PropertyDecoratorOverrideFn = (decorators: PropertyDecorator[]) => PropertyDecorator[];
+
 type FieldsConfig<TTypeKeys extends string = string> = Partial<
-  Record<TTypeKeys | "_all", PropertyDecorator[]>
->;
+  Record<TTypeKeys, PropertyDecorator[] | PropertyDecoratorOverrideFn>
+> & { _all?: PropertyDecorator[] };
 
 function applyTypeClassEnhanceConfig<
   TEnhanceConfig extends TypeConfig,
@@ -461,18 +544,18 @@ function applyTypeClassEnhanceConfig<
     tslib.__decorate(enhanceConfig.class, typeClass);
   }
   if (enhanceConfig.fields) {
-    if (enhanceConfig.fields._all) {
-      const allFieldsDecorators = enhanceConfig.fields._all;
-      for (const typeFieldName of typeFieldNames) {
-        tslib.__decorate(allFieldsDecorators, typePrototype, typeFieldName, void 0);
+    const allFieldsDecorators = enhanceConfig.fields._all ?? [];
+    for (const typeFieldName of typeFieldNames) {
+      const maybeDecoratorsOrFn = enhanceConfig.fields[
+        typeFieldName
+      ] as PropertyDecorator[] | PropertyDecoratorOverrideFn | undefined;
+      let decorators: PropertyDecorator[];
+      if (typeof maybeDecoratorsOrFn === "function") {
+        decorators = maybeDecoratorsOrFn(allFieldsDecorators);
+      } else {
+        decorators = [...allFieldsDecorators, ...maybeDecoratorsOrFn ?? []];
       }
-    }
-    const configFieldsToApply = Object.keys(enhanceConfig.fields).filter(
-      it => it !== "_all"
-    );
-    for (const typeFieldName of configFieldsToApply) {
-      const fieldDecorators = enhanceConfig.fields[typeFieldName]!;
-      tslib.__decorate(fieldDecorators, typePrototype, typeFieldName, void 0);
+      tslib.__decorate(decorators, typePrototype, typeFieldName, void 0);
     }
   }
 }
@@ -487,7 +570,8 @@ const modelsInfo = {
   Problem: ["id", "problemText", "creatorId"],
   Creator: ["id", "name"],
   NativeTypeModel: ["id", "bigInt", "byteA", "decimal"],
-  Equipment: ["id"]
+  Equipment: ["id", "name"],
+  Hidden: ["id", "name"]
 };
 
 type ModelNames = keyof typeof models;
@@ -545,7 +629,9 @@ const outputsInfo = {
   AggregateNativeTypeModel: ["_count", "_avg", "_sum", "_min", "_max"],
   NativeTypeModelGroupBy: ["id", "bigInt", "byteA", "decimal", "_count", "_avg", "_sum", "_min", "_max"],
   AggregateEquipment: ["_count", "_min", "_max"],
-  EquipmentGroupBy: ["id", "_count", "_min", "_max"],
+  EquipmentGroupBy: ["id", "name", "_count", "_min", "_max"],
+  AggregateHidden: ["_count", "_min", "_max"],
+  HiddenGroupBy: ["id", "name", "_count", "_min", "_max"],
   AffectedRowsOutput: ["count"],
   MainUserCount: ["posts", "editorPosts"],
   MainUserCountAggregate: ["id", "email", "name", "age", "balance", "amount", "role", "grades", "aliases", "_all"],
@@ -590,9 +676,12 @@ const outputsInfo = {
   NativeTypeModelSumAggregate: ["id", "bigInt", "decimal"],
   NativeTypeModelMinAggregate: ["id", "bigInt", "byteA", "decimal"],
   NativeTypeModelMaxAggregate: ["id", "bigInt", "byteA", "decimal"],
-  EquipmentCountAggregate: ["id", "_all"],
-  EquipmentMinAggregate: ["id"],
-  EquipmentMaxAggregate: ["id"]
+  EquipmentCountAggregate: ["id", "name", "_all"],
+  EquipmentMinAggregate: ["id", "name"],
+  EquipmentMaxAggregate: ["id", "name"],
+  HiddenCountAggregate: ["id", "name", "_all"],
+  HiddenMinAggregate: ["id", "name"],
+  HiddenMaxAggregate: ["id", "name"]
 };
 
 type OutputTypesNames = keyof typeof outputTypes;
@@ -633,14 +722,14 @@ export function applyOutputTypesEnhanceMap(
 }
 
 const inputsInfo = {
-  MainUserWhereInput: ["AND", "OR", "NOT", "id", "email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
-  MainUserOrderByWithRelationAndSearchRelevanceInput: ["id", "email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases", "_relevance"],
-  MainUserWhereUniqueInput: ["id", "email", "AND", "OR", "NOT", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
+  MainUserWhereInput: ["AND", "OR", "NOT", "id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "clientPosts", "editorPosts"],
+  MainUserOrderByWithRelationAndSearchRelevanceInput: ["id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "clientPosts", "editorPosts", "_relevance"],
+  MainUserWhereUniqueInput: ["id", "email", "AND", "OR", "NOT", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "clientPosts", "editorPosts"],
   MainUserOrderByWithAggregationInput: ["id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "_count", "_avg", "_max", "_min", "_sum"],
   MainUserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases"],
-  PostWhereInput: ["AND", "OR", "NOT", "uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "authorId", "editor", "editorId", "kind", "metadata"],
-  PostOrderByWithRelationAndSearchRelevanceInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "authorId", "editor", "editorId", "kind", "metadata", "_relevance"],
-  PostWhereUniqueInput: ["uuid", "AND", "OR", "NOT", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "authorId", "editor", "editorId", "kind", "metadata"],
+  PostWhereInput: ["AND", "OR", "NOT", "uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata", "author", "editor"],
+  PostOrderByWithRelationAndSearchRelevanceInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata", "author", "editor", "_relevance"],
+  PostWhereUniqueInput: ["uuid", "AND", "OR", "NOT", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata", "author", "editor"],
   PostOrderByWithAggregationInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata", "_count", "_avg", "_max", "_min", "_sum"],
   PostScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata"],
   CategoryWhereInput: ["AND", "OR", "NOT", "name", "slug", "number"],
@@ -653,9 +742,9 @@ const inputsInfo = {
   PatientWhereUniqueInput: ["firstName_lastName", "AND", "OR", "NOT", "firstName", "lastName", "email"],
   PatientOrderByWithAggregationInput: ["firstName", "lastName", "email", "_count", "_max", "_min"],
   PatientScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "firstName", "lastName", "email"],
-  MovieWhereInput: ["AND", "OR", "NOT", "directorFirstName", "directorLastName", "director", "title"],
-  MovieOrderByWithRelationAndSearchRelevanceInput: ["directorFirstName", "directorLastName", "director", "title", "_relevance"],
-  MovieWhereUniqueInput: ["movieCompoundId", "AND", "OR", "NOT", "directorFirstName", "directorLastName", "director", "title"],
+  MovieWhereInput: ["AND", "OR", "NOT", "directorFirstName", "directorLastName", "title", "director"],
+  MovieOrderByWithRelationAndSearchRelevanceInput: ["directorFirstName", "directorLastName", "title", "director", "_relevance"],
+  MovieWhereUniqueInput: ["movieCompoundId", "AND", "OR", "NOT", "directorFirstName", "directorLastName", "title", "director"],
   MovieOrderByWithAggregationInput: ["directorFirstName", "directorLastName", "title", "_count", "_max", "_min"],
   MovieScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "directorFirstName", "directorLastName", "title"],
   DirectorWhereInput: ["AND", "OR", "NOT", "firstName", "lastName", "movies"],
@@ -663,9 +752,9 @@ const inputsInfo = {
   DirectorWhereUniqueInput: ["firstName_lastName", "AND", "OR", "NOT", "firstName", "lastName", "movies"],
   DirectorOrderByWithAggregationInput: ["firstName", "lastName", "_count", "_max", "_min"],
   DirectorScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "firstName", "lastName"],
-  ProblemWhereInput: ["AND", "OR", "NOT", "id", "problemText", "likedBy", "creator", "creatorId"],
-  ProblemOrderByWithRelationAndSearchRelevanceInput: ["id", "problemText", "likedBy", "creator", "creatorId", "_relevance"],
-  ProblemWhereUniqueInput: ["id", "AND", "OR", "NOT", "problemText", "likedBy", "creator", "creatorId"],
+  ProblemWhereInput: ["AND", "OR", "NOT", "id", "problemText", "creatorId", "likedBy", "creator"],
+  ProblemOrderByWithRelationAndSearchRelevanceInput: ["id", "problemText", "creatorId", "likedBy", "creator", "_relevance"],
+  ProblemWhereUniqueInput: ["id", "AND", "OR", "NOT", "problemText", "creatorId", "likedBy", "creator"],
   ProblemOrderByWithAggregationInput: ["id", "problemText", "creatorId", "_count", "_avg", "_max", "_min", "_sum"],
   ProblemScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "problemText", "creatorId"],
   CreatorWhereInput: ["AND", "OR", "NOT", "id", "name", "likes", "problems"],
@@ -678,17 +767,22 @@ const inputsInfo = {
   NativeTypeModelWhereUniqueInput: ["id", "AND", "OR", "NOT", "bigInt", "byteA", "decimal"],
   NativeTypeModelOrderByWithAggregationInput: ["id", "bigInt", "byteA", "decimal", "_count", "_avg", "_max", "_min", "_sum"],
   NativeTypeModelScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "bigInt", "byteA", "decimal"],
-  EquipmentWhereInput: ["AND", "OR", "NOT", "id"],
-  EquipmentOrderByWithRelationAndSearchRelevanceInput: ["id", "_relevance"],
-  EquipmentWhereUniqueInput: ["id", "AND", "OR", "NOT"],
-  EquipmentOrderByWithAggregationInput: ["id", "_count", "_max", "_min"],
-  EquipmentScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id"],
-  MainUserCreateInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
-  MainUserUpdateInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "editorPosts", "grades", "aliases"],
+  EquipmentWhereInput: ["AND", "OR", "NOT", "id", "name"],
+  EquipmentOrderByWithRelationAndSearchRelevanceInput: ["id", "name", "_relevance"],
+  EquipmentWhereUniqueInput: ["id", "AND", "OR", "NOT", "name"],
+  EquipmentOrderByWithAggregationInput: ["id", "name", "_count", "_max", "_min"],
+  EquipmentScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name"],
+  HiddenWhereInput: ["AND", "OR", "NOT", "id", "name"],
+  HiddenOrderByWithRelationAndSearchRelevanceInput: ["id", "name", "_relevance"],
+  HiddenWhereUniqueInput: ["id", "AND", "OR", "NOT", "name"],
+  HiddenOrderByWithAggregationInput: ["id", "name", "_count", "_max", "_min"],
+  HiddenScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name"],
+  MainUserCreateInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "clientPosts", "editorPosts"],
+  MainUserUpdateInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "clientPosts", "editorPosts"],
   MainUserCreateManyInput: ["id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases"],
   MainUserUpdateManyMutationInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases"],
-  PostCreateInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "editor", "kind", "metadata"],
-  PostUpdateInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "editor", "kind", "metadata"],
+  PostCreateInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "kind", "metadata", "author", "editor"],
+  PostUpdateInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "kind", "metadata", "author", "editor"],
   PostCreateManyInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata"],
   PostUpdateManyMutationInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "kind", "metadata"],
   CategoryCreateInput: ["name", "slug", "number"],
@@ -699,8 +793,8 @@ const inputsInfo = {
   PatientUpdateInput: ["firstName", "lastName", "email"],
   PatientCreateManyInput: ["firstName", "lastName", "email"],
   PatientUpdateManyMutationInput: ["firstName", "lastName", "email"],
-  MovieCreateInput: ["director", "title"],
-  MovieUpdateInput: ["director", "title"],
+  MovieCreateInput: ["title", "director"],
+  MovieUpdateInput: ["title", "director"],
   MovieCreateManyInput: ["directorFirstName", "directorLastName", "title"],
   MovieUpdateManyMutationInput: ["title"],
   DirectorCreateInput: ["firstName", "lastName", "movies"],
@@ -719,18 +813,22 @@ const inputsInfo = {
   NativeTypeModelUpdateInput: ["bigInt", "byteA", "decimal"],
   NativeTypeModelCreateManyInput: ["id", "bigInt", "byteA", "decimal"],
   NativeTypeModelUpdateManyMutationInput: ["bigInt", "byteA", "decimal"],
-  EquipmentCreateInput: ["id"],
-  EquipmentUpdateInput: ["id"],
-  EquipmentCreateManyInput: ["id"],
-  EquipmentUpdateManyMutationInput: ["id"],
+  EquipmentCreateInput: ["id", "name"],
+  EquipmentUpdateInput: ["id", "name"],
+  EquipmentCreateManyInput: ["id", "name"],
+  EquipmentUpdateManyMutationInput: ["id", "name"],
+  HiddenCreateInput: ["id", "name"],
+  HiddenUpdateInput: ["id", "name"],
+  HiddenCreateManyInput: ["id", "name"],
+  HiddenUpdateManyMutationInput: ["id", "name"],
   IntFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   StringFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "search", "mode", "not"],
   StringNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "search", "mode", "not"],
   FloatFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
-  PostListRelationFilter: ["every", "some", "none"],
   EnumRoleFilter: ["equals", "in", "notIn", "not"],
   IntNullableListFilter: ["equals", "has", "hasEvery", "hasSome", "isEmpty"],
   StringNullableListFilter: ["equals", "has", "hasEvery", "hasSome", "isEmpty"],
+  PostListRelationFilter: ["every", "some", "none"],
   SortOrderInput: ["sort", "nulls"],
   PostOrderByRelationAggregateInput: ["_count"],
   MainUserOrderByRelevanceInput: ["fields", "sort", "search"],
@@ -746,10 +844,10 @@ const inputsInfo = {
   EnumRoleWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   DateTimeFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   BoolFilter: ["equals", "not"],
-  MainUserRelationFilter: ["is", "isNot"],
   IntNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   EnumPostKindNullableFilter: ["equals", "in", "notIn", "not"],
   JsonFilter: ["equals", "path", "string_contains", "string_starts_with", "string_ends_with", "array_contains", "array_starts_with", "array_ends_with", "lt", "lte", "gt", "gte", "not"],
+  MainUserRelationFilter: ["is", "isNot"],
   PostOrderByRelevanceInput: ["fields", "sort", "search"],
   PostCountOrderByAggregateInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata"],
   PostAvgOrderByAggregateInput: ["authorId", "editorId"],
@@ -815,29 +913,33 @@ const inputsInfo = {
   BytesNullableWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   DecimalNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
   EquipmentOrderByRelevanceInput: ["fields", "sort", "search"],
-  EquipmentCountOrderByAggregateInput: ["id"],
-  EquipmentMaxOrderByAggregateInput: ["id"],
-  EquipmentMinOrderByAggregateInput: ["id"],
-  PostCreateNestedManyWithoutAuthorInput: ["create", "connectOrCreate", "createMany", "connect"],
-  PostCreateNestedManyWithoutEditorInput: ["create", "connectOrCreate", "createMany", "connect"],
+  EquipmentCountOrderByAggregateInput: ["id", "name"],
+  EquipmentMaxOrderByAggregateInput: ["id", "name"],
+  EquipmentMinOrderByAggregateInput: ["id", "name"],
+  HiddenOrderByRelevanceInput: ["fields", "sort", "search"],
+  HiddenCountOrderByAggregateInput: ["id", "name"],
+  HiddenMaxOrderByAggregateInput: ["id", "name"],
+  HiddenMinOrderByAggregateInput: ["id", "name"],
   MainUserCreategradesInput: ["set"],
   MainUserCreatealiasesInput: ["set"],
+  PostCreateNestedManyWithoutAuthorInput: ["create", "connectOrCreate", "createMany", "connect"],
+  PostCreateNestedManyWithoutEditorInput: ["create", "connectOrCreate", "createMany", "connect"],
   StringFieldUpdateOperationsInput: ["set"],
   NullableStringFieldUpdateOperationsInput: ["set"],
   IntFieldUpdateOperationsInput: ["set", "increment", "decrement", "multiply", "divide"],
   FloatFieldUpdateOperationsInput: ["set", "increment", "decrement", "multiply", "divide"],
-  PostUpdateManyWithoutAuthorNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
   EnumRoleFieldUpdateOperationsInput: ["set"],
-  PostUpdateManyWithoutEditorNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
   MainUserUpdategradesInput: ["set", "push"],
   MainUserUpdatealiasesInput: ["set", "push"],
+  PostUpdateManyWithoutAuthorNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
+  PostUpdateManyWithoutEditorNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
   MainUserCreateNestedOneWithoutPostsInput: ["create", "connectOrCreate", "connect"],
   MainUserCreateNestedOneWithoutEditorPostsInput: ["create", "connectOrCreate", "connect"],
   DateTimeFieldUpdateOperationsInput: ["set"],
   BoolFieldUpdateOperationsInput: ["set"],
+  NullableEnumPostKindFieldUpdateOperationsInput: ["set"],
   MainUserUpdateOneRequiredWithoutPostsNestedInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
   MainUserUpdateOneWithoutEditorPostsNestedInput: ["create", "connectOrCreate", "upsert", "disconnect", "delete", "connect", "update"],
-  NullableEnumPostKindFieldUpdateOperationsInput: ["set"],
   NullableIntFieldUpdateOperationsInput: ["set", "increment", "decrement", "multiply", "divide"],
   DirectorCreateNestedOneWithoutMoviesInput: ["create", "connectOrCreate", "connect"],
   DirectorUpdateOneRequiredWithoutMoviesNestedInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
@@ -880,10 +982,10 @@ const inputsInfo = {
   NestedBigIntNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
   NestedBytesNullableWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   NestedDecimalNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
-  PostCreateWithoutAuthorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "editor", "kind", "metadata"],
+  PostCreateWithoutAuthorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "kind", "metadata", "editor"],
   PostCreateOrConnectWithoutAuthorInput: ["where", "create"],
   PostCreateManyAuthorInputEnvelope: ["data", "skipDuplicates"],
-  PostCreateWithoutEditorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "kind", "metadata"],
+  PostCreateWithoutEditorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "kind", "metadata", "author"],
   PostCreateOrConnectWithoutEditorInput: ["where", "create"],
   PostCreateManyEditorInputEnvelope: ["data", "skipDuplicates"],
   PostUpsertWithWhereUniqueWithoutAuthorInput: ["where", "update", "create"],
@@ -893,16 +995,16 @@ const inputsInfo = {
   PostUpsertWithWhereUniqueWithoutEditorInput: ["where", "update", "create"],
   PostUpdateWithWhereUniqueWithoutEditorInput: ["where", "data"],
   PostUpdateManyWithWhereWithoutEditorInput: ["where", "data"],
-  MainUserCreateWithoutPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "editorPosts", "grades", "aliases"],
+  MainUserCreateWithoutPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "editorPosts"],
   MainUserCreateOrConnectWithoutPostsInput: ["where", "create"],
-  MainUserCreateWithoutEditorPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "grades", "aliases"],
+  MainUserCreateWithoutEditorPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "clientPosts"],
   MainUserCreateOrConnectWithoutEditorPostsInput: ["where", "create"],
   MainUserUpsertWithoutPostsInput: ["update", "create", "where"],
   MainUserUpdateToOneWithWhereWithoutPostsInput: ["where", "data"],
-  MainUserUpdateWithoutPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "editorPosts", "grades", "aliases"],
+  MainUserUpdateWithoutPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "editorPosts"],
   MainUserUpsertWithoutEditorPostsInput: ["update", "create", "where"],
   MainUserUpdateToOneWithWhereWithoutEditorPostsInput: ["where", "data"],
-  MainUserUpdateWithoutEditorPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "clientPosts", "role", "grades", "aliases"],
+  MainUserUpdateWithoutEditorPostsInput: ["email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases", "clientPosts"],
   DirectorCreateWithoutMoviesInput: ["firstName", "lastName"],
   DirectorCreateOrConnectWithoutMoviesInput: ["where", "create"],
   DirectorUpsertWithoutMoviesInput: ["update", "create", "where"],
@@ -940,8 +1042,8 @@ const inputsInfo = {
   ProblemUpdateManyWithWhereWithoutCreatorInput: ["where", "data"],
   PostCreateManyAuthorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "editorId", "kind", "metadata"],
   PostCreateManyEditorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "kind", "metadata"],
-  PostUpdateWithoutAuthorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "editor", "kind", "metadata"],
-  PostUpdateWithoutEditorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "author", "kind", "metadata"],
+  PostUpdateWithoutAuthorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "kind", "metadata", "editor"],
+  PostUpdateWithoutEditorInput: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "kind", "metadata", "author"],
   MovieCreateManyDirectorInput: ["title"],
   MovieUpdateWithoutDirectorInput: ["title"],
   CreatorUpdateWithoutLikesInput: ["name", "problems"],

@@ -13,12 +13,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 4.5.0
- * Query Engine version: 0362da9eebca54d94c8ef5edd3b2e90af99ba452
+ * Prisma Client JS version: 4.14.0
+ * Query Engine version: d9a4c5988f480fa576d43970d5a23641aa77bc9c
  */
 Prisma.prismaVersion = {
-  client: "4.5.0",
-  engine: "0362da9eebca54d94c8ef5edd3b2e90af99ba452"
+  client: "4.14.0",
+  engine: "d9a4c5988f480fa576d43970d5a23641aa77bc9c"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -68,6 +68,7 @@ In case this error is unexpected for you, please report it in https://github.com
 )}
 Prisma.validator = () => (val) => val
 
+
 /**
  * Shorthand utilities for JSON filtering
  */
@@ -84,46 +85,43 @@ Prisma.NullTypes = {
 /**
  * Enums
  */
-// Based on
-// https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
-function makeEnum(x) { return x; }
 
-exports.Prisma.CommentScalarFieldEnum = makeEnum({
+exports.Prisma.CommentScalarFieldEnum = {
   id: 'id',
   postId: 'postId',
   comment: 'comment'
-});
+};
 
-exports.Prisma.PostScalarFieldEnum = makeEnum({
+exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
   body: 'body',
   authorId: 'authorId'
-});
+};
 
-exports.Prisma.QueryMode = makeEnum({
+exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
-});
+};
 
-exports.Prisma.SortOrder = makeEnum({
+exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
-});
+};
 
-exports.Prisma.UserScalarFieldEnum = makeEnum({
+exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   age: 'age'
-});
+};
 
 
-exports.Prisma.ModelName = makeEnum({
+exports.Prisma.ModelName = {
   Post: 'Post',
   Comment: 'Comment',
   User: 'User'
-});
+};
 
 /**
  * Create the Client

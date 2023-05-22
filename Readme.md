@@ -56,8 +56,15 @@ Any feedback about the developers experience or ideas about new features or enha
 
 <img src="https://raw.githubusercontent.com/MichalLytek/typegraphql-prisma/main/img/feedback.png" width="327"/>
 
-## Future plans
+## Security contact information
 
-In some far feature, when Prisma SDK will be ready, the `typegraphql-prisma` integration will also allow to use a code-first approach to build a `schema.prisma` and GraphQL schema at once, using classes with decorators as a single source of truth.
+To report a security vulnerability, please use the
+[Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
 
-Stay tuned! :muscle:
+## Future of this project
+
+This project is not sponsored by Prisma anymore, so there will be provided only bug fixes and Prisma compatibility upgrades.
+You can read more about this in the GitHub issue [#385](https://github.com/MichalLytek/typegraphql-prisma/issues/385).
+
+Let's keep `typegraphql-prisma` alive together! 💪

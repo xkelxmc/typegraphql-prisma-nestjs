@@ -43,6 +43,7 @@ export namespace DMMF {
     typeName: string;
     docs: string | undefined;
     plural: string | undefined;
+    isOmitted: { output: boolean };
   }
   export type FieldKind = "scalar" | "object" | "enum" | "unsupported";
   export type FieldNamespace = "model" | "prisma";
@@ -191,7 +192,9 @@ export namespace DMMF {
     // model: string;
     // plural: string;
     // findUnique?: string | null;
+    // findUniqueOrThrow?: string | null;
     // findFirst?: string | null;
+    // findFirstOrThrow?: string | null;
     // findMany?: string | null;
     // createOne?: string | null;
     // createMany?: string | null;
@@ -215,7 +218,9 @@ export namespace DMMF {
   }
   export enum ModelAction {
     findUnique = "findUnique",
+    findUniqueOrThrow = "findUniqueOrThrow",
     findFirst = "findFirst",
+    findFirstOrThrow = "findFirstOrThrow",
     findMany = "findMany",
     createOne = "createOne",
     createMany = "createMany",

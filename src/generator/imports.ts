@@ -49,8 +49,12 @@ export function generateGraphQLFieldsImport(sourceFile: SourceFile) {
     moduleSpecifier: "graphql-fields",
     namespaceImport: "graphqlFields",
   });
+}
+
+export function generateGraphQLInfoImport(sourceFile: SourceFile) {
   sourceFile.addImportDeclaration({
     moduleSpecifier: "graphql",
+    isTypeOnly: true,
     namedImports: ["GraphQLResolveInfo"],
   });
 }
@@ -84,7 +88,7 @@ export function generateHelpersFileImport(sourceFile: SourceFile, level = 0) {
       (level === 0 ? "./" : "") +
       path.posix.join(...Array(level).fill(".."), "helpers"),
     namedImports: [
-      "transformFields",
+      "transformInfoIntoPrismaArgs",
       "getPrismaFromContext",
       "transformCountFieldIntoSelectRelationsCount",
     ],

@@ -11,8 +11,8 @@ import {
   Authorized,
   Extensions,
   UseMiddleware,
+  ObjectType,
 } from "type-graphql";
-import { ApolloServer } from "apollo-server";
 import path from "path";
 import {
   IsDefined,
@@ -58,10 +58,13 @@ import {
   NativeTypeModelCrudResolver,
   applyRelationResolversEnhanceMap,
   RelationResolverActionsConfig,
+  HiddenCrudResolver,
 } from "./prisma/generated/type-graphql";
 import * as Prisma from "./prisma/generated/client";
 import { ProblemCrudResolver } from "./prisma/generated/type-graphql/resolvers/crud/Problem/ProblemCrudResolver";
 import { CreatorCrudResolver } from "./prisma/generated/type-graphql/resolvers/crud/Creator/CreatorCrudResolver";
+import { createYoga } from "graphql-yoga";
+import { createServer } from "node:http";
 
 const problemTypeFieldsConfig: ModelConfig<"Problem"> = {
   fields: {
@@ -87,6 +90,13 @@ const modelsEnhanceMap: ModelsEnhanceMap = {
         }),
       ],
     },
+  },
+  Hidden: {
+    class: [
+      ObjectType({
+        description: "Generated omitted type with custom description",
+      }),
+    ],
   },
 };
 applyModelsEnhanceMap(modelsEnhanceMap);
@@ -119,6 +129,7 @@ applyArgsTypesEnhanceMap({
   FindManyDirectorArgs: {
     fields: {
       _all: [IsDefined()],
+      cursor: () => [IsDefined()],
     },
   },
 });
@@ -180,7 +191,19 @@ const resolversEnhanceMap: ResolversEnhanceMap = {
   Patient: {
     _all: [
       UseMiddleware(({ info }, next) => {
-        console.log(`Query "${info.fieldName}" accessed`);
+        console.log(`Operation "${info.fieldName}" accessed`);
+        return next();
+      }),
+    ],
+    _query: [
+      UseMiddleware(({ info }, next) => {
+        console.log(`Query "${info.fieldName}" read`);
+        return next();
+      }),
+    ],
+    _mutation: [
+      UseMiddleware(({ info }, next) => {
+        console.log(`Mutation "${info.fieldName}" performed`);
         return next();
       }),
     ],
@@ -208,6 +231,7 @@ class MainUserResolver {
     @Args() args: FindManyMainUserArgs,
     @Ctx() { prismaClient }: Context,
   ): Promise<Prisma.User[]> {
+    // @ts-expect-error fix required at least fields
     return prismaClient.user.findMany(args);
   }
 
@@ -229,6 +253,7 @@ class PostResolver {
     @Ctx() { prismaClient }: Context,
     @Args() args: CreateOnePostArgs,
   ): Promise<Post> {
+    // @ts-expect-error fix required at least fields
     return await prismaClient.post.create(args);
   }
 }
@@ -259,8 +284,9 @@ async function main() {
       GroupByCategoryResolver,
       GroupByPostResolver,
       NativeTypeModelCrudResolver,
+      HiddenCrudResolver,
     ],
-    validate: true,
+    validate: { forbidUnknownValues: false },
     emitSchemaFile: path.resolve(__dirname, "./generated-schema.graphql"),
     authChecker: ({ info }) => {
       console.log(
@@ -277,12 +303,17 @@ async function main() {
 
   await prisma.$connect();
 
-  const server = new ApolloServer({
+  const yoga = createYoga({
     schema,
     context: (): Context => ({ prismaClient: prisma }),
+    graphiql: true,
   });
-  const { port } = await server.listen(4000);
-  console.log(`GraphQL is listening on ${port}!`);
+
+  const server = createServer(yoga);
+
+  server.listen(4000, () => {
+    console.info("GraphQL Server is running on http://localhost:4000/graphql");
+  });
 }
 
 main().catch(console.error);

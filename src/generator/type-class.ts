@@ -80,7 +80,7 @@ export function generateOutputTypeClassFromType(
     ],
     properties: [
       ...type.fields
-        .filter(field => field.argsTypeName === undefined)
+        .filter(field => !field.argsTypeName)
         .map<OptionalKind<PropertyDeclarationStructure>>(field => ({
           name: field.name,
           type: field.fieldTSType,
@@ -106,7 +106,6 @@ export function generateOutputTypeClassFromType(
           type: field.fieldTSType,
           hasExclamationToken: true,
           hasQuestionToken: false,
-          // trailingTrivia: "\r\n",
         })),
     ],
     methods: type.fields
@@ -148,7 +147,6 @@ export function generateInputTypeClassFromType(
   project: Project,
   dirPath: string,
   inputType: DMMF.InputType,
-  _dmmfDocument: DmmfDocument,
   options: GeneratorOptions,
 ) {
   const filePath = path.resolve(

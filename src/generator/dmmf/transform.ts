@@ -54,12 +54,16 @@ export function transformBareModel(model: PrismaDMMF.Model): DMMF.Model {
     name: string;
     plural: string;
   }>(model.documentation, "type", "model");
+  const { output = false } = parseDocumentationAttributes<{
+    output: boolean;
+  }>(model.documentation, "omit", "model");
   return {
     ...model,
     typeName: attributeArgs.name ?? pascalCase(model.name),
     fields: [],
     docs: cleanDocsString(model.documentation),
     plural: attributeArgs.plural,
+    isOmitted: { output },
   };
 }
 
@@ -73,6 +77,8 @@ export function transformModelWithFields(dmmfDocument: DmmfDocument) {
 }
 
 function transformModelField(dmmfDocument: DmmfDocument) {
+  const { omitInputFieldsByDefault, omitOutputFieldsByDefault } =
+    dmmfDocument.options;
   return (field: PrismaDMMF.Field): DMMF.ModelField => {
     const attributeArgs = parseDocumentationAttributes<{ name: string }>(
       field.documentation,
@@ -110,7 +116,7 @@ function transformModelField(dmmfDocument: DmmfDocument) {
       undefined,
       field.isId,
     );
-    const { output = false, input = false } = parseDocumentationAttributes<{
+    const omitFieldAttribute = parseDocumentationAttributes<{
       output: boolean;
       input: boolean | InputOmitSetting[];
     }>(field.documentation, "omit", "field");
@@ -122,7 +128,16 @@ function transformModelField(dmmfDocument: DmmfDocument) {
       fieldTSType,
       typeGraphQLType,
       docs: cleanDocsString(field.documentation),
-      isOmitted: { output, input },
+      isOmitted: {
+        input:
+          omitFieldAttribute.input ??
+          omitInputFieldsByDefault?.includes(field.name) ??
+          false,
+        output:
+          omitFieldAttribute.output ??
+          omitOutputFieldsByDefault?.includes(field.name) ??
+          false,
+      },
     };
   };
 }
@@ -331,12 +346,14 @@ function transformMapping(
       )!;
       const argsTypeName =
         method.args.length > 0
-          ? `${pascalCase(
-              `${kind}${dmmfDocument.getModelTypeName(mapping.model)}`,
-            )}Args`
+          ? getMappedArgsTypeName(kind, modelTypeName)
           : undefined;
       const outputTypeName = method.outputType.type as string;
-      const actionResolverName = `${pascalCase(kind)}${modelTypeName}Resolver`;
+      const actionResolverName = getMappedActionResolverName(
+        kind,
+        modelTypeName,
+      );
+
       const returnTSType = getFieldTSType(
         dmmfDocument,
         method.outputType,
@@ -436,7 +453,7 @@ function getMappedActionName(
   overriddenPlural: string | undefined,
   options: GeneratorOptions,
 ): string {
-  const defaultMappedActionName = `${actionName}${typeName}`;
+  const defaultMappedActionName = mapDefaultActionName(actionName, typeName);
   if (options.useOriginalMapping) {
     return defaultMappedActionName;
   }
@@ -450,6 +467,9 @@ function getMappedActionName(
     case "findUnique": {
       return camelCase(typeName);
     }
+    case "findUniqueOrThrow": {
+      return `get${typeName}`;
+    }
     case "findMany": {
       return camelCase(overriddenPlural ?? pluralize(typeName));
     }
@@ -457,6 +477,23 @@ function getMappedActionName(
       return defaultMappedActionName;
     }
   }
+}
+
+function getMappedArgsTypeName(actionName: DMMF.ModelAction, typeName: string) {
+  return `${pascalCase(mapDefaultActionName(actionName, typeName))}Args`;
+}
+
+function getMappedActionResolverName(
+  actionName: DMMF.ModelAction,
+  typeName: string,
+) {
+  return `${pascalCase(mapDefaultActionName(actionName, typeName))}Resolver`;
+}
+
+function mapDefaultActionName(actionName: DMMF.ModelAction, typeName: string) {
+  return actionName.includes("OrThrow")
+    ? `${actionName.replace("OrThrow", "")}${typeName}OrThrow`
+    : `${actionName}${typeName}`;
 }
 
 function getOperationKindName(actionName: string) {

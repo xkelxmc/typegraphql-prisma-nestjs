@@ -10,6 +10,8 @@ import * as models from \\"./models\\";
 import * as outputTypes from \\"./resolvers/outputs\\";
 import * as inputTypes from \\"./resolvers/inputs\\";
 
+export type MethodDecoratorOverrideFn = (decorators: MethodDecorator[]) => MethodDecorator[];
+
 const crudResolversMap = {
   User: crudResolvers.UserCrudResolver,
   Post: crudResolvers.PostCrudResolver
@@ -22,8 +24,10 @@ const actionResolversMap = {
     deleteManyUser: actionResolvers.DeleteManyUserResolver,
     deleteOneUser: actionResolvers.DeleteOneUserResolver,
     findFirstUser: actionResolvers.FindFirstUserResolver,
+    findFirstUserOrThrow: actionResolvers.FindFirstUserOrThrowResolver,
     users: actionResolvers.FindManyUserResolver,
     user: actionResolvers.FindUniqueUserResolver,
+    getUser: actionResolvers.FindUniqueUserOrThrowResolver,
     groupByUser: actionResolvers.GroupByUserResolver,
     updateManyUser: actionResolvers.UpdateManyUserResolver,
     updateOneUser: actionResolvers.UpdateOneUserResolver,
@@ -36,8 +40,10 @@ const actionResolversMap = {
     deleteManyPost: actionResolvers.DeleteManyPostResolver,
     deleteOnePost: actionResolvers.DeleteOnePostResolver,
     findFirstPost: actionResolvers.FindFirstPostResolver,
+    findFirstPostOrThrow: actionResolvers.FindFirstPostOrThrowResolver,
     posts: actionResolvers.FindManyPostResolver,
     post: actionResolvers.FindUniquePostResolver,
+    getPost: actionResolvers.FindUniquePostOrThrowResolver,
     groupByPost: actionResolvers.GroupByPostResolver,
     updateManyPost: actionResolvers.UpdateManyPostResolver,
     updateOnePost: actionResolvers.UpdateOnePostResolver,
@@ -45,8 +51,8 @@ const actionResolversMap = {
   }
 };
 const crudResolversInfo = {
-  User: [\\"aggregateUser\\", \\"createManyUser\\", \\"createOneUser\\", \\"deleteManyUser\\", \\"deleteOneUser\\", \\"findFirstUser\\", \\"users\\", \\"user\\", \\"groupByUser\\", \\"updateManyUser\\", \\"updateOneUser\\", \\"upsertOneUser\\"],
-  Post: [\\"aggregatePost\\", \\"createManyPost\\", \\"createOnePost\\", \\"deleteManyPost\\", \\"deleteOnePost\\", \\"findFirstPost\\", \\"posts\\", \\"post\\", \\"groupByPost\\", \\"updateManyPost\\", \\"updateOnePost\\", \\"upsertOnePost\\"]
+  User: [\\"aggregateUser\\", \\"createManyUser\\", \\"createOneUser\\", \\"deleteManyUser\\", \\"deleteOneUser\\", \\"findFirstUser\\", \\"findFirstUserOrThrow\\", \\"users\\", \\"user\\", \\"getUser\\", \\"groupByUser\\", \\"updateManyUser\\", \\"updateOneUser\\", \\"upsertOneUser\\"],
+  Post: [\\"aggregatePost\\", \\"createManyPost\\", \\"createOnePost\\", \\"deleteManyPost\\", \\"deleteOnePost\\", \\"findFirstPost\\", \\"findFirstPostOrThrow\\", \\"posts\\", \\"post\\", \\"getPost\\", \\"groupByPost\\", \\"updateManyPost\\", \\"updateOnePost\\", \\"upsertOnePost\\"]
 };
 const argsInfo = {
   AggregateUserArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\"],
@@ -55,8 +61,10 @@ const argsInfo = {
   DeleteManyUserArgs: [\\"where\\"],
   DeleteOneUserArgs: [\\"where\\"],
   FindFirstUserArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
+  FindFirstUserOrThrowArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindManyUserArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindUniqueUserArgs: [\\"where\\"],
+  FindUniqueUserOrThrowArgs: [\\"where\\"],
   GroupByUserArgs: [\\"where\\", \\"orderBy\\", \\"by\\", \\"having\\", \\"take\\", \\"skip\\"],
   UpdateManyUserArgs: [\\"data\\", \\"where\\"],
   UpdateOneUserArgs: [\\"data\\", \\"where\\"],
@@ -67,8 +75,10 @@ const argsInfo = {
   DeleteManyPostArgs: [\\"where\\"],
   DeleteOnePostArgs: [\\"where\\"],
   FindFirstPostArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
+  FindFirstPostOrThrowArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindManyPostArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindUniquePostArgs: [\\"where\\"],
+  FindUniquePostOrThrowArgs: [\\"where\\"],
   GroupByPostArgs: [\\"where\\", \\"orderBy\\", \\"by\\", \\"having\\", \\"take\\", \\"skip\\"],
   UpdateManyPostArgs: [\\"data\\", \\"where\\"],
   UpdateOnePostArgs: [\\"data\\", \\"where\\"],
@@ -83,7 +93,12 @@ type ModelResolverActionNames<
 
 export type ResolverActionsConfig<
   TModel extends ResolverModelNames
-> = Partial<Record<ModelResolverActionNames<TModel> | \\"_all\\", MethodDecorator[]>>;
+> = Partial<Record<ModelResolverActionNames<TModel>, MethodDecorator[] | MethodDecoratorOverrideFn>>
+  & {
+    _all?: MethodDecorator[];
+    _query?: MethodDecorator[];
+    _mutation?: MethodDecorator[];
+  };
 
 export type ResolversEnhanceMap = {
   [TModel in ResolverModelNames]?: ResolverActionsConfig<TModel>;
@@ -92,29 +107,32 @@ export type ResolversEnhanceMap = {
 export function applyResolversEnhanceMap(
   resolversEnhanceMap: ResolversEnhanceMap,
 ) {
+  const mutationOperationPrefixes = [
+    \\"createOne\\", \\"createMany\\", \\"deleteOne\\", \\"updateOne\\", \\"deleteMany\\", \\"updateMany\\", \\"upsertOne\\"
+  ];
   for (const resolversEnhanceMapKey of Object.keys(resolversEnhanceMap)) {
     const modelName = resolversEnhanceMapKey as keyof typeof resolversEnhanceMap;
     const crudTarget = crudResolversMap[modelName].prototype;
     const resolverActionsConfig = resolversEnhanceMap[modelName]!;
     const actionResolversConfig = actionResolversMap[modelName];
-    if (resolverActionsConfig._all) {
-      const allActionsDecorators = resolverActionsConfig._all;
-      const resolverActionNames = crudResolversInfo[modelName as keyof typeof crudResolversInfo];
-      for (const resolverActionName of resolverActionNames) {
-        const actionTarget = (actionResolversConfig[
-          resolverActionName as keyof typeof actionResolversConfig
-        ] as Function).prototype;
-        tslib.__decorate(allActionsDecorators, crudTarget, resolverActionName, null);
-        tslib.__decorate(allActionsDecorators, actionTarget, resolverActionName, null);
-      }
-    }
-    const resolverActionsToApply = Object.keys(resolverActionsConfig).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const resolverActionName of resolverActionsToApply) {
-      const decorators = resolverActionsConfig[
+    const allActionsDecorators = resolverActionsConfig._all;
+    const resolverActionNames = crudResolversInfo[modelName as keyof typeof crudResolversInfo];
+    for (const resolverActionName of resolverActionNames) {
+      const maybeDecoratorsOrFn = resolverActionsConfig[
         resolverActionName as keyof typeof resolverActionsConfig
-      ] as MethodDecorator[];
+      ] as MethodDecorator[] | MethodDecoratorOverrideFn | undefined;
+      const isWriteOperation = mutationOperationPrefixes.some(prefix => resolverActionName.startsWith(prefix));
+      const operationKindDecorators = isWriteOperation ? resolverActionsConfig._mutation : resolverActionsConfig._query;
+      const mainDecorators = [
+        ...allActionsDecorators ?? [],
+        ...operationKindDecorators ?? [],
+      ]
+      let decorators: MethodDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(mainDecorators);
+      } else {
+        decorators = [...mainDecorators, ...maybeDecoratorsOrFn ?? []];
+      }
       const actionTarget = (actionResolversConfig[
         resolverActionName as keyof typeof actionResolversConfig
       ] as Function).prototype;
@@ -166,9 +184,11 @@ type TypeConfig = {
   fields?: FieldsConfig;
 };
 
+export type PropertyDecoratorOverrideFn = (decorators: PropertyDecorator[]) => PropertyDecorator[];
+
 type FieldsConfig<TTypeKeys extends string = string> = Partial<
-  Record<TTypeKeys | \\"_all\\", PropertyDecorator[]>
->;
+  Record<TTypeKeys, PropertyDecorator[] | PropertyDecoratorOverrideFn>
+> & { _all?: PropertyDecorator[] };
 
 function applyTypeClassEnhanceConfig<
   TEnhanceConfig extends TypeConfig,
@@ -183,18 +203,18 @@ function applyTypeClassEnhanceConfig<
     tslib.__decorate(enhanceConfig.class, typeClass);
   }
   if (enhanceConfig.fields) {
-    if (enhanceConfig.fields._all) {
-      const allFieldsDecorators = enhanceConfig.fields._all;
-      for (const typeFieldName of typeFieldNames) {
-        tslib.__decorate(allFieldsDecorators, typePrototype, typeFieldName, void 0);
+    const allFieldsDecorators = enhanceConfig.fields._all ?? [];
+    for (const typeFieldName of typeFieldNames) {
+      const maybeDecoratorsOrFn = enhanceConfig.fields[
+        typeFieldName
+      ] as PropertyDecorator[] | PropertyDecoratorOverrideFn | undefined;
+      let decorators: PropertyDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(allFieldsDecorators);
+      } else {
+        decorators = [...allFieldsDecorators, ...maybeDecoratorsOrFn ?? []];
       }
-    }
-    const configFieldsToApply = Object.keys(enhanceConfig.fields).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const typeFieldName of configFieldsToApply) {
-      const fieldDecorators = enhanceConfig.fields[typeFieldName]!;
-      tslib.__decorate(fieldDecorators, typePrototype, typeFieldName, void 0);
+      tslib.__decorate(decorators, typePrototype, typeFieldName, void 0);
     }
   }
 }
@@ -301,8 +321,8 @@ const inputsInfo = {
   UserWhereUniqueInput: [\\"id\\", \\"email\\"],
   UserOrderByWithAggregationInput: [\\"id\\", \\"email\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   UserScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"id\\", \\"email\\"],
-  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
-  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
+  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
+  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
   PostWhereUniqueInput: [\\"uuid\\"],
   PostOrderByWithAggregationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   PostScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
@@ -310,8 +330,8 @@ const inputsInfo = {
   UserUpdateInput: [\\"email\\", \\"posts\\"],
   UserCreateManyInput: [\\"id\\", \\"email\\"],
   UserUpdateManyMutationInput: [\\"email\\"],
-  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
-  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
+  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
+  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
   PostCreateManyInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostUpdateManyMutationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\"],
   IntFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
@@ -328,8 +348,8 @@ const inputsInfo = {
   DateTimeFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
   BoolFilter: [\\"equals\\", \\"not\\"],
   StringNullableFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"contains\\", \\"startsWith\\", \\"endsWith\\", \\"mode\\", \\"not\\"],
-  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   JsonFilter: [\\"equals\\", \\"path\\", \\"string_contains\\", \\"string_starts_with\\", \\"string_ends_with\\", \\"array_contains\\", \\"array_starts_with\\", \\"array_ends_with\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
+  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   PostCountOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostAvgOrderByAggregateInput: [\\"authorId\\"],
   PostMaxOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\"],
@@ -465,8 +485,10 @@ exports[`emitOnly generator option when both 'crudResolvers' and \`inputs\` is s
         CreateOnePostResolver.ts
         DeleteManyPostResolver.ts
         DeleteOnePostResolver.ts
+        FindFirstPostOrThrowResolver.ts
         FindFirstPostResolver.ts
         FindManyPostResolver.ts
+        FindUniquePostOrThrowResolver.ts
         FindUniquePostResolver.ts
         GroupByPostResolver.ts
         PostCrudResolver.ts
@@ -480,8 +502,10 @@ exports[`emitOnly generator option when both 'crudResolvers' and \`inputs\` is s
           DeleteManyPostArgs.ts
           DeleteOnePostArgs.ts
           FindFirstPostArgs.ts
+          FindFirstPostOrThrowArgs.ts
           FindManyPostArgs.ts
           FindUniquePostArgs.ts
+          FindUniquePostOrThrowArgs.ts
           GroupByPostArgs.ts
           UpdateManyPostArgs.ts
           UpdateOnePostArgs.ts
@@ -493,8 +517,10 @@ exports[`emitOnly generator option when both 'crudResolvers' and \`inputs\` is s
         CreateOneUserResolver.ts
         DeleteManyUserResolver.ts
         DeleteOneUserResolver.ts
+        FindFirstUserOrThrowResolver.ts
         FindFirstUserResolver.ts
         FindManyUserResolver.ts
+        FindUniqueUserOrThrowResolver.ts
         FindUniqueUserResolver.ts
         GroupByUserResolver.ts
         UpdateManyUserResolver.ts
@@ -508,8 +534,10 @@ exports[`emitOnly generator option when both 'crudResolvers' and \`inputs\` is s
           DeleteManyUserArgs.ts
           DeleteOneUserArgs.ts
           FindFirstUserArgs.ts
+          FindFirstUserOrThrowArgs.ts
           FindManyUserArgs.ts
           FindUniqueUserArgs.ts
+          FindUniqueUserOrThrowArgs.ts
           GroupByUserArgs.ts
           UpdateManyUserArgs.ts
           UpdateOneUserArgs.ts
@@ -631,6 +659,8 @@ import * as models from \\"./models\\";
 import * as outputTypes from \\"./resolvers/outputs\\";
 import * as inputTypes from \\"./resolvers/inputs\\";
 
+export type MethodDecoratorOverrideFn = (decorators: MethodDecorator[]) => MethodDecorator[];
+
 const crudResolversMap = {
   User: crudResolvers.UserCrudResolver,
   Post: crudResolvers.PostCrudResolver
@@ -643,8 +673,10 @@ const actionResolversMap = {
     deleteManyUser: actionResolvers.DeleteManyUserResolver,
     deleteOneUser: actionResolvers.DeleteOneUserResolver,
     findFirstUser: actionResolvers.FindFirstUserResolver,
+    findFirstUserOrThrow: actionResolvers.FindFirstUserOrThrowResolver,
     users: actionResolvers.FindManyUserResolver,
     user: actionResolvers.FindUniqueUserResolver,
+    getUser: actionResolvers.FindUniqueUserOrThrowResolver,
     groupByUser: actionResolvers.GroupByUserResolver,
     updateManyUser: actionResolvers.UpdateManyUserResolver,
     updateOneUser: actionResolvers.UpdateOneUserResolver,
@@ -657,8 +689,10 @@ const actionResolversMap = {
     deleteManyPost: actionResolvers.DeleteManyPostResolver,
     deleteOnePost: actionResolvers.DeleteOnePostResolver,
     findFirstPost: actionResolvers.FindFirstPostResolver,
+    findFirstPostOrThrow: actionResolvers.FindFirstPostOrThrowResolver,
     posts: actionResolvers.FindManyPostResolver,
     post: actionResolvers.FindUniquePostResolver,
+    getPost: actionResolvers.FindUniquePostOrThrowResolver,
     groupByPost: actionResolvers.GroupByPostResolver,
     updateManyPost: actionResolvers.UpdateManyPostResolver,
     updateOnePost: actionResolvers.UpdateOnePostResolver,
@@ -666,8 +700,8 @@ const actionResolversMap = {
   }
 };
 const crudResolversInfo = {
-  User: [\\"aggregateUser\\", \\"createManyUser\\", \\"createOneUser\\", \\"deleteManyUser\\", \\"deleteOneUser\\", \\"findFirstUser\\", \\"users\\", \\"user\\", \\"groupByUser\\", \\"updateManyUser\\", \\"updateOneUser\\", \\"upsertOneUser\\"],
-  Post: [\\"aggregatePost\\", \\"createManyPost\\", \\"createOnePost\\", \\"deleteManyPost\\", \\"deleteOnePost\\", \\"findFirstPost\\", \\"posts\\", \\"post\\", \\"groupByPost\\", \\"updateManyPost\\", \\"updateOnePost\\", \\"upsertOnePost\\"]
+  User: [\\"aggregateUser\\", \\"createManyUser\\", \\"createOneUser\\", \\"deleteManyUser\\", \\"deleteOneUser\\", \\"findFirstUser\\", \\"findFirstUserOrThrow\\", \\"users\\", \\"user\\", \\"getUser\\", \\"groupByUser\\", \\"updateManyUser\\", \\"updateOneUser\\", \\"upsertOneUser\\"],
+  Post: [\\"aggregatePost\\", \\"createManyPost\\", \\"createOnePost\\", \\"deleteManyPost\\", \\"deleteOnePost\\", \\"findFirstPost\\", \\"findFirstPostOrThrow\\", \\"posts\\", \\"post\\", \\"getPost\\", \\"groupByPost\\", \\"updateManyPost\\", \\"updateOnePost\\", \\"upsertOnePost\\"]
 };
 const argsInfo = {
   AggregateUserArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\"],
@@ -676,8 +710,10 @@ const argsInfo = {
   DeleteManyUserArgs: [\\"where\\"],
   DeleteOneUserArgs: [\\"where\\"],
   FindFirstUserArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
+  FindFirstUserOrThrowArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindManyUserArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindUniqueUserArgs: [\\"where\\"],
+  FindUniqueUserOrThrowArgs: [\\"where\\"],
   GroupByUserArgs: [\\"where\\", \\"orderBy\\", \\"by\\", \\"having\\", \\"take\\", \\"skip\\"],
   UpdateManyUserArgs: [\\"data\\", \\"where\\"],
   UpdateOneUserArgs: [\\"data\\", \\"where\\"],
@@ -688,8 +724,10 @@ const argsInfo = {
   DeleteManyPostArgs: [\\"where\\"],
   DeleteOnePostArgs: [\\"where\\"],
   FindFirstPostArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
+  FindFirstPostOrThrowArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindManyPostArgs: [\\"where\\", \\"orderBy\\", \\"cursor\\", \\"take\\", \\"skip\\", \\"distinct\\"],
   FindUniquePostArgs: [\\"where\\"],
+  FindUniquePostOrThrowArgs: [\\"where\\"],
   GroupByPostArgs: [\\"where\\", \\"orderBy\\", \\"by\\", \\"having\\", \\"take\\", \\"skip\\"],
   UpdateManyPostArgs: [\\"data\\", \\"where\\"],
   UpdateOnePostArgs: [\\"data\\", \\"where\\"],
@@ -704,7 +742,12 @@ type ModelResolverActionNames<
 
 export type ResolverActionsConfig<
   TModel extends ResolverModelNames
-> = Partial<Record<ModelResolverActionNames<TModel> | \\"_all\\", MethodDecorator[]>>;
+> = Partial<Record<ModelResolverActionNames<TModel>, MethodDecorator[] | MethodDecoratorOverrideFn>>
+  & {
+    _all?: MethodDecorator[];
+    _query?: MethodDecorator[];
+    _mutation?: MethodDecorator[];
+  };
 
 export type ResolversEnhanceMap = {
   [TModel in ResolverModelNames]?: ResolverActionsConfig<TModel>;
@@ -713,29 +756,32 @@ export type ResolversEnhanceMap = {
 export function applyResolversEnhanceMap(
   resolversEnhanceMap: ResolversEnhanceMap,
 ) {
+  const mutationOperationPrefixes = [
+    \\"createOne\\", \\"createMany\\", \\"deleteOne\\", \\"updateOne\\", \\"deleteMany\\", \\"updateMany\\", \\"upsertOne\\"
+  ];
   for (const resolversEnhanceMapKey of Object.keys(resolversEnhanceMap)) {
     const modelName = resolversEnhanceMapKey as keyof typeof resolversEnhanceMap;
     const crudTarget = crudResolversMap[modelName].prototype;
     const resolverActionsConfig = resolversEnhanceMap[modelName]!;
     const actionResolversConfig = actionResolversMap[modelName];
-    if (resolverActionsConfig._all) {
-      const allActionsDecorators = resolverActionsConfig._all;
-      const resolverActionNames = crudResolversInfo[modelName as keyof typeof crudResolversInfo];
-      for (const resolverActionName of resolverActionNames) {
-        const actionTarget = (actionResolversConfig[
-          resolverActionName as keyof typeof actionResolversConfig
-        ] as Function).prototype;
-        tslib.__decorate(allActionsDecorators, crudTarget, resolverActionName, null);
-        tslib.__decorate(allActionsDecorators, actionTarget, resolverActionName, null);
-      }
-    }
-    const resolverActionsToApply = Object.keys(resolverActionsConfig).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const resolverActionName of resolverActionsToApply) {
-      const decorators = resolverActionsConfig[
+    const allActionsDecorators = resolverActionsConfig._all;
+    const resolverActionNames = crudResolversInfo[modelName as keyof typeof crudResolversInfo];
+    for (const resolverActionName of resolverActionNames) {
+      const maybeDecoratorsOrFn = resolverActionsConfig[
         resolverActionName as keyof typeof resolverActionsConfig
-      ] as MethodDecorator[];
+      ] as MethodDecorator[] | MethodDecoratorOverrideFn | undefined;
+      const isWriteOperation = mutationOperationPrefixes.some(prefix => resolverActionName.startsWith(prefix));
+      const operationKindDecorators = isWriteOperation ? resolverActionsConfig._mutation : resolverActionsConfig._query;
+      const mainDecorators = [
+        ...allActionsDecorators ?? [],
+        ...operationKindDecorators ?? [],
+      ]
+      let decorators: MethodDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(mainDecorators);
+      } else {
+        decorators = [...mainDecorators, ...maybeDecoratorsOrFn ?? []];
+      }
       const actionTarget = (actionResolversConfig[
         resolverActionName as keyof typeof actionResolversConfig
       ] as Function).prototype;
@@ -787,9 +833,11 @@ type TypeConfig = {
   fields?: FieldsConfig;
 };
 
+export type PropertyDecoratorOverrideFn = (decorators: PropertyDecorator[]) => PropertyDecorator[];
+
 type FieldsConfig<TTypeKeys extends string = string> = Partial<
-  Record<TTypeKeys | \\"_all\\", PropertyDecorator[]>
->;
+  Record<TTypeKeys, PropertyDecorator[] | PropertyDecoratorOverrideFn>
+> & { _all?: PropertyDecorator[] };
 
 function applyTypeClassEnhanceConfig<
   TEnhanceConfig extends TypeConfig,
@@ -804,18 +852,18 @@ function applyTypeClassEnhanceConfig<
     tslib.__decorate(enhanceConfig.class, typeClass);
   }
   if (enhanceConfig.fields) {
-    if (enhanceConfig.fields._all) {
-      const allFieldsDecorators = enhanceConfig.fields._all;
-      for (const typeFieldName of typeFieldNames) {
-        tslib.__decorate(allFieldsDecorators, typePrototype, typeFieldName, void 0);
+    const allFieldsDecorators = enhanceConfig.fields._all ?? [];
+    for (const typeFieldName of typeFieldNames) {
+      const maybeDecoratorsOrFn = enhanceConfig.fields[
+        typeFieldName
+      ] as PropertyDecorator[] | PropertyDecoratorOverrideFn | undefined;
+      let decorators: PropertyDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(allFieldsDecorators);
+      } else {
+        decorators = [...allFieldsDecorators, ...maybeDecoratorsOrFn ?? []];
       }
-    }
-    const configFieldsToApply = Object.keys(enhanceConfig.fields).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const typeFieldName of configFieldsToApply) {
-      const fieldDecorators = enhanceConfig.fields[typeFieldName]!;
-      tslib.__decorate(fieldDecorators, typePrototype, typeFieldName, void 0);
+      tslib.__decorate(decorators, typePrototype, typeFieldName, void 0);
     }
   }
 }
@@ -922,8 +970,8 @@ const inputsInfo = {
   UserWhereUniqueInput: [\\"id\\", \\"email\\"],
   UserOrderByWithAggregationInput: [\\"id\\", \\"email\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   UserScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"id\\", \\"email\\"],
-  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
-  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
+  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
+  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
   PostWhereUniqueInput: [\\"uuid\\"],
   PostOrderByWithAggregationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   PostScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
@@ -931,8 +979,8 @@ const inputsInfo = {
   UserUpdateInput: [\\"email\\", \\"posts\\"],
   UserCreateManyInput: [\\"id\\", \\"email\\"],
   UserUpdateManyMutationInput: [\\"email\\"],
-  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
-  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
+  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
+  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
   PostCreateManyInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostUpdateManyMutationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\"],
   IntFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
@@ -949,8 +997,8 @@ const inputsInfo = {
   DateTimeFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
   BoolFilter: [\\"equals\\", \\"not\\"],
   StringNullableFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"contains\\", \\"startsWith\\", \\"endsWith\\", \\"mode\\", \\"not\\"],
-  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   JsonFilter: [\\"equals\\", \\"path\\", \\"string_contains\\", \\"string_starts_with\\", \\"string_ends_with\\", \\"array_contains\\", \\"array_starts_with\\", \\"array_ends_with\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
+  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   PostCountOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostAvgOrderByAggregateInput: [\\"authorId\\"],
   PostMaxOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\"],
@@ -1086,8 +1134,10 @@ exports[`emitOnly generator option when only 'crudResolvers' is set should gener
         CreateOnePostResolver.ts
         DeleteManyPostResolver.ts
         DeleteOnePostResolver.ts
+        FindFirstPostOrThrowResolver.ts
         FindFirstPostResolver.ts
         FindManyPostResolver.ts
+        FindUniquePostOrThrowResolver.ts
         FindUniquePostResolver.ts
         GroupByPostResolver.ts
         PostCrudResolver.ts
@@ -1101,8 +1151,10 @@ exports[`emitOnly generator option when only 'crudResolvers' is set should gener
           DeleteManyPostArgs.ts
           DeleteOnePostArgs.ts
           FindFirstPostArgs.ts
+          FindFirstPostOrThrowArgs.ts
           FindManyPostArgs.ts
           FindUniquePostArgs.ts
+          FindUniquePostOrThrowArgs.ts
           GroupByPostArgs.ts
           UpdateManyPostArgs.ts
           UpdateOnePostArgs.ts
@@ -1114,8 +1166,10 @@ exports[`emitOnly generator option when only 'crudResolvers' is set should gener
         CreateOneUserResolver.ts
         DeleteManyUserResolver.ts
         DeleteOneUserResolver.ts
+        FindFirstUserOrThrowResolver.ts
         FindFirstUserResolver.ts
         FindManyUserResolver.ts
+        FindUniqueUserOrThrowResolver.ts
         FindUniqueUserResolver.ts
         GroupByUserResolver.ts
         UpdateManyUserResolver.ts
@@ -1129,8 +1183,10 @@ exports[`emitOnly generator option when only 'crudResolvers' is set should gener
           DeleteManyUserArgs.ts
           DeleteOneUserArgs.ts
           FindFirstUserArgs.ts
+          FindFirstUserOrThrowArgs.ts
           FindManyUserArgs.ts
           FindUniqueUserArgs.ts
+          FindUniqueUserOrThrowArgs.ts
           GroupByUserArgs.ts
           UpdateManyUserArgs.ts
           UpdateOneUserArgs.ts
@@ -1286,9 +1342,11 @@ type TypeConfig = {
   fields?: FieldsConfig;
 };
 
+export type PropertyDecoratorOverrideFn = (decorators: PropertyDecorator[]) => PropertyDecorator[];
+
 type FieldsConfig<TTypeKeys extends string = string> = Partial<
-  Record<TTypeKeys | \\"_all\\", PropertyDecorator[]>
->;
+  Record<TTypeKeys, PropertyDecorator[] | PropertyDecoratorOverrideFn>
+> & { _all?: PropertyDecorator[] };
 
 function applyTypeClassEnhanceConfig<
   TEnhanceConfig extends TypeConfig,
@@ -1303,18 +1361,18 @@ function applyTypeClassEnhanceConfig<
     tslib.__decorate(enhanceConfig.class, typeClass);
   }
   if (enhanceConfig.fields) {
-    if (enhanceConfig.fields._all) {
-      const allFieldsDecorators = enhanceConfig.fields._all;
-      for (const typeFieldName of typeFieldNames) {
-        tslib.__decorate(allFieldsDecorators, typePrototype, typeFieldName, void 0);
+    const allFieldsDecorators = enhanceConfig.fields._all ?? [];
+    for (const typeFieldName of typeFieldNames) {
+      const maybeDecoratorsOrFn = enhanceConfig.fields[
+        typeFieldName
+      ] as PropertyDecorator[] | PropertyDecoratorOverrideFn | undefined;
+      let decorators: PropertyDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(allFieldsDecorators);
+      } else {
+        decorators = [...allFieldsDecorators, ...maybeDecoratorsOrFn ?? []];
       }
-    }
-    const configFieldsToApply = Object.keys(enhanceConfig.fields).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const typeFieldName of configFieldsToApply) {
-      const fieldDecorators = enhanceConfig.fields[typeFieldName]!;
-      tslib.__decorate(fieldDecorators, typePrototype, typeFieldName, void 0);
+      tslib.__decorate(decorators, typePrototype, typeFieldName, void 0);
     }
   }
 }
@@ -1325,8 +1383,8 @@ const inputsInfo = {
   UserWhereUniqueInput: [\\"id\\", \\"email\\"],
   UserOrderByWithAggregationInput: [\\"id\\", \\"email\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   UserScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"id\\", \\"email\\"],
-  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
-  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
+  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
+  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
   PostWhereUniqueInput: [\\"uuid\\"],
   PostOrderByWithAggregationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   PostScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
@@ -1334,8 +1392,8 @@ const inputsInfo = {
   UserUpdateInput: [\\"email\\", \\"posts\\"],
   UserCreateManyInput: [\\"id\\", \\"email\\"],
   UserUpdateManyMutationInput: [\\"email\\"],
-  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
-  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
+  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
+  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
   PostCreateManyInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostUpdateManyMutationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\"],
   IntFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
@@ -1352,8 +1410,8 @@ const inputsInfo = {
   DateTimeFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
   BoolFilter: [\\"equals\\", \\"not\\"],
   StringNullableFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"contains\\", \\"startsWith\\", \\"endsWith\\", \\"mode\\", \\"not\\"],
-  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   JsonFilter: [\\"equals\\", \\"path\\", \\"string_contains\\", \\"string_starts_with\\", \\"string_ends_with\\", \\"array_contains\\", \\"array_starts_with\\", \\"array_ends_with\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
+  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   PostCountOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostAvgOrderByAggregateInput: [\\"authorId\\"],
   PostMaxOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\"],
@@ -1586,9 +1644,11 @@ type TypeConfig = {
   fields?: FieldsConfig;
 };
 
+export type PropertyDecoratorOverrideFn = (decorators: PropertyDecorator[]) => PropertyDecorator[];
+
 type FieldsConfig<TTypeKeys extends string = string> = Partial<
-  Record<TTypeKeys | \\"_all\\", PropertyDecorator[]>
->;
+  Record<TTypeKeys, PropertyDecorator[] | PropertyDecoratorOverrideFn>
+> & { _all?: PropertyDecorator[] };
 
 function applyTypeClassEnhanceConfig<
   TEnhanceConfig extends TypeConfig,
@@ -1603,18 +1663,18 @@ function applyTypeClassEnhanceConfig<
     tslib.__decorate(enhanceConfig.class, typeClass);
   }
   if (enhanceConfig.fields) {
-    if (enhanceConfig.fields._all) {
-      const allFieldsDecorators = enhanceConfig.fields._all;
-      for (const typeFieldName of typeFieldNames) {
-        tslib.__decorate(allFieldsDecorators, typePrototype, typeFieldName, void 0);
+    const allFieldsDecorators = enhanceConfig.fields._all ?? [];
+    for (const typeFieldName of typeFieldNames) {
+      const maybeDecoratorsOrFn = enhanceConfig.fields[
+        typeFieldName
+      ] as PropertyDecorator[] | PropertyDecoratorOverrideFn | undefined;
+      let decorators: PropertyDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(allFieldsDecorators);
+      } else {
+        decorators = [...allFieldsDecorators, ...maybeDecoratorsOrFn ?? []];
       }
-    }
-    const configFieldsToApply = Object.keys(enhanceConfig.fields).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const typeFieldName of configFieldsToApply) {
-      const fieldDecorators = enhanceConfig.fields[typeFieldName]!;
-      tslib.__decorate(fieldDecorators, typePrototype, typeFieldName, void 0);
+      tslib.__decorate(decorators, typePrototype, typeFieldName, void 0);
     }
   }
 }
@@ -1705,9 +1765,11 @@ type TypeConfig = {
   fields?: FieldsConfig;
 };
 
+export type PropertyDecoratorOverrideFn = (decorators: PropertyDecorator[]) => PropertyDecorator[];
+
 type FieldsConfig<TTypeKeys extends string = string> = Partial<
-  Record<TTypeKeys | \\"_all\\", PropertyDecorator[]>
->;
+  Record<TTypeKeys, PropertyDecorator[] | PropertyDecoratorOverrideFn>
+> & { _all?: PropertyDecorator[] };
 
 function applyTypeClassEnhanceConfig<
   TEnhanceConfig extends TypeConfig,
@@ -1722,18 +1784,18 @@ function applyTypeClassEnhanceConfig<
     tslib.__decorate(enhanceConfig.class, typeClass);
   }
   if (enhanceConfig.fields) {
-    if (enhanceConfig.fields._all) {
-      const allFieldsDecorators = enhanceConfig.fields._all;
-      for (const typeFieldName of typeFieldNames) {
-        tslib.__decorate(allFieldsDecorators, typePrototype, typeFieldName, void 0);
+    const allFieldsDecorators = enhanceConfig.fields._all ?? [];
+    for (const typeFieldName of typeFieldNames) {
+      const maybeDecoratorsOrFn = enhanceConfig.fields[
+        typeFieldName
+      ] as PropertyDecorator[] | PropertyDecoratorOverrideFn | undefined;
+      let decorators: PropertyDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(allFieldsDecorators);
+      } else {
+        decorators = [...allFieldsDecorators, ...maybeDecoratorsOrFn ?? []];
       }
-    }
-    const configFieldsToApply = Object.keys(enhanceConfig.fields).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const typeFieldName of configFieldsToApply) {
-      const fieldDecorators = enhanceConfig.fields[typeFieldName]!;
-      tslib.__decorate(fieldDecorators, typePrototype, typeFieldName, void 0);
+      tslib.__decorate(decorators, typePrototype, typeFieldName, void 0);
     }
   }
 }
@@ -1852,6 +1914,8 @@ import * as relationResolvers from \\"./resolvers/relations/resolvers.index\\";
 import * as models from \\"./models\\";
 import * as inputTypes from \\"./resolvers/inputs\\";
 
+export type MethodDecoratorOverrideFn = (decorators: MethodDecorator[]) => MethodDecorator[];
+
 const relationResolversMap = {
   User: relationResolvers.UserRelationsResolver,
   Post: relationResolvers.PostRelationsResolver
@@ -1868,7 +1932,8 @@ type RelationResolverActionNames<
 > = keyof typeof relationResolversMap[TModel][\\"prototype\\"];
 
 export type RelationResolverActionsConfig<TModel extends RelationResolverModelNames>
-  = Partial<Record<RelationResolverActionNames<TModel> | \\"_all\\", MethodDecorator[]>>;
+  = Partial<Record<RelationResolverActionNames<TModel>, MethodDecorator[] | MethodDecoratorOverrideFn>>
+  & { _all?: MethodDecorator[] };
 
 export type RelationResolversEnhanceMap = {
   [TModel in RelationResolverModelNames]?: RelationResolverActionsConfig<TModel>;
@@ -1881,20 +1946,18 @@ export function applyRelationResolversEnhanceMap(
     const modelName = relationResolversEnhanceMapKey as keyof typeof relationResolversEnhanceMap;
     const relationResolverTarget = relationResolversMap[modelName].prototype;
     const relationResolverActionsConfig = relationResolversEnhanceMap[modelName]!;
-    if (relationResolverActionsConfig._all) {
-      const allActionsDecorators = relationResolverActionsConfig._all;
-      const relationResolverActionNames = relationResolversInfo[modelName as keyof typeof relationResolversInfo];
-      for (const relationResolverActionName of relationResolverActionNames) {
-        tslib.__decorate(allActionsDecorators, relationResolverTarget, relationResolverActionName, null);
-      }
-    }
-    const relationResolverActionsToApply = Object.keys(relationResolverActionsConfig).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const relationResolverActionName of relationResolverActionsToApply) {
-      const decorators = relationResolverActionsConfig[
+    const allActionsDecorators = relationResolverActionsConfig._all ?? [];
+    const relationResolverActionNames = relationResolversInfo[modelName as keyof typeof relationResolversInfo];
+    for (const relationResolverActionName of relationResolverActionNames) {
+      const maybeDecoratorsOrFn = relationResolverActionsConfig[
         relationResolverActionName as keyof typeof relationResolverActionsConfig
-      ] as MethodDecorator[];
+      ] as MethodDecorator[] | MethodDecoratorOverrideFn | undefined;
+      let decorators: MethodDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(allActionsDecorators);
+      } else {
+        decorators = [...allActionsDecorators, ...maybeDecoratorsOrFn ?? []];
+      }
       tslib.__decorate(decorators, relationResolverTarget, relationResolverActionName, null);
     }
   }
@@ -1905,9 +1968,11 @@ type TypeConfig = {
   fields?: FieldsConfig;
 };
 
+export type PropertyDecoratorOverrideFn = (decorators: PropertyDecorator[]) => PropertyDecorator[];
+
 type FieldsConfig<TTypeKeys extends string = string> = Partial<
-  Record<TTypeKeys | \\"_all\\", PropertyDecorator[]>
->;
+  Record<TTypeKeys, PropertyDecorator[] | PropertyDecoratorOverrideFn>
+> & { _all?: PropertyDecorator[] };
 
 function applyTypeClassEnhanceConfig<
   TEnhanceConfig extends TypeConfig,
@@ -1922,18 +1987,18 @@ function applyTypeClassEnhanceConfig<
     tslib.__decorate(enhanceConfig.class, typeClass);
   }
   if (enhanceConfig.fields) {
-    if (enhanceConfig.fields._all) {
-      const allFieldsDecorators = enhanceConfig.fields._all;
-      for (const typeFieldName of typeFieldNames) {
-        tslib.__decorate(allFieldsDecorators, typePrototype, typeFieldName, void 0);
+    const allFieldsDecorators = enhanceConfig.fields._all ?? [];
+    for (const typeFieldName of typeFieldNames) {
+      const maybeDecoratorsOrFn = enhanceConfig.fields[
+        typeFieldName
+      ] as PropertyDecorator[] | PropertyDecoratorOverrideFn | undefined;
+      let decorators: PropertyDecorator[];
+      if (typeof maybeDecoratorsOrFn === \\"function\\") {
+        decorators = maybeDecoratorsOrFn(allFieldsDecorators);
+      } else {
+        decorators = [...allFieldsDecorators, ...maybeDecoratorsOrFn ?? []];
       }
-    }
-    const configFieldsToApply = Object.keys(enhanceConfig.fields).filter(
-      it => it !== \\"_all\\"
-    );
-    for (const typeFieldName of configFieldsToApply) {
-      const fieldDecorators = enhanceConfig.fields[typeFieldName]!;
-      tslib.__decorate(fieldDecorators, typePrototype, typeFieldName, void 0);
+      tslib.__decorate(decorators, typePrototype, typeFieldName, void 0);
     }
   }
 }
@@ -1984,8 +2049,8 @@ const inputsInfo = {
   UserWhereUniqueInput: [\\"id\\", \\"email\\"],
   UserOrderByWithAggregationInput: [\\"id\\", \\"email\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   UserScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"id\\", \\"email\\"],
-  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
-  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"authorId\\", \\"metadata\\"],
+  PostWhereInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
+  PostOrderByWithRelationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"author\\"],
   PostWhereUniqueInput: [\\"uuid\\"],
   PostOrderByWithAggregationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\", \\"_count\\", \\"_avg\\", \\"_max\\", \\"_min\\", \\"_sum\\"],
   PostScalarWhereWithAggregatesInput: [\\"AND\\", \\"OR\\", \\"NOT\\", \\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
@@ -1993,8 +2058,8 @@ const inputsInfo = {
   UserUpdateInput: [\\"email\\", \\"posts\\"],
   UserCreateManyInput: [\\"id\\", \\"email\\"],
   UserUpdateManyMutationInput: [\\"email\\"],
-  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
-  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"author\\", \\"metadata\\"],
+  PostCreateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
+  PostUpdateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\", \\"author\\"],
   PostCreateManyInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostUpdateManyMutationInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"metadata\\"],
   IntFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
@@ -2011,8 +2076,8 @@ const inputsInfo = {
   DateTimeFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
   BoolFilter: [\\"equals\\", \\"not\\"],
   StringNullableFilter: [\\"equals\\", \\"in\\", \\"notIn\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"contains\\", \\"startsWith\\", \\"endsWith\\", \\"mode\\", \\"not\\"],
-  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   JsonFilter: [\\"equals\\", \\"path\\", \\"string_contains\\", \\"string_starts_with\\", \\"string_ends_with\\", \\"array_contains\\", \\"array_starts_with\\", \\"array_ends_with\\", \\"lt\\", \\"lte\\", \\"gt\\", \\"gte\\", \\"not\\"],
+  UserRelationFilter: [\\"is\\", \\"isNot\\"],
   PostCountOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\", \\"metadata\\"],
   PostAvgOrderByAggregateInput: [\\"authorId\\"],
   PostMaxOrderByAggregateInput: [\\"uuid\\", \\"createdAt\\", \\"updatedAt\\", \\"published\\", \\"title\\", \\"content\\", \\"authorId\\"],

@@ -8,9 +8,13 @@ export interface ExternalGeneratorOptions {
   useUncheckedScalarInputs?: boolean;
   emitIdAsIDType?: boolean;
   emitOnly?: EmitBlockKind[];
+  emitRedundantTypesInfo?: boolean;
   customPrismaImportPath?: string;
   contextPrismaKey?: string;
   useSimpleInputs?: boolean;
+  omitInputFieldsByDefault?: string[];
+  omitOutputFieldsByDefault?: string[];
+  formatGeneratedCode?: boolean | "prettier" | "tsc";
 }
 
 export interface InternalGeneratorOptions {

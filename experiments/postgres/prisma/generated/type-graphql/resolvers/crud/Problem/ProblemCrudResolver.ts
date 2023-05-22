@@ -1,19 +1,20 @@
 import * as TypeGraphQL from "type-graphql";
-import graphqlFields from "graphql-fields";
-import { GraphQLResolveInfo } from "graphql";
+import type { GraphQLResolveInfo } from "graphql";
 import { AggregateProblemArgs } from "./args/AggregateProblemArgs";
 import { CreateManyProblemArgs } from "./args/CreateManyProblemArgs";
 import { CreateOneProblemArgs } from "./args/CreateOneProblemArgs";
 import { DeleteManyProblemArgs } from "./args/DeleteManyProblemArgs";
 import { DeleteOneProblemArgs } from "./args/DeleteOneProblemArgs";
 import { FindFirstProblemArgs } from "./args/FindFirstProblemArgs";
+import { FindFirstProblemOrThrowArgs } from "./args/FindFirstProblemOrThrowArgs";
 import { FindManyProblemArgs } from "./args/FindManyProblemArgs";
 import { FindUniqueProblemArgs } from "./args/FindUniqueProblemArgs";
+import { FindUniqueProblemOrThrowArgs } from "./args/FindUniqueProblemOrThrowArgs";
 import { GroupByProblemArgs } from "./args/GroupByProblemArgs";
 import { UpdateManyProblemArgs } from "./args/UpdateManyProblemArgs";
 import { UpdateOneProblemArgs } from "./args/UpdateOneProblemArgs";
 import { UpsertOneProblemArgs } from "./args/UpsertOneProblemArgs";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 import { Problem } from "../../../models/Problem";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateProblem } from "../../outputs/AggregateProblem";
@@ -24,20 +25,18 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Query(_returns => AggregateProblem, {
     nullable: false
   })
-  async aggregateProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: AggregateProblemArgs): Promise<AggregateProblem> {
+  async aggregateProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateProblemArgs) args: AggregateProblemArgs): Promise<AggregateProblem> {
     return getPrismaFromContext(ctx).problem.aggregate({
       ...args,
-      ...transformFields(graphqlFields(info as any)),
+      ...transformInfoIntoPrismaArgs(info),
     });
   }
 
   @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: CreateManyProblemArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async createManyProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateManyProblemArgs) args: CreateManyProblemArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.createMany({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
@@ -47,10 +46,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Mutation(_returns => Problem, {
     nullable: false
   })
-  async createOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: CreateOneProblemArgs): Promise<Problem> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async createOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOneProblemArgs) args: CreateOneProblemArgs): Promise<Problem> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.create({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
@@ -60,10 +57,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: DeleteManyProblemArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async deleteManyProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteManyProblemArgs) args: DeleteManyProblemArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.deleteMany({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
@@ -73,10 +68,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Mutation(_returns => Problem, {
     nullable: true
   })
-  async deleteOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: DeleteOneProblemArgs): Promise<Problem | null> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async deleteOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneProblemArgs) args: DeleteOneProblemArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.delete({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
@@ -86,11 +79,20 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Query(_returns => Problem, {
     nullable: true
   })
-  async findFirstProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: FindFirstProblemArgs): Promise<Problem | null> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async findFirstProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstProblemArgs) args: FindFirstProblemArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.findFirst({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
+  }
+
+  @TypeGraphQL.Query(_returns => Problem, {
+    nullable: true
+  })
+  async findFirstProblemOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstProblemOrThrowArgs) args: FindFirstProblemOrThrowArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).problem.findFirstOrThrow({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
     });
@@ -99,10 +101,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Query(_returns => [Problem], {
     nullable: false
   })
-  async problems(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: FindManyProblemArgs): Promise<Problem[]> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async problems(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyProblemArgs) args: FindManyProblemArgs): Promise<Problem[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.findMany({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
@@ -112,11 +112,20 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Query(_returns => Problem, {
     nullable: true
   })
-  async problem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: FindUniqueProblemArgs): Promise<Problem | null> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async problem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueProblemArgs) args: FindUniqueProblemArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.findUnique({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
+  }
+
+  @TypeGraphQL.Query(_returns => Problem, {
+    nullable: true
+  })
+  async getProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueProblemOrThrowArgs) args: FindUniqueProblemOrThrowArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    return getPrismaFromContext(ctx).problem.findUniqueOrThrow({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
     });
@@ -125,10 +134,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Query(_returns => [ProblemGroupBy], {
     nullable: false
   })
-  async groupByProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: GroupByProblemArgs): Promise<ProblemGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformFields(
-      graphqlFields(info as any)
-    );
+  async groupByProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByProblemArgs) args: GroupByProblemArgs): Promise<ProblemGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.groupBy({
       ...args,
       ...Object.fromEntries(
@@ -140,10 +147,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async updateManyProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UpdateManyProblemArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async updateManyProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateManyProblemArgs) args: UpdateManyProblemArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.updateMany({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
@@ -153,10 +158,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Mutation(_returns => Problem, {
     nullable: true
   })
-  async updateOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UpdateOneProblemArgs): Promise<Problem | null> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async updateOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneProblemArgs) args: UpdateOneProblemArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.update({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
@@ -166,10 +169,8 @@ export class ProblemCrudResolver {
   @TypeGraphQL.Mutation(_returns => Problem, {
     nullable: false
   })
-  async upsertOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UpsertOneProblemArgs): Promise<Problem> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async upsertOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOneProblemArgs) args: UpsertOneProblemArgs): Promise<Problem> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx).problem.upsert({
       ...args,
       ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),

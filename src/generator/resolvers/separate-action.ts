@@ -7,12 +7,13 @@ import {
   generateArgsImports,
   generateModelsImports,
   generateOutputsImports,
-  generateGraphQLFieldsImport,
+  generateGraphQLInfoImport,
   generateHelpersFileImport,
 } from "../imports";
 import { generateCrudResolverClassMethodDeclaration } from "./helpers";
 import { DmmfDocument } from "../dmmf/dmmf-document";
 import { DMMF } from "../dmmf/types";
+import { GeneratorOptions } from "../options";
 
 export default function generateActionResolverClass(
   project: Project,
@@ -21,6 +22,7 @@ export default function generateActionResolverClass(
   action: DMMF.Action,
   mapping: DMMF.ModelMapping,
   dmmfDocument: DmmfDocument,
+  generatorOptions: GeneratorOptions,
 ) {
   const sourceFile = project.createSourceFile(
     path.resolve(
@@ -35,7 +37,7 @@ export default function generateActionResolverClass(
   );
 
   generateTypeGraphQLImport(sourceFile);
-  generateGraphQLFieldsImport(sourceFile);
+  generateGraphQLInfoImport(sourceFile);
   if (action.argsTypeName) {
     generateArgsImports(sourceFile, [action.argsTypeName], 0);
   }
@@ -65,7 +67,12 @@ export default function generateActionResolverClass(
       },
     ],
     methods: [
-      generateCrudResolverClassMethodDeclaration(action, mapping, dmmfDocument),
+      generateCrudResolverClassMethodDeclaration(
+        action,
+        mapping,
+        dmmfDocument,
+        generatorOptions,
+      ),
     ],
   });
 }
