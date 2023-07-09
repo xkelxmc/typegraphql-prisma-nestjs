@@ -9,5 +9,6 @@
     "activityBar.background": "#2665B9",
     "titleBar.activeBackground": "#B02A80",
     "titleBar.activeForeground": "#FAFAFC"
-  }
+  },
+  "prettier.prettierPath": "node_modules/prettier"
 }
