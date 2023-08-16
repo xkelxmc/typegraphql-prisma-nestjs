@@ -7,7 +7,7 @@ generator client {
   provider        = "prisma-client-js"
   // binaryTargets   = ["windows", "debian-openssl-1.1.x"]
   output          = "../prisma/generated/client"
-  previewFeatures = ["orderByNulls", "fullTextSearch", "extendedWhereUnique", "filteredRelationCount", "clientExtensions", "jsonProtocol"]
+  previewFeatures = ["fullTextSearch"]
 }
 
 generator typegraphql {
@@ -19,7 +19,7 @@ generator typegraphql {
   // useOriginalMapping       = true
   useUncheckedScalarInputs = false
   emitIdAsIDType           = true
-  // emitOnly                 = "crudResolvers"
+  // emitOnly                 = ["enums", "models"]
   customPrismaImportPath   = "../client"
   contextPrismaKey         = "prismaClient"
   useSimpleInputs          = true
