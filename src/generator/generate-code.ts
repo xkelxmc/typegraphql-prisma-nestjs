@@ -105,12 +105,14 @@ export default async function generateCode(
       enumDef => enumDef.typeName,
     );
     dmmfDocument.datamodel.enums.forEach(enumDef =>
-      generateEnumFromDef(project, baseDirPath, enumDef),
+      generateEnumFromDef(project, baseDirPath, enumDef, options),
     );
     dmmfDocument.schema.enums
       // skip enums from datamodel
       .filter(enumDef => !datamodelEnumNames.includes(enumDef.typeName))
-      .forEach(enumDef => generateEnumFromDef(project, baseDirPath, enumDef));
+      .forEach(enumDef =>
+        generateEnumFromDef(project, baseDirPath, enumDef, options),
+      );
     const emittedEnumNames = [
       ...new Set([
         ...dmmfDocument.schema.enums.map(it => it.typeName),

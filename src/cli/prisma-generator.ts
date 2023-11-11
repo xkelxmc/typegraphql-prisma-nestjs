@@ -75,6 +75,18 @@ export async function generate(options: GeneratorOptions) {
         ["prettier", "tsc"] as const,
       ),
     emitIsAbstract: parseStringBoolean(generatorConfig.emitIsAbstract) ?? false,
+    objectTypePrefix: parseString(
+      generatorConfig.objectTypePrefix,
+      "objectTypePrefix",
+    ),
+    inputTypePrefix: parseString(
+      generatorConfig.objectTypePrefix,
+      "inputTypePrefix",
+    ),
+    enumTypePrefix: parseString(
+      generatorConfig.enumTypePrefix,
+      "enumTypePrefix",
+    ),
   };
   const internalConfig: InternalGeneratorOptions = {
     outputDirPath: outputDir,

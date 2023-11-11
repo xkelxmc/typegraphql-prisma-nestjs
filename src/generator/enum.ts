@@ -5,11 +5,13 @@ import { generateTypeGraphQLImport } from "./imports";
 import { enumsFolderName } from "./config";
 import { DMMF } from "./dmmf/types";
 import { convertNewLines } from "./helpers";
+import { GeneratorOptions } from "./options";
 
 export default function generateEnumFromDef(
   project: Project,
   baseDirPath: string,
   enumDef: DMMF.Enum,
+  options: GeneratorOptions,
 ) {
   const dirPath = path.resolve(baseDirPath, enumsFolderName);
   const filePath = path.resolve(dirPath, `${enumDef.typeName}.ts`);
@@ -37,7 +39,9 @@ export default function generateEnumFromDef(
   // TODO: refactor to AST
   sourceFile.addStatements([
     `registerEnumType(${enumDef.typeName}, {
-      name: "${enumDef.typeName}",
+      name: "${[options.enumTypePrefix, enumDef.typeName]
+        .filter(Boolean)
+        .join("")}",
       description: ${enumDef.docs ? `"${enumDef.docs}"` : "undefined"},
     });`,
   ]);

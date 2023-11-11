@@ -73,7 +73,9 @@ export default function generateObjectTypeClassFromModel(
           {
             name: "ObjectType",
             arguments: [
-              `"${model.typeName}"`,
+              `"${[dmmfDocument.options.objectTypePrefix, model.typeName]
+                .filter(Boolean)
+                .join("")}"`,
               Writers.object({
                 ...(dmmfDocument.options.emitIsAbstract && {
                   isAbstract: "true",

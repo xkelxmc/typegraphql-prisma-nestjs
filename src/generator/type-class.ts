@@ -1,29 +1,29 @@
+import path from "path";
 import {
-  PropertyDeclarationStructure,
+  GetAccessorDeclarationStructure,
+  MethodDeclarationStructure,
   OptionalKind,
   Project,
-  GetAccessorDeclarationStructure,
+  PropertyDeclarationStructure,
   SetAccessorDeclarationStructure,
   Writers,
-  MethodDeclarationStructure,
 } from "ts-morph";
-import path from "path";
 
-import { outputsFolderName, inputsFolderName } from "./config";
-import {
-  generateTypeGraphQLImport,
-  generateInputsImports,
-  generateEnumsImports,
-  generateArgsImports,
-  generateGraphQLScalarsImport,
-  generatePrismaNamespaceImport,
-  generateOutputsImports,
-  generateCustomScalarsImport,
-} from "./imports";
+import { inputsFolderName, outputsFolderName } from "./config";
 import { DmmfDocument } from "./dmmf/dmmf-document";
 import { DMMF } from "./dmmf/types";
-import { GeneratorOptions } from "./options";
 import { pascalCase } from "./helpers";
+import {
+  generateArgsImports,
+  generateCustomScalarsImport,
+  generateEnumsImports,
+  generateGraphQLScalarsImport,
+  generateInputsImports,
+  generateOutputsImports,
+  generatePrismaNamespaceImport,
+  generateTypeGraphQLImport,
+} from "./imports";
+import { GeneratorOptions } from "./options";
 
 export function generateOutputTypeClassFromType(
   project: Project,
@@ -68,7 +68,9 @@ export function generateOutputTypeClassFromType(
       {
         name: "ObjectType",
         arguments: [
-          `"${type.typeName}"`,
+          `"${[dmmfDocument.options.objectTypePrefix, type.typeName]
+            .filter(Boolean)
+            .join("")}"`,
           Writers.object({
             ...(dmmfDocument.options.emitIsAbstract && {
               isAbstract: "true",
@@ -190,7 +192,9 @@ export function generateInputTypeClassFromType(
       {
         name: "InputType",
         arguments: [
-          `"${inputType.typeName}"`,
+          `"${[options.inputTypePrefix, inputType.typeName]
+            .filter(Boolean)
+            .join("")}"`,
           Writers.object({
             ...(options.emitIsAbstract && {
               isAbstract: "true",

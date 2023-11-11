@@ -16,6 +16,12 @@ export interface ExternalGeneratorOptions {
   omitOutputFieldsByDefault?: string[];
   formatGeneratedCode?: boolean | "prettier" | "tsc";
   emitIsAbstract?: boolean;
+  // custom prefix for ObjectType
+  objectTypePrefix?: string;
+  // custom prefix for InputType
+  inputTypePrefix?: string;
+  // custom prefix for Enums
+  enumTypePrefix?: string;
 }
 
 export interface InternalGeneratorOptions {
