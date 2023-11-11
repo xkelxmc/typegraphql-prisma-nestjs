@@ -76,7 +76,7 @@ export function generateHelpersFile(
   `);
 
   sourceFile.addStatements(/* ts */ `
-    export let transformArgsIntoPrismaArgs = function <TArgs = Record<string, any>, TContext = any>(info: GraphQLResolveInfo, args: TArgs, ctx: TContext): TArgs {
+    export let transformArgsIntoPrismaArgs = async function <TArgs = Record<string, any>, TContext = any>(info: GraphQLResolveInfo, args: TArgs, ctx: TContext): Promise<TArgs> {
         return args;
     };
 
