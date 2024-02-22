@@ -104,7 +104,7 @@ export function generatePrismaNamespaceImport(
   sourceFile.addImportDeclaration({
     moduleSpecifier:
       options.absolutePrismaOutputPath ??
-      (level === 0 ? "./" : "") +
+      (!options.customPrismaImportPathIgnoreLevels && level === 0 ? "./" : "") +
       (options.customPrismaImportPathIgnoreLevels ? options.customPrismaImportPath ?? options.relativePrismaOutputPath : path.posix.join(
         ...Array(level).fill(".."),
         options.customPrismaImportPath ?? options.relativePrismaOutputPath,
