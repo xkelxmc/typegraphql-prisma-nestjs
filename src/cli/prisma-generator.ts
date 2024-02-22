@@ -55,6 +55,9 @@ export async function generate(options: GeneratorOptions) {
       generatorConfig.customPrismaImportPath,
       "customPrismaImportPath",
     ),
+    customPrismaImportPathIgnoreLevels: parseStringBoolean(
+      generatorConfig.customPrismaImportPathIgnoreLevels
+    ),
     contextPrismaKey: parseString(
       generatorConfig.contextPrismaKey,
       "contextPrismaKey",

@@ -105,10 +105,10 @@ export function generatePrismaNamespaceImport(
     moduleSpecifier:
       options.absolutePrismaOutputPath ??
       (level === 0 ? "./" : "") +
-        path.posix.join(
-          ...Array(level).fill(".."),
-          options.customPrismaImportPath ?? options.relativePrismaOutputPath,
-        ),
+      (options.customPrismaImportPathIgnoreLevels ? options.customPrismaImportPath ?? options.relativePrismaOutputPath : path.posix.join(
+        ...Array(level).fill(".."),
+        options.customPrismaImportPath ?? options.relativePrismaOutputPath,
+      )),
     namedImports: ["Prisma"],
   });
 }
@@ -287,10 +287,9 @@ export function generateIndexFile(
           name: "resolvers",
           initializer: `[
             ${blocksToEmit.includes("crudResolvers") ? "...crudResolvers," : ""}
-            ${
-              hasSomeRelations && blocksToEmit.includes("relationResolvers")
-                ? "...relationResolvers,"
-                : ""
+            ${hasSomeRelations && blocksToEmit.includes("relationResolvers")
+              ? "...relationResolvers,"
+              : ""
             }
             ] as unknown as NonEmptyArray<Function>`,
         },

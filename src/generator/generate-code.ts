@@ -76,7 +76,7 @@ export default async function generateCode(
     ),
     absolutePrismaOutputPath:
       !baseOptions.customPrismaImportPath &&
-      baseOptions.prismaClientPath.includes("node_modules")
+        baseOptions.prismaClientPath.includes("node_modules")
         ? "@prisma/client"
         : undefined,
     formatGeneratedCode: baseOptions.formatGeneratedCode ?? "tsc", // default for backward compatibility
