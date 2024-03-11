@@ -13,7 +13,7 @@ export function generateHelpersFile(
   generateGraphQLFieldsImport(sourceFile);
 
   sourceFile.addStatements(/* ts */ `
-    export function transformInfoIntoPrismaArgs(info: GraphQLResolveInfo): Record<string, any> {
+    export function transformInfoIntoPrismaArgs(info: GraphQLResolveInfo, modelName?: string, collectionName?: string, prismaMethod?: string): Record<string, any> {
       const fields: Record<string, any> = graphqlFields(
         // suppress GraphQLResolveInfo types issue
         info as any,
@@ -23,12 +23,12 @@ export function generateHelpersFile(
           processArguments: true,
         }
       );
-      return transformFields(fields);
+      return transformFields(fields, modelName, collectionName, prismaMethod);
     }
   `);
 
   sourceFile.addStatements(/* ts */ `
-    function transformFields(fields: Record<string, any>): Record<string, any> {
+    function transformFields(fields: Record<string, any>, modelName?: string, collectionName?: string, prismaMethod?: string): Record<string, any> {
       return Object.fromEntries(
         Object.entries(fields)
           .map<[string, any]>(([key, value]) => {
@@ -43,7 +43,7 @@ export function generateHelpersFile(
                 })
               )];
             }
-            return [key, transformFields(value)];
+            return [key, transformFields(value, modelName, collectionName, prismaMethod)];
           }),
       );
     }
@@ -60,7 +60,7 @@ export function generateHelpersFile(
   `);
 
   sourceFile.addStatements(/* ts */ `
-    export function transformCountFieldIntoSelectRelationsCount(_count: object) {
+    export function transformCountFieldIntoSelectRelationsCount(_count: object, modelName?: string, collectionName?: string, prismaMethod?: string) {
       return {
         include: {
           _count: {
@@ -76,7 +76,7 @@ export function generateHelpersFile(
   `);
 
   sourceFile.addStatements(/* ts */ `
-    export let transformArgsIntoPrismaArgs = async function <TArgs = Record<string, any>, TContext = any>(info: GraphQLResolveInfo, args: TArgs, ctx: TContext): Promise<TArgs> {
+    export let transformArgsIntoPrismaArgs = async function <TArgs = Record<string, any>, TContext = any>(info: GraphQLResolveInfo, args: TArgs, ctx: TContext, modelName?: string, collectionName?: string, prismaMethod?: string): Promise<TArgs> {
         return args;
     };
 

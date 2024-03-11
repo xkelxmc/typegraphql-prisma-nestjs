@@ -58,25 +58,25 @@ export function generateCrudResolverClassMethodDeclaration(
       action.kind === DMMF.ModelAction.aggregate
         ? [
             /* ts */ ` return getPrismaFromContext(ctx).${mapping.collectionName}.${action.prismaMethod}({
-              ...(await transformArgsIntoPrismaArgs(info, args, ctx)),
-              ...transformInfoIntoPrismaArgs(info),
+              ...(await transformArgsIntoPrismaArgs(info, args, ctx, '${mapping.modelName}', '${mapping.collectionName}', '${action.prismaMethod}')),
+              ...transformInfoIntoPrismaArgs(info, '${mapping.modelName}', '${mapping.collectionName}', '${action.prismaMethod}'),
             });`,
           ]
         : action.kind === DMMF.ModelAction.groupBy
         ? [
-            /* ts */ ` const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);`,
+            /* ts */ ` const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, '${mapping.modelName}', '${mapping.collectionName}', '${action.prismaMethod}');`,
             /* ts */ ` return getPrismaFromContext(ctx).${mapping.collectionName}.${action.prismaMethod}({
-              ...(await transformArgsIntoPrismaArgs(info, args, ctx)),
+              ...(await transformArgsIntoPrismaArgs(info, args, ctx, '${mapping.modelName}', '${mapping.collectionName}', '${action.prismaMethod}')),
               ...Object.fromEntries(
                 Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
               ),
             });`,
           ]
         : [
-            /* ts */ ` const { _count } = transformInfoIntoPrismaArgs(info);
+            /* ts */ ` const { _count } = transformInfoIntoPrismaArgs(info, '${mapping.modelName}', '${mapping.collectionName}', '${action.prismaMethod}');
             return getPrismaFromContext(ctx).${mapping.collectionName}.${action.prismaMethod}({
-              ...(await transformArgsIntoPrismaArgs(info, args, ctx)),
-              ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+              ...(await transformArgsIntoPrismaArgs(info, args, ctx, '${mapping.modelName}', '${mapping.collectionName}', '${action.prismaMethod}')),
+              ...(_count && transformCountFieldIntoSelectRelationsCount(_count, '${mapping.modelName}', '${mapping.collectionName}', '${action.prismaMethod}')),
             });`,
           ],
   };

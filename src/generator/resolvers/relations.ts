@@ -155,13 +155,13 @@ export default function generateRelationsResolverClassesFromModel(
           ],
           // TODO: refactor to AST
           statements: [
-            /* ts */ ` const { _count } = transformInfoIntoPrismaArgs(info);
+            /* ts */ ` const { _count } = transformInfoIntoPrismaArgs(info, '${model.name}', '', '');
             return getPrismaFromContext(ctx).${camelCase(
               model.name,
             )}.findUniqueOrThrow({
               where: {${whereConditionString}},
             }).${field.name}({ ${field.argsTypeName ? "\n...args," : ""}
-              ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+              ...(_count && transformCountFieldIntoSelectRelationsCount(_count, '${model.name}', '', '')),
             });`,
           ],
         };
