@@ -112,7 +112,7 @@ export default function generateObjectTypeClassFromModel(
                     arguments: [
                       `_type => ${field.typeGraphQLType}`,
                       Writers.object({
-                        nullable: `${isOptional}`,
+                        nullable: `${!!field.isOptional.output || isOptional}`,
                         ...(field.docs && { description: `"${field.docs}"` }),
                       }),
                     ],

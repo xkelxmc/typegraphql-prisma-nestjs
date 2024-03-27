@@ -13,6 +13,7 @@ export interface ExternalGeneratorOptions {
   customPrismaImportPathIgnoreLevels?: boolean;
   contextPrismaKey?: string;
   useSimpleInputs?: boolean;
+  optionalInputFieldsByDefault?: string[];
   omitInputFieldsByDefault?: string[];
   omitOutputFieldsByDefault?: string[];
   formatGeneratedCode?: boolean | "prettier" | "tsc";

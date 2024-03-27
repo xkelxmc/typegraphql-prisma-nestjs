@@ -219,7 +219,7 @@ export function generateInputTypeClassFromType(
                   arguments: [
                     `_type => ${field.typeGraphQLType}`,
                     Writers.object({
-                      nullable: `${!field.isRequired}`,
+                      nullable: `${!!field.isOptional || !field.isRequired}`,
                     }),
                   ],
                 },

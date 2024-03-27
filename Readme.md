@@ -12,7 +12,7 @@ npm install typegraphql-prisma-nestjs --save-dev
 
 ## Differences from the original project:
 
-Functions and classes used in generated files from scheme of [prisma](https://github.com/prisma/prisma), imports from [nestjs](https://nestjs.com)
+### Functions and classes used in generated files from scheme of [prisma](https://github.com/prisma/prisma), imports from [nestjs](https://nestjs.com)
 
 Original:
 ```typescript
@@ -22,6 +22,22 @@ import { Ctx, Query, Resolver } from "type-graphql";
 In fork:
 ```typescript
 import { Context, Query, Resolver } from "@nestjs/graphql";
+```
+
+### Append transformArgsIntoPrismaArgs and setTransformArgsIntoPrismaArgs for modify args before send it to prisma
+
+PR: https://github.com/MichalLytek/typegraphql-prisma/pull/399
+
+Sample fork with this integrations: https://github.com/EndyKaufman/typegraphql-prisma-nestjs/commit/f80d055a9aad227502d023c673ba9eed28d5cc9b
+
+Sample application with this feature: https://github.com/EndyKaufman/typegraphql-prisma-nestjs-example/commit/c43118e952bee58e2620f159fcc62c2595a9189b
+
+![image](https://github.com/MichalLytek/typegraphql-prisma/assets/4127109/edbba60a-ad6b-40b9-8f53-5ff34a1e8a6c)
+
+### Add support mark part of fields as optional
+
+```
+@TypeGraphQL.optional(input: ["create", "update"])
 ```
 
 ## Example use NestJS + Prisma2 + Typegraphql

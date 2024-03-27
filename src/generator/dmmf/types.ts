@@ -81,7 +81,14 @@ export namespace DMMF {
     typeGraphQLType: string;
     fieldTSType: string;
     docs: string | undefined;
-    isOmitted: { input: boolean | InputOmitSetting[]; output: boolean };
+    isOmitted: {
+      input: boolean | InputOmitSetting[];
+      output: boolean;
+    };
+    isOptional: {
+      input: boolean | InputOmitSetting[];
+      output: boolean;
+    };
   }
   export interface FieldDefault {
     name: string;
@@ -128,6 +135,7 @@ export namespace DMMF {
     fieldTSType: string;
     hasMappedName: boolean;
     isOmitted: boolean;
+    isOptional: boolean;
   }
   export interface OutputType {
     name: string;

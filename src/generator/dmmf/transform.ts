@@ -77,8 +77,11 @@ export function transformModelWithFields(dmmfDocument: DmmfDocument) {
 }
 
 function transformModelField(dmmfDocument: DmmfDocument) {
-  const { omitInputFieldsByDefault, omitOutputFieldsByDefault } =
-    dmmfDocument.options;
+  const {
+    omitInputFieldsByDefault,
+    omitOutputFieldsByDefault,
+    optionalInputFieldsByDefault,
+  } = dmmfDocument.options;
   return (field: PrismaDMMF.Field): DMMF.ModelField => {
     const attributeArgs = parseDocumentationAttributes<{ name: string }>(
       field.documentation,
@@ -120,6 +123,10 @@ function transformModelField(dmmfDocument: DmmfDocument) {
       output: boolean;
       input: boolean | InputOmitSetting[];
     }>(field.documentation, "omit", "field");
+    const optionalFieldAttribute = parseDocumentationAttributes<{
+      output: boolean;
+      input: boolean | InputOmitSetting[];
+    }>(field.documentation, "optional", "field");
     return {
       ...field,
       type: field.type, // TS type check limitation
@@ -136,6 +143,16 @@ function transformModelField(dmmfDocument: DmmfDocument) {
         output:
           omitFieldAttribute.output ??
           omitOutputFieldsByDefault?.includes(field.name) ??
+          false,
+      },
+      isOptional: {
+        input:
+          optionalFieldAttribute.input ??
+          optionalInputFieldsByDefault?.includes(field.name) ??
+          false,
+        output:
+          optionalFieldAttribute.output ??
+          optionalInputFieldsByDefault?.includes(field.name) ??
           false,
       },
     };
@@ -180,6 +197,19 @@ function transformInputType(dmmfDocument: DmmfDocument) {
             field.isRequired,
             true,
           );
+          const isOptional = !modelField?.isOptional.input
+            ? false
+            : typeof modelField.isOptional.input === "boolean"
+            ? modelField.isOptional.input
+            : (modelField.isOptional.input.includes(InputOmitSetting.Create) &&
+                inputType.name.includes("Create")) ||
+              (modelField.isOptional.input.includes(InputOmitSetting.Update) &&
+                inputType.name.includes("Update")) ||
+              (modelField.isOptional.input.includes(InputOmitSetting.Where) &&
+                inputType.name.includes("Where")) ||
+              (modelField.isOptional.input.includes(InputOmitSetting.OrderBy) &&
+                inputType.name.includes("OrderBy"));
+
           const isOmitted = !modelField?.isOmitted.input
             ? false
             : typeof modelField.isOmitted.input === "boolean"
@@ -200,6 +230,7 @@ function transformInputType(dmmfDocument: DmmfDocument) {
             fieldTSType,
             hasMappedName: field.name !== typeName,
             isOmitted,
+            isOptional,
           };
         }),
     };
@@ -258,6 +289,7 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
               // TODO: add proper mapping in the future if needed
               typeName: arg.name,
               isOmitted: false,
+              isOptional: false,
             };
           });
           const argsTypeName =
