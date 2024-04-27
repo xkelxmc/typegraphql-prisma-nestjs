@@ -393,6 +393,7 @@ export function generateEnhanceMap(
           ),
         },
       ],
+      isExported: true,
       trailingTrivia: "\r\n",
     });
     sourceFile.addStatements(/* ts */ `
