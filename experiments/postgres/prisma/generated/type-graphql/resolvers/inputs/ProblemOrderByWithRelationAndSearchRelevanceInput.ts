@@ -1,12 +1,12 @@
 import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
+import { SortOrder } from "../../../global/enums/SortOrder";
 import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorOrderByRelationAggregateInput } from "../inputs/CreatorOrderByRelationAggregateInput";
 import { CreatorOrderByWithRelationAndSearchRelevanceInput } from "../inputs/CreatorOrderByWithRelationAndSearchRelevanceInput";
 import { ProblemOrderByRelevanceInput } from "../inputs/ProblemOrderByRelevanceInput";
 import { SortOrderInput } from "../inputs/SortOrderInput";
-import { SortOrder } from "../../enums/SortOrder";
 
 @InputType("ProblemOrderByWithRelationAndSearchRelevanceInput", {})
 export class ProblemOrderByWithRelationAndSearchRelevanceInput {

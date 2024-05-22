@@ -1,9 +1,9 @@
 import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
+import { NullsOrder } from "../../../global/enums/NullsOrder";
+import { SortOrder } from "../../../global/enums/SortOrder";
 import { DecimalJSScalar } from "../../../global/scalars";
-import { NullsOrder } from "../../enums/NullsOrder";
-import { SortOrder } from "../../enums/SortOrder";
 
 @InputType("SortOrderInput", {})
 export class SortOrderInput {

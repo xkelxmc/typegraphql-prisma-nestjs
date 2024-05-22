@@ -616,6 +616,15 @@ function getPrismaMethodName(actionKind: DMMF.ModelAction) {
 
 const ENUM_SUFFIXES = ["OrderByRelevanceFieldEnum", "ScalarFieldEnum"] as const;
 export function transformEnums(dmmfDocument: DmmfDocument) {
+  const isNotFirstRun = dmmfDocument.enums?.length > 1;
+  const globalTypes = [
+    "SortOrder",
+    "JsonNullValueInput",
+    "QueryMode",
+    "NullsOrder",
+    "JsonNullValueFilter",
+    "QueryMode",
+  ];
   return (
     enumDef: PrismaDMMF.DatamodelEnum | PrismaDMMF.SchemaEnum,
   ): DMMF.Enum => {
@@ -624,6 +633,13 @@ export function transformEnums(dmmfDocument: DmmfDocument) {
     const detectedSuffix = ENUM_SUFFIXES.find(suffix =>
       enumDef.name.endsWith(suffix),
     );
+
+    const isGlobalModalType = dmmfDocument
+      .getAllModelNames()
+      .find(name => typeName.includes(name));
+
+    const isInGlobalTypes = globalTypes.includes(typeName);
+
     if (detectedSuffix) {
       modelName = enumDef.name.replace(detectedSuffix, "");
       typeName = `${dmmfDocument.getModelTypeName(modelName)}${detectedSuffix}`;
@@ -635,6 +651,9 @@ export function transformEnums(dmmfDocument: DmmfDocument) {
 
     return {
       ...enumDef,
+      isGlobal: Boolean(
+        isNotFirstRun && typeName && !isGlobalModalType && isInGlobalTypes,
+      ),
       docs:
         "documentation" in enumDef
           ? cleanDocsString(enumDef.documentation)

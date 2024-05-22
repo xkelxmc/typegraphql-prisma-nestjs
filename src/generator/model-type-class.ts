@@ -15,6 +15,7 @@ import {
   generatePrismaNamespaceImport,
   generateCustomScalarsImport,
   generateResolversOutputsImports,
+  generateGlobalEnumsImports,
 } from "./imports";
 import { modelsFolderName } from "./config";
 import { DMMF } from "./dmmf/types";
@@ -55,12 +56,24 @@ export default function generateObjectTypeClassFromModel(
           : field.type,
       ),
   );
-  generateEnumsImports(
-    sourceFile,
-    model.fields
-      .filter(field => field.location === "enumTypes")
-      .map(field => field.type),
-  );
+  const enums = model.fields
+    .filter(field => field.location === "enumTypes")
+    .map(field => field.type);
+  if (options.globalOutput) {
+    generateGlobalEnumsImports(
+      sourceFile,
+      enums.filter(type => dmmfDocument.checkIsGlobalEnum(type)),
+      2,
+    );
+
+    generateEnumsImports(
+      sourceFile,
+      enums.filter(type => !dmmfDocument.checkIsGlobalEnum(type)),
+      1,
+    );
+  } else {
+    generateEnumsImports(sourceFile, enums, 1);
+  }
 
   const countField = modelOutputType.fields.find(it => it.name === "_count");
   const shouldEmitCountField =

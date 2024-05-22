@@ -372,6 +372,9 @@ export function generateResolversIndexFile(
 
 export const generateModelsImports = createImportGenerator(modelsFolderName);
 export const generateEnumsImports = createImportGenerator(enumsFolderName);
+export const generateGlobalEnumsImports = createImportGenerator(
+  `global/${enumsFolderName}`,
+);
 export const generateGlobalInputsImports = createImportGenerator(
   `global/${inputsFolderName}`,
 );

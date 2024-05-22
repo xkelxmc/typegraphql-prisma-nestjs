@@ -1,11 +1,11 @@
 import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
+import { SortOrder } from "../../../global/enums/SortOrder";
 import { DecimalJSScalar } from "../../../global/scalars";
 import { DirectorCountOrderByAggregateInput } from "../inputs/DirectorCountOrderByAggregateInput";
 import { DirectorMaxOrderByAggregateInput } from "../inputs/DirectorMaxOrderByAggregateInput";
 import { DirectorMinOrderByAggregateInput } from "../inputs/DirectorMinOrderByAggregateInput";
-import { SortOrder } from "../../enums/SortOrder";
 
 @InputType("DirectorOrderByWithAggregationInput", {})
 export class DirectorOrderByWithAggregationInput {

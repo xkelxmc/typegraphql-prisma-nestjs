@@ -15,7 +15,6 @@ export const relationResolvers = Object.values(relationResolversImport) as unkno
 export * from "./resolvers/inputs";
 export * from "./resolvers/outputs";
 export * from "./enhance";
-export * from "./scalars";
 
 export const resolvers = [
   ...crudResolvers,

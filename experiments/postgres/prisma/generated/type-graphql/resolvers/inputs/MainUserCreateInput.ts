@@ -1,10 +1,10 @@
 import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
+import { Role } from "../../enums/Role";
 import { DecimalJSScalar } from "../../../global/scalars";
 import { PostCreateNestedManyWithoutAuthorInput } from "../inputs/PostCreateNestedManyWithoutAuthorInput";
 import { PostCreateNestedManyWithoutEditorInput } from "../inputs/PostCreateNestedManyWithoutEditorInput";
-import { Role } from "../../enums/Role";
 
 @InputType("MainUserCreateInput", {})
 export class MainUserCreateInput {

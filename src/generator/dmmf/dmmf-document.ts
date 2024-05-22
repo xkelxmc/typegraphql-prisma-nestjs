@@ -100,7 +100,11 @@ export class DmmfDocument implements DMMF.Document {
   }
 
   getEnumNames(): string[] {
-    return this.enums.map(it => it.name);
+    return this.enums?.map(it => it.name) || [];
+  }
+
+  checkIsGlobalEnum(typeName: string): boolean {
+    return this.enums?.find(it => it.name === typeName)?.isGlobal || false;
   }
 
   getModelFieldAlias(modelName: string, fieldName: string): string | undefined {

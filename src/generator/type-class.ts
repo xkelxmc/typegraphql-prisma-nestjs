@@ -17,6 +17,7 @@ import {
   generateArgsImports,
   generateCustomScalarsImport,
   generateEnumsImports,
+  generateGlobalEnumsImports,
   generateGlobalInputsImports,
   generateGraphQLScalarsImport,
   generateInputsImports,
@@ -74,14 +75,26 @@ export function generateOutputTypeClassFromType(
       .map(field => field.outputType.type),
     1,
   );
-  generateEnumsImports(
-    sourceFile,
-    type.fields
-      .map(field => field.outputType)
-      .filter(fieldType => fieldType.location === "enumTypes")
-      .map(fieldType => fieldType.type),
-    2,
-  );
+
+  const enums = type.fields
+    .map(field => field.outputType)
+    .filter(fieldType => fieldType.location === "enumTypes")
+    .map(fieldType => fieldType.type);
+  if (options.globalOutput) {
+    generateGlobalEnumsImports(
+      sourceFile,
+      enums.filter(type => dmmfDocument.checkIsGlobalEnum(type)),
+      3,
+    );
+
+    generateEnumsImports(
+      sourceFile,
+      enums.filter(type => !dmmfDocument.checkIsGlobalEnum(type)),
+      2,
+    );
+  } else {
+    generateEnumsImports(sourceFile, enums, 2);
+  }
 
   sourceFile.addClass({
     name: type.typeName,
@@ -170,6 +183,7 @@ export function generateOutputTypeClassFromType(
 }
 
 export function generateInputTypeClassFromType(
+  dmmfDocument: DmmfDocument,
   project: Project,
   dirPath: string,
   inputType: DMMF.InputType,
@@ -191,6 +205,31 @@ export function generateInputTypeClassFromType(
     generatePrismaNamespaceImport(sourceFile, options, 2);
   } else {
     generatePrismaNamespaceImport(sourceFile, options, 1);
+  }
+
+  const enums = inputType.fields
+    .map(field => field.selectedInputType)
+    .filter(fieldType => fieldType.location === "enumTypes")
+    .map(fieldType => fieldType.type as string);
+
+  if (options.globalOutput) {
+    if (inputType.isPrismaGlobalType) {
+      generateEnumsImports(sourceFile, enums, 1);
+    } else {
+      generateGlobalEnumsImports(
+        sourceFile,
+        enums.filter(type => dmmfDocument.checkIsGlobalEnum(type)),
+        3,
+      );
+
+      generateEnumsImports(
+        sourceFile,
+        enums.filter(type => !dmmfDocument.checkIsGlobalEnum(type)),
+        2,
+      );
+    }
+  } else {
+    generateEnumsImports(sourceFile, enums, 2);
   }
   if (options.globalOutput) {
     if (inputType.isPrismaGlobalType) {
@@ -234,14 +273,6 @@ export function generateInputTypeClassFromType(
         .filter(fieldType => fieldType !== inputType.typeName),
     );
   }
-  generateEnumsImports(
-    sourceFile,
-    inputType.fields
-      .map(field => field.selectedInputType)
-      .filter(fieldType => fieldType.location === "enumTypes")
-      .map(fieldType => fieldType.type as string),
-    isGlobalType ? 1 : 2,
-  );
 
   const fieldsToEmit = inputType.fields.filter(field => !field.isOmitted);
   const mappedFields = fieldsToEmit.filter(field => field.hasMappedName);

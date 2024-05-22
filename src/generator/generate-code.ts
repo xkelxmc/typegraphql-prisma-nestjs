@@ -105,7 +105,6 @@ export default async function generateCode(
 
   if (dmmfDocument.shouldGenerateBlock("enums")) {
     log("Generating enums...");
-    const canBeGlobalEnums = ["QueryMode"];
     const datamodelEnumNames = dmmfDocument.datamodel.enums.map(
       enumDef => enumDef.typeName,
     );
@@ -113,9 +112,6 @@ export default async function generateCode(
       generateEnumFromDef(project, baseDirPath, enumDef, options),
     );
 
-    const globalEnums = dmmfDocument.schema.enums.filter(enumType =>
-      canBeGlobalEnums.includes(enumType.typeName),
-    );
     let mainEnums: DMMF.Enum[];
     let emittedEnumNames = [
       ...new Set([
@@ -124,17 +120,22 @@ export default async function generateCode(
       ]),
     ];
     if (globalOutput) {
-      globalEnums // skip enums from datamodel
+      dmmfDocument.schema.enums
+        .filter(enumType => enumType.isGlobal)
         .filter(enumDef => !datamodelEnumNames.includes(enumDef.typeName))
         .forEach(enumDef =>
           generateEnumFromDef(project, globalOutput, enumDef, options),
         );
 
+      const globalEnumNames = dmmfDocument.schema.enums
+        .filter(enumType => enumType.isGlobal)
+        .map(it => it.typeName);
+
       emittedEnumNames = emittedEnumNames.filter(
-        enumName => !canBeGlobalEnums.includes(enumName),
+        enumName => !globalEnumNames.includes(enumName),
       );
       mainEnums = dmmfDocument.schema.enums.filter(
-        enumDef => !canBeGlobalEnums.includes(enumDef.typeName),
+        enumDef => !enumDef.isGlobal,
       );
     } else {
       mainEnums = dmmfDocument.schema.enums;
@@ -232,6 +233,7 @@ export default async function generateCode(
           field.argsTypeName!,
           dmmfDocument,
           2,
+          !!options.globalOutput,
         );
       });
       const outputsArgsBarrelExportSourceFile = project.createSourceFile(
@@ -260,7 +262,13 @@ export default async function generateCode(
     let inputs: DMMF.InputType[] = [];
     if (globalOutput) {
       globalInputs.forEach(type =>
-        generateInputTypeClassFromType(project, globalOutput, type, options),
+        generateInputTypeClassFromType(
+          dmmfDocument,
+          project,
+          globalOutput,
+          type,
+          options,
+        ),
       );
       const globalInputsBarrelExportSourceFile = project.createSourceFile(
         path.resolve(globalOutput, inputsFolderName, "index.ts"),
@@ -278,6 +286,7 @@ export default async function generateCode(
     } else {
       globalInputs.forEach(type =>
         generateInputTypeClassFromType(
+          dmmfDocument,
           project,
           resolversDirPath,
           type,
@@ -287,7 +296,13 @@ export default async function generateCode(
       inputs = dmmfDocument.schema.inputTypes;
     }
     inputs.forEach(type =>
-      generateInputTypeClassFromType(project, resolversDirPath, type, options),
+      generateInputTypeClassFromType(
+        dmmfDocument,
+        project,
+        resolversDirPath,
+        type,
+        options,
+      ),
     );
     const inputsBarrelExportSourceFile = project.createSourceFile(
       path.resolve(
@@ -354,6 +369,8 @@ export default async function generateCode(
             field.outputTypeField.args,
             field.argsTypeName!,
             dmmfDocument,
+            3,
+            !!options.globalOutput,
           );
         });
       const argTypeNames = relationModelData.relationFields
@@ -514,6 +531,8 @@ export default async function generateCode(
             action.method.args,
             action.argsTypeName!,
             dmmfDocument,
+            3,
+            !!options.globalOutput,
           );
         });
         const barrelExportSourceFile = project.createSourceFile(

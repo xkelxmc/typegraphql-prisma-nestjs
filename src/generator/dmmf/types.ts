@@ -17,6 +17,7 @@ export namespace DMMF {
     // additional props
     typeName: string;
     docs: string | undefined;
+    isGlobal?: boolean;
     valuesMap: Array<{ name: string; value: string }>;
   }
   export interface Datamodel {

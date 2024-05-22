@@ -1,6 +1,7 @@
 import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
+import { SortOrder } from "../../../global/enums/SortOrder";
 import { DecimalJSScalar } from "../../../global/scalars";
 import { ProblemAvgOrderByAggregateInput } from "../inputs/ProblemAvgOrderByAggregateInput";
 import { ProblemCountOrderByAggregateInput } from "../inputs/ProblemCountOrderByAggregateInput";
@@ -8,7 +9,6 @@ import { ProblemMaxOrderByAggregateInput } from "../inputs/ProblemMaxOrderByAggr
 import { ProblemMinOrderByAggregateInput } from "../inputs/ProblemMinOrderByAggregateInput";
 import { ProblemSumOrderByAggregateInput } from "../inputs/ProblemSumOrderByAggregateInput";
 import { SortOrderInput } from "../inputs/SortOrderInput";
-import { SortOrder } from "../../enums/SortOrder";
 
 @InputType("ProblemOrderByWithAggregationInput", {})
 export class ProblemOrderByWithAggregationInput {
