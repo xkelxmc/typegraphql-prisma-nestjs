@@ -598,6 +598,7 @@ export default async function generateCode(
     indexSourceFile,
     dmmfDocument.relationModels.length > 0,
     dmmfDocument.options.blocksToEmit,
+    Boolean(options.globalOutput),
   );
 
   log("Emitting generated code files");

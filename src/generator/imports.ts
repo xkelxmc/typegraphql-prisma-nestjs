@@ -220,6 +220,7 @@ export function generateIndexFile(
   sourceFile: SourceFile,
   hasSomeRelations: boolean,
   blocksToEmit: EmitBlockKind[],
+  isGlobal: boolean,
 ) {
   if (blocksToEmit.includes("enums")) {
     sourceFile.addExportDeclaration({
@@ -280,10 +281,10 @@ export function generateIndexFile(
     });
   }
 
-  sourceFile.addExportDeclarations([
-    { moduleSpecifier: `./enhance` },
-    { moduleSpecifier: `./scalars` },
-  ]);
+  sourceFile.addExportDeclarations([{ moduleSpecifier: `./enhance` }]);
+  if (!isGlobal) {
+    sourceFile.addExportDeclarations([{ moduleSpecifier: `./scalars` }]);
+  }
   sourceFile.addImportDeclarations([
     {
       moduleSpecifier: `type-graphql`,
