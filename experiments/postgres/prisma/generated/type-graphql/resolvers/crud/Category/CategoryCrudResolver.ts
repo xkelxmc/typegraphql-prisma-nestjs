@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateCategoryArgs } from "./args/AggregateCategoryArgs";
 import { CreateManyCategoryArgs } from "./args/CreateManyCategoryArgs";
@@ -14,168 +14,166 @@ import { GroupByCategoryArgs } from "./args/GroupByCategoryArgs";
 import { UpdateManyCategoryArgs } from "./args/UpdateManyCategoryArgs";
 import { UpdateOneCategoryArgs } from "./args/UpdateOneCategoryArgs";
 import { UpsertOneCategoryArgs } from "./args/UpsertOneCategoryArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 import { Category } from "../../../models/Category";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateCategory } from "../../outputs/AggregateCategory";
 import { CategoryGroupBy } from "../../outputs/CategoryGroupBy";
 
-@TypeGraphQL.Resolver(_of => Category)
+@Resolver(_of => Category)
 export class CategoryCrudResolver {
-  @TypeGraphQL.Query(_returns => AggregateCategory, {
+  @Query(_returns => AggregateCategory, {
     nullable: false
   })
-  async aggregateCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateCategoryArgs) args: AggregateCategoryArgs): Promise<AggregateCategory> {
+  async aggregateCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateCategoryArgs) args: AggregateCategoryArgs): Promise<AggregateCategory> {
     return getPrismaFromContext(ctx).category.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Category', 'category', 'aggregate'),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateManyCategoryArgs) args: CreateManyCategoryArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateManyCategoryArgs) args: CreateManyCategoryArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'createMany');
     return getPrismaFromContext(ctx).category.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'createMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Category, {
+  @Mutation(_returns => Category, {
     nullable: false
   })
-  async createOneCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOneCategoryArgs) args: CreateOneCategoryArgs): Promise<Category> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOneCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOneCategoryArgs) args: CreateOneCategoryArgs): Promise<Category> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'create');
     return getPrismaFromContext(ctx).category.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'create')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteManyCategoryArgs) args: DeleteManyCategoryArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteManyCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteManyCategoryArgs) args: DeleteManyCategoryArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'deleteMany');
     return getPrismaFromContext(ctx).category.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'deleteMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'deleteMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Category, {
+  @Mutation(_returns => Category, {
     nullable: true
   })
-  async deleteOneCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneCategoryArgs) args: DeleteOneCategoryArgs): Promise<Category | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOneCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOneCategoryArgs) args: DeleteOneCategoryArgs): Promise<Category | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'delete');
     return getPrismaFromContext(ctx).category.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'delete')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Category, {
+  @Query(_returns => Category, {
     nullable: true
   })
-  async findFirstCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstCategoryArgs) args: FindFirstCategoryArgs): Promise<Category | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstCategoryArgs) args: FindFirstCategoryArgs): Promise<Category | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'findFirst');
     return getPrismaFromContext(ctx).category.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'findFirst')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Category, {
+  @Query(_returns => Category, {
     nullable: true
   })
-  async findFirstCategoryOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstCategoryOrThrowArgs) args: FindFirstCategoryOrThrowArgs): Promise<Category | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstCategoryOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstCategoryOrThrowArgs) args: FindFirstCategoryOrThrowArgs): Promise<Category | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).category.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'findFirstOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [Category], {
+  @Query(_returns => [Category], {
     nullable: false
   })
-  async categories(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyCategoryArgs) args: FindManyCategoryArgs): Promise<Category[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async categories(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyCategoryArgs) args: FindManyCategoryArgs): Promise<Category[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'findMany');
     return getPrismaFromContext(ctx).category.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'findMany')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Category, {
+  @Query(_returns => Category, {
     nullable: true
   })
-  async category(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueCategoryArgs) args: FindUniqueCategoryArgs): Promise<Category | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async category(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueCategoryArgs) args: FindUniqueCategoryArgs): Promise<Category | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'findUnique');
     return getPrismaFromContext(ctx).category.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'findUnique')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Category, {
+  @Query(_returns => Category, {
     nullable: true
   })
-  async getCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueCategoryOrThrowArgs) args: FindUniqueCategoryOrThrowArgs): Promise<Category | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueCategoryOrThrowArgs) args: FindUniqueCategoryOrThrowArgs): Promise<Category | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).category.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'findUniqueOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [CategoryGroupBy], {
+  @Query(_returns => [CategoryGroupBy], {
     nullable: false
   })
-  async groupByCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByCategoryArgs) args: GroupByCategoryArgs): Promise<CategoryGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByCategoryArgs) args: GroupByCategoryArgs): Promise<CategoryGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'groupBy');
     return getPrismaFromContext(ctx).category.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'groupBy')),
       ...Object.fromEntries(
         Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async updateManyCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateManyCategoryArgs) args: UpdateManyCategoryArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateManyCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateManyCategoryArgs) args: UpdateManyCategoryArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'updateMany');
     return getPrismaFromContext(ctx).category.updateMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'updateMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'updateMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Category, {
-    nullable: false
+  @Mutation(_returns => Category, {
+    nullable: true
   })
-  async updateOneCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneCategoryArgs) args: UpdateOneCategoryArgs): Promise<Category | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOneCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOneCategoryArgs) args: UpdateOneCategoryArgs): Promise<Category | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'update');
     return getPrismaFromContext(ctx).category.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'update')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Category, {
+  @Mutation(_returns => Category, {
     nullable: false
   })
-  async upsertOneCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOneCategoryArgs) args: UpsertOneCategoryArgs): Promise<Category> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async upsertOneCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpsertOneCategoryArgs) args: UpsertOneCategoryArgs): Promise<Category> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'upsert');
     return getPrismaFromContext(ctx).category.upsert({
-      ...args,
-      ...Object.fromEntries(
-        Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
-      ),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'upsert')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'upsert')),
     });
   }
 }

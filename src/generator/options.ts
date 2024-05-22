@@ -1,6 +1,7 @@
 import { EmitBlockKind } from "./emit-block";
 
 export interface ExternalGeneratorOptions {
+  globalOutput?: boolean;
   emitDMMF?: boolean;
   emitTranspiledCode?: boolean;
   simpleResolvers?: boolean;
@@ -33,7 +34,7 @@ export interface InternalGeneratorOptions {
 
 export interface GeneratorOptions
   extends Omit<ExternalGeneratorOptions, "emitOnly" | "contextPrismaKey">,
-  InternalGeneratorOptions {
+    InternalGeneratorOptions {
   blocksToEmit: EmitBlockKind[];
   contextPrismaKey: string;
   relativePrismaOutputPath: string;

@@ -1,17 +1,17 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { PostWhereInput } from "../inputs/PostWhereInput";
 
-@TypeGraphQL.InputType("PostRelationFilter", {})
+@InputType("PostRelationFilter", {})
 export class PostRelationFilter {
-  @TypeGraphQL.Field(_type => PostWhereInput, {
+  @Field(_type => PostWhereInput, {
     nullable: true
   })
   is?: PostWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostWhereInput, {
+  @Field(_type => PostWhereInput, {
     nullable: true
   })
   isNot?: PostWhereInput | undefined;

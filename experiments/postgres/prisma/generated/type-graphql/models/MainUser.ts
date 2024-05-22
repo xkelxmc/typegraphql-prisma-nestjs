@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../client";
-import { DecimalJSScalar } from "../scalars";
+import { DecimalJSScalar } from "../../global/scalars";
 import { Post } from "../models/Post";
 import { Role } from "../enums/Role";
 import { MainUserCount } from "../resolvers/outputs/MainUserCount";
@@ -9,20 +9,20 @@ import { MainUserCount } from "../resolvers/outputs/MainUserCount";
 /**
  * User model doc
  */
-@TypeGraphQL.ObjectType("MainUser", {
+@ObjectType("MainUser", {
   description: "User model doc"
 })
 export class MainUser {
   /**
    * User model field doc
    */
-  @TypeGraphQL.Field(_type => TypeGraphQL.ID, {
+  @Field(_type => ID, {
     nullable: false,
     description: "User model field doc"
   })
   id!: number;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   email!: string;
@@ -32,38 +32,38 @@ export class MainUser {
    */
   name!: string | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   age!: number;
 
   balance!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+  @Field(_type => Float, {
     nullable: false
   })
   amount!: number;
 
   posts?: Post[];
 
-  @TypeGraphQL.Field(_type => Role, {
+  @Field(_type => Role, {
     nullable: false
   })
   role!: "USER" | "ADMIN";
 
   editorPosts?: Post[];
 
-  @TypeGraphQL.Field(_type => [TypeGraphQL.Int], {
+  @Field(_type => [Int], {
     nullable: false
   })
   grades!: number[];
 
-  @TypeGraphQL.Field(_type => [String], {
+  @Field(_type => [String], {
     nullable: false
   })
   aliases!: string[];
 
-  @TypeGraphQL.Field(_type => MainUserCount, {
+  @Field(_type => MainUserCount, {
     nullable: true
   })
   _count?: MainUserCount | null;
@@ -71,7 +71,7 @@ export class MainUser {
   /**
    * renamed field doc
    */
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true,
     description: "renamed field doc"
   })
@@ -79,7 +79,7 @@ export class MainUser {
     return this.name ?? null;
   }
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+  @Field(_type => Float, {
     nullable: false
   })
   get accountBalance(): number {

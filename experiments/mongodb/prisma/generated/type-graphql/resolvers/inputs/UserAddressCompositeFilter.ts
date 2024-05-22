@@ -1,23 +1,23 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { UserAddressObjectEqualityInput } from "../inputs/UserAddressObjectEqualityInput";
 import { UserAddressWhereInput } from "../inputs/UserAddressWhereInput";
 
-@TypeGraphQL.InputType("UserAddressCompositeFilter", {})
+@InputType("UserAddressCompositeFilter", {})
 export class UserAddressCompositeFilter {
-  @TypeGraphQL.Field(_type => UserAddressObjectEqualityInput, {
+  @Field(_type => UserAddressObjectEqualityInput, {
     nullable: true
   })
   equals?: UserAddressObjectEqualityInput | undefined;
 
-  @TypeGraphQL.Field(_type => UserAddressWhereInput, {
+  @Field(_type => UserAddressWhereInput, {
     nullable: true
   })
   is?: UserAddressWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => UserAddressWhereInput, {
+  @Field(_type => UserAddressWhereInput, {
     nullable: true
   })
   isNot?: UserAddressWhereInput | undefined;

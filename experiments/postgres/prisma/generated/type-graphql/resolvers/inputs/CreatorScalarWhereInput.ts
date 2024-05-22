@@ -1,33 +1,33 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { IntFilter } from "../inputs/IntFilter";
-import { StringFilter } from "../inputs/StringFilter";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { IntFilter } from "../../../global/inputs/IntFilter";
+import { StringFilter } from "../../../global/inputs/StringFilter";
 
-@TypeGraphQL.InputType("CreatorScalarWhereInput", {})
+@InputType("CreatorScalarWhereInput", {})
 export class CreatorScalarWhereInput {
-  @TypeGraphQL.Field(_type => [CreatorScalarWhereInput], {
+  @Field(_type => [CreatorScalarWhereInput], {
     nullable: true
   })
   AND?: CreatorScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CreatorScalarWhereInput], {
+  @Field(_type => [CreatorScalarWhereInput], {
     nullable: true
   })
   OR?: CreatorScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CreatorScalarWhereInput], {
+  @Field(_type => [CreatorScalarWhereInput], {
     nullable: true
   })
   NOT?: CreatorScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @Field(_type => IntFilter, {
     nullable: true
   })
   id?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   name?: StringFilter | undefined;

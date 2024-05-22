@@ -1,32 +1,32 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { CommentOrderByWithRelationInput } from "../../../inputs/CommentOrderByWithRelationInput";
 import { CommentWhereInput } from "../../../inputs/CommentWhereInput";
 import { CommentWhereUniqueInput } from "../../../inputs/CommentWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class AggregateCommentArgs {
-  @TypeGraphQL.Field(_type => CommentWhereInput, {
+  @Field(_type => CommentWhereInput, {
     nullable: true
   })
   where?: CommentWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentOrderByWithRelationInput], {
+  @Field(_type => [CommentOrderByWithRelationInput], {
     nullable: true
   })
   orderBy?: CommentOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => CommentWhereUniqueInput, {
+  @Field(_type => CommentWhereUniqueInput, {
     nullable: true
   })
   cursor?: CommentWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

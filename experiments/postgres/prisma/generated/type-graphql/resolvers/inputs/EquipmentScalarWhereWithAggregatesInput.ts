@@ -1,33 +1,33 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
-import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { StringNullableWithAggregatesFilter } from "../../../global/inputs/StringNullableWithAggregatesFilter";
+import { StringWithAggregatesFilter } from "../../../global/inputs/StringWithAggregatesFilter";
 
-@TypeGraphQL.InputType("EquipmentScalarWhereWithAggregatesInput", {})
+@InputType("EquipmentScalarWhereWithAggregatesInput", {})
 export class EquipmentScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [EquipmentScalarWhereWithAggregatesInput], {
+  @Field(_type => [EquipmentScalarWhereWithAggregatesInput], {
     nullable: true
   })
   AND?: EquipmentScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [EquipmentScalarWhereWithAggregatesInput], {
+  @Field(_type => [EquipmentScalarWhereWithAggregatesInput], {
     nullable: true
   })
   OR?: EquipmentScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [EquipmentScalarWhereWithAggregatesInput], {
+  @Field(_type => [EquipmentScalarWhereWithAggregatesInput], {
     nullable: true
   })
   NOT?: EquipmentScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
+  @Field(_type => StringNullableWithAggregatesFilter, {
     nullable: true
   })
   name?: StringNullableWithAggregatesFilter | undefined;

@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { EquipmentCreateInput } from "../../../inputs/EquipmentCreateInput";
 import { EquipmentUpdateInput } from "../../../inputs/EquipmentUpdateInput";
 import { EquipmentWhereUniqueInput } from "../../../inputs/EquipmentWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpsertOneEquipmentArgs {
-  @TypeGraphQL.Field(_type => EquipmentWhereUniqueInput, {
+  @Field(_type => EquipmentWhereUniqueInput, {
     nullable: false
   })
   where!: EquipmentWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => EquipmentCreateInput, {
+  @Field(_type => EquipmentCreateInput, {
     nullable: false
   })
   create!: EquipmentCreateInput;
 
-  @TypeGraphQL.Field(_type => EquipmentUpdateInput, {
+  @Field(_type => EquipmentUpdateInput, {
     nullable: false
   })
   update!: EquipmentUpdateInput;

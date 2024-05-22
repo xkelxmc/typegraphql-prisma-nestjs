@@ -1,20 +1,20 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { CreateManyCommentArgs } from "./args/CreateManyCommentArgs";
 import { Comment } from "../../../models/Comment";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Comment)
+@Resolver(_of => Comment)
 export class CreateManyCommentResolver {
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyComment(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: CreateManyCommentArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyComment(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: CreateManyCommentArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Comment', 'comment', 'createMany');
     return getPrismaFromContext(ctx).comment.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Comment', 'comment', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Comment', 'comment', 'createMany')),
     });
   }
 }

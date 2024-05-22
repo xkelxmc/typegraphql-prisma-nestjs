@@ -1,20 +1,20 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { CreateManyUserArgs } from "./args/CreateManyUserArgs";
 import { User } from "../../../models/User";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => User)
+@Resolver(_of => User)
 export class CreateManyUserResolver {
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyUser(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: CreateManyUserArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyUser(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: CreateManyUserArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'User', 'user', 'createMany');
     return getPrismaFromContext(ctx).user.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'User', 'user', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'User', 'user', 'createMany')),
     });
   }
 }

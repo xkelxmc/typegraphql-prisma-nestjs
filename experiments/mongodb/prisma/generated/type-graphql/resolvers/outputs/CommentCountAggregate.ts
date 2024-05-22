@@ -1,26 +1,26 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 
-@TypeGraphQL.ObjectType("CommentCountAggregate", {})
+@ObjectType("CommentCountAggregate", {})
 export class CommentCountAggregate {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   id!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   postId!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   comment!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   _all!: number;

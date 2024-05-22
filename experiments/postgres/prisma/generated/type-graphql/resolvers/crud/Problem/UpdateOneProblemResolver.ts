@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { UpdateOneProblemArgs } from "./args/UpdateOneProblemArgs";
 import { Problem } from "../../../models/Problem";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Problem)
+@Resolver(_of => Problem)
 export class UpdateOneProblemResolver {
-  @TypeGraphQL.Mutation(_returns => Problem, {
+  @Mutation(_returns => Problem, {
     nullable: true
   })
-  async updateOneProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneProblemArgs) args: UpdateOneProblemArgs): Promise<Problem | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOneProblem(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOneProblemArgs) args: UpdateOneProblemArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Problem', 'problem', 'update');
     return getPrismaFromContext(ctx).problem.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Problem', 'problem', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Problem', 'problem', 'update')),
     });
   }
 }

@@ -1,45 +1,45 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { NestedIntNullableFilter } from "../../../global/inputs/NestedIntNullableFilter";
 import { NestedEnumPostKindNullableFilter } from "../inputs/NestedEnumPostKindNullableFilter";
-import { NestedIntNullableFilter } from "../inputs/NestedIntNullableFilter";
 import { PostKind } from "../../enums/PostKind";
 
-@TypeGraphQL.InputType("NestedEnumPostKindNullableWithAggregatesFilter", {})
+@InputType("NestedEnumPostKindNullableWithAggregatesFilter", {})
 export class NestedEnumPostKindNullableWithAggregatesFilter {
-  @TypeGraphQL.Field(_type => PostKind, {
+  @Field(_type => PostKind, {
     nullable: true
   })
   equals?: "BLOG" | "ADVERT" | undefined;
 
-  @TypeGraphQL.Field(_type => [PostKind], {
+  @Field(_type => [PostKind], {
     nullable: true
   })
   in?: Array<"BLOG" | "ADVERT"> | undefined;
 
-  @TypeGraphQL.Field(_type => [PostKind], {
+  @Field(_type => [PostKind], {
     nullable: true
   })
   notIn?: Array<"BLOG" | "ADVERT"> | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumPostKindNullableWithAggregatesFilter, {
+  @Field(_type => NestedEnumPostKindNullableWithAggregatesFilter, {
     nullable: true
   })
   not?: NestedEnumPostKindNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedIntNullableFilter, {
+  @Field(_type => NestedIntNullableFilter, {
     nullable: true
   })
-  count?: NestedIntNullableFilter | undefined;
+  _count?: NestedIntNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumPostKindNullableFilter, {
+  @Field(_type => NestedEnumPostKindNullableFilter, {
     nullable: true
   })
-  min?: NestedEnumPostKindNullableFilter | undefined;
+  _min?: NestedEnumPostKindNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumPostKindNullableFilter, {
+  @Field(_type => NestedEnumPostKindNullableFilter, {
     nullable: true
   })
-  max?: NestedEnumPostKindNullableFilter | undefined;
+  _max?: NestedEnumPostKindNullableFilter | undefined;
 }

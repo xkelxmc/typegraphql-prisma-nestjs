@@ -1,22 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
-import graphqlFields from "graphql-fields";
-import { GraphQLResolveInfo } from "graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
+import type { GraphQLResolveInfo } from "graphql";
 import { UpdateOneCommentArgs } from "./args/UpdateOneCommentArgs";
 import { Comment } from "../../../models/Comment";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Comment)
+@Resolver(_of => Comment)
 export class UpdateOneCommentResolver {
-  @TypeGraphQL.Mutation(_returns => Comment, {
+  @Mutation(_returns => Comment, {
     nullable: true
   })
-  async updateOneComment(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: UpdateOneCommentArgs): Promise<Comment | null> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async updateOneComment(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: UpdateOneCommentArgs): Promise<Comment | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Comment', 'comment', 'update');
     return getPrismaFromContext(ctx).comment.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Comment', 'comment', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Comment', 'comment', 'update')),
     });
   }
 }

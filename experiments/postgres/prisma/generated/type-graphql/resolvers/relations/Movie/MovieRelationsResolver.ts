@@ -1,16 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { Director } from "../../../models/Director";
 import { Movie } from "../../../models/Movie";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Movie)
+@Resolver(_of => Movie)
 export class MovieRelationsResolver {
-  @TypeGraphQL.FieldResolver(_type => Director, {
+  @ResolveField(_type => Director, {
     nullable: false
   })
-  async director(@TypeGraphQL.Root() movie: Movie, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<Director> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async director(@Root() movie: Movie, @Context() ctx: any, @Info() info: GraphQLResolveInfo): Promise<Director> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Movie', '', '');
     return getPrismaFromContext(ctx).movie.findUniqueOrThrow({
       where: {
         movieCompoundId: {
@@ -20,7 +20,7 @@ export class MovieRelationsResolver {
         },
       },
     }).director({
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Movie', '', '')),
     });
   }
 }

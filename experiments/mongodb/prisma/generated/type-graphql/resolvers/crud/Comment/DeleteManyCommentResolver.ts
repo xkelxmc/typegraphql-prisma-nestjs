@@ -1,20 +1,20 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { DeleteManyCommentArgs } from "./args/DeleteManyCommentArgs";
 import { Comment } from "../../../models/Comment";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Comment)
+@Resolver(_of => Comment)
 export class DeleteManyCommentResolver {
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyComment(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: DeleteManyCommentArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteManyComment(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: DeleteManyCommentArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Comment', 'comment', 'deleteMany');
     return getPrismaFromContext(ctx).comment.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Comment', 'comment', 'deleteMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Comment', 'comment', 'deleteMany')),
     });
   }
 }

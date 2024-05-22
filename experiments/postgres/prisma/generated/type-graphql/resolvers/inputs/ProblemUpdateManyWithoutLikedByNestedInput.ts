@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { ProblemCreateOrConnectWithoutLikedByInput } from "../inputs/ProblemCreateOrConnectWithoutLikedByInput";
 import { ProblemCreateWithoutLikedByInput } from "../inputs/ProblemCreateWithoutLikedByInput";
 import { ProblemScalarWhereInput } from "../inputs/ProblemScalarWhereInput";
@@ -10,54 +10,54 @@ import { ProblemUpdateWithWhereUniqueWithoutLikedByInput } from "../inputs/Probl
 import { ProblemUpsertWithWhereUniqueWithoutLikedByInput } from "../inputs/ProblemUpsertWithWhereUniqueWithoutLikedByInput";
 import { ProblemWhereUniqueInput } from "../inputs/ProblemWhereUniqueInput";
 
-@TypeGraphQL.InputType("ProblemUpdateManyWithoutLikedByNestedInput", {})
+@InputType("ProblemUpdateManyWithoutLikedByNestedInput", {})
 export class ProblemUpdateManyWithoutLikedByNestedInput {
-  @TypeGraphQL.Field(_type => [ProblemCreateWithoutLikedByInput], {
+  @Field(_type => [ProblemCreateWithoutLikedByInput], {
     nullable: true
   })
   create?: ProblemCreateWithoutLikedByInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemCreateOrConnectWithoutLikedByInput], {
+  @Field(_type => [ProblemCreateOrConnectWithoutLikedByInput], {
     nullable: true
   })
   connectOrCreate?: ProblemCreateOrConnectWithoutLikedByInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemUpsertWithWhereUniqueWithoutLikedByInput], {
+  @Field(_type => [ProblemUpsertWithWhereUniqueWithoutLikedByInput], {
     nullable: true
   })
   upsert?: ProblemUpsertWithWhereUniqueWithoutLikedByInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
+  @Field(_type => [ProblemWhereUniqueInput], {
     nullable: true
   })
   set?: ProblemWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
+  @Field(_type => [ProblemWhereUniqueInput], {
     nullable: true
   })
   disconnect?: ProblemWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
+  @Field(_type => [ProblemWhereUniqueInput], {
     nullable: true
   })
   delete?: ProblemWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
+  @Field(_type => [ProblemWhereUniqueInput], {
     nullable: true
   })
   connect?: ProblemWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemUpdateWithWhereUniqueWithoutLikedByInput], {
+  @Field(_type => [ProblemUpdateWithWhereUniqueWithoutLikedByInput], {
     nullable: true
   })
   update?: ProblemUpdateWithWhereUniqueWithoutLikedByInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemUpdateManyWithWhereWithoutLikedByInput], {
+  @Field(_type => [ProblemUpdateManyWithWhereWithoutLikedByInput], {
     nullable: true
   })
   updateMany?: ProblemUpdateManyWithWhereWithoutLikedByInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemScalarWhereInput], {
+  @Field(_type => [ProblemScalarWhereInput], {
     nullable: true
   })
   deleteMany?: ProblemScalarWhereInput[] | undefined;

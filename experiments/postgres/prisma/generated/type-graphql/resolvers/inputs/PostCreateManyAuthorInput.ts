@@ -1,47 +1,47 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostKind } from "../../enums/PostKind";
 
-@TypeGraphQL.InputType("PostCreateManyAuthorInput", {})
+@InputType("PostCreateManyAuthorInput", {})
 export class PostCreateManyAuthorInput {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   uuid?: string | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
+  @Field(_type => Date, {
     nullable: true
   })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   title!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   subtitle!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   content?: string | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   editorId?: number | undefined;
 
-  @TypeGraphQL.Field(_type => PostKind, {
+  @Field(_type => PostKind, {
     nullable: true
   })
   kind?: "BLOG" | "ADVERT" | undefined;
 
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+  @Field(_type => GraphQLScalars.JSONResolver, {
     nullable: false
   })
   metadata!: Prisma.InputJsonValue;

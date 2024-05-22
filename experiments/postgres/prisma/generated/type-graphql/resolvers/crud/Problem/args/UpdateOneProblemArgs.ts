@@ -1,16 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { ProblemUpdateInput } from "../../../inputs/ProblemUpdateInput";
 import { ProblemWhereUniqueInput } from "../../../inputs/ProblemWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpdateOneProblemArgs {
-  @TypeGraphQL.Field(_type => ProblemUpdateInput, {
+  @Field(_type => ProblemUpdateInput, {
     nullable: false
   })
   data!: ProblemUpdateInput;
 
-  @TypeGraphQL.Field(_type => ProblemWhereUniqueInput, {
+  @Field(_type => ProblemWhereUniqueInput, {
     nullable: false
   })
   where!: ProblemWhereUniqueInput;

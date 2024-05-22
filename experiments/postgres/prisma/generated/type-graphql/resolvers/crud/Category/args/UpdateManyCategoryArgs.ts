@@ -1,16 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { CategoryUpdateManyMutationInput } from "../../../inputs/CategoryUpdateManyMutationInput";
 import { CategoryWhereInput } from "../../../inputs/CategoryWhereInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpdateManyCategoryArgs {
-  @TypeGraphQL.Field(_type => CategoryUpdateManyMutationInput, {
+  @Field(_type => CategoryUpdateManyMutationInput, {
     nullable: false
   })
   data!: CategoryUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => CategoryWhereInput, {
+  @Field(_type => CategoryWhereInput, {
     nullable: true
   })
   where?: CategoryWhereInput | undefined;

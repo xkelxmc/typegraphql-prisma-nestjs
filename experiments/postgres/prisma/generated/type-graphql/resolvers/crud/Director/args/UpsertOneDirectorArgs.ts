@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { DirectorCreateInput } from "../../../inputs/DirectorCreateInput";
 import { DirectorUpdateInput } from "../../../inputs/DirectorUpdateInput";
 import { DirectorWhereUniqueInput } from "../../../inputs/DirectorWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpsertOneDirectorArgs {
-  @TypeGraphQL.Field(_type => DirectorWhereUniqueInput, {
+  @Field(_type => DirectorWhereUniqueInput, {
     nullable: false
   })
   where!: DirectorWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => DirectorCreateInput, {
+  @Field(_type => DirectorCreateInput, {
     nullable: false
   })
   create!: DirectorCreateInput;
 
-  @TypeGraphQL.Field(_type => DirectorUpdateInput, {
+  @Field(_type => DirectorUpdateInput, {
     nullable: false
   })
   update!: DirectorUpdateInput;

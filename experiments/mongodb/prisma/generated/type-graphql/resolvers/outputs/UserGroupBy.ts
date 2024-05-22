@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
@@ -8,44 +8,44 @@ import { UserMaxAggregate } from "../outputs/UserMaxAggregate";
 import { UserMinAggregate } from "../outputs/UserMinAggregate";
 import { UserSumAggregate } from "../outputs/UserSumAggregate";
 
-@TypeGraphQL.ObjectType("UserGroupBy", {})
+@ObjectType("UserGroupBy", {})
 export class UserGroupBy {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   email!: string;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   age!: number | null;
 
-  @TypeGraphQL.Field(_type => UserCountAggregate, {
+  @Field(_type => UserCountAggregate, {
     nullable: true
   })
   _count!: UserCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => UserAvgAggregate, {
+  @Field(_type => UserAvgAggregate, {
     nullable: true
   })
   _avg!: UserAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => UserSumAggregate, {
+  @Field(_type => UserSumAggregate, {
     nullable: true
   })
   _sum!: UserSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => UserMinAggregate, {
+  @Field(_type => UserMinAggregate, {
     nullable: true
   })
   _min!: UserMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => UserMaxAggregate, {
+  @Field(_type => UserMaxAggregate, {
     nullable: true
   })
   _max!: UserMaxAggregate | null;

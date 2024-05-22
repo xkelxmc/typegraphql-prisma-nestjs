@@ -1,6 +1,9 @@
 import { InputOmitSetting } from "../config";
 
 export namespace DMMF {
+  export type DeepWriteable<T> = {
+    -readonly [P in keyof T]: DeepWriteable<T[P]>;
+  };
   export interface Document {
     datamodel: Datamodel;
     schema: Schema;
@@ -134,6 +137,7 @@ export namespace DMMF {
     typeGraphQLType: string;
     fieldTSType: string;
     hasMappedName: boolean;
+    isGlobalInputType?: boolean;
     isOmitted: boolean;
     isOptional: boolean;
   }
@@ -177,6 +181,7 @@ export namespace DMMF {
     namespace?: FieldNamespace;
     // additional props
     type: string;
+    isCount?: boolean;
   }
   // additional type
   export interface OutputSchemaField extends SchemaField {
@@ -195,6 +200,7 @@ export namespace DMMF {
     // fieldMap?: Record<string, SchemaArg>;
     // additional props
     typeName: string;
+    isPrismaGlobalType?: boolean;
   }
   export interface ModelMapping {
     // model: string;

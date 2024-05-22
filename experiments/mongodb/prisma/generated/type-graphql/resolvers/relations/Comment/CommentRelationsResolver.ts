@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { Comment } from "../../../models/Comment";
 import { Post } from "../../../models/Post";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Comment)
+@Resolver(_of => Comment)
 export class CommentRelationsResolver {
-  @TypeGraphQL.FieldResolver(_type => Post, {
+  @ResolveField(_type => Post, {
     nullable: false
   })
-  async post(@TypeGraphQL.Root() comment: Comment, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<Post> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async post(@Root() comment: Comment, @Context() ctx: any, @Info() info: GraphQLResolveInfo): Promise<Post> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Comment', '', '');
     return getPrismaFromContext(ctx).comment.findUniqueOrThrow({
       where: {
         id: comment.id,
       },
     }).post({
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Comment', '', '')),
     });
   }
 }

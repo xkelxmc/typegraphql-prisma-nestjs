@@ -1,37 +1,37 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { StringWithAggregatesFilter } from "../../../global/inputs/StringWithAggregatesFilter";
 
-@TypeGraphQL.InputType("MovieScalarWhereWithAggregatesInput", {})
+@InputType("MovieScalarWhereWithAggregatesInput", {})
 export class MovieScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [MovieScalarWhereWithAggregatesInput], {
+  @Field(_type => [MovieScalarWhereWithAggregatesInput], {
     nullable: true
   })
   AND?: MovieScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieScalarWhereWithAggregatesInput], {
+  @Field(_type => [MovieScalarWhereWithAggregatesInput], {
     nullable: true
   })
   OR?: MovieScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieScalarWhereWithAggregatesInput], {
+  @Field(_type => [MovieScalarWhereWithAggregatesInput], {
     nullable: true
   })
   NOT?: MovieScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   directorFirstName?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   directorLastName?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   title?: StringWithAggregatesFilter | undefined;

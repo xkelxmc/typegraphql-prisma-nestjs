@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindUniquePatientOrThrowArgs } from "./args/FindUniquePatientOrThrowArgs";
 import { Patient } from "../../../models/Patient";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Patient)
+@Resolver(_of => Patient)
 export class FindUniquePatientOrThrowResolver {
-  @TypeGraphQL.Query(_returns => Patient, {
+  @Query(_returns => Patient, {
     nullable: true
   })
-  async getPatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniquePatientOrThrowArgs) args: FindUniquePatientOrThrowArgs): Promise<Patient | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getPatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniquePatientOrThrowArgs) args: FindUniquePatientOrThrowArgs): Promise<Patient | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).patient.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'findUniqueOrThrow')),
     });
   }
 }

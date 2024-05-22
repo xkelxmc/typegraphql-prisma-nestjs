@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { NativeTypeModelOrderByWithAggregationInput } from "../../../inputs/NativeTypeModelOrderByWithAggregationInput";
 import { NativeTypeModelScalarWhereWithAggregatesInput } from "../../../inputs/NativeTypeModelScalarWhereWithAggregatesInput";
 import { NativeTypeModelWhereInput } from "../../../inputs/NativeTypeModelWhereInput";
 import { NativeTypeModelScalarFieldEnum } from "../../../../enums/NativeTypeModelScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByNativeTypeModelArgs {
-  @TypeGraphQL.Field(_type => NativeTypeModelWhereInput, {
+  @Field(_type => NativeTypeModelWhereInput, {
     nullable: true
   })
   where?: NativeTypeModelWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [NativeTypeModelOrderByWithAggregationInput], {
+  @Field(_type => [NativeTypeModelOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: NativeTypeModelOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [NativeTypeModelScalarFieldEnum], {
+  @Field(_type => [NativeTypeModelScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"id" | "bigInt" | "byteA" | "decimal">;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelScalarWhereWithAggregatesInput, {
+  @Field(_type => NativeTypeModelScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: NativeTypeModelScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

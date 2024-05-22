@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { UserOrderByWithRelationInput } from "../../../inputs/UserOrderByWithRelationInput";
 import { UserWhereInput } from "../../../inputs/UserWhereInput";
 import { UserWhereUniqueInput } from "../../../inputs/UserWhereUniqueInput";
 import { UserScalarFieldEnum } from "../../../../enums/UserScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class FindFirstUserOrThrowArgs {
-  @TypeGraphQL.Field(_type => UserWhereInput, {
+  @Field(_type => UserWhereInput, {
     nullable: true
   })
   where?: UserWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [UserOrderByWithRelationInput], {
+  @Field(_type => [UserOrderByWithRelationInput], {
     nullable: true
   })
   orderBy?: UserOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => UserWhereUniqueInput, {
+  @Field(_type => UserWhereUniqueInput, {
     nullable: true
   })
   cursor?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [UserScalarFieldEnum], {
+  @Field(_type => [UserScalarFieldEnum], {
     nullable: true
   })
   distinct?: Array<"id" | "email" | "age"> | undefined;

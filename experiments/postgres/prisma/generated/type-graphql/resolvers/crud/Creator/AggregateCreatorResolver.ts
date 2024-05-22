@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateCreatorArgs } from "./args/AggregateCreatorArgs";
 import { Creator } from "../../../models/Creator";
 import { AggregateCreator } from "../../outputs/AggregateCreator";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Creator)
+@Resolver(_of => Creator)
 export class AggregateCreatorResolver {
-  @TypeGraphQL.Query(_returns => AggregateCreator, {
+  @Query(_returns => AggregateCreator, {
     nullable: false
   })
-  async aggregateCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateCreatorArgs) args: AggregateCreatorArgs): Promise<AggregateCreator> {
+  async aggregateCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateCreatorArgs) args: AggregateCreatorArgs): Promise<AggregateCreator> {
     return getPrismaFromContext(ctx).creator.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'aggregate'),
     });
   }
 }

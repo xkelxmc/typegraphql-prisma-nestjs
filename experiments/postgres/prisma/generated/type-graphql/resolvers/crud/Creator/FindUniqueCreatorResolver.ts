@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindUniqueCreatorArgs } from "./args/FindUniqueCreatorArgs";
 import { Creator } from "../../../models/Creator";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Creator)
+@Resolver(_of => Creator)
 export class FindUniqueCreatorResolver {
-  @TypeGraphQL.Query(_returns => Creator, {
+  @Query(_returns => Creator, {
     nullable: true
   })
-  async creator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueCreatorArgs) args: FindUniqueCreatorArgs): Promise<Creator | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async creator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueCreatorArgs) args: FindUniqueCreatorArgs): Promise<Creator | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'findUnique');
     return getPrismaFromContext(ctx).creator.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'findUnique')),
     });
   }
 }

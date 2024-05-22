@@ -47,7 +47,7 @@ export function generateTypeGraphQLImport(sourceFile: SourceFile) {
 export function generateGraphQLFieldsImport(sourceFile: SourceFile) {
   sourceFile.addImportDeclaration({
     moduleSpecifier: "graphql-fields",
-    namespaceImport: "graphqlFields",
+    defaultImport: "graphqlFields",
   });
 }
 
@@ -73,13 +73,26 @@ export function generateGraphQLScalarTypeImport(sourceFile: SourceFile) {
   });
 }
 
-export function generateCustomScalarsImport(sourceFile: SourceFile, level = 0) {
-  sourceFile.addImportDeclaration({
-    moduleSpecifier:
-      (level === 0 ? "./" : "") +
-      path.posix.join(...Array(level).fill(".."), "scalars"),
-    namedImports: ["DecimalJSScalar"],
-  });
+export function generateCustomScalarsImport(
+  sourceFile: SourceFile,
+  level = 0,
+  isGlobal = false,
+) {
+  if (isGlobal) {
+    sourceFile.addImportDeclaration({
+      moduleSpecifier:
+        (level === 0 ? "./" : "") +
+        path.posix.join(...Array(level).fill(".."), "global", "scalars"),
+      namedImports: ["DecimalJSScalar"],
+    });
+  } else {
+    sourceFile.addImportDeclaration({
+      moduleSpecifier:
+        (level === 0 ? "./" : "") +
+        path.posix.join(...Array(level).fill(".."), "scalars"),
+      namedImports: ["DecimalJSScalar"],
+    });
+  }
 }
 
 export function generateHelpersFileImport(sourceFile: SourceFile, level = 0) {
@@ -105,10 +118,13 @@ export function generatePrismaNamespaceImport(
     moduleSpecifier:
       options.absolutePrismaOutputPath ??
       (!options.customPrismaImportPathIgnoreLevels && level === 0 ? "./" : "") +
-      (options.customPrismaImportPathIgnoreLevels ? options.customPrismaImportPath ?? options.relativePrismaOutputPath : path.posix.join(
-        ...Array(level).fill(".."),
-        options.customPrismaImportPath ?? options.relativePrismaOutputPath,
-      )),
+        (options.customPrismaImportPathIgnoreLevels
+          ? options.customPrismaImportPath ?? options.relativePrismaOutputPath
+          : path.posix.join(
+              ...Array(level).fill(".."),
+              options.customPrismaImportPath ??
+                options.relativePrismaOutputPath,
+            )),
     namedImports: ["Prisma"],
   });
 }
@@ -287,9 +303,10 @@ export function generateIndexFile(
           name: "resolvers",
           initializer: `[
             ${blocksToEmit.includes("crudResolvers") ? "...crudResolvers," : ""}
-            ${hasSomeRelations && blocksToEmit.includes("relationResolvers")
-              ? "...relationResolvers,"
-              : ""
+            ${
+              hasSomeRelations && blocksToEmit.includes("relationResolvers")
+                ? "...relationResolvers,"
+                : ""
             }
             ] as unknown as NonEmptyArray<Function>`,
         },
@@ -354,6 +371,9 @@ export function generateResolversIndexFile(
 
 export const generateModelsImports = createImportGenerator(modelsFolderName);
 export const generateEnumsImports = createImportGenerator(enumsFolderName);
+export const generateGlobalInputsImports = createImportGenerator(
+  `global/${inputsFolderName}`,
+);
 export const generateInputsImports = createImportGenerator(inputsFolderName);
 export const generateOutputsImports = createImportGenerator(outputsFolderName);
 // TODO: unify with generateOutputsImports

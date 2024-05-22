@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregatePostArgs } from "./args/AggregatePostArgs";
 import { CreateManyPostArgs } from "./args/CreateManyPostArgs";
@@ -14,166 +14,166 @@ import { GroupByPostArgs } from "./args/GroupByPostArgs";
 import { UpdateManyPostArgs } from "./args/UpdateManyPostArgs";
 import { UpdateOnePostArgs } from "./args/UpdateOnePostArgs";
 import { UpsertOnePostArgs } from "./args/UpsertOnePostArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 import { Post } from "../../../models/Post";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregatePost } from "../../outputs/AggregatePost";
 import { PostGroupBy } from "../../outputs/PostGroupBy";
 
-@TypeGraphQL.Resolver(_of => Post)
+@Resolver(_of => Post)
 export class PostCrudResolver {
-  @TypeGraphQL.Query(_returns => AggregatePost, {
+  @Query(_returns => AggregatePost, {
     nullable: false
   })
-  async aggregatePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregatePostArgs) args: AggregatePostArgs): Promise<AggregatePost> {
+  async aggregatePost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregatePostArgs) args: AggregatePostArgs): Promise<AggregatePost> {
     return getPrismaFromContext(ctx).post.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'post', 'post', 'aggregate'),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateManyPostArgs) args: CreateManyPostArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyPost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateManyPostArgs) args: CreateManyPostArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'createMany');
     return getPrismaFromContext(ctx).post.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'createMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Post, {
+  @Mutation(_returns => Post, {
     nullable: false
   })
-  async createOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOnePostArgs) args: CreateOnePostArgs): Promise<Post> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOnePost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOnePostArgs) args: CreateOnePostArgs): Promise<Post> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'create');
     return getPrismaFromContext(ctx).post.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'create')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteManyPostArgs) args: DeleteManyPostArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteManyPost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteManyPostArgs) args: DeleteManyPostArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'deleteMany');
     return getPrismaFromContext(ctx).post.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'deleteMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'deleteMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Post, {
+  @Mutation(_returns => Post, {
     nullable: true
   })
-  async deleteOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOnePostArgs) args: DeleteOnePostArgs): Promise<Post | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOnePost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOnePostArgs) args: DeleteOnePostArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'delete');
     return getPrismaFromContext(ctx).post.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'delete')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Post, {
+  @Query(_returns => Post, {
     nullable: true
   })
-  async findFirstPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstPostArgs) args: FindFirstPostArgs): Promise<Post | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstPost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstPostArgs) args: FindFirstPostArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'findFirst');
     return getPrismaFromContext(ctx).post.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'findFirst')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Post, {
+  @Query(_returns => Post, {
     nullable: true
   })
-  async findFirstPostOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstPostOrThrowArgs) args: FindFirstPostOrThrowArgs): Promise<Post | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstPostOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstPostOrThrowArgs) args: FindFirstPostOrThrowArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).post.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'findFirstOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [Post], {
+  @Query(_returns => [Post], {
     nullable: false
   })
-  async posts(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyPostArgs) args: FindManyPostArgs): Promise<Post[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async posts(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyPostArgs) args: FindManyPostArgs): Promise<Post[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'findMany');
     return getPrismaFromContext(ctx).post.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'findMany')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Post, {
+  @Query(_returns => Post, {
     nullable: true
   })
-  async post(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniquePostArgs) args: FindUniquePostArgs): Promise<Post | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async post(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniquePostArgs) args: FindUniquePostArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'findUnique');
     return getPrismaFromContext(ctx).post.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'findUnique')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Post, {
+  @Query(_returns => Post, {
     nullable: true
   })
-  async getPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniquePostOrThrowArgs) args: FindUniquePostOrThrowArgs): Promise<Post | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getPost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniquePostOrThrowArgs) args: FindUniquePostOrThrowArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).post.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'findUniqueOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [PostGroupBy], {
+  @Query(_returns => [PostGroupBy], {
     nullable: false
   })
-  async groupByPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByPostArgs) args: GroupByPostArgs): Promise<PostGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByPost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByPostArgs) args: GroupByPostArgs): Promise<PostGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'groupBy');
     return getPrismaFromContext(ctx).post.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'groupBy')),
       ...Object.fromEntries(
         Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async updateManyPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateManyPostArgs) args: UpdateManyPostArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateManyPost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateManyPostArgs) args: UpdateManyPostArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'updateMany');
     return getPrismaFromContext(ctx).post.updateMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'updateMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'updateMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Post, {
+  @Mutation(_returns => Post, {
     nullable: true
   })
-  async updateOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOnePostArgs) args: UpdateOnePostArgs): Promise<Post | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOnePost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOnePostArgs) args: UpdateOnePostArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'update');
     return getPrismaFromContext(ctx).post.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'update')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Post, {
+  @Mutation(_returns => Post, {
     nullable: false
   })
-  async upsertOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOnePostArgs) args: UpsertOnePostArgs): Promise<Post> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async upsertOnePost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpsertOnePostArgs) args: UpsertOnePostArgs): Promise<Post> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'upsert');
     return getPrismaFromContext(ctx).post.upsert({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'upsert')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'upsert')),
     });
   }
 }

@@ -17,8 +17,10 @@ import {
   generateArgsImports,
   generateCustomScalarsImport,
   generateEnumsImports,
+  generateGlobalInputsImports,
   generateGraphQLScalarsImport,
   generateInputsImports,
+  generateModelsImports,
   generateOutputsImports,
   generatePrismaNamespaceImport,
   generateTypeGraphQLImport,
@@ -30,6 +32,7 @@ export function generateOutputTypeClassFromType(
   dirPath: string,
   type: DMMF.OutputType,
   dmmfDocument: DmmfDocument,
+  options: GeneratorOptions,
 ) {
   const fileDirPath = path.resolve(dirPath, outputsFolderName);
   const filePath = path.resolve(fileDirPath, `${type.typeName}.ts`);
@@ -43,12 +46,31 @@ export function generateOutputTypeClassFromType(
   generateTypeGraphQLImport(sourceFile);
   generateGraphQLScalarsImport(sourceFile);
   generatePrismaNamespaceImport(sourceFile, dmmfDocument.options, 2);
-  generateCustomScalarsImport(sourceFile, 2);
+  if (options.globalOutput) {
+    generateCustomScalarsImport(sourceFile, 3, true);
+  } else {
+    generateCustomScalarsImport(sourceFile, 2);
+  }
   generateArgsImports(sourceFile, fieldArgsTypeNames, 0);
+  generateModelsImports(
+    sourceFile,
+    type.fields
+      .filter(
+        field =>
+          field.outputType.location === "outputObjectTypes" &&
+          field.outputType.namespace === "model",
+      )
+      .map(field => field.outputType.type),
+    2,
+  );
   generateOutputsImports(
     sourceFile,
     type.fields
-      .filter(field => field.outputType.location === "outputObjectTypes")
+      .filter(
+        field =>
+          field.outputType.location === "outputObjectTypes" &&
+          field.outputType.namespace !== "model",
+      )
       .map(field => field.outputType.type),
     1,
   );
@@ -153,6 +175,7 @@ export function generateInputTypeClassFromType(
   inputType: DMMF.InputType,
   options: GeneratorOptions,
 ) {
+  const isGlobalType = inputType.isPrismaGlobalType && options.globalOutput;
   const filePath = path.resolve(
     dirPath,
     inputsFolderName,
@@ -164,22 +187,60 @@ export function generateInputTypeClassFromType(
 
   generateTypeGraphQLImport(sourceFile);
   generateGraphQLScalarsImport(sourceFile);
-  generatePrismaNamespaceImport(sourceFile, options, 2);
-  generateCustomScalarsImport(sourceFile, 2);
-  generateInputsImports(
-    sourceFile,
-    inputType.fields
-      .filter(field => field.selectedInputType.location === "inputObjectTypes")
-      .map(field => field.selectedInputType.type)
-      .filter(fieldType => fieldType !== inputType.typeName),
-  );
+  if (!isGlobalType) {
+    generatePrismaNamespaceImport(sourceFile, options, 2);
+  } else {
+    generatePrismaNamespaceImport(sourceFile, options, 1);
+  }
+  if (options.globalOutput) {
+    if (inputType.isPrismaGlobalType) {
+      generateCustomScalarsImport(sourceFile, 1);
+    } else {
+      generateCustomScalarsImport(sourceFile, 3, true);
+    }
+  } else {
+    generateCustomScalarsImport(sourceFile, 2);
+  }
+  if (options.globalOutput && !inputType.isPrismaGlobalType) {
+    generateGlobalInputsImports(
+      sourceFile,
+      inputType.fields
+        .filter(
+          field => field.selectedInputType.location === "inputObjectTypes",
+        )
+        .filter(field => field.isGlobalInputType)
+        .map(field => field.selectedInputType.type)
+        .filter(fieldType => fieldType !== inputType.typeName),
+      3,
+    );
+    generateInputsImports(
+      sourceFile,
+      inputType.fields
+        .filter(
+          field => field.selectedInputType.location === "inputObjectTypes",
+        )
+        .filter(field => !field.isGlobalInputType)
+        .map(field => field.selectedInputType.type)
+        .filter(fieldType => fieldType !== inputType.typeName),
+    );
+  } else {
+    generateInputsImports(
+      sourceFile,
+      inputType.fields
+        .filter(
+          field => field.selectedInputType.location === "inputObjectTypes",
+        )
+        .map(field => field.selectedInputType.type)
+        .filter(fieldType => fieldType !== inputType.typeName),
+    );
+  }
   generateEnumsImports(
     sourceFile,
     inputType.fields
       .map(field => field.selectedInputType)
       .filter(fieldType => fieldType.location === "enumTypes")
       .map(fieldType => fieldType.type as string),
-    2,
+    isGlobalType ? 1 : 2,
   );
 
   const fieldsToEmit = inputType.fields.filter(field => !field.isOmitted);

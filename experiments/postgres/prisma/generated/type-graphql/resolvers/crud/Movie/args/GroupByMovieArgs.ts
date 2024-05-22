@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { MovieOrderByWithAggregationInput } from "../../../inputs/MovieOrderByWithAggregationInput";
 import { MovieScalarWhereWithAggregatesInput } from "../../../inputs/MovieScalarWhereWithAggregatesInput";
 import { MovieWhereInput } from "../../../inputs/MovieWhereInput";
 import { MovieScalarFieldEnum } from "../../../../enums/MovieScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByMovieArgs {
-  @TypeGraphQL.Field(_type => MovieWhereInput, {
+  @Field(_type => MovieWhereInput, {
     nullable: true
   })
   where?: MovieWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieOrderByWithAggregationInput], {
+  @Field(_type => [MovieOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: MovieOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieScalarFieldEnum], {
+  @Field(_type => [MovieScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"directorFirstName" | "directorLastName" | "title">;
 
-  @TypeGraphQL.Field(_type => MovieScalarWhereWithAggregatesInput, {
+  @Field(_type => MovieScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: MovieScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

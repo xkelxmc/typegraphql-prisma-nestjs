@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateProblemArgs } from "./args/AggregateProblemArgs";
 import { Problem } from "../../../models/Problem";
 import { AggregateProblem } from "../../outputs/AggregateProblem";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Problem)
+@Resolver(_of => Problem)
 export class AggregateProblemResolver {
-  @TypeGraphQL.Query(_returns => AggregateProblem, {
+  @Query(_returns => AggregateProblem, {
     nullable: false
   })
-  async aggregateProblem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateProblemArgs) args: AggregateProblemArgs): Promise<AggregateProblem> {
+  async aggregateProblem(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateProblemArgs) args: AggregateProblemArgs): Promise<AggregateProblem> {
     return getPrismaFromContext(ctx).problem.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Problem', 'problem', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Problem', 'problem', 'aggregate'),
     });
   }
 }

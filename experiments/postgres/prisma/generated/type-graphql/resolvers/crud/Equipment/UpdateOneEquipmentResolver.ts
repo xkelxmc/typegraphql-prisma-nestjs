@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { UpdateOneEquipmentArgs } from "./args/UpdateOneEquipmentArgs";
 import { Equipment } from "../../../models/Equipment";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Equipment)
+@Resolver(_of => Equipment)
 export class UpdateOneEquipmentResolver {
-  @TypeGraphQL.Mutation(_returns => Equipment, {
+  @Mutation(_returns => Equipment, {
     nullable: true
   })
-  async updateOneEquipment(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneEquipmentArgs) args: UpdateOneEquipmentArgs): Promise<Equipment | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOneEquipment(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOneEquipmentArgs) args: UpdateOneEquipmentArgs): Promise<Equipment | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Equipment', 'equipment', 'update');
     return getPrismaFromContext(ctx).equipment.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Equipment', 'equipment', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Equipment', 'equipment', 'update')),
     });
   }
 }

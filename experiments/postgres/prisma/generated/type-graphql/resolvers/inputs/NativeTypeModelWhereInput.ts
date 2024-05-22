@@ -1,45 +1,45 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { BigIntNullableFilter } from "../inputs/BigIntNullableFilter";
-import { BytesNullableFilter } from "../inputs/BytesNullableFilter";
-import { DecimalNullableFilter } from "../inputs/DecimalNullableFilter";
-import { IntFilter } from "../inputs/IntFilter";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { BigIntNullableFilter } from "../../../global/inputs/BigIntNullableFilter";
+import { BytesNullableFilter } from "../../../global/inputs/BytesNullableFilter";
+import { DecimalNullableFilter } from "../../../global/inputs/DecimalNullableFilter";
+import { IntFilter } from "../../../global/inputs/IntFilter";
 
-@TypeGraphQL.InputType("NativeTypeModelWhereInput", {})
+@InputType("NativeTypeModelWhereInput", {})
 export class NativeTypeModelWhereInput {
-  @TypeGraphQL.Field(_type => [NativeTypeModelWhereInput], {
+  @Field(_type => [NativeTypeModelWhereInput], {
     nullable: true
   })
   AND?: NativeTypeModelWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [NativeTypeModelWhereInput], {
+  @Field(_type => [NativeTypeModelWhereInput], {
     nullable: true
   })
   OR?: NativeTypeModelWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [NativeTypeModelWhereInput], {
+  @Field(_type => [NativeTypeModelWhereInput], {
     nullable: true
   })
   NOT?: NativeTypeModelWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @Field(_type => IntFilter, {
     nullable: true
   })
   id?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => BigIntNullableFilter, {
+  @Field(_type => BigIntNullableFilter, {
     nullable: true
   })
   bigInt?: BigIntNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => BytesNullableFilter, {
+  @Field(_type => BytesNullableFilter, {
     nullable: true
   })
   byteA?: BytesNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DecimalNullableFilter, {
+  @Field(_type => DecimalNullableFilter, {
     nullable: true
   })
   decimal?: DecimalNullableFilter | undefined;

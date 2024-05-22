@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { UpsertOnePostArgs } from "./args/UpsertOnePostArgs";
 import { Post } from "../../../models/Post";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Post)
+@Resolver(_of => Post)
 export class UpsertOnePostResolver {
-  @TypeGraphQL.Mutation(_returns => Post, {
+  @Mutation(_returns => Post, {
     nullable: false
   })
-  async upsertOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOnePostArgs) args: UpsertOnePostArgs): Promise<Post> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async upsertOnePost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpsertOnePostArgs) args: UpsertOnePostArgs): Promise<Post> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'post', 'post', 'upsert');
     return getPrismaFromContext(ctx).post.upsert({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'post', 'post', 'upsert')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'post', 'post', 'upsert')),
     });
   }
 }

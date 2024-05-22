@@ -91,6 +91,18 @@ export class DmmfDocument implements DMMF.Document {
     return this.models.some(it => it.typeName === typeName);
   }
 
+  isEnumName(typeName: string): boolean {
+    return this.enums.some(it => it.name === typeName);
+  }
+
+  getAllModelNames(): string[] {
+    return this.models.map(it => it.name);
+  }
+
+  getEnumNames(): string[] {
+    return this.enums.map(it => it.name);
+  }
+
   getModelFieldAlias(modelName: string, fieldName: string): string | undefined {
     const model = this.models.find(it => it.name === modelName);
     return model?.fields.find(it => it.name === fieldName)?.typeFieldAlias;

@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { CommentUpdateWithoutPostInput } from "../inputs/CommentUpdateWithoutPostInput";
 import { CommentWhereUniqueInput } from "../inputs/CommentWhereUniqueInput";
 
-@TypeGraphQL.InputType("CommentUpdateWithWhereUniqueWithoutPostInput", {})
+@InputType("CommentUpdateWithWhereUniqueWithoutPostInput", {})
 export class CommentUpdateWithWhereUniqueWithoutPostInput {
-  @TypeGraphQL.Field(_type => CommentWhereUniqueInput, {
+  @Field(_type => CommentWhereUniqueInput, {
     nullable: false
   })
   where!: CommentWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => CommentUpdateWithoutPostInput, {
+  @Field(_type => CommentUpdateWithoutPostInput, {
     nullable: false
   })
   data!: CommentUpdateWithoutPostInput;

@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { MovieCreateInput } from "../../../inputs/MovieCreateInput";
 import { MovieUpdateInput } from "../../../inputs/MovieUpdateInput";
 import { MovieWhereUniqueInput } from "../../../inputs/MovieWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpsertOneMovieArgs {
-  @TypeGraphQL.Field(_type => MovieWhereUniqueInput, {
+  @Field(_type => MovieWhereUniqueInput, {
     nullable: false
   })
   where!: MovieWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => MovieCreateInput, {
+  @Field(_type => MovieCreateInput, {
     nullable: false
   })
   create!: MovieCreateInput;
 
-  @TypeGraphQL.Field(_type => MovieUpdateInput, {
+  @Field(_type => MovieUpdateInput, {
     nullable: false
   })
   update!: MovieUpdateInput;

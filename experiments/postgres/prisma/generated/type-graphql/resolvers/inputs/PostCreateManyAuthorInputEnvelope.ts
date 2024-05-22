@@ -1,17 +1,17 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostCreateManyAuthorInput } from "../inputs/PostCreateManyAuthorInput";
 
-@TypeGraphQL.InputType("PostCreateManyAuthorInputEnvelope", {})
+@InputType("PostCreateManyAuthorInputEnvelope", {})
 export class PostCreateManyAuthorInputEnvelope {
-  @TypeGraphQL.Field(_type => [PostCreateManyAuthorInput], {
+  @Field(_type => [PostCreateManyAuthorInput], {
     nullable: false
   })
   data!: PostCreateManyAuthorInput[];
 
-  @TypeGraphQL.Field(_type => Boolean, {
+  @Field(_type => Boolean, {
     nullable: true
   })
   skipDuplicates?: boolean | undefined;

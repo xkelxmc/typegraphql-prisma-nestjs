@@ -1,28 +1,28 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MainUserCountEditorPostsArgs } from "./args/MainUserCountEditorPostsArgs";
 import { MainUserCountPostsArgs } from "./args/MainUserCountPostsArgs";
 
-@TypeGraphQL.ObjectType("MainUserCount", {})
+@ObjectType("MainUserCount", {})
 export class MainUserCount {
   posts!: number;
   editorPosts!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     name: "posts",
     nullable: false
   })
-  getPosts(@TypeGraphQL.Root() root: MainUserCount, @TypeGraphQL.Args() args: MainUserCountPostsArgs): number {
+  getPosts(@Root() root: MainUserCount, @Args() args: MainUserCountPostsArgs): number {
     return root.posts;
   }
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     name: "editorPosts",
     nullable: false
   })
-  getEditorPosts(@TypeGraphQL.Root() root: MainUserCount, @TypeGraphQL.Args() args: MainUserCountEditorPostsArgs): number {
+  getEditorPosts(@Root() root: MainUserCount, @Args() args: MainUserCountEditorPostsArgs): number {
     return root.editorPosts;
   }
 }

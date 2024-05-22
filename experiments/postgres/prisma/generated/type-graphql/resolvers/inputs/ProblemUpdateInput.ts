@@ -1,23 +1,23 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorUpdateManyWithoutLikesNestedInput } from "../inputs/CreatorUpdateManyWithoutLikesNestedInput";
 import { CreatorUpdateOneWithoutProblemsNestedInput } from "../inputs/CreatorUpdateOneWithoutProblemsNestedInput";
 
-@TypeGraphQL.InputType("ProblemUpdateInput", {})
+@InputType("ProblemUpdateInput", {})
 export class ProblemUpdateInput {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   problemText?: string | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorUpdateManyWithoutLikesNestedInput, {
+  @Field(_type => CreatorUpdateManyWithoutLikesNestedInput, {
     nullable: true
   })
   likedBy?: CreatorUpdateManyWithoutLikesNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorUpdateOneWithoutProblemsNestedInput, {
+  @Field(_type => CreatorUpdateOneWithoutProblemsNestedInput, {
     nullable: true
   })
   creator?: CreatorUpdateOneWithoutProblemsNestedInput | undefined;

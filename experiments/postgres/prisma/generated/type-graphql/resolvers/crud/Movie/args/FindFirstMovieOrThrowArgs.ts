@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { MovieOrderByWithRelationAndSearchRelevanceInput } from "../../../inputs/MovieOrderByWithRelationAndSearchRelevanceInput";
 import { MovieWhereInput } from "../../../inputs/MovieWhereInput";
 import { MovieWhereUniqueInput } from "../../../inputs/MovieWhereUniqueInput";
 import { MovieScalarFieldEnum } from "../../../../enums/MovieScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class FindFirstMovieOrThrowArgs {
-  @TypeGraphQL.Field(_type => MovieWhereInput, {
+  @Field(_type => MovieWhereInput, {
     nullable: true
   })
   where?: MovieWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieOrderByWithRelationAndSearchRelevanceInput], {
+  @Field(_type => [MovieOrderByWithRelationAndSearchRelevanceInput], {
     nullable: true
   })
   orderBy?: MovieOrderByWithRelationAndSearchRelevanceInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => MovieWhereUniqueInput, {
+  @Field(_type => MovieWhereUniqueInput, {
     nullable: true
   })
   cursor?: MovieWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieScalarFieldEnum], {
+  @Field(_type => [MovieScalarFieldEnum], {
     nullable: true
   })
   distinct?: Array<"directorFirstName" | "directorLastName" | "title"> | undefined;

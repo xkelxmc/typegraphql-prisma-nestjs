@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindFirstDirectorOrThrowArgs } from "./args/FindFirstDirectorOrThrowArgs";
 import { Director } from "../../../models/Director";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Director)
+@Resolver(_of => Director)
 export class FindFirstDirectorOrThrowResolver {
-  @TypeGraphQL.Query(_returns => Director, {
+  @Query(_returns => Director, {
     nullable: true
   })
-  async findFirstDirectorOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstDirectorOrThrowArgs) args: FindFirstDirectorOrThrowArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstDirectorOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstDirectorOrThrowArgs) args: FindFirstDirectorOrThrowArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).director.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'findFirstOrThrow')),
     });
   }
 }

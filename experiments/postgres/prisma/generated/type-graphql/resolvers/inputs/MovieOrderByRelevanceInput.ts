@@ -1,23 +1,23 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MovieOrderByRelevanceFieldEnum } from "../../enums/MovieOrderByRelevanceFieldEnum";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("MovieOrderByRelevanceInput", {})
+@InputType("MovieOrderByRelevanceInput", {})
 export class MovieOrderByRelevanceInput {
-  @TypeGraphQL.Field(_type => [MovieOrderByRelevanceFieldEnum], {
+  @Field(_type => [MovieOrderByRelevanceFieldEnum], {
     nullable: false
   })
   fields!: Array<"directorFirstName" | "directorLastName" | "title">;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: false
   })
   sort!: "asc" | "desc";
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   search!: string;

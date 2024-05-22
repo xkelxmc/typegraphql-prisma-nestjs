@@ -1,37 +1,37 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { PostCreateOrConnectWithoutCommentsInput } from "../inputs/PostCreateOrConnectWithoutCommentsInput";
 import { PostCreateWithoutCommentsInput } from "../inputs/PostCreateWithoutCommentsInput";
-import { PostUpdateWithoutCommentsInput } from "../inputs/PostUpdateWithoutCommentsInput";
+import { PostUpdateToOneWithWhereWithoutCommentsInput } from "../inputs/PostUpdateToOneWithWhereWithoutCommentsInput";
 import { PostUpsertWithoutCommentsInput } from "../inputs/PostUpsertWithoutCommentsInput";
 import { PostWhereUniqueInput } from "../inputs/PostWhereUniqueInput";
 
-@TypeGraphQL.InputType("PostUpdateOneRequiredWithoutCommentsNestedInput", {})
+@InputType("PostUpdateOneRequiredWithoutCommentsNestedInput", {})
 export class PostUpdateOneRequiredWithoutCommentsNestedInput {
-  @TypeGraphQL.Field(_type => PostCreateWithoutCommentsInput, {
+  @Field(_type => PostCreateWithoutCommentsInput, {
     nullable: true
   })
   create?: PostCreateWithoutCommentsInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostCreateOrConnectWithoutCommentsInput, {
+  @Field(_type => PostCreateOrConnectWithoutCommentsInput, {
     nullable: true
   })
   connectOrCreate?: PostCreateOrConnectWithoutCommentsInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostUpsertWithoutCommentsInput, {
+  @Field(_type => PostUpsertWithoutCommentsInput, {
     nullable: true
   })
   upsert?: PostUpsertWithoutCommentsInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostWhereUniqueInput, {
+  @Field(_type => PostWhereUniqueInput, {
     nullable: true
   })
   connect?: PostWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostUpdateWithoutCommentsInput, {
+  @Field(_type => PostUpdateToOneWithWhereWithoutCommentsInput, {
     nullable: true
   })
-  update?: PostUpdateWithoutCommentsInput | undefined;
+  update?: PostUpdateToOneWithWhereWithoutCommentsInput | undefined;
 }

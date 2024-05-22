@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateHiddenArgs } from "./args/AggregateHiddenArgs";
 import { Hidden } from "../../../models/Hidden";
 import { AggregateHidden } from "../../outputs/AggregateHidden";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Hidden)
+@Resolver(_of => Hidden)
 export class AggregateHiddenResolver {
-  @TypeGraphQL.Query(_returns => AggregateHidden, {
+  @Query(_returns => AggregateHidden, {
     nullable: false
   })
-  async aggregateHidden(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateHiddenArgs) args: AggregateHiddenArgs): Promise<AggregateHidden> {
+  async aggregateHidden(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateHiddenArgs) args: AggregateHiddenArgs): Promise<AggregateHidden> {
     return getPrismaFromContext(ctx).hidden.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Hidden', 'hidden', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Hidden', 'hidden', 'aggregate'),
     });
   }
 }

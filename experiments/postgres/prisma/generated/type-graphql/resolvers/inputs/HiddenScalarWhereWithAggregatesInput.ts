@@ -1,33 +1,33 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
-import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { StringNullableWithAggregatesFilter } from "../../../global/inputs/StringNullableWithAggregatesFilter";
+import { StringWithAggregatesFilter } from "../../../global/inputs/StringWithAggregatesFilter";
 
-@TypeGraphQL.InputType("HiddenScalarWhereWithAggregatesInput", {})
+@InputType("HiddenScalarWhereWithAggregatesInput", {})
 export class HiddenScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [HiddenScalarWhereWithAggregatesInput], {
+  @Field(_type => [HiddenScalarWhereWithAggregatesInput], {
     nullable: true
   })
   AND?: HiddenScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [HiddenScalarWhereWithAggregatesInput], {
+  @Field(_type => [HiddenScalarWhereWithAggregatesInput], {
     nullable: true
   })
   OR?: HiddenScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [HiddenScalarWhereWithAggregatesInput], {
+  @Field(_type => [HiddenScalarWhereWithAggregatesInput], {
     nullable: true
   })
   NOT?: HiddenScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
+  @Field(_type => StringNullableWithAggregatesFilter, {
     nullable: true
   })
   name?: StringNullableWithAggregatesFilter | undefined;

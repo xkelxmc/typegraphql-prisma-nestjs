@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { DeleteOneHiddenArgs } from "./args/DeleteOneHiddenArgs";
 import { Hidden } from "../../../models/Hidden";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Hidden)
+@Resolver(_of => Hidden)
 export class DeleteOneHiddenResolver {
-  @TypeGraphQL.Mutation(_returns => Hidden, {
+  @Mutation(_returns => Hidden, {
     nullable: true
   })
-  async deleteOneHidden(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneHiddenArgs) args: DeleteOneHiddenArgs): Promise<Hidden | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOneHidden(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOneHiddenArgs) args: DeleteOneHiddenArgs): Promise<Hidden | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Hidden', 'hidden', 'delete');
     return getPrismaFromContext(ctx).hidden.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Hidden', 'hidden', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Hidden', 'hidden', 'delete')),
     });
   }
 }

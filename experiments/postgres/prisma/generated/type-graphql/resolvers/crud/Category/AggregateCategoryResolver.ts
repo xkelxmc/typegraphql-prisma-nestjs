@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateCategoryArgs } from "./args/AggregateCategoryArgs";
 import { Category } from "../../../models/Category";
 import { AggregateCategory } from "../../outputs/AggregateCategory";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Category)
+@Resolver(_of => Category)
 export class AggregateCategoryResolver {
-  @TypeGraphQL.Query(_returns => AggregateCategory, {
+  @Query(_returns => AggregateCategory, {
     nullable: false
   })
-  async aggregateCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateCategoryArgs) args: AggregateCategoryArgs): Promise<AggregateCategory> {
+  async aggregateCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateCategoryArgs) args: AggregateCategoryArgs): Promise<AggregateCategory> {
     return getPrismaFromContext(ctx).category.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Category', 'category', 'aggregate'),
     });
   }
 }

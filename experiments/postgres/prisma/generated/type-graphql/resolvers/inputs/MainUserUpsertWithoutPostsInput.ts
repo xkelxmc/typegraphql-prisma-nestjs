@@ -1,24 +1,24 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MainUserCreateWithoutPostsInput } from "../inputs/MainUserCreateWithoutPostsInput";
 import { MainUserUpdateWithoutPostsInput } from "../inputs/MainUserUpdateWithoutPostsInput";
 import { MainUserWhereInput } from "../inputs/MainUserWhereInput";
 
-@TypeGraphQL.InputType("MainUserUpsertWithoutPostsInput", {})
+@InputType("MainUserUpsertWithoutPostsInput", {})
 export class MainUserUpsertWithoutPostsInput {
-  @TypeGraphQL.Field(_type => MainUserUpdateWithoutPostsInput, {
+  @Field(_type => MainUserUpdateWithoutPostsInput, {
     nullable: false
   })
   update!: MainUserUpdateWithoutPostsInput;
 
-  @TypeGraphQL.Field(_type => MainUserCreateWithoutPostsInput, {
+  @Field(_type => MainUserCreateWithoutPostsInput, {
     nullable: false
   })
   create!: MainUserCreateWithoutPostsInput;
 
-  @TypeGraphQL.Field(_type => MainUserWhereInput, {
+  @Field(_type => MainUserWhereInput, {
     nullable: true
   })
   where?: MainUserWhereInput | undefined;

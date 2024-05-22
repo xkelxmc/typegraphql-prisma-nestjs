@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MovieScalarWhereInput } from "../inputs/MovieScalarWhereInput";
 import { MovieUpdateManyMutationInput } from "../inputs/MovieUpdateManyMutationInput";
 
-@TypeGraphQL.InputType("MovieUpdateManyWithWhereWithoutDirectorInput", {})
+@InputType("MovieUpdateManyWithWhereWithoutDirectorInput", {})
 export class MovieUpdateManyWithWhereWithoutDirectorInput {
-  @TypeGraphQL.Field(_type => MovieScalarWhereInput, {
+  @Field(_type => MovieScalarWhereInput, {
     nullable: false
   })
   where!: MovieScalarWhereInput;
 
-  @TypeGraphQL.Field(_type => MovieUpdateManyMutationInput, {
+  @Field(_type => MovieUpdateManyMutationInput, {
     nullable: false
   })
   data!: MovieUpdateManyMutationInput;

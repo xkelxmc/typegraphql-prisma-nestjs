@@ -20,6 +20,7 @@ import { modelsFolderName } from "./config";
 import { DMMF } from "./dmmf/types";
 import { DmmfDocument } from "./dmmf/dmmf-document";
 import { convertNewLines } from "./helpers";
+import { GeneratorOptions } from "./options";
 
 export default function generateObjectTypeClassFromModel(
   project: Project,
@@ -27,6 +28,7 @@ export default function generateObjectTypeClassFromModel(
   model: DMMF.Model,
   modelOutputType: DMMF.OutputType,
   dmmfDocument: DmmfDocument,
+  options: GeneratorOptions,
 ) {
   const dirPath = path.resolve(baseDirPath, modelsFolderName);
   const filePath = path.resolve(dirPath, `${model.typeName}.ts`);
@@ -37,7 +39,11 @@ export default function generateObjectTypeClassFromModel(
   generateTypeGraphQLImport(sourceFile);
   generateGraphQLScalarsImport(sourceFile);
   generatePrismaNamespaceImport(sourceFile, dmmfDocument.options, 1);
-  generateCustomScalarsImport(sourceFile, 1);
+  if (options.globalOutput) {
+    generateCustomScalarsImport(sourceFile, 2, true);
+  } else {
+    generateCustomScalarsImport(sourceFile, 1);
+  }
   generateModelsImports(
     sourceFile,
     model.fields

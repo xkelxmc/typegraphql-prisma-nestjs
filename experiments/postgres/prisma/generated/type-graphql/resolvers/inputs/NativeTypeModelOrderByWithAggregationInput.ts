@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { NativeTypeModelAvgOrderByAggregateInput } from "../inputs/NativeTypeModelAvgOrderByAggregateInput";
 import { NativeTypeModelCountOrderByAggregateInput } from "../inputs/NativeTypeModelCountOrderByAggregateInput";
 import { NativeTypeModelMaxOrderByAggregateInput } from "../inputs/NativeTypeModelMaxOrderByAggregateInput";
@@ -10,49 +10,49 @@ import { NativeTypeModelSumOrderByAggregateInput } from "../inputs/NativeTypeMod
 import { SortOrderInput } from "../inputs/SortOrderInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("NativeTypeModelOrderByWithAggregationInput", {})
+@InputType("NativeTypeModelOrderByWithAggregationInput", {})
 export class NativeTypeModelOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   bigInt?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   byteA?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   decimal?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelCountOrderByAggregateInput, {
+  @Field(_type => NativeTypeModelCountOrderByAggregateInput, {
     nullable: true
   })
   _count?: NativeTypeModelCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelAvgOrderByAggregateInput, {
+  @Field(_type => NativeTypeModelAvgOrderByAggregateInput, {
     nullable: true
   })
   _avg?: NativeTypeModelAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelMaxOrderByAggregateInput, {
+  @Field(_type => NativeTypeModelMaxOrderByAggregateInput, {
     nullable: true
   })
   _max?: NativeTypeModelMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelMinOrderByAggregateInput, {
+  @Field(_type => NativeTypeModelMinOrderByAggregateInput, {
     nullable: true
   })
   _min?: NativeTypeModelMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelSumOrderByAggregateInput, {
+  @Field(_type => NativeTypeModelSumOrderByAggregateInput, {
     nullable: true
   })
   _sum?: NativeTypeModelSumOrderByAggregateInput | undefined;

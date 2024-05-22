@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 
 export enum TransactionIsolationLevel {
   ReadUncommitted = "ReadUncommitted",
@@ -6,7 +6,7 @@ export enum TransactionIsolationLevel {
   RepeatableRead = "RepeatableRead",
   Serializable = "Serializable"
 }
-TypeGraphQL.registerEnumType(TransactionIsolationLevel, {
+registerEnumType(TransactionIsolationLevel, {
   name: "TransactionIsolationLevel",
   description: undefined,
 });

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateCreatorArgs } from "./args/AggregateCreatorArgs";
 import { CreateManyCreatorArgs } from "./args/CreateManyCreatorArgs";
@@ -14,166 +14,166 @@ import { GroupByCreatorArgs } from "./args/GroupByCreatorArgs";
 import { UpdateManyCreatorArgs } from "./args/UpdateManyCreatorArgs";
 import { UpdateOneCreatorArgs } from "./args/UpdateOneCreatorArgs";
 import { UpsertOneCreatorArgs } from "./args/UpsertOneCreatorArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 import { Creator } from "../../../models/Creator";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateCreator } from "../../outputs/AggregateCreator";
 import { CreatorGroupBy } from "../../outputs/CreatorGroupBy";
 
-@TypeGraphQL.Resolver(_of => Creator)
+@Resolver(_of => Creator)
 export class CreatorCrudResolver {
-  @TypeGraphQL.Query(_returns => AggregateCreator, {
+  @Query(_returns => AggregateCreator, {
     nullable: false
   })
-  async aggregateCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateCreatorArgs) args: AggregateCreatorArgs): Promise<AggregateCreator> {
+  async aggregateCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateCreatorArgs) args: AggregateCreatorArgs): Promise<AggregateCreator> {
     return getPrismaFromContext(ctx).creator.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'aggregate'),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateManyCreatorArgs) args: CreateManyCreatorArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateManyCreatorArgs) args: CreateManyCreatorArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'createMany');
     return getPrismaFromContext(ctx).creator.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'createMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Creator, {
+  @Mutation(_returns => Creator, {
     nullable: false
   })
-  async createOneCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOneCreatorArgs) args: CreateOneCreatorArgs): Promise<Creator> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOneCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOneCreatorArgs) args: CreateOneCreatorArgs): Promise<Creator> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'create');
     return getPrismaFromContext(ctx).creator.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'create')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteManyCreatorArgs) args: DeleteManyCreatorArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteManyCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteManyCreatorArgs) args: DeleteManyCreatorArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'deleteMany');
     return getPrismaFromContext(ctx).creator.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'deleteMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'deleteMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Creator, {
+  @Mutation(_returns => Creator, {
     nullable: true
   })
-  async deleteOneCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneCreatorArgs) args: DeleteOneCreatorArgs): Promise<Creator | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOneCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOneCreatorArgs) args: DeleteOneCreatorArgs): Promise<Creator | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'delete');
     return getPrismaFromContext(ctx).creator.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'delete')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Creator, {
+  @Query(_returns => Creator, {
     nullable: true
   })
-  async findFirstCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstCreatorArgs) args: FindFirstCreatorArgs): Promise<Creator | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstCreatorArgs) args: FindFirstCreatorArgs): Promise<Creator | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'findFirst');
     return getPrismaFromContext(ctx).creator.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'findFirst')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Creator, {
+  @Query(_returns => Creator, {
     nullable: true
   })
-  async findFirstCreatorOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstCreatorOrThrowArgs) args: FindFirstCreatorOrThrowArgs): Promise<Creator | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstCreatorOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstCreatorOrThrowArgs) args: FindFirstCreatorOrThrowArgs): Promise<Creator | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).creator.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'findFirstOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [Creator], {
+  @Query(_returns => [Creator], {
     nullable: false
   })
-  async creators(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyCreatorArgs) args: FindManyCreatorArgs): Promise<Creator[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async creators(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyCreatorArgs) args: FindManyCreatorArgs): Promise<Creator[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'findMany');
     return getPrismaFromContext(ctx).creator.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'findMany')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Creator, {
+  @Query(_returns => Creator, {
     nullable: true
   })
-  async creator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueCreatorArgs) args: FindUniqueCreatorArgs): Promise<Creator | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async creator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueCreatorArgs) args: FindUniqueCreatorArgs): Promise<Creator | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'findUnique');
     return getPrismaFromContext(ctx).creator.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'findUnique')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Creator, {
+  @Query(_returns => Creator, {
     nullable: true
   })
-  async getCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueCreatorOrThrowArgs) args: FindUniqueCreatorOrThrowArgs): Promise<Creator | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueCreatorOrThrowArgs) args: FindUniqueCreatorOrThrowArgs): Promise<Creator | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).creator.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'findUniqueOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [CreatorGroupBy], {
+  @Query(_returns => [CreatorGroupBy], {
     nullable: false
   })
-  async groupByCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByCreatorArgs) args: GroupByCreatorArgs): Promise<CreatorGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByCreatorArgs) args: GroupByCreatorArgs): Promise<CreatorGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'groupBy');
     return getPrismaFromContext(ctx).creator.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'groupBy')),
       ...Object.fromEntries(
         Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async updateManyCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateManyCreatorArgs) args: UpdateManyCreatorArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateManyCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateManyCreatorArgs) args: UpdateManyCreatorArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'updateMany');
     return getPrismaFromContext(ctx).creator.updateMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'updateMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'updateMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Creator, {
+  @Mutation(_returns => Creator, {
     nullable: true
   })
-  async updateOneCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneCreatorArgs) args: UpdateOneCreatorArgs): Promise<Creator | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOneCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOneCreatorArgs) args: UpdateOneCreatorArgs): Promise<Creator | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'update');
     return getPrismaFromContext(ctx).creator.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'update')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Creator, {
+  @Mutation(_returns => Creator, {
     nullable: false
   })
-  async upsertOneCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOneCreatorArgs) args: UpsertOneCreatorArgs): Promise<Creator> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async upsertOneCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpsertOneCreatorArgs) args: UpsertOneCreatorArgs): Promise<Creator> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'upsert');
     return getPrismaFromContext(ctx).creator.upsert({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'upsert')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'upsert')),
     });
   }
 }

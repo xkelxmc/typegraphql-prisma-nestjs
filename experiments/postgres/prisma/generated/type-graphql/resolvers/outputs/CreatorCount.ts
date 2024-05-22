@@ -1,28 +1,17 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { CreatorCountLikesArgs } from "./args/CreatorCountLikesArgs";
-import { CreatorCountProblemsArgs } from "./args/CreatorCountProblemsArgs";
+import { DecimalJSScalar } from "../../../global/scalars";
 
-@TypeGraphQL.ObjectType("CreatorCount", {})
+@ObjectType("CreatorCount", {})
 export class CreatorCount {
+  @Field(_type => Int, {
+    nullable: false
+  })
   likes!: number;
+
+  @Field(_type => Int, {
+    nullable: false
+  })
   problems!: number;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    name: "likes",
-    nullable: false
-  })
-  getLikes(@TypeGraphQL.Root() root: CreatorCount, @TypeGraphQL.Args() args: CreatorCountLikesArgs): number {
-    return root.likes;
-  }
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    name: "problems",
-    nullable: false
-  })
-  getProblems(@TypeGraphQL.Root() root: CreatorCount, @TypeGraphQL.Args() args: CreatorCountProblemsArgs): number {
-    return root.problems;
-  }
 }

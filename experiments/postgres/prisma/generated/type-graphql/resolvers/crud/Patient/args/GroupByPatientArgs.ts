@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { PatientOrderByWithAggregationInput } from "../../../inputs/PatientOrderByWithAggregationInput";
 import { PatientScalarWhereWithAggregatesInput } from "../../../inputs/PatientScalarWhereWithAggregatesInput";
 import { PatientWhereInput } from "../../../inputs/PatientWhereInput";
 import { PatientScalarFieldEnum } from "../../../../enums/PatientScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByPatientArgs {
-  @TypeGraphQL.Field(_type => PatientWhereInput, {
+  @Field(_type => PatientWhereInput, {
     nullable: true
   })
   where?: PatientWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PatientOrderByWithAggregationInput], {
+  @Field(_type => [PatientOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: PatientOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PatientScalarFieldEnum], {
+  @Field(_type => [PatientScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"firstName" | "lastName" | "email">;
 
-  @TypeGraphQL.Field(_type => PatientScalarWhereWithAggregatesInput, {
+  @Field(_type => PatientScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: PatientScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

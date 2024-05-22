@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostUpdateWithoutEditorInput } from "../inputs/PostUpdateWithoutEditorInput";
 import { PostWhereUniqueInput } from "../inputs/PostWhereUniqueInput";
 
-@TypeGraphQL.InputType("PostUpdateWithWhereUniqueWithoutEditorInput", {})
+@InputType("PostUpdateWithWhereUniqueWithoutEditorInput", {})
 export class PostUpdateWithWhereUniqueWithoutEditorInput {
-  @TypeGraphQL.Field(_type => PostWhereUniqueInput, {
+  @Field(_type => PostWhereUniqueInput, {
     nullable: false
   })
   where!: PostWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => PostUpdateWithoutEditorInput, {
+  @Field(_type => PostUpdateWithoutEditorInput, {
     nullable: false
   })
   data!: PostUpdateWithoutEditorInput;

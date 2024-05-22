@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { CreateOneMovieArgs } from "./args/CreateOneMovieArgs";
 import { Movie } from "../../../models/Movie";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Movie)
+@Resolver(_of => Movie)
 export class CreateOneMovieResolver {
-  @TypeGraphQL.Mutation(_returns => Movie, {
+  @Mutation(_returns => Movie, {
     nullable: false
   })
-  async createOneMovie(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOneMovieArgs) args: CreateOneMovieArgs): Promise<Movie> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOneMovie(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOneMovieArgs) args: CreateOneMovieArgs): Promise<Movie> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Movie', 'movie', 'create');
     return getPrismaFromContext(ctx).movie.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Movie', 'movie', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Movie', 'movie', 'create')),
     });
   }
 }

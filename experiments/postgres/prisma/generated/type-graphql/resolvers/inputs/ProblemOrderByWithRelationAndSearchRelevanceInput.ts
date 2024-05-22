@@ -1,41 +1,41 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorOrderByRelationAggregateInput } from "../inputs/CreatorOrderByRelationAggregateInput";
 import { CreatorOrderByWithRelationAndSearchRelevanceInput } from "../inputs/CreatorOrderByWithRelationAndSearchRelevanceInput";
 import { ProblemOrderByRelevanceInput } from "../inputs/ProblemOrderByRelevanceInput";
 import { SortOrderInput } from "../inputs/SortOrderInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("ProblemOrderByWithRelationAndSearchRelevanceInput", {})
+@InputType("ProblemOrderByWithRelationAndSearchRelevanceInput", {})
 export class ProblemOrderByWithRelationAndSearchRelevanceInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   problemText?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   creatorId?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorOrderByRelationAggregateInput, {
+  @Field(_type => CreatorOrderByRelationAggregateInput, {
     nullable: true
   })
   likedBy?: CreatorOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorOrderByWithRelationAndSearchRelevanceInput, {
+  @Field(_type => CreatorOrderByWithRelationAndSearchRelevanceInput, {
     nullable: true
   })
   creator?: CreatorOrderByWithRelationAndSearchRelevanceInput | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemOrderByRelevanceInput, {
+  @Field(_type => ProblemOrderByRelevanceInput, {
     nullable: true
   })
   _relevance?: ProblemOrderByRelevanceInput | undefined;

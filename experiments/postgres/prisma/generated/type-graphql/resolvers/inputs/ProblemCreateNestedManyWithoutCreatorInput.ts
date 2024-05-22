@@ -1,30 +1,30 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { ProblemCreateManyCreatorInputEnvelope } from "../inputs/ProblemCreateManyCreatorInputEnvelope";
 import { ProblemCreateOrConnectWithoutCreatorInput } from "../inputs/ProblemCreateOrConnectWithoutCreatorInput";
 import { ProblemCreateWithoutCreatorInput } from "../inputs/ProblemCreateWithoutCreatorInput";
 import { ProblemWhereUniqueInput } from "../inputs/ProblemWhereUniqueInput";
 
-@TypeGraphQL.InputType("ProblemCreateNestedManyWithoutCreatorInput", {})
+@InputType("ProblemCreateNestedManyWithoutCreatorInput", {})
 export class ProblemCreateNestedManyWithoutCreatorInput {
-  @TypeGraphQL.Field(_type => [ProblemCreateWithoutCreatorInput], {
+  @Field(_type => [ProblemCreateWithoutCreatorInput], {
     nullable: true
   })
   create?: ProblemCreateWithoutCreatorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemCreateOrConnectWithoutCreatorInput], {
+  @Field(_type => [ProblemCreateOrConnectWithoutCreatorInput], {
     nullable: true
   })
   connectOrCreate?: ProblemCreateOrConnectWithoutCreatorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemCreateManyCreatorInputEnvelope, {
+  @Field(_type => ProblemCreateManyCreatorInputEnvelope, {
     nullable: true
   })
   createMany?: ProblemCreateManyCreatorInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereUniqueInput], {
+  @Field(_type => [ProblemWhereUniqueInput], {
     nullable: true
   })
   connect?: ProblemWhereUniqueInput[] | undefined;

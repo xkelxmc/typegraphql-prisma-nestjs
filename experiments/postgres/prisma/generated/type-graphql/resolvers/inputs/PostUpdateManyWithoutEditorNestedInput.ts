@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostCreateManyEditorInputEnvelope } from "../inputs/PostCreateManyEditorInputEnvelope";
 import { PostCreateOrConnectWithoutEditorInput } from "../inputs/PostCreateOrConnectWithoutEditorInput";
 import { PostCreateWithoutEditorInput } from "../inputs/PostCreateWithoutEditorInput";
@@ -11,59 +11,59 @@ import { PostUpdateWithWhereUniqueWithoutEditorInput } from "../inputs/PostUpdat
 import { PostUpsertWithWhereUniqueWithoutEditorInput } from "../inputs/PostUpsertWithWhereUniqueWithoutEditorInput";
 import { PostWhereUniqueInput } from "../inputs/PostWhereUniqueInput";
 
-@TypeGraphQL.InputType("PostUpdateManyWithoutEditorNestedInput", {})
+@InputType("PostUpdateManyWithoutEditorNestedInput", {})
 export class PostUpdateManyWithoutEditorNestedInput {
-  @TypeGraphQL.Field(_type => [PostCreateWithoutEditorInput], {
+  @Field(_type => [PostCreateWithoutEditorInput], {
     nullable: true
   })
   create?: PostCreateWithoutEditorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostCreateOrConnectWithoutEditorInput], {
+  @Field(_type => [PostCreateOrConnectWithoutEditorInput], {
     nullable: true
   })
   connectOrCreate?: PostCreateOrConnectWithoutEditorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostUpsertWithWhereUniqueWithoutEditorInput], {
+  @Field(_type => [PostUpsertWithWhereUniqueWithoutEditorInput], {
     nullable: true
   })
   upsert?: PostUpsertWithWhereUniqueWithoutEditorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PostCreateManyEditorInputEnvelope, {
+  @Field(_type => PostCreateManyEditorInputEnvelope, {
     nullable: true
   })
   createMany?: PostCreateManyEditorInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   set?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   disconnect?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   delete?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   connect?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostUpdateWithWhereUniqueWithoutEditorInput], {
+  @Field(_type => [PostUpdateWithWhereUniqueWithoutEditorInput], {
     nullable: true
   })
   update?: PostUpdateWithWhereUniqueWithoutEditorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostUpdateManyWithWhereWithoutEditorInput], {
+  @Field(_type => [PostUpdateManyWithWhereWithoutEditorInput], {
     nullable: true
   })
   updateMany?: PostUpdateManyWithWhereWithoutEditorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @Field(_type => [PostScalarWhereInput], {
     nullable: true
   })
   deleteMany?: PostScalarWhereInput[] | undefined;

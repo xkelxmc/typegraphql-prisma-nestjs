@@ -42,7 +42,7 @@ export function transformSchema(
 }
 
 export function transformMappings(
-  mapping: PrismaDMMF.ModelMapping[],
+  mapping: readonly PrismaDMMF.ModelMapping[],
   dmmfDocument: DmmfDocument,
   options: GeneratorOptions,
 ): DMMF.ModelMapping[] {
@@ -59,6 +59,9 @@ export function transformBareModel(model: PrismaDMMF.Model): DMMF.Model {
   }>(model.documentation, "omit", "model");
   return {
     ...model,
+    uniqueFields: model.uniqueFields as string[][],
+    uniqueIndexes: model.uniqueIndexes as DMMF.UniqueIndex[],
+    primaryKey: model.primaryKey as DMMF.PrimaryKey,
     typeName: attributeArgs.name ?? pascalCase(model.name),
     fields: [],
     docs: cleanDocsString(model.documentation),
@@ -92,8 +95,8 @@ function transformModelField(dmmfDocument: DmmfDocument) {
       field.kind === "enum"
         ? "enumTypes"
         : field.kind === "object"
-        ? "outputObjectTypes"
-        : "scalar";
+          ? "outputObjectTypes"
+          : "scalar";
     if (typeof field.type !== "string") {
       throw new Error(
         `[Internal Generator Error] Unexpected 'field.type' value: "${field.type}""`,
@@ -129,6 +132,9 @@ function transformModelField(dmmfDocument: DmmfDocument) {
     }>(field.documentation, "optional", "field");
     return {
       ...field,
+      relationToFields: field.relationToFields as any[] | undefined,
+      relationFromFields: field.relationFromFields as string[] | undefined,
+      default: field.default as DMMF.DeepWriteable<typeof field.default>,
       type: field.type, // TS type check limitation
       location,
       typeFieldAlias: attributeArgs.name,
@@ -174,9 +180,24 @@ function transformInputType(dmmfDocument: DmmfDocument) {
     const modelType = modelName
       ? dmmfDocument.datamodel.models.find(it => it.name === modelName)
       : undefined;
+    const isWithEnumType = dmmfDocument
+      .getEnumNames()
+      .find(name => inputType.name.includes(name));
+    const isGlobalModalType = dmmfDocument
+      .getAllModelNames()
+      .find(name => inputType.name.includes(name));
+
+    const isPrismaGlobalType = Boolean(
+      !modelType &&
+        modelName &&
+        !dmmfDocument.isModelTypeName(modelName) &&
+        !isGlobalModalType &&
+        !isWithEnumType,
+    );
     return {
       ...inputType,
       typeName: getInputTypeName(inputType.name, dmmfDocument),
+      isPrismaGlobalType,
       fields: inputType.fields
         .filter(field => field.deprecation === undefined)
         .map<DMMF.SchemaArg>(field => {
@@ -185,8 +206,11 @@ function transformInputType(dmmfDocument: DmmfDocument) {
           );
           const typeName = modelField?.typeFieldAlias ?? field.name;
           const selectedInputType = selectInputTypeFromTypes(dmmfDocument)(
-            field.inputTypes,
+            field.inputTypes as PrismaDMMF.InputTypeRef[],
           );
+
+          const isGlobalInputType =
+            selectIsGlobalInputTypeFromTypes(dmmfDocument)(selectedInputType);
           const typeGraphQLType = getTypeGraphQLType(
             selectedInputType,
             dmmfDocument,
@@ -200,34 +224,44 @@ function transformInputType(dmmfDocument: DmmfDocument) {
           const isOptional = !modelField?.isOptional.input
             ? false
             : typeof modelField.isOptional.input === "boolean"
-            ? modelField.isOptional.input
-            : (modelField.isOptional.input.includes(InputOmitSetting.Create) &&
-                inputType.name.includes("Create")) ||
-              (modelField.isOptional.input.includes(InputOmitSetting.Update) &&
-                inputType.name.includes("Update")) ||
-              (modelField.isOptional.input.includes(InputOmitSetting.Where) &&
-                inputType.name.includes("Where")) ||
-              (modelField.isOptional.input.includes(InputOmitSetting.OrderBy) &&
-                inputType.name.includes("OrderBy"));
+              ? modelField.isOptional.input
+              : (modelField.isOptional.input.includes(
+                  InputOmitSetting.Create,
+                ) &&
+                  inputType.name.includes("Create")) ||
+                (modelField.isOptional.input.includes(
+                  InputOmitSetting.Update,
+                ) &&
+                  inputType.name.includes("Update")) ||
+                (modelField.isOptional.input.includes(InputOmitSetting.Where) &&
+                  inputType.name.includes("Where")) ||
+                (modelField.isOptional.input.includes(
+                  InputOmitSetting.OrderBy,
+                ) &&
+                  inputType.name.includes("OrderBy"));
 
           const isOmitted = !modelField?.isOmitted.input
             ? false
             : typeof modelField.isOmitted.input === "boolean"
-            ? modelField.isOmitted.input
-            : (modelField.isOmitted.input.includes(InputOmitSetting.Create) &&
-                inputType.name.includes("Create")) ||
-              (modelField.isOmitted.input.includes(InputOmitSetting.Update) &&
-                inputType.name.includes("Update")) ||
-              (modelField.isOmitted.input.includes(InputOmitSetting.Where) &&
-                inputType.name.includes("Where")) ||
-              (modelField.isOmitted.input.includes(InputOmitSetting.OrderBy) &&
-                inputType.name.includes("OrderBy"));
+              ? modelField.isOmitted.input
+              : (modelField.isOmitted.input.includes(InputOmitSetting.Create) &&
+                  inputType.name.includes("Create")) ||
+                (modelField.isOmitted.input.includes(InputOmitSetting.Update) &&
+                  inputType.name.includes("Update")) ||
+                (modelField.isOmitted.input.includes(InputOmitSetting.Where) &&
+                  inputType.name.includes("Where")) ||
+                (modelField.isOmitted.input.includes(
+                  InputOmitSetting.OrderBy,
+                ) &&
+                  inputType.name.includes("OrderBy"));
+
           return {
             ...field,
             selectedInputType,
             typeName,
             typeGraphQLType,
             fieldTSType,
+            isGlobalInputType,
             hasMappedName: field.name !== typeName,
             isOmitted,
             isOptional,
@@ -240,6 +274,10 @@ function transformInputType(dmmfDocument: DmmfDocument) {
 function transformOutputType(dmmfDocument: DmmfDocument) {
   return (outputType: PrismaDMMF.OutputType): DMMF.OutputType => {
     const typeName = getMappedOutputTypeName(dmmfDocument, outputType.name);
+    const modelName = outputType.name.replace("CountOutputType", "");
+    const isCountType =
+      outputType.name.endsWith("CountOutputType") &&
+      dmmfDocument.isModelTypeName(modelName);
     return {
       ...outputType,
       typeName,
@@ -254,6 +292,7 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
               dmmfDocument,
               field.outputType.type as string,
             ),
+            isCount: field.name === "_count" ? true : undefined,
           };
           const fieldTSType = getFieldTSType(
             dmmfDocument,
@@ -267,7 +306,7 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
           );
           const args = field.args.map<DMMF.SchemaArg>(arg => {
             const selectedInputType = selectInputTypeFromTypes(dmmfDocument)(
-              arg.inputTypes,
+              arg.inputTypes as PrismaDMMF.InputTypeRef[],
             );
             const typeGraphQLType = getTypeGraphQLType(
               selectedInputType,
@@ -303,8 +342,8 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
             outputType: outputTypeInfo,
             fieldTSType,
             typeGraphQLType,
-            args,
-            argsTypeName,
+            args: !isCountType ? args : [],
+            argsTypeName: !isCountType ? argsTypeName : undefined,
           };
         }),
     };
@@ -426,12 +465,34 @@ function transformMapping(
   };
 }
 
+function selectIsGlobalInputTypeFromTypes(dmmfDocument: DmmfDocument) {
+  return (inputType: DMMF.TypeInfo): boolean => {
+    const fieldTypeModelName = getModelNameFromInputType(inputType.type);
+    const modelType = fieldTypeModelName
+      ? dmmfDocument.datamodel.models.find(it => it.name === fieldTypeModelName)
+      : undefined;
+
+    const isWithEnumType = dmmfDocument
+      .getEnumNames()
+      .find(name => inputType.type.includes(name));
+    const isGlobalModalType = dmmfDocument
+      .getAllModelNames()
+      .find(name => inputType.type.includes(name));
+
+    return Boolean(
+      !modelType &&
+        fieldTypeModelName &&
+        !dmmfDocument.isModelTypeName(fieldTypeModelName) &&
+        !isGlobalModalType &&
+        !isWithEnumType,
+    );
+  };
+}
+
 function selectInputTypeFromTypes(dmmfDocument: DmmfDocument) {
-  return (
-    inputTypes: PrismaDMMF.SchemaArgInputType[],
-  ): DMMF.SchemaArgInputType => {
+  return (inputTypes: PrismaDMMF.InputTypeRef[]): DMMF.SchemaArgInputType => {
     const { useUncheckedScalarInputs, useSimpleInputs } = dmmfDocument.options;
-    let possibleInputTypes: PrismaDMMF.SchemaArgInputType[];
+    let possibleInputTypes: PrismaDMMF.InputTypeRef[];
     possibleInputTypes = inputTypes.filter(
       it =>
         it.location === "inputObjectTypes" &&

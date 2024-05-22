@@ -1,21 +1,21 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { GroupByCategoryArgs } from "./args/GroupByCategoryArgs";
 import { Category } from "../../../models/Category";
 import { CategoryGroupBy } from "../../outputs/CategoryGroupBy";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Category)
+@Resolver(_of => Category)
 export class GroupByCategoryResolver {
-  @TypeGraphQL.Query(_returns => [CategoryGroupBy], {
+  @Query(_returns => [CategoryGroupBy], {
     nullable: false
   })
-  async groupByCategory(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByCategoryArgs) args: GroupByCategoryArgs): Promise<CategoryGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByCategory(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByCategoryArgs) args: GroupByCategoryArgs): Promise<CategoryGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'groupBy');
     return getPrismaFromContext(ctx).category.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'groupBy')),
       ...Object.fromEntries(
-        Object.entries({ count, avg, sum, min, max }).filter(([_, v]) => v != null)
+        Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }

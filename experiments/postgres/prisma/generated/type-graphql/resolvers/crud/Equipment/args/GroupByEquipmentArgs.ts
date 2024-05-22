@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { EquipmentOrderByWithAggregationInput } from "../../../inputs/EquipmentOrderByWithAggregationInput";
 import { EquipmentScalarWhereWithAggregatesInput } from "../../../inputs/EquipmentScalarWhereWithAggregatesInput";
 import { EquipmentWhereInput } from "../../../inputs/EquipmentWhereInput";
 import { EquipmentScalarFieldEnum } from "../../../../enums/EquipmentScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByEquipmentArgs {
-  @TypeGraphQL.Field(_type => EquipmentWhereInput, {
+  @Field(_type => EquipmentWhereInput, {
     nullable: true
   })
   where?: EquipmentWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [EquipmentOrderByWithAggregationInput], {
+  @Field(_type => [EquipmentOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: EquipmentOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [EquipmentScalarFieldEnum], {
+  @Field(_type => [EquipmentScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"id" | "name">;
 
-  @TypeGraphQL.Field(_type => EquipmentScalarWhereWithAggregatesInput, {
+  @Field(_type => EquipmentScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: EquipmentScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

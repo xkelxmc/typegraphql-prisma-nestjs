@@ -1,24 +1,24 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { EquipmentOrderByRelevanceInput } from "../inputs/EquipmentOrderByRelevanceInput";
 import { SortOrderInput } from "../inputs/SortOrderInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("EquipmentOrderByWithRelationAndSearchRelevanceInput", {})
+@InputType("EquipmentOrderByWithRelationAndSearchRelevanceInput", {})
 export class EquipmentOrderByWithRelationAndSearchRelevanceInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   name?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => EquipmentOrderByRelevanceInput, {
+  @Field(_type => EquipmentOrderByRelevanceInput, {
     nullable: true
   })
   _relevance?: EquipmentOrderByRelevanceInput | undefined;

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
@@ -7,44 +7,44 @@ import { PostMaxOrderByAggregateInput } from "../inputs/PostMaxOrderByAggregateI
 import { PostMinOrderByAggregateInput } from "../inputs/PostMinOrderByAggregateInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("PostOrderByWithAggregationInput", {})
+@InputType("PostOrderByWithAggregationInput", {})
 export class PostOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   title?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   body?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   authorId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => PostCountOrderByAggregateInput, {
+  @Field(_type => PostCountOrderByAggregateInput, {
     nullable: true
   })
   _count?: PostCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostMaxOrderByAggregateInput, {
+  @Field(_type => PostMaxOrderByAggregateInput, {
     nullable: true
   })
   _max?: PostMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostMinOrderByAggregateInput, {
+  @Field(_type => PostMinOrderByAggregateInput, {
     nullable: true
   })
   _min?: PostMinOrderByAggregateInput | undefined;

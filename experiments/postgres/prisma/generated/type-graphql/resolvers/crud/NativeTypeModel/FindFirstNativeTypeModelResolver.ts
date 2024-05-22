@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindFirstNativeTypeModelArgs } from "./args/FindFirstNativeTypeModelArgs";
 import { NativeTypeModel } from "../../../models/NativeTypeModel";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => NativeTypeModel)
+@Resolver(_of => NativeTypeModel)
 export class FindFirstNativeTypeModelResolver {
-  @TypeGraphQL.Query(_returns => NativeTypeModel, {
+  @Query(_returns => NativeTypeModel, {
     nullable: true
   })
-  async findFirstNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstNativeTypeModelArgs) args: FindFirstNativeTypeModelArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstNativeTypeModelArgs) args: FindFirstNativeTypeModelArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'findFirst');
     return getPrismaFromContext(ctx).nativeTypeModel.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'findFirst')),
     });
   }
 }

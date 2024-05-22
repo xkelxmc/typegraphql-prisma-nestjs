@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { EquipmentOrderByWithRelationAndSearchRelevanceInput } from "../../../inputs/EquipmentOrderByWithRelationAndSearchRelevanceInput";
 import { EquipmentWhereInput } from "../../../inputs/EquipmentWhereInput";
 import { EquipmentWhereUniqueInput } from "../../../inputs/EquipmentWhereUniqueInput";
 import { EquipmentScalarFieldEnum } from "../../../../enums/EquipmentScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class FindFirstEquipmentArgs {
-  @TypeGraphQL.Field(_type => EquipmentWhereInput, {
+  @Field(_type => EquipmentWhereInput, {
     nullable: true
   })
   where?: EquipmentWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [EquipmentOrderByWithRelationAndSearchRelevanceInput], {
+  @Field(_type => [EquipmentOrderByWithRelationAndSearchRelevanceInput], {
     nullable: true
   })
   orderBy?: EquipmentOrderByWithRelationAndSearchRelevanceInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => EquipmentWhereUniqueInput, {
+  @Field(_type => EquipmentWhereUniqueInput, {
     nullable: true
   })
   cursor?: EquipmentWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [EquipmentScalarFieldEnum], {
+  @Field(_type => [EquipmentScalarFieldEnum], {
     nullable: true
   })
   distinct?: Array<"id" | "name"> | undefined;

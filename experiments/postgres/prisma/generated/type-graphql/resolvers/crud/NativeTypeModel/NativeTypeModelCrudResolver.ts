@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateNativeTypeModelArgs } from "./args/AggregateNativeTypeModelArgs";
 import { CreateManyNativeTypeModelArgs } from "./args/CreateManyNativeTypeModelArgs";
@@ -14,166 +14,166 @@ import { GroupByNativeTypeModelArgs } from "./args/GroupByNativeTypeModelArgs";
 import { UpdateManyNativeTypeModelArgs } from "./args/UpdateManyNativeTypeModelArgs";
 import { UpdateOneNativeTypeModelArgs } from "./args/UpdateOneNativeTypeModelArgs";
 import { UpsertOneNativeTypeModelArgs } from "./args/UpsertOneNativeTypeModelArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 import { NativeTypeModel } from "../../../models/NativeTypeModel";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateNativeTypeModel } from "../../outputs/AggregateNativeTypeModel";
 import { NativeTypeModelGroupBy } from "../../outputs/NativeTypeModelGroupBy";
 
-@TypeGraphQL.Resolver(_of => NativeTypeModel)
+@Resolver(_of => NativeTypeModel)
 export class NativeTypeModelCrudResolver {
-  @TypeGraphQL.Query(_returns => AggregateNativeTypeModel, {
+  @Query(_returns => AggregateNativeTypeModel, {
     nullable: false
   })
-  async aggregateNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateNativeTypeModelArgs) args: AggregateNativeTypeModelArgs): Promise<AggregateNativeTypeModel> {
+  async aggregateNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateNativeTypeModelArgs) args: AggregateNativeTypeModelArgs): Promise<AggregateNativeTypeModel> {
     return getPrismaFromContext(ctx).nativeTypeModel.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'aggregate'),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateManyNativeTypeModelArgs) args: CreateManyNativeTypeModelArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateManyNativeTypeModelArgs) args: CreateManyNativeTypeModelArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'createMany');
     return getPrismaFromContext(ctx).nativeTypeModel.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'createMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => NativeTypeModel, {
+  @Mutation(_returns => NativeTypeModel, {
     nullable: false
   })
-  async createOneNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOneNativeTypeModelArgs) args: CreateOneNativeTypeModelArgs): Promise<NativeTypeModel> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOneNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOneNativeTypeModelArgs) args: CreateOneNativeTypeModelArgs): Promise<NativeTypeModel> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'create');
     return getPrismaFromContext(ctx).nativeTypeModel.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'create')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteManyNativeTypeModelArgs) args: DeleteManyNativeTypeModelArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteManyNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteManyNativeTypeModelArgs) args: DeleteManyNativeTypeModelArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'deleteMany');
     return getPrismaFromContext(ctx).nativeTypeModel.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'deleteMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'deleteMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => NativeTypeModel, {
+  @Mutation(_returns => NativeTypeModel, {
     nullable: true
   })
-  async deleteOneNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneNativeTypeModelArgs) args: DeleteOneNativeTypeModelArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOneNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOneNativeTypeModelArgs) args: DeleteOneNativeTypeModelArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'delete');
     return getPrismaFromContext(ctx).nativeTypeModel.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'delete')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => NativeTypeModel, {
+  @Query(_returns => NativeTypeModel, {
     nullable: true
   })
-  async findFirstNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstNativeTypeModelArgs) args: FindFirstNativeTypeModelArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstNativeTypeModelArgs) args: FindFirstNativeTypeModelArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'findFirst');
     return getPrismaFromContext(ctx).nativeTypeModel.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'findFirst')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => NativeTypeModel, {
+  @Query(_returns => NativeTypeModel, {
     nullable: true
   })
-  async findFirstNativeTypeModelOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstNativeTypeModelOrThrowArgs) args: FindFirstNativeTypeModelOrThrowArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstNativeTypeModelOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstNativeTypeModelOrThrowArgs) args: FindFirstNativeTypeModelOrThrowArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).nativeTypeModel.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'findFirstOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [NativeTypeModel], {
+  @Query(_returns => [NativeTypeModel], {
     nullable: false
   })
-  async nativeTypeModels(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyNativeTypeModelArgs) args: FindManyNativeTypeModelArgs): Promise<NativeTypeModel[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async nativeTypeModels(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyNativeTypeModelArgs) args: FindManyNativeTypeModelArgs): Promise<NativeTypeModel[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'findMany');
     return getPrismaFromContext(ctx).nativeTypeModel.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'findMany')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => NativeTypeModel, {
+  @Query(_returns => NativeTypeModel, {
     nullable: true
   })
-  async nativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueNativeTypeModelArgs) args: FindUniqueNativeTypeModelArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async nativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueNativeTypeModelArgs) args: FindUniqueNativeTypeModelArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'findUnique');
     return getPrismaFromContext(ctx).nativeTypeModel.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'findUnique')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => NativeTypeModel, {
+  @Query(_returns => NativeTypeModel, {
     nullable: true
   })
-  async getNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueNativeTypeModelOrThrowArgs) args: FindUniqueNativeTypeModelOrThrowArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueNativeTypeModelOrThrowArgs) args: FindUniqueNativeTypeModelOrThrowArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).nativeTypeModel.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'findUniqueOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [NativeTypeModelGroupBy], {
+  @Query(_returns => [NativeTypeModelGroupBy], {
     nullable: false
   })
-  async groupByNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByNativeTypeModelArgs) args: GroupByNativeTypeModelArgs): Promise<NativeTypeModelGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByNativeTypeModelArgs) args: GroupByNativeTypeModelArgs): Promise<NativeTypeModelGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'groupBy');
     return getPrismaFromContext(ctx).nativeTypeModel.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'groupBy')),
       ...Object.fromEntries(
         Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async updateManyNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateManyNativeTypeModelArgs) args: UpdateManyNativeTypeModelArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateManyNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateManyNativeTypeModelArgs) args: UpdateManyNativeTypeModelArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'updateMany');
     return getPrismaFromContext(ctx).nativeTypeModel.updateMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'updateMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'updateMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => NativeTypeModel, {
+  @Mutation(_returns => NativeTypeModel, {
     nullable: true
   })
-  async updateOneNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneNativeTypeModelArgs) args: UpdateOneNativeTypeModelArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOneNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOneNativeTypeModelArgs) args: UpdateOneNativeTypeModelArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'update');
     return getPrismaFromContext(ctx).nativeTypeModel.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'update')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => NativeTypeModel, {
+  @Mutation(_returns => NativeTypeModel, {
     nullable: false
   })
-  async upsertOneNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOneNativeTypeModelArgs) args: UpsertOneNativeTypeModelArgs): Promise<NativeTypeModel> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async upsertOneNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpsertOneNativeTypeModelArgs) args: UpsertOneNativeTypeModelArgs): Promise<NativeTypeModel> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'upsert');
     return getPrismaFromContext(ctx).nativeTypeModel.upsert({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'upsert')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'upsert')),
     });
   }
 }

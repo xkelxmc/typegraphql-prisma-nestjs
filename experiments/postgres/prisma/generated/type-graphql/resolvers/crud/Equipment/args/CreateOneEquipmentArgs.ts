@@ -1,10 +1,10 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { EquipmentCreateInput } from "../../../inputs/EquipmentCreateInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class CreateOneEquipmentArgs {
-  @TypeGraphQL.Field(_type => EquipmentCreateInput, {
+  @Field(_type => EquipmentCreateInput, {
     nullable: true
   })
   data?: EquipmentCreateInput | undefined;

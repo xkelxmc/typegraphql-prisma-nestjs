@@ -1,47 +1,47 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
-import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
+import { StringWithAggregatesFilter } from "../../../global/inputs/StringWithAggregatesFilter";
 
-@TypeGraphQL.InputType("PostScalarWhereWithAggregatesInput", {})
+@InputType("PostScalarWhereWithAggregatesInput", {})
 export class PostScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [PostScalarWhereWithAggregatesInput], {
+  @Field(_type => [PostScalarWhereWithAggregatesInput], {
     nullable: true
   })
   AND?: PostScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereWithAggregatesInput], {
+  @Field(_type => [PostScalarWhereWithAggregatesInput], {
     nullable: true
   })
   OR?: PostScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereWithAggregatesInput], {
+  @Field(_type => [PostScalarWhereWithAggregatesInput], {
     nullable: true
   })
   NOT?: PostScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   slug?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   title?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   body?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   authorId?: StringWithAggregatesFilter | undefined;

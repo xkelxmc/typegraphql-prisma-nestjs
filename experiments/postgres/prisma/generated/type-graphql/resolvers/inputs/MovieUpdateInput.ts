@@ -1,17 +1,17 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { DirectorUpdateOneRequiredWithoutMoviesNestedInput } from "../inputs/DirectorUpdateOneRequiredWithoutMoviesNestedInput";
 
-@TypeGraphQL.InputType("MovieUpdateInput", {})
+@InputType("MovieUpdateInput", {})
 export class MovieUpdateInput {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   title?: string | undefined;
 
-  @TypeGraphQL.Field(_type => DirectorUpdateOneRequiredWithoutMoviesNestedInput, {
+  @Field(_type => DirectorUpdateOneRequiredWithoutMoviesNestedInput, {
     nullable: true
   })
   director?: DirectorUpdateOneRequiredWithoutMoviesNestedInput | undefined;

@@ -1,6 +1,4 @@
-export { CreatorCountLikesArgs } from "./CreatorCountLikesArgs";
-export { CreatorCountProblemsArgs } from "./CreatorCountProblemsArgs";
-export { DirectorCountMoviesArgs } from "./DirectorCountMoviesArgs";
+export { CreateManyProblemAndReturnOutputTypeCreatorArgs } from "./CreateManyProblemAndReturnOutputTypeCreatorArgs";
+export { CreateManypostAndReturnOutputTypeEditorArgs } from "./CreateManypostAndReturnOutputTypeEditorArgs";
 export { MainUserCountEditorPostsArgs } from "./MainUserCountEditorPostsArgs";
 export { MainUserCountPostsArgs } from "./MainUserCountPostsArgs";
-export { ProblemCountLikedByArgs } from "./ProblemCountLikedByArgs";

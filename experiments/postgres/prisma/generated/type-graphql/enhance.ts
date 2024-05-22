@@ -560,7 +560,7 @@ function applyTypeClassEnhanceConfig<
   }
 }
 
-const modelsInfo = {
+export const modelsInfo = {
   MainUser: ["id", "email", "firstName", "age", "accountBalance", "amount", "role", "grades", "aliases"],
   Post: ["uuid", "createdAt", "updatedAt", "published", "title", "content", "authorId", "kind", "metadata"],
   Category: ["name", "slug", "number"],
@@ -681,7 +681,18 @@ const outputsInfo = {
   EquipmentMaxAggregate: ["id", "name"],
   HiddenCountAggregate: ["id", "name", "_all"],
   HiddenMinAggregate: ["id", "name"],
-  HiddenMaxAggregate: ["id", "name"]
+  HiddenMaxAggregate: ["id", "name"],
+  CreateManyUserAndReturnOutputType: ["id", "email", "name", "age", "balance", "amount", "role", "grades", "aliases"],
+  CreateManypostAndReturnOutputType: ["uuid", "createdAt", "updatedAt", "published", "title", "subtitle", "content", "authorId", "editorId", "kind", "metadata", "author", "editor"],
+  CreateManyCategoryAndReturnOutputType: ["name", "slug", "number"],
+  CreateManyPatientAndReturnOutputType: ["firstName", "lastName", "email"],
+  CreateManyMovieAndReturnOutputType: ["directorFirstName", "directorLastName", "title", "director"],
+  CreateManyDirectorAndReturnOutputType: ["firstName", "lastName"],
+  CreateManyProblemAndReturnOutputType: ["id", "problemText", "creatorId", "creator"],
+  CreateManyCreatorAndReturnOutputType: ["id", "name"],
+  CreateManyNativeTypeModelAndReturnOutputType: ["id", "bigInt", "byteA", "decimal"],
+  CreateManyEquipmentAndReturnOutputType: ["id", "name"],
+  CreateManyHiddenAndReturnOutputType: ["id", "name"]
 };
 
 type OutputTypesNames = keyof typeof outputTypes;
@@ -966,14 +977,14 @@ const inputsInfo = {
   NestedStringWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "search", "not", "_count", "_min", "_max"],
   NestedStringNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "search", "not", "_count", "_min", "_max"],
   NestedIntNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
-  NestedFloatWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "count", "avg", "sum", "min", "max"],
-  NestedEnumRoleWithAggregatesFilter: ["equals", "in", "notIn", "not", "count", "min", "max"],
+  NestedFloatWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
+  NestedEnumRoleWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   NestedDateTimeFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   NestedBoolFilter: ["equals", "not"],
   NestedEnumPostKindNullableFilter: ["equals", "in", "notIn", "not"],
-  NestedDateTimeWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "count", "min", "max"],
-  NestedBoolWithAggregatesFilter: ["equals", "not", "count", "min", "max"],
-  NestedIntNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "count", "avg", "sum", "min", "max"],
+  NestedDateTimeWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_min", "_max"],
+  NestedBoolWithAggregatesFilter: ["equals", "not", "_count", "_min", "_max"],
+  NestedIntNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
   NestedFloatNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   NestedEnumPostKindNullableWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   NestedJsonFilter: ["equals", "path", "string_contains", "string_starts_with", "string_ends_with", "array_contains", "array_starts_with", "array_ends_with", "lt", "lte", "gt", "gte", "not"],

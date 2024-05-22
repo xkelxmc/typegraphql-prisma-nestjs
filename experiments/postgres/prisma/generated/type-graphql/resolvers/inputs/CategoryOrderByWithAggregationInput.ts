@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CategoryAvgOrderByAggregateInput } from "../inputs/CategoryAvgOrderByAggregateInput";
 import { CategoryCountOrderByAggregateInput } from "../inputs/CategoryCountOrderByAggregateInput";
 import { CategoryMaxOrderByAggregateInput } from "../inputs/CategoryMaxOrderByAggregateInput";
@@ -9,44 +9,44 @@ import { CategoryMinOrderByAggregateInput } from "../inputs/CategoryMinOrderByAg
 import { CategorySumOrderByAggregateInput } from "../inputs/CategorySumOrderByAggregateInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("CategoryOrderByWithAggregationInput", {})
+@InputType("CategoryOrderByWithAggregationInput", {})
 export class CategoryOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   number?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => CategoryCountOrderByAggregateInput, {
+  @Field(_type => CategoryCountOrderByAggregateInput, {
     nullable: true
   })
   _count?: CategoryCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => CategoryAvgOrderByAggregateInput, {
+  @Field(_type => CategoryAvgOrderByAggregateInput, {
     nullable: true
   })
   _avg?: CategoryAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => CategoryMaxOrderByAggregateInput, {
+  @Field(_type => CategoryMaxOrderByAggregateInput, {
     nullable: true
   })
   _max?: CategoryMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => CategoryMinOrderByAggregateInput, {
+  @Field(_type => CategoryMinOrderByAggregateInput, {
     nullable: true
   })
   _min?: CategoryMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => CategorySumOrderByAggregateInput, {
+  @Field(_type => CategorySumOrderByAggregateInput, {
     nullable: true
   })
   _sum?: CategorySumOrderByAggregateInput | undefined;

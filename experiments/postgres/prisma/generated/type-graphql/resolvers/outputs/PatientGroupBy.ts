@@ -1,40 +1,40 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PatientCountAggregate } from "../outputs/PatientCountAggregate";
 import { PatientMaxAggregate } from "../outputs/PatientMaxAggregate";
 import { PatientMinAggregate } from "../outputs/PatientMinAggregate";
 
-@TypeGraphQL.ObjectType("PatientGroupBy", {})
+@ObjectType("PatientGroupBy", {})
 export class PatientGroupBy {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   firstName!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   lastName!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   email!: string;
 
-  @TypeGraphQL.Field(_type => PatientCountAggregate, {
+  @Field(_type => PatientCountAggregate, {
     nullable: true
   })
-  count!: PatientCountAggregate | null;
+  _count!: PatientCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => PatientMinAggregate, {
+  @Field(_type => PatientMinAggregate, {
     nullable: true
   })
-  min!: PatientMinAggregate | null;
+  _min!: PatientMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => PatientMaxAggregate, {
+  @Field(_type => PatientMaxAggregate, {
     nullable: true
   })
-  max!: PatientMaxAggregate | null;
+  _max!: PatientMaxAggregate | null;
 }

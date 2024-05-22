@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindManyProblemArgs } from "./args/FindManyProblemArgs";
 import { Problem } from "../../../models/Problem";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Problem)
+@Resolver(_of => Problem)
 export class FindManyProblemResolver {
-  @TypeGraphQL.Query(_returns => [Problem], {
+  @Query(_returns => [Problem], {
     nullable: false
   })
-  async problems(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyProblemArgs) args: FindManyProblemArgs): Promise<Problem[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async problems(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyProblemArgs) args: FindManyProblemArgs): Promise<Problem[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Problem', 'problem', 'findMany');
     return getPrismaFromContext(ctx).problem.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Problem', 'problem', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Problem', 'problem', 'findMany')),
     });
   }
 }

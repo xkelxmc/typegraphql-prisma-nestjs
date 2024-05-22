@@ -1,15 +1,15 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { NativeTypeModelCreateManyInput } from "../../../inputs/NativeTypeModelCreateManyInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class CreateManyNativeTypeModelArgs {
-  @TypeGraphQL.Field(_type => [NativeTypeModelCreateManyInput], {
+  @Field(_type => [NativeTypeModelCreateManyInput], {
     nullable: false
   })
   data!: NativeTypeModelCreateManyInput[];
 
-  @TypeGraphQL.Field(_type => Boolean, {
+  @Field(_type => Boolean, {
     nullable: true
   })
   skipDuplicates?: boolean | undefined;

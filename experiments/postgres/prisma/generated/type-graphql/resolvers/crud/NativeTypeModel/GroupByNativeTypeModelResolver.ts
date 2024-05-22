@@ -1,21 +1,21 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { GroupByNativeTypeModelArgs } from "./args/GroupByNativeTypeModelArgs";
 import { NativeTypeModel } from "../../../models/NativeTypeModel";
 import { NativeTypeModelGroupBy } from "../../outputs/NativeTypeModelGroupBy";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => NativeTypeModel)
+@Resolver(_of => NativeTypeModel)
 export class GroupByNativeTypeModelResolver {
-  @TypeGraphQL.Query(_returns => [NativeTypeModelGroupBy], {
+  @Query(_returns => [NativeTypeModelGroupBy], {
     nullable: false
   })
-  async groupByNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByNativeTypeModelArgs) args: GroupByNativeTypeModelArgs): Promise<NativeTypeModelGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByNativeTypeModelArgs) args: GroupByNativeTypeModelArgs): Promise<NativeTypeModelGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'groupBy');
     return getPrismaFromContext(ctx).nativeTypeModel.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'groupBy')),
       ...Object.fromEntries(
-        Object.entries({ count, avg, sum, min, max }).filter(([_, v]) => v != null)
+        Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }

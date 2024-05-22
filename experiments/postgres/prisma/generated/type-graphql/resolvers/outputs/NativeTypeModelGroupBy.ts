@@ -1,57 +1,57 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { NativeTypeModelAvgAggregate } from "../outputs/NativeTypeModelAvgAggregate";
 import { NativeTypeModelCountAggregate } from "../outputs/NativeTypeModelCountAggregate";
 import { NativeTypeModelMaxAggregate } from "../outputs/NativeTypeModelMaxAggregate";
 import { NativeTypeModelMinAggregate } from "../outputs/NativeTypeModelMinAggregate";
 import { NativeTypeModelSumAggregate } from "../outputs/NativeTypeModelSumAggregate";
 
-@TypeGraphQL.ObjectType("NativeTypeModelGroupBy", {})
+@ObjectType("NativeTypeModelGroupBy", {})
 export class NativeTypeModelGroupBy {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   id!: number;
 
-  @TypeGraphQL.Field(_type => GraphQLScalars.BigIntResolver, {
+  @Field(_type => GraphQLScalars.BigIntResolver, {
     nullable: true
   })
   bigInt!: bigint | null;
 
-  @TypeGraphQL.Field(_type => GraphQLScalars.ByteResolver, {
+  @Field(_type => GraphQLScalars.ByteResolver, {
     nullable: true
   })
   byteA!: Buffer | null;
 
-  @TypeGraphQL.Field(_type => DecimalJSScalar, {
+  @Field(_type => DecimalJSScalar, {
     nullable: true
   })
   decimal!: Prisma.Decimal | null;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelCountAggregate, {
+  @Field(_type => NativeTypeModelCountAggregate, {
     nullable: true
   })
-  count!: NativeTypeModelCountAggregate | null;
+  _count!: NativeTypeModelCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelAvgAggregate, {
+  @Field(_type => NativeTypeModelAvgAggregate, {
     nullable: true
   })
-  avg!: NativeTypeModelAvgAggregate | null;
+  _avg!: NativeTypeModelAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelSumAggregate, {
+  @Field(_type => NativeTypeModelSumAggregate, {
     nullable: true
   })
-  sum!: NativeTypeModelSumAggregate | null;
+  _sum!: NativeTypeModelSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelMinAggregate, {
+  @Field(_type => NativeTypeModelMinAggregate, {
     nullable: true
   })
-  min!: NativeTypeModelMinAggregate | null;
+  _min!: NativeTypeModelMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelMaxAggregate, {
+  @Field(_type => NativeTypeModelMaxAggregate, {
     nullable: true
   })
-  max!: NativeTypeModelMaxAggregate | null;
+  _max!: NativeTypeModelMaxAggregate | null;
 }

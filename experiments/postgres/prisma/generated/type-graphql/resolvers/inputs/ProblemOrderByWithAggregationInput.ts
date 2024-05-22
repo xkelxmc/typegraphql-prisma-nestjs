@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { ProblemAvgOrderByAggregateInput } from "../inputs/ProblemAvgOrderByAggregateInput";
 import { ProblemCountOrderByAggregateInput } from "../inputs/ProblemCountOrderByAggregateInput";
 import { ProblemMaxOrderByAggregateInput } from "../inputs/ProblemMaxOrderByAggregateInput";
@@ -10,44 +10,44 @@ import { ProblemSumOrderByAggregateInput } from "../inputs/ProblemSumOrderByAggr
 import { SortOrderInput } from "../inputs/SortOrderInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("ProblemOrderByWithAggregationInput", {})
+@InputType("ProblemOrderByWithAggregationInput", {})
 export class ProblemOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   problemText?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   creatorId?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemCountOrderByAggregateInput, {
+  @Field(_type => ProblemCountOrderByAggregateInput, {
     nullable: true
   })
   _count?: ProblemCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemAvgOrderByAggregateInput, {
+  @Field(_type => ProblemAvgOrderByAggregateInput, {
     nullable: true
   })
   _avg?: ProblemAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemMaxOrderByAggregateInput, {
+  @Field(_type => ProblemMaxOrderByAggregateInput, {
     nullable: true
   })
   _max?: ProblemMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemMinOrderByAggregateInput, {
+  @Field(_type => ProblemMinOrderByAggregateInput, {
     nullable: true
   })
   _min?: ProblemMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemSumOrderByAggregateInput, {
+  @Field(_type => ProblemSumOrderByAggregateInput, {
     nullable: true
   })
   _sum?: ProblemSumOrderByAggregateInput | undefined;

@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { CategoryCreateInput } from "../../../inputs/CategoryCreateInput";
 import { CategoryUpdateInput } from "../../../inputs/CategoryUpdateInput";
 import { CategoryWhereUniqueInput } from "../../../inputs/CategoryWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpsertOneCategoryArgs {
-  @TypeGraphQL.Field(_type => CategoryWhereUniqueInput, {
+  @Field(_type => CategoryWhereUniqueInput, {
     nullable: false
   })
   where!: CategoryWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => CategoryCreateInput, {
+  @Field(_type => CategoryCreateInput, {
     nullable: false
   })
   create!: CategoryCreateInput;
 
-  @TypeGraphQL.Field(_type => CategoryUpdateInput, {
+  @Field(_type => CategoryUpdateInput, {
     nullable: false
   })
   update!: CategoryUpdateInput;

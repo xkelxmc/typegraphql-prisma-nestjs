@@ -1,52 +1,52 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { ProblemAvgAggregate } from "../outputs/ProblemAvgAggregate";
 import { ProblemCountAggregate } from "../outputs/ProblemCountAggregate";
 import { ProblemMaxAggregate } from "../outputs/ProblemMaxAggregate";
 import { ProblemMinAggregate } from "../outputs/ProblemMinAggregate";
 import { ProblemSumAggregate } from "../outputs/ProblemSumAggregate";
 
-@TypeGraphQL.ObjectType("ProblemGroupBy", {})
+@ObjectType("ProblemGroupBy", {})
 export class ProblemGroupBy {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   id!: number;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   problemText!: string;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   creatorId!: number | null;
 
-  @TypeGraphQL.Field(_type => ProblemCountAggregate, {
+  @Field(_type => ProblemCountAggregate, {
     nullable: true
   })
-  count!: ProblemCountAggregate | null;
+  _count!: ProblemCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemAvgAggregate, {
+  @Field(_type => ProblemAvgAggregate, {
     nullable: true
   })
-  avg!: ProblemAvgAggregate | null;
+  _avg!: ProblemAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemSumAggregate, {
+  @Field(_type => ProblemSumAggregate, {
     nullable: true
   })
-  sum!: ProblemSumAggregate | null;
+  _sum!: ProblemSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemMinAggregate, {
+  @Field(_type => ProblemMinAggregate, {
     nullable: true
   })
-  min!: ProblemMinAggregate | null;
+  _min!: ProblemMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => ProblemMaxAggregate, {
+  @Field(_type => ProblemMaxAggregate, {
     nullable: true
   })
-  max!: ProblemMaxAggregate | null;
+  _max!: ProblemMaxAggregate | null;
 }

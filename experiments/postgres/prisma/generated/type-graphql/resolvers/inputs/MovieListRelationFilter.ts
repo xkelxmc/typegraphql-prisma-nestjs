@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MovieWhereInput } from "../inputs/MovieWhereInput";
 
-@TypeGraphQL.InputType("MovieListRelationFilter", {})
+@InputType("MovieListRelationFilter", {})
 export class MovieListRelationFilter {
-  @TypeGraphQL.Field(_type => MovieWhereInput, {
+  @Field(_type => MovieWhereInput, {
     nullable: true
   })
   every?: MovieWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => MovieWhereInput, {
+  @Field(_type => MovieWhereInput, {
     nullable: true
   })
   some?: MovieWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => MovieWhereInput, {
+  @Field(_type => MovieWhereInput, {
     nullable: true
   })
   none?: MovieWhereInput | undefined;

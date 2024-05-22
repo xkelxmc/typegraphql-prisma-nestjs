@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
@@ -6,19 +6,19 @@ import { CommentCountAggregate } from "../outputs/CommentCountAggregate";
 import { CommentMaxAggregate } from "../outputs/CommentMaxAggregate";
 import { CommentMinAggregate } from "../outputs/CommentMinAggregate";
 
-@TypeGraphQL.ObjectType("AggregateComment", {})
+@ObjectType("AggregateComment", {})
 export class AggregateComment {
-  @TypeGraphQL.Field(_type => CommentCountAggregate, {
+  @Field(_type => CommentCountAggregate, {
     nullable: true
   })
   _count!: CommentCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => CommentMinAggregate, {
+  @Field(_type => CommentMinAggregate, {
     nullable: true
   })
   _min!: CommentMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => CommentMaxAggregate, {
+  @Field(_type => CommentMaxAggregate, {
     nullable: true
   })
   _max!: CommentMaxAggregate | null;

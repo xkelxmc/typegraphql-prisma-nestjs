@@ -1,33 +1,33 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { StringFilter } from "../inputs/StringFilter";
-import { StringNullableFilter } from "../inputs/StringNullableFilter";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { StringFilter } from "../../../global/inputs/StringFilter";
+import { StringNullableFilter } from "../../../global/inputs/StringNullableFilter";
 
-@TypeGraphQL.InputType("HiddenWhereInput", {})
+@InputType("HiddenWhereInput", {})
 export class HiddenWhereInput {
-  @TypeGraphQL.Field(_type => [HiddenWhereInput], {
+  @Field(_type => [HiddenWhereInput], {
     nullable: true
   })
   AND?: HiddenWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [HiddenWhereInput], {
+  @Field(_type => [HiddenWhereInput], {
     nullable: true
   })
   OR?: HiddenWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [HiddenWhereInput], {
+  @Field(_type => [HiddenWhereInput], {
     nullable: true
   })
   NOT?: HiddenWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
+  @Field(_type => StringNullableFilter, {
     nullable: true
   })
   name?: StringNullableFilter | undefined;

@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../client";
-import { DecimalJSScalar } from "../scalars";
+import { DecimalJSScalar } from "../../global/scalars";
 import { Creator } from "../models/Creator";
 import { ProblemCount } from "../resolvers/outputs/ProblemCount";
 
-@TypeGraphQL.ObjectType("Problem", {})
+@ObjectType("Problem", {})
 export class Problem {
-  @TypeGraphQL.Field(_type => TypeGraphQL.ID, {
+  @Field(_type => ID, {
     nullable: false
   })
   id!: number;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   problemText!: string;
@@ -21,12 +21,12 @@ export class Problem {
 
   creator?: Creator | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   creatorId?: number | null;
 
-  @TypeGraphQL.Field(_type => ProblemCount, {
+  @Field(_type => ProblemCount, {
     nullable: true
   })
   _count?: ProblemCount | null;

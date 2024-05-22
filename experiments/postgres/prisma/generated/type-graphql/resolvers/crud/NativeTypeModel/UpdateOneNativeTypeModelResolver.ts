@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { UpdateOneNativeTypeModelArgs } from "./args/UpdateOneNativeTypeModelArgs";
 import { NativeTypeModel } from "../../../models/NativeTypeModel";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => NativeTypeModel)
+@Resolver(_of => NativeTypeModel)
 export class UpdateOneNativeTypeModelResolver {
-  @TypeGraphQL.Mutation(_returns => NativeTypeModel, {
+  @Mutation(_returns => NativeTypeModel, {
     nullable: true
   })
-  async updateOneNativeTypeModel(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneNativeTypeModelArgs) args: UpdateOneNativeTypeModelArgs): Promise<NativeTypeModel | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOneNativeTypeModel(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOneNativeTypeModelArgs) args: UpdateOneNativeTypeModelArgs): Promise<NativeTypeModel | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'NativeTypeModel', 'nativeTypeModel', 'update');
     return getPrismaFromContext(ctx).nativeTypeModel.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'NativeTypeModel', 'nativeTypeModel', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'NativeTypeModel', 'nativeTypeModel', 'update')),
     });
   }
 }

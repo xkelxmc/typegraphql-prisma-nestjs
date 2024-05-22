@@ -1,39 +1,39 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { Comment } from "../../../models/Comment";
 import { Post } from "../../../models/Post";
 import { User } from "../../../models/User";
 import { PostCommentsArgs } from "./args/PostCommentsArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Post)
+@Resolver(_of => Post)
 export class PostRelationsResolver {
-  @TypeGraphQL.FieldResolver(_type => [Comment], {
+  @ResolveField(_type => [Comment], {
     nullable: false
   })
-  async comments(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: PostCommentsArgs): Promise<Comment[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async comments(@Root() post: Post, @Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: PostCommentsArgs): Promise<Comment[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Post', '', '');
     return getPrismaFromContext(ctx).post.findUniqueOrThrow({
       where: {
         id: post.id,
       },
     }).comments({
       ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Post', '', '')),
     });
   }
 
-  @TypeGraphQL.FieldResolver(_type => User, {
+  @ResolveField(_type => User, {
     nullable: false
   })
-  async author(@TypeGraphQL.Root() post: Post, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo): Promise<User> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async author(@Root() post: Post, @Context() ctx: any, @Info() info: GraphQLResolveInfo): Promise<User> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Post', '', '');
     return getPrismaFromContext(ctx).post.findUniqueOrThrow({
       where: {
         id: post.id,
       },
     }).author({
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Post', '', '')),
     });
   }
 }

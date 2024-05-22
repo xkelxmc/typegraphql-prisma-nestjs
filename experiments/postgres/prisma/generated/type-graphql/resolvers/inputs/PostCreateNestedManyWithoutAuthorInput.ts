@@ -1,30 +1,30 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostCreateManyAuthorInputEnvelope } from "../inputs/PostCreateManyAuthorInputEnvelope";
 import { PostCreateOrConnectWithoutAuthorInput } from "../inputs/PostCreateOrConnectWithoutAuthorInput";
 import { PostCreateWithoutAuthorInput } from "../inputs/PostCreateWithoutAuthorInput";
 import { PostWhereUniqueInput } from "../inputs/PostWhereUniqueInput";
 
-@TypeGraphQL.InputType("PostCreateNestedManyWithoutAuthorInput", {})
+@InputType("PostCreateNestedManyWithoutAuthorInput", {})
 export class PostCreateNestedManyWithoutAuthorInput {
-  @TypeGraphQL.Field(_type => [PostCreateWithoutAuthorInput], {
+  @Field(_type => [PostCreateWithoutAuthorInput], {
     nullable: true
   })
   create?: PostCreateWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostCreateOrConnectWithoutAuthorInput], {
+  @Field(_type => [PostCreateOrConnectWithoutAuthorInput], {
     nullable: true
   })
   connectOrCreate?: PostCreateOrConnectWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PostCreateManyAuthorInputEnvelope, {
+  @Field(_type => PostCreateManyAuthorInputEnvelope, {
     nullable: true
   })
   createMany?: PostCreateManyAuthorInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   connect?: PostWhereUniqueInput[] | undefined;

@@ -1,24 +1,24 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { MainUser } from "../../../models/MainUser";
 import { Post } from "../../../models/Post";
 import { MainUserPostsArgs } from "./args/MainUserPostsArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => MainUser)
+@Resolver(_of => MainUser)
 export class MainUserRelationsResolver {
-  @TypeGraphQL.FieldResolver(_type => [Post], {
+  @ResolveField(_type => [Post], {
     nullable: false
   })
-  async clientPosts(@TypeGraphQL.Root() mainUser: MainUser, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => MainUserPostsArgs) args: MainUserPostsArgs): Promise<Post[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async clientPosts(@Root() mainUser: MainUser, @Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => MainUserPostsArgs) args: MainUserPostsArgs): Promise<Post[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'User', '', '');
     return getPrismaFromContext(ctx).user.findUniqueOrThrow({
       where: {
         id: mainUser.id,
       },
     }).posts({
       ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'User', '', '')),
     });
   }
 }

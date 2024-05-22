@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindUniquePostOrThrowArgs } from "./args/FindUniquePostOrThrowArgs";
 import { Post } from "../../../models/Post";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Post)
+@Resolver(_of => Post)
 export class FindUniquePostOrThrowResolver {
-  @TypeGraphQL.Query(_returns => Post, {
+  @Query(_returns => Post, {
     nullable: true
   })
-  async getPost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: FindUniquePostOrThrowArgs): Promise<Post | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getPost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: FindUniquePostOrThrowArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Post', 'post', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).post.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Post', 'post', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Post', 'post', 'findUniqueOrThrow')),
     });
   }
 }

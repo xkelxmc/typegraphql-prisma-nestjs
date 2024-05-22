@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { DeleteOneDirectorArgs } from "./args/DeleteOneDirectorArgs";
 import { Director } from "../../../models/Director";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Director)
+@Resolver(_of => Director)
 export class DeleteOneDirectorResolver {
-  @TypeGraphQL.Mutation(_returns => Director, {
+  @Mutation(_returns => Director, {
     nullable: true
   })
-  async deleteOneDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneDirectorArgs) args: DeleteOneDirectorArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOneDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOneDirectorArgs) args: DeleteOneDirectorArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'delete');
     return getPrismaFromContext(ctx).director.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'delete')),
     });
   }
 }

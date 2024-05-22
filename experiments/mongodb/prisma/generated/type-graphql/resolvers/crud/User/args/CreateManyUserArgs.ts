@@ -1,10 +1,10 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { UserCreateManyInput } from "../../../inputs/UserCreateManyInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class CreateManyUserArgs {
-  @TypeGraphQL.Field(_type => [UserCreateManyInput], {
+  @Field(_type => [UserCreateManyInput], {
     nullable: false
   })
   data!: UserCreateManyInput[];

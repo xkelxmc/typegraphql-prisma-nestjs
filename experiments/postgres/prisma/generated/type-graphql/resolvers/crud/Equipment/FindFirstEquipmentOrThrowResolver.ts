@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindFirstEquipmentOrThrowArgs } from "./args/FindFirstEquipmentOrThrowArgs";
 import { Equipment } from "../../../models/Equipment";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Equipment)
+@Resolver(_of => Equipment)
 export class FindFirstEquipmentOrThrowResolver {
-  @TypeGraphQL.Query(_returns => Equipment, {
+  @Query(_returns => Equipment, {
     nullable: true
   })
-  async findFirstEquipmentOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstEquipmentOrThrowArgs) args: FindFirstEquipmentOrThrowArgs): Promise<Equipment | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstEquipmentOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstEquipmentOrThrowArgs) args: FindFirstEquipmentOrThrowArgs): Promise<Equipment | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Equipment', 'equipment', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).equipment.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Equipment', 'equipment', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Equipment', 'equipment', 'findFirstOrThrow')),
     });
   }
 }

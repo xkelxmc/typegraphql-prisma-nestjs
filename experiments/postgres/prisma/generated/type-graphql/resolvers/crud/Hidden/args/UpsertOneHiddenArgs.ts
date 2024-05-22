@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { HiddenCreateInput } from "../../../inputs/HiddenCreateInput";
 import { HiddenUpdateInput } from "../../../inputs/HiddenUpdateInput";
 import { HiddenWhereUniqueInput } from "../../../inputs/HiddenWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpsertOneHiddenArgs {
-  @TypeGraphQL.Field(_type => HiddenWhereUniqueInput, {
+  @Field(_type => HiddenWhereUniqueInput, {
     nullable: false
   })
   where!: HiddenWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => HiddenCreateInput, {
+  @Field(_type => HiddenCreateInput, {
     nullable: false
   })
   create!: HiddenCreateInput;
 
-  @TypeGraphQL.Field(_type => HiddenUpdateInput, {
+  @Field(_type => HiddenUpdateInput, {
     nullable: false
   })
   update!: HiddenUpdateInput;

@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { PostOrderByWithRelationInput } from "../../../inputs/PostOrderByWithRelationInput";
 import { PostWhereInput } from "../../../inputs/PostWhereInput";
 import { PostWhereUniqueInput } from "../../../inputs/PostWhereUniqueInput";
 import { PostScalarFieldEnum } from "../../../../enums/PostScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UserPostsArgs {
-  @TypeGraphQL.Field(_type => PostWhereInput, {
+  @Field(_type => PostWhereInput, {
     nullable: true
   })
   where?: PostWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PostOrderByWithRelationInput], {
+  @Field(_type => [PostOrderByWithRelationInput], {
     nullable: true
   })
   orderBy?: PostOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PostWhereUniqueInput, {
+  @Field(_type => PostWhereUniqueInput, {
     nullable: true
   })
   cursor?: PostWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarFieldEnum], {
+  @Field(_type => [PostScalarFieldEnum], {
     nullable: true
   })
   distinct?: Array<"id" | "slug" | "title" | "body" | "authorId"> | undefined;

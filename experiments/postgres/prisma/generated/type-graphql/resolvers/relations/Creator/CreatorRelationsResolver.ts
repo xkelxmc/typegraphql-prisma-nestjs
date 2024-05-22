@@ -1,40 +1,40 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { Creator } from "../../../models/Creator";
 import { Problem } from "../../../models/Problem";
 import { CreatorLikesArgs } from "./args/CreatorLikesArgs";
 import { CreatorProblemsArgs } from "./args/CreatorProblemsArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Creator)
+@Resolver(_of => Creator)
 export class CreatorRelationsResolver {
-  @TypeGraphQL.FieldResolver(_type => [Problem], {
+  @ResolveField(_type => [Problem], {
     nullable: false
   })
-  async likes(@TypeGraphQL.Root() creator: Creator, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreatorLikesArgs) args: CreatorLikesArgs): Promise<Problem[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async likes(@Root() creator: Creator, @Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreatorLikesArgs) args: CreatorLikesArgs): Promise<Problem[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', '', '');
     return getPrismaFromContext(ctx).creator.findUniqueOrThrow({
       where: {
         id: creator.id,
       },
     }).likes({
       ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', '', '')),
     });
   }
 
-  @TypeGraphQL.FieldResolver(_type => [Problem], {
+  @ResolveField(_type => [Problem], {
     nullable: false
   })
-  async problems(@TypeGraphQL.Root() creator: Creator, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreatorProblemsArgs) args: CreatorProblemsArgs): Promise<Problem[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async problems(@Root() creator: Creator, @Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreatorProblemsArgs) args: CreatorProblemsArgs): Promise<Problem[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', '', '');
     return getPrismaFromContext(ctx).creator.findUniqueOrThrow({
       where: {
         id: creator.id,
       },
     }).problems({
       ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', '', '')),
     });
   }
 }

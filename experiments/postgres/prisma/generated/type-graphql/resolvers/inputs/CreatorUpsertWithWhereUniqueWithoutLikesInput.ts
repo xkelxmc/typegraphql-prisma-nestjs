@@ -1,24 +1,24 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorCreateWithoutLikesInput } from "../inputs/CreatorCreateWithoutLikesInput";
 import { CreatorUpdateWithoutLikesInput } from "../inputs/CreatorUpdateWithoutLikesInput";
 import { CreatorWhereUniqueInput } from "../inputs/CreatorWhereUniqueInput";
 
-@TypeGraphQL.InputType("CreatorUpsertWithWhereUniqueWithoutLikesInput", {})
+@InputType("CreatorUpsertWithWhereUniqueWithoutLikesInput", {})
 export class CreatorUpsertWithWhereUniqueWithoutLikesInput {
-  @TypeGraphQL.Field(_type => CreatorWhereUniqueInput, {
+  @Field(_type => CreatorWhereUniqueInput, {
     nullable: false
   })
   where!: CreatorWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => CreatorUpdateWithoutLikesInput, {
+  @Field(_type => CreatorUpdateWithoutLikesInput, {
     nullable: false
   })
   update!: CreatorUpdateWithoutLikesInput;
 
-  @TypeGraphQL.Field(_type => CreatorCreateWithoutLikesInput, {
+  @Field(_type => CreatorCreateWithoutLikesInput, {
     nullable: false
   })
   create!: CreatorCreateWithoutLikesInput;

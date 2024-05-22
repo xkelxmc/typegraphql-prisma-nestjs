@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
@@ -11,59 +11,59 @@ import { PostUpdateWithWhereUniqueWithoutAuthorInput } from "../inputs/PostUpdat
 import { PostUpsertWithWhereUniqueWithoutAuthorInput } from "../inputs/PostUpsertWithWhereUniqueWithoutAuthorInput";
 import { PostWhereUniqueInput } from "../inputs/PostWhereUniqueInput";
 
-@TypeGraphQL.InputType("PostUpdateManyWithoutAuthorNestedInput", {})
+@InputType("PostUpdateManyWithoutAuthorNestedInput", {})
 export class PostUpdateManyWithoutAuthorNestedInput {
-  @TypeGraphQL.Field(_type => [PostCreateWithoutAuthorInput], {
+  @Field(_type => [PostCreateWithoutAuthorInput], {
     nullable: true
   })
   create?: PostCreateWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostCreateOrConnectWithoutAuthorInput], {
+  @Field(_type => [PostCreateOrConnectWithoutAuthorInput], {
     nullable: true
   })
   connectOrCreate?: PostCreateOrConnectWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostUpsertWithWhereUniqueWithoutAuthorInput], {
+  @Field(_type => [PostUpsertWithWhereUniqueWithoutAuthorInput], {
     nullable: true
   })
   upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PostCreateManyAuthorInputEnvelope, {
+  @Field(_type => PostCreateManyAuthorInputEnvelope, {
     nullable: true
   })
   createMany?: PostCreateManyAuthorInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   set?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   disconnect?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   delete?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostWhereUniqueInput], {
+  @Field(_type => [PostWhereUniqueInput], {
     nullable: true
   })
   connect?: PostWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostUpdateWithWhereUniqueWithoutAuthorInput], {
+  @Field(_type => [PostUpdateWithWhereUniqueWithoutAuthorInput], {
     nullable: true
   })
   update?: PostUpdateWithWhereUniqueWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostUpdateManyWithWhereWithoutAuthorInput], {
+  @Field(_type => [PostUpdateManyWithWhereWithoutAuthorInput], {
     nullable: true
   })
   updateMany?: PostUpdateManyWithWhereWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @Field(_type => [PostScalarWhereInput], {
     nullable: true
   })
   deleteMany?: PostScalarWhereInput[] | undefined;

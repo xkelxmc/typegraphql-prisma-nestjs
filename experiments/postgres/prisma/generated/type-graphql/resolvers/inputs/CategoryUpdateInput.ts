@@ -1,21 +1,21 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 
-@TypeGraphQL.InputType("CategoryUpdateInput", {})
+@InputType("CategoryUpdateInput", {})
 export class CategoryUpdateInput {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   name?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   slug?: string | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   number?: number | undefined;

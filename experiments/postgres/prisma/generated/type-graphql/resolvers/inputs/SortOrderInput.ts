@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { NullsOrder } from "../../enums/NullsOrder";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("SortOrderInput", {})
+@InputType("SortOrderInput", {})
 export class SortOrderInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: false
   })
   sort!: "asc" | "desc";
 
-  @TypeGraphQL.Field(_type => NullsOrder, {
+  @Field(_type => NullsOrder, {
     nullable: true
   })
   nulls?: "first" | "last" | undefined;

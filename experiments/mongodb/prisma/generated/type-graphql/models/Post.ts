@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../client";
 import { DecimalJSScalar } from "../scalars";
@@ -6,24 +6,24 @@ import { Comment } from "../models/Comment";
 import { User } from "../models/User";
 import { PostCount } from "../resolvers/outputs/PostCount";
 
-@TypeGraphQL.ObjectType("Post", {})
+@ObjectType("Post", {})
 export class Post {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   slug!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   title!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   body!: string;
@@ -32,12 +32,12 @@ export class Post {
 
   author?: User;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   authorId!: string;
 
-  @TypeGraphQL.Field(_type => PostCount, {
+  @Field(_type => PostCount, {
     nullable: true
   })
   _count?: PostCount | null;

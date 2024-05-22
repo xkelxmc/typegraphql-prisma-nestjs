@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregatePatientArgs } from "./args/AggregatePatientArgs";
 import { CreateManyPatientArgs } from "./args/CreateManyPatientArgs";
@@ -14,166 +14,166 @@ import { GroupByPatientArgs } from "./args/GroupByPatientArgs";
 import { UpdateManyPatientArgs } from "./args/UpdateManyPatientArgs";
 import { UpdateOnePatientArgs } from "./args/UpdateOnePatientArgs";
 import { UpsertOnePatientArgs } from "./args/UpsertOnePatientArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 import { Patient } from "../../../models/Patient";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregatePatient } from "../../outputs/AggregatePatient";
 import { PatientGroupBy } from "../../outputs/PatientGroupBy";
 
-@TypeGraphQL.Resolver(_of => Patient)
+@Resolver(_of => Patient)
 export class PatientCrudResolver {
-  @TypeGraphQL.Query(_returns => AggregatePatient, {
+  @Query(_returns => AggregatePatient, {
     nullable: false
   })
-  async aggregatePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregatePatientArgs) args: AggregatePatientArgs): Promise<AggregatePatient> {
+  async aggregatePatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregatePatientArgs) args: AggregatePatientArgs): Promise<AggregatePatient> {
     return getPrismaFromContext(ctx).patient.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'aggregate'),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyPatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateManyPatientArgs) args: CreateManyPatientArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyPatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateManyPatientArgs) args: CreateManyPatientArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'createMany');
     return getPrismaFromContext(ctx).patient.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'createMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Patient, {
+  @Mutation(_returns => Patient, {
     nullable: false
   })
-  async createOnePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOnePatientArgs) args: CreateOnePatientArgs): Promise<Patient> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOnePatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOnePatientArgs) args: CreateOnePatientArgs): Promise<Patient> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'create');
     return getPrismaFromContext(ctx).patient.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'create')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyPatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteManyPatientArgs) args: DeleteManyPatientArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteManyPatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteManyPatientArgs) args: DeleteManyPatientArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'deleteMany');
     return getPrismaFromContext(ctx).patient.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'deleteMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'deleteMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Patient, {
+  @Mutation(_returns => Patient, {
     nullable: true
   })
-  async deleteOnePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOnePatientArgs) args: DeleteOnePatientArgs): Promise<Patient | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOnePatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOnePatientArgs) args: DeleteOnePatientArgs): Promise<Patient | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'delete');
     return getPrismaFromContext(ctx).patient.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'delete')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Patient, {
+  @Query(_returns => Patient, {
     nullable: true
   })
-  async findFirstPatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstPatientArgs) args: FindFirstPatientArgs): Promise<Patient | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstPatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstPatientArgs) args: FindFirstPatientArgs): Promise<Patient | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'findFirst');
     return getPrismaFromContext(ctx).patient.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'findFirst')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Patient, {
+  @Query(_returns => Patient, {
     nullable: true
   })
-  async findFirstPatientOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstPatientOrThrowArgs) args: FindFirstPatientOrThrowArgs): Promise<Patient | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstPatientOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstPatientOrThrowArgs) args: FindFirstPatientOrThrowArgs): Promise<Patient | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).patient.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'findFirstOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [Patient], {
+  @Query(_returns => [Patient], {
     nullable: false
   })
-  async patients(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyPatientArgs) args: FindManyPatientArgs): Promise<Patient[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async patients(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyPatientArgs) args: FindManyPatientArgs): Promise<Patient[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'findMany');
     return getPrismaFromContext(ctx).patient.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'findMany')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Patient, {
+  @Query(_returns => Patient, {
     nullable: true
   })
-  async patient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniquePatientArgs) args: FindUniquePatientArgs): Promise<Patient | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async patient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniquePatientArgs) args: FindUniquePatientArgs): Promise<Patient | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'findUnique');
     return getPrismaFromContext(ctx).patient.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'findUnique')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Patient, {
+  @Query(_returns => Patient, {
     nullable: true
   })
-  async getPatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniquePatientOrThrowArgs) args: FindUniquePatientOrThrowArgs): Promise<Patient | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getPatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniquePatientOrThrowArgs) args: FindUniquePatientOrThrowArgs): Promise<Patient | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).patient.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'findUniqueOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [PatientGroupBy], {
+  @Query(_returns => [PatientGroupBy], {
     nullable: false
   })
-  async groupByPatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByPatientArgs) args: GroupByPatientArgs): Promise<PatientGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByPatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByPatientArgs) args: GroupByPatientArgs): Promise<PatientGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'groupBy');
     return getPrismaFromContext(ctx).patient.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'groupBy')),
       ...Object.fromEntries(
         Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async updateManyPatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateManyPatientArgs) args: UpdateManyPatientArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateManyPatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateManyPatientArgs) args: UpdateManyPatientArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'updateMany');
     return getPrismaFromContext(ctx).patient.updateMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'updateMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'updateMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Patient, {
+  @Mutation(_returns => Patient, {
     nullable: true
   })
-  async updateOnePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOnePatientArgs) args: UpdateOnePatientArgs): Promise<Patient | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOnePatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOnePatientArgs) args: UpdateOnePatientArgs): Promise<Patient | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'update');
     return getPrismaFromContext(ctx).patient.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'update')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Patient, {
+  @Mutation(_returns => Patient, {
     nullable: false
   })
-  async upsertOnePatient(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOnePatientArgs) args: UpsertOnePatientArgs): Promise<Patient> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async upsertOnePatient(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpsertOnePatientArgs) args: UpsertOnePatientArgs): Promise<Patient> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Patient', 'patient', 'upsert');
     return getPrismaFromContext(ctx).patient.upsert({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Patient', 'patient', 'upsert')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Patient', 'patient', 'upsert')),
     });
   }
 }

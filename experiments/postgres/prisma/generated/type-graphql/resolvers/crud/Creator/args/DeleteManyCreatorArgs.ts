@@ -1,10 +1,10 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { CreatorWhereInput } from "../../../inputs/CreatorWhereInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class DeleteManyCreatorArgs {
-  @TypeGraphQL.Field(_type => CreatorWhereInput, {
+  @Field(_type => CreatorWhereInput, {
     nullable: true
   })
   where?: CreatorWhereInput | undefined;

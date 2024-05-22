@@ -1,9 +1,9 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 
 export enum ProblemOrderByRelevanceFieldEnum {
   problemText = "problemText"
 }
-TypeGraphQL.registerEnumType(ProblemOrderByRelevanceFieldEnum, {
+registerEnumType(ProblemOrderByRelevanceFieldEnum, {
   name: "ProblemOrderByRelevanceFieldEnum",
   description: undefined,
 });

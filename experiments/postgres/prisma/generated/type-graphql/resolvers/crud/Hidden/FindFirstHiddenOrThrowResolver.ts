@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindFirstHiddenOrThrowArgs } from "./args/FindFirstHiddenOrThrowArgs";
 import { Hidden } from "../../../models/Hidden";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Hidden)
+@Resolver(_of => Hidden)
 export class FindFirstHiddenOrThrowResolver {
-  @TypeGraphQL.Query(_returns => Hidden, {
+  @Query(_returns => Hidden, {
     nullable: true
   })
-  async findFirstHiddenOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstHiddenOrThrowArgs) args: FindFirstHiddenOrThrowArgs): Promise<Hidden | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstHiddenOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstHiddenOrThrowArgs) args: FindFirstHiddenOrThrowArgs): Promise<Hidden | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Hidden', 'hidden', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).hidden.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Hidden', 'hidden', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Hidden', 'hidden', 'findFirstOrThrow')),
     });
   }
 }

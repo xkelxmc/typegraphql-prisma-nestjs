@@ -1,11 +1,11 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 
 export enum JsonNullValueFilter {
   DbNull = "DbNull",
   JsonNull = "JsonNull",
   AnyNull = "AnyNull"
 }
-TypeGraphQL.registerEnumType(JsonNullValueFilter, {
+registerEnumType(JsonNullValueFilter, {
   name: "JsonNullValueFilter",
   description: undefined,
 });

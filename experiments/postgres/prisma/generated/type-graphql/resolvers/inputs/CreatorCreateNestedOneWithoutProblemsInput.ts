@@ -1,24 +1,24 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorCreateOrConnectWithoutProblemsInput } from "../inputs/CreatorCreateOrConnectWithoutProblemsInput";
 import { CreatorCreateWithoutProblemsInput } from "../inputs/CreatorCreateWithoutProblemsInput";
 import { CreatorWhereUniqueInput } from "../inputs/CreatorWhereUniqueInput";
 
-@TypeGraphQL.InputType("CreatorCreateNestedOneWithoutProblemsInput", {})
+@InputType("CreatorCreateNestedOneWithoutProblemsInput", {})
 export class CreatorCreateNestedOneWithoutProblemsInput {
-  @TypeGraphQL.Field(_type => CreatorCreateWithoutProblemsInput, {
+  @Field(_type => CreatorCreateWithoutProblemsInput, {
     nullable: true
   })
   create?: CreatorCreateWithoutProblemsInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorCreateOrConnectWithoutProblemsInput, {
+  @Field(_type => CreatorCreateOrConnectWithoutProblemsInput, {
     nullable: true
   })
   connectOrCreate?: CreatorCreateOrConnectWithoutProblemsInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorWhereUniqueInput, {
+  @Field(_type => CreatorWhereUniqueInput, {
     nullable: true
   })
   connect?: CreatorWhereUniqueInput | undefined;

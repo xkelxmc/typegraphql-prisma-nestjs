@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { GroupByEquipmentArgs } from "./args/GroupByEquipmentArgs";
 import { Equipment } from "../../../models/Equipment";
 import { EquipmentGroupBy } from "../../outputs/EquipmentGroupBy";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Equipment)
+@Resolver(_of => Equipment)
 export class GroupByEquipmentResolver {
-  @TypeGraphQL.Query(_returns => [EquipmentGroupBy], {
+  @Query(_returns => [EquipmentGroupBy], {
     nullable: false
   })
-  async groupByEquipment(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByEquipmentArgs) args: GroupByEquipmentArgs): Promise<EquipmentGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByEquipment(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByEquipmentArgs) args: GroupByEquipmentArgs): Promise<EquipmentGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'Equipment', 'equipment', 'groupBy');
     return getPrismaFromContext(ctx).equipment.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Equipment', 'equipment', 'groupBy')),
       ...Object.fromEntries(
         Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),

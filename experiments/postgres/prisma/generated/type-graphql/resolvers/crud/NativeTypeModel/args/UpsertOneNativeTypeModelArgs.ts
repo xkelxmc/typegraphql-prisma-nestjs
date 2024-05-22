@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { NativeTypeModelCreateInput } from "../../../inputs/NativeTypeModelCreateInput";
 import { NativeTypeModelUpdateInput } from "../../../inputs/NativeTypeModelUpdateInput";
 import { NativeTypeModelWhereUniqueInput } from "../../../inputs/NativeTypeModelWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpsertOneNativeTypeModelArgs {
-  @TypeGraphQL.Field(_type => NativeTypeModelWhereUniqueInput, {
+  @Field(_type => NativeTypeModelWhereUniqueInput, {
     nullable: false
   })
   where!: NativeTypeModelWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelCreateInput, {
+  @Field(_type => NativeTypeModelCreateInput, {
     nullable: false
   })
   create!: NativeTypeModelCreateInput;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelUpdateInput, {
+  @Field(_type => NativeTypeModelUpdateInput, {
     nullable: false
   })
   update!: NativeTypeModelUpdateInput;

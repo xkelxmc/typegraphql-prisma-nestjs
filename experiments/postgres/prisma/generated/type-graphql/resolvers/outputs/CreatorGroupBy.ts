@@ -1,47 +1,47 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorAvgAggregate } from "../outputs/CreatorAvgAggregate";
 import { CreatorCountAggregate } from "../outputs/CreatorCountAggregate";
 import { CreatorMaxAggregate } from "../outputs/CreatorMaxAggregate";
 import { CreatorMinAggregate } from "../outputs/CreatorMinAggregate";
 import { CreatorSumAggregate } from "../outputs/CreatorSumAggregate";
 
-@TypeGraphQL.ObjectType("CreatorGroupBy", {})
+@ObjectType("CreatorGroupBy", {})
 export class CreatorGroupBy {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   id!: number;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => CreatorCountAggregate, {
+  @Field(_type => CreatorCountAggregate, {
     nullable: true
   })
-  count!: CreatorCountAggregate | null;
+  _count!: CreatorCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => CreatorAvgAggregate, {
+  @Field(_type => CreatorAvgAggregate, {
     nullable: true
   })
-  avg!: CreatorAvgAggregate | null;
+  _avg!: CreatorAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => CreatorSumAggregate, {
+  @Field(_type => CreatorSumAggregate, {
     nullable: true
   })
-  sum!: CreatorSumAggregate | null;
+  _sum!: CreatorSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => CreatorMinAggregate, {
+  @Field(_type => CreatorMinAggregate, {
     nullable: true
   })
-  min!: CreatorMinAggregate | null;
+  _min!: CreatorMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => CreatorMaxAggregate, {
+  @Field(_type => CreatorMaxAggregate, {
     nullable: true
   })
-  max!: CreatorMaxAggregate | null;
+  _max!: CreatorMaxAggregate | null;
 }

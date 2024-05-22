@@ -27,7 +27,7 @@ export function generateCustomScalars(
         if (!(typeof value === "string")) {
           throw new Error(\`[DecimalError] Invalid argument: \${typeof value}. Expected string.\`);
         }
-        return new Prisma.Decimal(value);
+        return value;
       },
     });
   `);

@@ -1,22 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
-import graphqlFields from "graphql-fields";
-import { GraphQLResolveInfo } from "graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
+import type { GraphQLResolveInfo } from "graphql";
 import { DeleteOnePostArgs } from "./args/DeleteOnePostArgs";
 import { Post } from "../../../models/Post";
-import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Post)
+@Resolver(_of => Post)
 export class DeleteOnePostResolver {
-  @TypeGraphQL.Mutation(_returns => Post, {
+  @Mutation(_returns => Post, {
     nullable: true
   })
-  async deleteOnePost(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: DeleteOnePostArgs): Promise<Post | null> {
-    const { _count } = transformFields(
-      graphqlFields(info as any)
-    );
+  async deleteOnePost(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: DeleteOnePostArgs): Promise<Post | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Post', 'post', 'delete');
     return getPrismaFromContext(ctx).post.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Post', 'post', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Post', 'post', 'delete')),
     });
   }
 }

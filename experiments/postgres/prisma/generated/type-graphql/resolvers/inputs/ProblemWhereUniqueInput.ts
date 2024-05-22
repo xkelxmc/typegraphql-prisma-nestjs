@@ -1,51 +1,51 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { IntNullableFilter } from "../../../global/inputs/IntNullableFilter";
+import { StringFilter } from "../../../global/inputs/StringFilter";
 import { CreatorListRelationFilter } from "../inputs/CreatorListRelationFilter";
 import { CreatorNullableRelationFilter } from "../inputs/CreatorNullableRelationFilter";
-import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { ProblemWhereInput } from "../inputs/ProblemWhereInput";
-import { StringFilter } from "../inputs/StringFilter";
 
-@TypeGraphQL.InputType("ProblemWhereUniqueInput", {})
+@InputType("ProblemWhereUniqueInput", {})
 export class ProblemWhereUniqueInput {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   id?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereInput], {
+  @Field(_type => [ProblemWhereInput], {
     nullable: true
   })
   AND?: ProblemWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereInput], {
+  @Field(_type => [ProblemWhereInput], {
     nullable: true
   })
   OR?: ProblemWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemWhereInput], {
+  @Field(_type => [ProblemWhereInput], {
     nullable: true
   })
   NOT?: ProblemWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   problemText?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntNullableFilter, {
+  @Field(_type => IntNullableFilter, {
     nullable: true
   })
   creatorId?: IntNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorListRelationFilter, {
+  @Field(_type => CreatorListRelationFilter, {
     nullable: true
   })
   likedBy?: CreatorListRelationFilter | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorNullableRelationFilter, {
+  @Field(_type => CreatorNullableRelationFilter, {
     nullable: true
   })
   creator?: CreatorNullableRelationFilter | undefined;

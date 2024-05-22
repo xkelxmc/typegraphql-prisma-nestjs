@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { DeleteOneMainUserArgs } from "./args/DeleteOneMainUserArgs";
 import { MainUser } from "../../../models/MainUser";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => MainUser)
+@Resolver(_of => MainUser)
 export class DeleteOneMainUserResolver {
-  @TypeGraphQL.Mutation(_returns => MainUser, {
+  @Mutation(_returns => MainUser, {
     nullable: true
   })
-  async deleteOneMainUser(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneMainUserArgs) args: DeleteOneMainUserArgs): Promise<MainUser | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOneMainUser(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOneMainUserArgs) args: DeleteOneMainUserArgs): Promise<MainUser | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'User', 'user', 'delete');
     return getPrismaFromContext(ctx).user.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'User', 'user', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'User', 'user', 'delete')),
     });
   }
 }

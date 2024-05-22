@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindUniqueProblemArgs } from "./args/FindUniqueProblemArgs";
 import { Problem } from "../../../models/Problem";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Problem)
+@Resolver(_of => Problem)
 export class FindUniqueProblemResolver {
-  @TypeGraphQL.Query(_returns => Problem, {
+  @Query(_returns => Problem, {
     nullable: true
   })
-  async problem(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueProblemArgs) args: FindUniqueProblemArgs): Promise<Problem | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async problem(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueProblemArgs) args: FindUniqueProblemArgs): Promise<Problem | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Problem', 'problem', 'findUnique');
     return getPrismaFromContext(ctx).problem.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Problem', 'problem', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Problem', 'problem', 'findUnique')),
     });
   }
 }

@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { HiddenOrderByWithAggregationInput } from "../../../inputs/HiddenOrderByWithAggregationInput";
 import { HiddenScalarWhereWithAggregatesInput } from "../../../inputs/HiddenScalarWhereWithAggregatesInput";
 import { HiddenWhereInput } from "../../../inputs/HiddenWhereInput";
 import { HiddenScalarFieldEnum } from "../../../../enums/HiddenScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByHiddenArgs {
-  @TypeGraphQL.Field(_type => HiddenWhereInput, {
+  @Field(_type => HiddenWhereInput, {
     nullable: true
   })
   where?: HiddenWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [HiddenOrderByWithAggregationInput], {
+  @Field(_type => [HiddenOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: HiddenOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [HiddenScalarFieldEnum], {
+  @Field(_type => [HiddenScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"id" | "name">;
 
-  @TypeGraphQL.Field(_type => HiddenScalarWhereWithAggregatesInput, {
+  @Field(_type => HiddenScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: HiddenScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

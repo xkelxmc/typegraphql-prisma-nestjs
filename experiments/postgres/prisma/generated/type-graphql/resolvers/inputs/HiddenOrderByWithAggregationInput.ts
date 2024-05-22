@@ -1,36 +1,36 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { HiddenCountOrderByAggregateInput } from "../inputs/HiddenCountOrderByAggregateInput";
 import { HiddenMaxOrderByAggregateInput } from "../inputs/HiddenMaxOrderByAggregateInput";
 import { HiddenMinOrderByAggregateInput } from "../inputs/HiddenMinOrderByAggregateInput";
 import { SortOrderInput } from "../inputs/SortOrderInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("HiddenOrderByWithAggregationInput", {})
+@InputType("HiddenOrderByWithAggregationInput", {})
 export class HiddenOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   name?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => HiddenCountOrderByAggregateInput, {
+  @Field(_type => HiddenCountOrderByAggregateInput, {
     nullable: true
   })
   _count?: HiddenCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => HiddenMaxOrderByAggregateInput, {
+  @Field(_type => HiddenMaxOrderByAggregateInput, {
     nullable: true
   })
   _max?: HiddenMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => HiddenMinOrderByAggregateInput, {
+  @Field(_type => HiddenMinOrderByAggregateInput, {
     nullable: true
   })
   _min?: HiddenMinOrderByAggregateInput | undefined;

@@ -1,37 +1,37 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostAvgAggregate } from "../outputs/PostAvgAggregate";
 import { PostCountAggregate } from "../outputs/PostCountAggregate";
 import { PostMaxAggregate } from "../outputs/PostMaxAggregate";
 import { PostMinAggregate } from "../outputs/PostMinAggregate";
 import { PostSumAggregate } from "../outputs/PostSumAggregate";
 
-@TypeGraphQL.ObjectType("AggregatePost", {})
+@ObjectType("AggregatePost", {})
 export class AggregatePost {
-  @TypeGraphQL.Field(_type => PostCountAggregate, {
+  @Field(_type => PostCountAggregate, {
     nullable: true
   })
-  count!: PostCountAggregate | null;
+  _count!: PostCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostAvgAggregate, {
+  @Field(_type => PostAvgAggregate, {
     nullable: true
   })
-  avg!: PostAvgAggregate | null;
+  _avg!: PostAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostSumAggregate, {
+  @Field(_type => PostSumAggregate, {
     nullable: true
   })
-  sum!: PostSumAggregate | null;
+  _sum!: PostSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostMinAggregate, {
+  @Field(_type => PostMinAggregate, {
     nullable: true
   })
-  min!: PostMinAggregate | null;
+  _min!: PostMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostMaxAggregate, {
+  @Field(_type => PostMaxAggregate, {
     nullable: true
   })
-  max!: PostMaxAggregate | null;
+  _max!: PostMaxAggregate | null;
 }

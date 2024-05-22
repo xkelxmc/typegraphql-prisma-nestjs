@@ -1,24 +1,24 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { DirectorCreateOrConnectWithoutMoviesInput } from "../inputs/DirectorCreateOrConnectWithoutMoviesInput";
 import { DirectorCreateWithoutMoviesInput } from "../inputs/DirectorCreateWithoutMoviesInput";
 import { DirectorWhereUniqueInput } from "../inputs/DirectorWhereUniqueInput";
 
-@TypeGraphQL.InputType("DirectorCreateNestedOneWithoutMoviesInput", {})
+@InputType("DirectorCreateNestedOneWithoutMoviesInput", {})
 export class DirectorCreateNestedOneWithoutMoviesInput {
-  @TypeGraphQL.Field(_type => DirectorCreateWithoutMoviesInput, {
+  @Field(_type => DirectorCreateWithoutMoviesInput, {
     nullable: true
   })
   create?: DirectorCreateWithoutMoviesInput | undefined;
 
-  @TypeGraphQL.Field(_type => DirectorCreateOrConnectWithoutMoviesInput, {
+  @Field(_type => DirectorCreateOrConnectWithoutMoviesInput, {
     nullable: true
   })
   connectOrCreate?: DirectorCreateOrConnectWithoutMoviesInput | undefined;
 
-  @TypeGraphQL.Field(_type => DirectorWhereUniqueInput, {
+  @Field(_type => DirectorWhereUniqueInput, {
     nullable: true
   })
   connect?: DirectorWhereUniqueInput | undefined;

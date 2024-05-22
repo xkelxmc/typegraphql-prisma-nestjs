@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostAvgAggregate } from "../outputs/PostAvgAggregate";
 import { PostCountAggregate } from "../outputs/PostCountAggregate";
 import { PostMaxAggregate } from "../outputs/PostMaxAggregate";
@@ -9,85 +9,85 @@ import { PostMinAggregate } from "../outputs/PostMinAggregate";
 import { PostSumAggregate } from "../outputs/PostSumAggregate";
 import { PostKind } from "../../enums/PostKind";
 
-@TypeGraphQL.ObjectType("PostGroupBy", {})
+@ObjectType("PostGroupBy", {})
 export class PostGroupBy {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   uuid!: string;
 
-  @TypeGraphQL.Field(_type => Date, {
+  @Field(_type => Date, {
     nullable: false
   })
   createdAt!: Date;
 
-  @TypeGraphQL.Field(_type => Date, {
+  @Field(_type => Date, {
     nullable: false
   })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field(_type => Boolean, {
+  @Field(_type => Boolean, {
     nullable: false
   })
   published!: boolean;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   title!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   subtitle!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   content!: string | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   authorId!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   editorId!: number | null;
 
-  @TypeGraphQL.Field(_type => PostKind, {
+  @Field(_type => PostKind, {
     nullable: true
   })
   kind!: "BLOG" | "ADVERT" | null;
 
-  @TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+  @Field(_type => GraphQLScalars.JSONResolver, {
     nullable: false
   })
   metadata!: Prisma.JsonValue;
 
-  @TypeGraphQL.Field(_type => PostCountAggregate, {
+  @Field(_type => PostCountAggregate, {
     nullable: true
   })
-  count!: PostCountAggregate | null;
+  _count!: PostCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostAvgAggregate, {
+  @Field(_type => PostAvgAggregate, {
     nullable: true
   })
-  avg!: PostAvgAggregate | null;
+  _avg!: PostAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostSumAggregate, {
+  @Field(_type => PostSumAggregate, {
     nullable: true
   })
-  sum!: PostSumAggregate | null;
+  _sum!: PostSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostMinAggregate, {
+  @Field(_type => PostMinAggregate, {
     nullable: true
   })
-  min!: PostMinAggregate | null;
+  _min!: PostMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => PostMaxAggregate, {
+  @Field(_type => PostMaxAggregate, {
     nullable: true
   })
-  max!: PostMaxAggregate | null;
+  _max!: PostMaxAggregate | null;
 }

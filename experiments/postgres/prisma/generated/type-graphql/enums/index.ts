@@ -23,7 +23,6 @@ export { PostOrderByRelevanceFieldEnum } from "./PostOrderByRelevanceFieldEnum";
 export { PostScalarFieldEnum } from "./PostScalarFieldEnum";
 export { ProblemOrderByRelevanceFieldEnum } from "./ProblemOrderByRelevanceFieldEnum";
 export { ProblemScalarFieldEnum } from "./ProblemScalarFieldEnum";
-export { QueryMode } from "./QueryMode";
 export { Role } from "./Role";
 export { SortOrder } from "./SortOrder";
 export { TransactionIsolationLevel } from "./TransactionIsolationLevel";

@@ -1,26 +1,26 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 
-@TypeGraphQL.InputType("NativeTypeModelCreateManyInput", {})
+@InputType("NativeTypeModelCreateManyInput", {})
 export class NativeTypeModelCreateManyInput {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   id?: number | undefined;
 
-  @TypeGraphQL.Field(_type => GraphQLScalars.BigIntResolver, {
+  @Field(_type => GraphQLScalars.BigIntResolver, {
     nullable: true
   })
   bigInt?: bigint | undefined;
 
-  @TypeGraphQL.Field(_type => GraphQLScalars.ByteResolver, {
+  @Field(_type => GraphQLScalars.ByteResolver, {
     nullable: true
   })
   byteA?: Buffer | undefined;
 
-  @TypeGraphQL.Field(_type => DecimalJSScalar, {
+  @Field(_type => DecimalJSScalar, {
     nullable: true
   })
   decimal?: Prisma.Decimal | undefined;

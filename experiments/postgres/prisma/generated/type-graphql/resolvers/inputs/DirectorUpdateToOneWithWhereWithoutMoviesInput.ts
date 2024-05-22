@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { DirectorUpdateWithoutMoviesInput } from "../inputs/DirectorUpdateWithoutMoviesInput";
 import { DirectorWhereInput } from "../inputs/DirectorWhereInput";
 
-@TypeGraphQL.InputType("DirectorUpdateToOneWithWhereWithoutMoviesInput", {})
+@InputType("DirectorUpdateToOneWithWhereWithoutMoviesInput", {})
 export class DirectorUpdateToOneWithWhereWithoutMoviesInput {
-  @TypeGraphQL.Field(_type => DirectorWhereInput, {
+  @Field(_type => DirectorWhereInput, {
     nullable: true
   })
   where?: DirectorWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => DirectorUpdateWithoutMoviesInput, {
+  @Field(_type => DirectorUpdateWithoutMoviesInput, {
     nullable: false
   })
   data!: DirectorUpdateWithoutMoviesInput;

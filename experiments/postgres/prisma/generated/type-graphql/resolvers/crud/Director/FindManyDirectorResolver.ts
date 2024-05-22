@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindManyDirectorArgs } from "./args/FindManyDirectorArgs";
 import { Director } from "../../../models/Director";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Director)
+@Resolver(_of => Director)
 export class FindManyDirectorResolver {
-  @TypeGraphQL.Query(_returns => [Director], {
+  @Query(_returns => [Director], {
     nullable: false
   })
-  async directors(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyDirectorArgs) args: FindManyDirectorArgs): Promise<Director[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async directors(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyDirectorArgs) args: FindManyDirectorArgs): Promise<Director[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'findMany');
     return getPrismaFromContext(ctx).director.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'findMany')),
     });
   }
 }

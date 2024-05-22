@@ -1,16 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { HiddenUpdateManyMutationInput } from "../../../inputs/HiddenUpdateManyMutationInput";
 import { HiddenWhereInput } from "../../../inputs/HiddenWhereInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpdateManyHiddenArgs {
-  @TypeGraphQL.Field(_type => HiddenUpdateManyMutationInput, {
+  @Field(_type => HiddenUpdateManyMutationInput, {
     nullable: false
   })
   data!: HiddenUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => HiddenWhereInput, {
+  @Field(_type => HiddenWhereInput, {
     nullable: true
   })
   where?: HiddenWhereInput | undefined;

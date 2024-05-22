@@ -1,10 +1,10 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 
 export enum DirectorScalarFieldEnum {
   firstName = "firstName",
   lastName = "lastName"
 }
-TypeGraphQL.registerEnumType(DirectorScalarFieldEnum, {
+registerEnumType(DirectorScalarFieldEnum, {
   name: "DirectorScalarFieldEnum",
   description: undefined,
 });

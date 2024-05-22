@@ -1,22 +1,22 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
 import { PostCreateNestedOneWithoutCommentsInput } from "../inputs/PostCreateNestedOneWithoutCommentsInput";
 
-@TypeGraphQL.InputType("CommentCreateInput", {})
+@InputType("CommentCreateInput", {})
 export class CommentCreateInput {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   comment!: string;
 
-  @TypeGraphQL.Field(_type => PostCreateNestedOneWithoutCommentsInput, {
+  @Field(_type => PostCreateNestedOneWithoutCommentsInput, {
     nullable: false
   })
   post!: PostCreateNestedOneWithoutCommentsInput;

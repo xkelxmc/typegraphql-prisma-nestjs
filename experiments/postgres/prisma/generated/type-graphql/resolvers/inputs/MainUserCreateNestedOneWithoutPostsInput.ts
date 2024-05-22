@@ -1,24 +1,24 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MainUserCreateOrConnectWithoutPostsInput } from "../inputs/MainUserCreateOrConnectWithoutPostsInput";
 import { MainUserCreateWithoutPostsInput } from "../inputs/MainUserCreateWithoutPostsInput";
 import { MainUserWhereUniqueInput } from "../inputs/MainUserWhereUniqueInput";
 
-@TypeGraphQL.InputType("MainUserCreateNestedOneWithoutPostsInput", {})
+@InputType("MainUserCreateNestedOneWithoutPostsInput", {})
 export class MainUserCreateNestedOneWithoutPostsInput {
-  @TypeGraphQL.Field(_type => MainUserCreateWithoutPostsInput, {
+  @Field(_type => MainUserCreateWithoutPostsInput, {
     nullable: true
   })
   create?: MainUserCreateWithoutPostsInput | undefined;
 
-  @TypeGraphQL.Field(_type => MainUserCreateOrConnectWithoutPostsInput, {
+  @Field(_type => MainUserCreateOrConnectWithoutPostsInput, {
     nullable: true
   })
   connectOrCreate?: MainUserCreateOrConnectWithoutPostsInput | undefined;
 
-  @TypeGraphQL.Field(_type => MainUserWhereUniqueInput, {
+  @Field(_type => MainUserWhereUniqueInput, {
     nullable: true
   })
   connect?: MainUserWhereUniqueInput | undefined;

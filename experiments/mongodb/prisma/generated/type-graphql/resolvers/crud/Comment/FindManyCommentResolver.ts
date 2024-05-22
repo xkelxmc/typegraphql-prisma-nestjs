@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindManyCommentArgs } from "./args/FindManyCommentArgs";
 import { Comment } from "../../../models/Comment";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Comment)
+@Resolver(_of => Comment)
 export class FindManyCommentResolver {
-  @TypeGraphQL.Query(_returns => [Comment], {
+  @Query(_returns => [Comment], {
     nullable: false
   })
-  async comments(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: FindManyCommentArgs): Promise<Comment[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async comments(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args() args: FindManyCommentArgs): Promise<Comment[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Comment', 'comment', 'findMany');
     return getPrismaFromContext(ctx).comment.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Comment', 'comment', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Comment', 'comment', 'findMany')),
     });
   }
 }

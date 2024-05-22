@@ -12,6 +12,7 @@ generator client {
 generator typegraphql {
   provider               = "node ../../src/cli/dev.ts"
   output                 = "../prisma/generated/type-graphql"
+  globalOutput           = true
   emitDMMF               = true
   // emitTranspiledCode       = true
   // simpleResolvers          = false

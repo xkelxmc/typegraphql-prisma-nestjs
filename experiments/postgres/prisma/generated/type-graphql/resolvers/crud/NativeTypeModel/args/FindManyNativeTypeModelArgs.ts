@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { NativeTypeModelOrderByWithRelationAndSearchRelevanceInput } from "../../../inputs/NativeTypeModelOrderByWithRelationAndSearchRelevanceInput";
 import { NativeTypeModelWhereInput } from "../../../inputs/NativeTypeModelWhereInput";
 import { NativeTypeModelWhereUniqueInput } from "../../../inputs/NativeTypeModelWhereUniqueInput";
 import { NativeTypeModelScalarFieldEnum } from "../../../../enums/NativeTypeModelScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class FindManyNativeTypeModelArgs {
-  @TypeGraphQL.Field(_type => NativeTypeModelWhereInput, {
+  @Field(_type => NativeTypeModelWhereInput, {
     nullable: true
   })
   where?: NativeTypeModelWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [NativeTypeModelOrderByWithRelationAndSearchRelevanceInput], {
+  @Field(_type => [NativeTypeModelOrderByWithRelationAndSearchRelevanceInput], {
     nullable: true
   })
   orderBy?: NativeTypeModelOrderByWithRelationAndSearchRelevanceInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => NativeTypeModelWhereUniqueInput, {
+  @Field(_type => NativeTypeModelWhereUniqueInput, {
     nullable: true
   })
   cursor?: NativeTypeModelWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [NativeTypeModelScalarFieldEnum], {
+  @Field(_type => [NativeTypeModelScalarFieldEnum], {
     nullable: true
   })
   distinct?: Array<"id" | "bigInt" | "byteA" | "decimal"> | undefined;

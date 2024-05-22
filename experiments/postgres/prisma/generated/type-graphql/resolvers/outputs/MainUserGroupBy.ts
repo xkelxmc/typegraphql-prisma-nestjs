@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MainUserAvgAggregate } from "../outputs/MainUserAvgAggregate";
 import { MainUserCountAggregate } from "../outputs/MainUserCountAggregate";
 import { MainUserMaxAggregate } from "../outputs/MainUserMaxAggregate";
@@ -9,74 +9,74 @@ import { MainUserMinAggregate } from "../outputs/MainUserMinAggregate";
 import { MainUserSumAggregate } from "../outputs/MainUserSumAggregate";
 import { Role } from "../../enums/Role";
 
-@TypeGraphQL.ObjectType("MainUserGroupBy", {})
+@ObjectType("MainUserGroupBy", {})
 export class MainUserGroupBy {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   id!: number;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   email!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   name!: string | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: false
   })
   age!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+  @Field(_type => Float, {
     nullable: false
   })
   balance!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+  @Field(_type => Float, {
     nullable: false
   })
   amount!: number;
 
-  @TypeGraphQL.Field(_type => Role, {
+  @Field(_type => Role, {
     nullable: false
   })
   role!: "USER" | "ADMIN";
 
-  @TypeGraphQL.Field(_type => [TypeGraphQL.Int], {
-    nullable: false
+  @Field(_type => [Int], {
+    nullable: true
   })
-  grades!: number[];
+  grades!: number[] | null;
 
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: false
+  @Field(_type => [String], {
+    nullable: true
   })
-  aliases!: string[];
+  aliases!: string[] | null;
 
-  @TypeGraphQL.Field(_type => MainUserCountAggregate, {
+  @Field(_type => MainUserCountAggregate, {
     nullable: true
   })
   _count!: MainUserCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => MainUserAvgAggregate, {
+  @Field(_type => MainUserAvgAggregate, {
     nullable: true
   })
   _avg!: MainUserAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => MainUserSumAggregate, {
+  @Field(_type => MainUserSumAggregate, {
     nullable: true
   })
   _sum!: MainUserSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => MainUserMinAggregate, {
+  @Field(_type => MainUserMinAggregate, {
     nullable: true
   })
   _min!: MainUserMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => MainUserMaxAggregate, {
+  @Field(_type => MainUserMaxAggregate, {
     nullable: true
   })
   _max!: MainUserMaxAggregate | null;

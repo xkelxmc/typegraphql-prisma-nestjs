@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { CommentOrderByWithAggregationInput } from "../../../inputs/CommentOrderByWithAggregationInput";
 import { CommentScalarWhereWithAggregatesInput } from "../../../inputs/CommentScalarWhereWithAggregatesInput";
 import { CommentWhereInput } from "../../../inputs/CommentWhereInput";
 import { CommentScalarFieldEnum } from "../../../../enums/CommentScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByCommentArgs {
-  @TypeGraphQL.Field(_type => CommentWhereInput, {
+  @Field(_type => CommentWhereInput, {
     nullable: true
   })
   where?: CommentWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentOrderByWithAggregationInput], {
+  @Field(_type => [CommentOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: CommentOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentScalarFieldEnum], {
+  @Field(_type => [CommentScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"id" | "postId" | "comment">;
 
-  @TypeGraphQL.Field(_type => CommentScalarWhereWithAggregatesInput, {
+  @Field(_type => CommentScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: CommentScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

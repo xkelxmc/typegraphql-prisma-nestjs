@@ -1,15 +1,15 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { DirectorCreateManyInput } from "../../../inputs/DirectorCreateManyInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class CreateManyDirectorArgs {
-  @TypeGraphQL.Field(_type => [DirectorCreateManyInput], {
+  @Field(_type => [DirectorCreateManyInput], {
     nullable: false
   })
   data!: DirectorCreateManyInput[];
 
-  @TypeGraphQL.Field(_type => Boolean, {
+  @Field(_type => Boolean, {
     nullable: true
   })
   skipDuplicates?: boolean | undefined;

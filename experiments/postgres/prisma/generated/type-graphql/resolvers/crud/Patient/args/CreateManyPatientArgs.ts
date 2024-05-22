@@ -1,15 +1,15 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { PatientCreateManyInput } from "../../../inputs/PatientCreateManyInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class CreateManyPatientArgs {
-  @TypeGraphQL.Field(_type => [PatientCreateManyInput], {
+  @Field(_type => [PatientCreateManyInput], {
     nullable: false
   })
   data!: PatientCreateManyInput[];
 
-  @TypeGraphQL.Field(_type => Boolean, {
+  @Field(_type => Boolean, {
     nullable: true
   })
   skipDuplicates?: boolean | undefined;

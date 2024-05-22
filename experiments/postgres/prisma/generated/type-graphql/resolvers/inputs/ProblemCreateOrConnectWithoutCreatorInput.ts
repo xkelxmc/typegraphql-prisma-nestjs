@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { ProblemCreateWithoutCreatorInput } from "../inputs/ProblemCreateWithoutCreatorInput";
 import { ProblemWhereUniqueInput } from "../inputs/ProblemWhereUniqueInput";
 
-@TypeGraphQL.InputType("ProblemCreateOrConnectWithoutCreatorInput", {})
+@InputType("ProblemCreateOrConnectWithoutCreatorInput", {})
 export class ProblemCreateOrConnectWithoutCreatorInput {
-  @TypeGraphQL.Field(_type => ProblemWhereUniqueInput, {
+  @Field(_type => ProblemWhereUniqueInput, {
     nullable: false
   })
   where!: ProblemWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => ProblemCreateWithoutCreatorInput, {
+  @Field(_type => ProblemCreateWithoutCreatorInput, {
     nullable: false
   })
   create!: ProblemCreateWithoutCreatorInput;

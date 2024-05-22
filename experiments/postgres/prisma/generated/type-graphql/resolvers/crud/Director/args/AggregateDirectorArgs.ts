@@ -1,32 +1,32 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { DirectorOrderByWithRelationAndSearchRelevanceInput } from "../../../inputs/DirectorOrderByWithRelationAndSearchRelevanceInput";
 import { DirectorWhereInput } from "../../../inputs/DirectorWhereInput";
 import { DirectorWhereUniqueInput } from "../../../inputs/DirectorWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class AggregateDirectorArgs {
-  @TypeGraphQL.Field(_type => DirectorWhereInput, {
+  @Field(_type => DirectorWhereInput, {
     nullable: true
   })
   where?: DirectorWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [DirectorOrderByWithRelationAndSearchRelevanceInput], {
+  @Field(_type => [DirectorOrderByWithRelationAndSearchRelevanceInput], {
     nullable: true
   })
   orderBy?: DirectorOrderByWithRelationAndSearchRelevanceInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => DirectorWhereUniqueInput, {
+  @Field(_type => DirectorWhereUniqueInput, {
     nullable: true
   })
   cursor?: DirectorWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

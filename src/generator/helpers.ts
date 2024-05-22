@@ -167,6 +167,8 @@ export function pascalCase(str: string): string {
 
 function getInputKeywordPhrasePosition(inputTypeName: string) {
   const inputParseResult = [
+    "Composite",
+    "ObjectEqualityInput",
     "Unchecked",
     "Create",
     "CountOrderBy",

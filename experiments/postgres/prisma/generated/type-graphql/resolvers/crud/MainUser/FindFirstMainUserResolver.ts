@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindFirstMainUserArgs } from "./args/FindFirstMainUserArgs";
 import { MainUser } from "../../../models/MainUser";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => MainUser)
+@Resolver(_of => MainUser)
 export class FindFirstMainUserResolver {
-  @TypeGraphQL.Query(_returns => MainUser, {
+  @Query(_returns => MainUser, {
     nullable: true
   })
-  async findFirstMainUser(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstMainUserArgs) args: FindFirstMainUserArgs): Promise<MainUser | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstMainUser(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstMainUserArgs) args: FindFirstMainUserArgs): Promise<MainUser | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'User', 'user', 'findFirst');
     return getPrismaFromContext(ctx).user.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'User', 'user', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'User', 'user', 'findFirst')),
     });
   }
 }

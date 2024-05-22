@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
@@ -11,59 +11,59 @@ import { CommentUpdateWithWhereUniqueWithoutPostInput } from "../inputs/CommentU
 import { CommentUpsertWithWhereUniqueWithoutPostInput } from "../inputs/CommentUpsertWithWhereUniqueWithoutPostInput";
 import { CommentWhereUniqueInput } from "../inputs/CommentWhereUniqueInput";
 
-@TypeGraphQL.InputType("CommentUpdateManyWithoutPostNestedInput", {})
+@InputType("CommentUpdateManyWithoutPostNestedInput", {})
 export class CommentUpdateManyWithoutPostNestedInput {
-  @TypeGraphQL.Field(_type => [CommentCreateWithoutPostInput], {
+  @Field(_type => [CommentCreateWithoutPostInput], {
     nullable: true
   })
   create?: CommentCreateWithoutPostInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentCreateOrConnectWithoutPostInput], {
+  @Field(_type => [CommentCreateOrConnectWithoutPostInput], {
     nullable: true
   })
   connectOrCreate?: CommentCreateOrConnectWithoutPostInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentUpsertWithWhereUniqueWithoutPostInput], {
+  @Field(_type => [CommentUpsertWithWhereUniqueWithoutPostInput], {
     nullable: true
   })
   upsert?: CommentUpsertWithWhereUniqueWithoutPostInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => CommentCreateManyPostInputEnvelope, {
+  @Field(_type => CommentCreateManyPostInputEnvelope, {
     nullable: true
   })
   createMany?: CommentCreateManyPostInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentWhereUniqueInput], {
+  @Field(_type => [CommentWhereUniqueInput], {
     nullable: true
   })
   set?: CommentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentWhereUniqueInput], {
+  @Field(_type => [CommentWhereUniqueInput], {
     nullable: true
   })
   disconnect?: CommentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentWhereUniqueInput], {
+  @Field(_type => [CommentWhereUniqueInput], {
     nullable: true
   })
   delete?: CommentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentWhereUniqueInput], {
+  @Field(_type => [CommentWhereUniqueInput], {
     nullable: true
   })
   connect?: CommentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentUpdateWithWhereUniqueWithoutPostInput], {
+  @Field(_type => [CommentUpdateWithWhereUniqueWithoutPostInput], {
     nullable: true
   })
   update?: CommentUpdateWithWhereUniqueWithoutPostInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentUpdateManyWithWhereWithoutPostInput], {
+  @Field(_type => [CommentUpdateManyWithWhereWithoutPostInput], {
     nullable: true
   })
   updateMany?: CommentUpdateManyWithWhereWithoutPostInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentScalarWhereInput], {
+  @Field(_type => [CommentScalarWhereInput], {
     nullable: true
   })
   deleteMany?: CommentScalarWhereInput[] | undefined;

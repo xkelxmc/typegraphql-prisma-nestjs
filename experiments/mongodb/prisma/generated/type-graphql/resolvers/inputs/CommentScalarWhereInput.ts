@@ -1,37 +1,37 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
-import { StringFilter } from "../inputs/StringFilter";
+import { StringFilter } from "../../../global/inputs/StringFilter";
 
-@TypeGraphQL.InputType("CommentScalarWhereInput", {})
+@InputType("CommentScalarWhereInput", {})
 export class CommentScalarWhereInput {
-  @TypeGraphQL.Field(_type => [CommentScalarWhereInput], {
+  @Field(_type => [CommentScalarWhereInput], {
     nullable: true
   })
   AND?: CommentScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentScalarWhereInput], {
+  @Field(_type => [CommentScalarWhereInput], {
     nullable: true
   })
   OR?: CommentScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [CommentScalarWhereInput], {
+  @Field(_type => [CommentScalarWhereInput], {
     nullable: true
   })
   NOT?: CommentScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   postId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   comment?: StringFilter | undefined;

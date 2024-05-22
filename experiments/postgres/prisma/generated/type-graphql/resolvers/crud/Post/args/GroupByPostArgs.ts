@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { PostOrderByWithAggregationInput } from "../../../inputs/PostOrderByWithAggregationInput";
 import { PostScalarWhereWithAggregatesInput } from "../../../inputs/PostScalarWhereWithAggregatesInput";
 import { PostWhereInput } from "../../../inputs/PostWhereInput";
 import { PostScalarFieldEnum } from "../../../../enums/PostScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByPostArgs {
-  @TypeGraphQL.Field(_type => PostWhereInput, {
+  @Field(_type => PostWhereInput, {
     nullable: true
   })
   where?: PostWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PostOrderByWithAggregationInput], {
+  @Field(_type => [PostOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: PostOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarFieldEnum], {
+  @Field(_type => [PostScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"uuid" | "createdAt" | "updatedAt" | "published" | "title" | "subtitle" | "content" | "authorId" | "editorId" | "kind" | "metadata">;
 
-  @TypeGraphQL.Field(_type => PostScalarWhereWithAggregatesInput, {
+  @Field(_type => PostScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: PostScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

@@ -1,39 +1,39 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
-import { IntNullableWithAggregatesFilter } from "../inputs/IntNullableWithAggregatesFilter";
-import { IntWithAggregatesFilter } from "../inputs/IntWithAggregatesFilter";
-import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { IntNullableWithAggregatesFilter } from "../../../global/inputs/IntNullableWithAggregatesFilter";
+import { IntWithAggregatesFilter } from "../../../global/inputs/IntWithAggregatesFilter";
+import { StringWithAggregatesFilter } from "../../../global/inputs/StringWithAggregatesFilter";
 
-@TypeGraphQL.InputType("ProblemScalarWhereWithAggregatesInput", {})
+@InputType("ProblemScalarWhereWithAggregatesInput", {})
 export class ProblemScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [ProblemScalarWhereWithAggregatesInput], {
+  @Field(_type => [ProblemScalarWhereWithAggregatesInput], {
     nullable: true
   })
   AND?: ProblemScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemScalarWhereWithAggregatesInput], {
+  @Field(_type => [ProblemScalarWhereWithAggregatesInput], {
     nullable: true
   })
   OR?: ProblemScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemScalarWhereWithAggregatesInput], {
+  @Field(_type => [ProblemScalarWhereWithAggregatesInput], {
     nullable: true
   })
   NOT?: ProblemScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
+  @Field(_type => IntWithAggregatesFilter, {
     nullable: true
   })
   id?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
   problemText?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntNullableWithAggregatesFilter, {
+  @Field(_type => IntNullableWithAggregatesFilter, {
     nullable: true
   })
   creatorId?: IntNullableWithAggregatesFilter | undefined;

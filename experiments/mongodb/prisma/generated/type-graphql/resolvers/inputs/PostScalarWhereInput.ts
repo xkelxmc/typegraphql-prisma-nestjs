@@ -1,47 +1,47 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
-import { StringFilter } from "../inputs/StringFilter";
+import { StringFilter } from "../../../global/inputs/StringFilter";
 
-@TypeGraphQL.InputType("PostScalarWhereInput", {})
+@InputType("PostScalarWhereInput", {})
 export class PostScalarWhereInput {
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @Field(_type => [PostScalarWhereInput], {
     nullable: true
   })
   AND?: PostScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @Field(_type => [PostScalarWhereInput], {
     nullable: true
   })
   OR?: PostScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PostScalarWhereInput], {
+  @Field(_type => [PostScalarWhereInput], {
     nullable: true
   })
   NOT?: PostScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   slug?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   title?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   body?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   authorId?: StringFilter | undefined;

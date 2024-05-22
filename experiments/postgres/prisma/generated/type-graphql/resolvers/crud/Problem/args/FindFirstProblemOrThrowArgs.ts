@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { ProblemOrderByWithRelationAndSearchRelevanceInput } from "../../../inputs/ProblemOrderByWithRelationAndSearchRelevanceInput";
 import { ProblemWhereInput } from "../../../inputs/ProblemWhereInput";
 import { ProblemWhereUniqueInput } from "../../../inputs/ProblemWhereUniqueInput";
 import { ProblemScalarFieldEnum } from "../../../../enums/ProblemScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class FindFirstProblemOrThrowArgs {
-  @TypeGraphQL.Field(_type => ProblemWhereInput, {
+  @Field(_type => ProblemWhereInput, {
     nullable: true
   })
   where?: ProblemWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemOrderByWithRelationAndSearchRelevanceInput], {
+  @Field(_type => [ProblemOrderByWithRelationAndSearchRelevanceInput], {
     nullable: true
   })
   orderBy?: ProblemOrderByWithRelationAndSearchRelevanceInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => ProblemWhereUniqueInput, {
+  @Field(_type => ProblemWhereUniqueInput, {
     nullable: true
   })
   cursor?: ProblemWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemScalarFieldEnum], {
+  @Field(_type => [ProblemScalarFieldEnum], {
     nullable: true
   })
   distinct?: Array<"id" | "problemText" | "creatorId"> | undefined;

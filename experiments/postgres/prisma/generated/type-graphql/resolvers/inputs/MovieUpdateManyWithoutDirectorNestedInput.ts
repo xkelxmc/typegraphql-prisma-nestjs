@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MovieCreateManyDirectorInputEnvelope } from "../inputs/MovieCreateManyDirectorInputEnvelope";
 import { MovieCreateOrConnectWithoutDirectorInput } from "../inputs/MovieCreateOrConnectWithoutDirectorInput";
 import { MovieCreateWithoutDirectorInput } from "../inputs/MovieCreateWithoutDirectorInput";
@@ -11,59 +11,59 @@ import { MovieUpdateWithWhereUniqueWithoutDirectorInput } from "../inputs/MovieU
 import { MovieUpsertWithWhereUniqueWithoutDirectorInput } from "../inputs/MovieUpsertWithWhereUniqueWithoutDirectorInput";
 import { MovieWhereUniqueInput } from "../inputs/MovieWhereUniqueInput";
 
-@TypeGraphQL.InputType("MovieUpdateManyWithoutDirectorNestedInput", {})
+@InputType("MovieUpdateManyWithoutDirectorNestedInput", {})
 export class MovieUpdateManyWithoutDirectorNestedInput {
-  @TypeGraphQL.Field(_type => [MovieCreateWithoutDirectorInput], {
+  @Field(_type => [MovieCreateWithoutDirectorInput], {
     nullable: true
   })
   create?: MovieCreateWithoutDirectorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieCreateOrConnectWithoutDirectorInput], {
+  @Field(_type => [MovieCreateOrConnectWithoutDirectorInput], {
     nullable: true
   })
   connectOrCreate?: MovieCreateOrConnectWithoutDirectorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieUpsertWithWhereUniqueWithoutDirectorInput], {
+  @Field(_type => [MovieUpsertWithWhereUniqueWithoutDirectorInput], {
     nullable: true
   })
   upsert?: MovieUpsertWithWhereUniqueWithoutDirectorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => MovieCreateManyDirectorInputEnvelope, {
+  @Field(_type => MovieCreateManyDirectorInputEnvelope, {
     nullable: true
   })
   createMany?: MovieCreateManyDirectorInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
+  @Field(_type => [MovieWhereUniqueInput], {
     nullable: true
   })
   set?: MovieWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
+  @Field(_type => [MovieWhereUniqueInput], {
     nullable: true
   })
   disconnect?: MovieWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
+  @Field(_type => [MovieWhereUniqueInput], {
     nullable: true
   })
   delete?: MovieWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieWhereUniqueInput], {
+  @Field(_type => [MovieWhereUniqueInput], {
     nullable: true
   })
   connect?: MovieWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieUpdateWithWhereUniqueWithoutDirectorInput], {
+  @Field(_type => [MovieUpdateWithWhereUniqueWithoutDirectorInput], {
     nullable: true
   })
   update?: MovieUpdateWithWhereUniqueWithoutDirectorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieUpdateManyWithWhereWithoutDirectorInput], {
+  @Field(_type => [MovieUpdateManyWithWhereWithoutDirectorInput], {
     nullable: true
   })
   updateMany?: MovieUpdateManyWithWhereWithoutDirectorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MovieScalarWhereInput], {
+  @Field(_type => [MovieScalarWhereInput], {
     nullable: true
   })
   deleteMany?: MovieScalarWhereInput[] | undefined;

@@ -33,7 +33,11 @@ export async function generate(options: GeneratorOptions) {
 
   const generatorConfig = options.generator.config;
   // TODO: make this type `?-` and `| undefined`
+
+  const globalOutput = parseStringBoolean(generatorConfig.globalOutput);
+
   const externalConfig: ExternalGeneratorOptions = {
+    globalOutput,
     emitDMMF: parseStringBoolean(generatorConfig.emitDMMF),
     emitTranspiledCode: parseStringBoolean(generatorConfig.emitTranspiledCode),
     simpleResolvers: parseStringBoolean(generatorConfig.simpleResolvers),
@@ -56,7 +60,7 @@ export async function generate(options: GeneratorOptions) {
       "customPrismaImportPath",
     ),
     customPrismaImportPathIgnoreLevels: parseStringBoolean(
-      generatorConfig.customPrismaImportPathIgnoreLevels
+      generatorConfig.customPrismaImportPathIgnoreLevels,
     ),
     contextPrismaKey: parseString(
       generatorConfig.contextPrismaKey,
@@ -107,6 +111,17 @@ export async function generate(options: GeneratorOptions) {
         JSON.stringify(prismaClientDmmf, null, 2),
       ),
     ]);
+  }
+
+  if (globalOutput) {
+    // await asyncFs.mkdir(
+    //   path.resolve(internalConfig.outputDirPath, "../global"),
+    //   { recursive: true },
+    // );
+    // await removeDir(
+    //   path.resolve(internalConfig.outputDirPath, "../global"),
+    //   true,
+    // );
   }
 
   // TODO: replace with `options.dmmf` when the spec match prisma client output

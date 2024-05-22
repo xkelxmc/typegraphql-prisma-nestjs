@@ -1,15 +1,15 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../client";
-import { DecimalJSScalar } from "../scalars";
+import { DecimalJSScalar } from "../../global/scalars";
 
 export class Hidden {
-  @TypeGraphQL.Field(_type => TypeGraphQL.ID, {
+  @Field(_type => ID, {
     nullable: false
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   name?: string | null;

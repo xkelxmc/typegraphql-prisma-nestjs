@@ -1,17 +1,17 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorCreateNestedOneWithoutProblemsInput } from "../inputs/CreatorCreateNestedOneWithoutProblemsInput";
 
-@TypeGraphQL.InputType("ProblemCreateWithoutLikedByInput", {})
+@InputType("ProblemCreateWithoutLikedByInput", {})
 export class ProblemCreateWithoutLikedByInput {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   problemText!: string;
 
-  @TypeGraphQL.Field(_type => CreatorCreateNestedOneWithoutProblemsInput, {
+  @Field(_type => CreatorCreateNestedOneWithoutProblemsInput, {
     nullable: true
   })
   creator?: CreatorCreateNestedOneWithoutProblemsInput | undefined;

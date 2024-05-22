@@ -1,35 +1,35 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { DirectorCountAggregate } from "../outputs/DirectorCountAggregate";
 import { DirectorMaxAggregate } from "../outputs/DirectorMaxAggregate";
 import { DirectorMinAggregate } from "../outputs/DirectorMinAggregate";
 
-@TypeGraphQL.ObjectType("DirectorGroupBy", {})
+@ObjectType("DirectorGroupBy", {})
 export class DirectorGroupBy {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   firstName!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   lastName!: string;
 
-  @TypeGraphQL.Field(_type => DirectorCountAggregate, {
+  @Field(_type => DirectorCountAggregate, {
     nullable: true
   })
-  count!: DirectorCountAggregate | null;
+  _count!: DirectorCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => DirectorMinAggregate, {
+  @Field(_type => DirectorMinAggregate, {
     nullable: true
   })
-  min!: DirectorMinAggregate | null;
+  _min!: DirectorMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => DirectorMaxAggregate, {
+  @Field(_type => DirectorMaxAggregate, {
     nullable: true
   })
-  max!: DirectorMaxAggregate | null;
+  _max!: DirectorMaxAggregate | null;
 }

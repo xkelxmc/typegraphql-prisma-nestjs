@@ -1,40 +1,40 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MovieCountAggregate } from "../outputs/MovieCountAggregate";
 import { MovieMaxAggregate } from "../outputs/MovieMaxAggregate";
 import { MovieMinAggregate } from "../outputs/MovieMinAggregate";
 
-@TypeGraphQL.ObjectType("MovieGroupBy", {})
+@ObjectType("MovieGroupBy", {})
 export class MovieGroupBy {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   directorFirstName!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   directorLastName!: string;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: false
   })
   title!: string;
 
-  @TypeGraphQL.Field(_type => MovieCountAggregate, {
+  @Field(_type => MovieCountAggregate, {
     nullable: true
   })
-  count!: MovieCountAggregate | null;
+  _count!: MovieCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => MovieMinAggregate, {
+  @Field(_type => MovieMinAggregate, {
     nullable: true
   })
-  min!: MovieMinAggregate | null;
+  _min!: MovieMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => MovieMaxAggregate, {
+  @Field(_type => MovieMaxAggregate, {
     nullable: true
   })
-  max!: MovieMaxAggregate | null;
+  _max!: MovieMaxAggregate | null;
 }

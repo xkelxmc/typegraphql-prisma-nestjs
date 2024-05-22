@@ -1,80 +1,80 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
+import { FloatFilter } from "../../../global/inputs/FloatFilter";
+import { IntFilter } from "../../../global/inputs/IntFilter";
+import { IntNullableListFilter } from "../../../global/inputs/IntNullableListFilter";
+import { StringFilter } from "../../../global/inputs/StringFilter";
+import { StringNullableFilter } from "../../../global/inputs/StringNullableFilter";
+import { StringNullableListFilter } from "../../../global/inputs/StringNullableListFilter";
 import { EnumRoleFilter } from "../inputs/EnumRoleFilter";
-import { FloatFilter } from "../inputs/FloatFilter";
-import { IntFilter } from "../inputs/IntFilter";
-import { IntNullableListFilter } from "../inputs/IntNullableListFilter";
 import { PostListRelationFilter } from "../inputs/PostListRelationFilter";
-import { StringFilter } from "../inputs/StringFilter";
-import { StringNullableFilter } from "../inputs/StringNullableFilter";
-import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
-@TypeGraphQL.InputType("MainUserWhereInput", {})
+@InputType("MainUserWhereInput", {})
 export class MainUserWhereInput {
-  @TypeGraphQL.Field(_type => [MainUserWhereInput], {
+  @Field(_type => [MainUserWhereInput], {
     nullable: true
   })
   AND?: MainUserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MainUserWhereInput], {
+  @Field(_type => [MainUserWhereInput], {
     nullable: true
   })
   OR?: MainUserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MainUserWhereInput], {
+  @Field(_type => [MainUserWhereInput], {
     nullable: true
   })
   NOT?: MainUserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @Field(_type => IntFilter, {
     nullable: true
   })
   id?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   email?: StringFilter | undefined;
 
   name?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @Field(_type => IntFilter, {
     nullable: true
   })
   age?: IntFilter | undefined;
 
   balance?: FloatFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFilter, {
+  @Field(_type => FloatFilter, {
     nullable: true
   })
   amount?: FloatFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumRoleFilter, {
+  @Field(_type => EnumRoleFilter, {
     nullable: true
   })
   role?: EnumRoleFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntNullableListFilter, {
+  @Field(_type => IntNullableListFilter, {
     nullable: true
   })
   grades?: IntNullableListFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+  @Field(_type => StringNullableListFilter, {
     nullable: true
   })
   aliases?: StringNullableListFilter | undefined;
 
   posts?: PostListRelationFilter | undefined;
 
-  @TypeGraphQL.Field(_type => PostListRelationFilter, {
+  @Field(_type => PostListRelationFilter, {
     nullable: true
   })
   editorPosts?: PostListRelationFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
+  @Field(_type => StringNullableFilter, {
     nullable: true
   })
   get firstName() {
@@ -85,7 +85,7 @@ export class MainUserWhereInput {
     this.name = name;
   }
 
-  @TypeGraphQL.Field(_type => FloatFilter, {
+  @Field(_type => FloatFilter, {
     nullable: true
   })
   get accountBalance() {
@@ -96,7 +96,7 @@ export class MainUserWhereInput {
     this.balance = balance;
   }
 
-  @TypeGraphQL.Field(_type => PostListRelationFilter, {
+  @Field(_type => PostListRelationFilter, {
     nullable: true
   })
   get clientPosts() {

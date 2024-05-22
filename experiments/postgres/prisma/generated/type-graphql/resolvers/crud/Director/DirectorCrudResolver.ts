@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateDirectorArgs } from "./args/AggregateDirectorArgs";
 import { CreateManyDirectorArgs } from "./args/CreateManyDirectorArgs";
@@ -14,166 +14,166 @@ import { GroupByDirectorArgs } from "./args/GroupByDirectorArgs";
 import { UpdateManyDirectorArgs } from "./args/UpdateManyDirectorArgs";
 import { UpdateOneDirectorArgs } from "./args/UpdateOneDirectorArgs";
 import { UpsertOneDirectorArgs } from "./args/UpsertOneDirectorArgs";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 import { Director } from "../../../models/Director";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateDirector } from "../../outputs/AggregateDirector";
 import { DirectorGroupBy } from "../../outputs/DirectorGroupBy";
 
-@TypeGraphQL.Resolver(_of => Director)
+@Resolver(_of => Director)
 export class DirectorCrudResolver {
-  @TypeGraphQL.Query(_returns => AggregateDirector, {
+  @Query(_returns => AggregateDirector, {
     nullable: false
   })
-  async aggregateDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateDirectorArgs) args: AggregateDirectorArgs): Promise<AggregateDirector> {
+  async aggregateDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateDirectorArgs) args: AggregateDirectorArgs): Promise<AggregateDirector> {
     return getPrismaFromContext(ctx).director.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'Director', 'director', 'aggregate'),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async createManyDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateManyDirectorArgs) args: CreateManyDirectorArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createManyDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateManyDirectorArgs) args: CreateManyDirectorArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'createMany');
     return getPrismaFromContext(ctx).director.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'createMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'createMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Director, {
+  @Mutation(_returns => Director, {
     nullable: false
   })
-  async createOneDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOneDirectorArgs) args: CreateOneDirectorArgs): Promise<Director> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOneDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOneDirectorArgs) args: CreateOneDirectorArgs): Promise<Director> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'create');
     return getPrismaFromContext(ctx).director.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'create')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async deleteManyDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteManyDirectorArgs) args: DeleteManyDirectorArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteManyDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteManyDirectorArgs) args: DeleteManyDirectorArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'deleteMany');
     return getPrismaFromContext(ctx).director.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'deleteMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'deleteMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Director, {
+  @Mutation(_returns => Director, {
     nullable: true
   })
-  async deleteOneDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => DeleteOneDirectorArgs) args: DeleteOneDirectorArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async deleteOneDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => DeleteOneDirectorArgs) args: DeleteOneDirectorArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'delete');
     return getPrismaFromContext(ctx).director.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'delete')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'delete')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Director, {
+  @Query(_returns => Director, {
     nullable: true
   })
-  async findFirstDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstDirectorArgs) args: FindFirstDirectorArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstDirectorArgs) args: FindFirstDirectorArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'findFirst');
     return getPrismaFromContext(ctx).director.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'findFirst')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'findFirst')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Director, {
+  @Query(_returns => Director, {
     nullable: true
   })
-  async findFirstDirectorOrThrow(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindFirstDirectorOrThrowArgs) args: FindFirstDirectorOrThrowArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async findFirstDirectorOrThrow(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindFirstDirectorOrThrowArgs) args: FindFirstDirectorOrThrowArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'findFirstOrThrow');
     return getPrismaFromContext(ctx).director.findFirstOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'findFirstOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'findFirstOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [Director], {
+  @Query(_returns => [Director], {
     nullable: false
   })
-  async directors(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyDirectorArgs) args: FindManyDirectorArgs): Promise<Director[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async directors(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyDirectorArgs) args: FindManyDirectorArgs): Promise<Director[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'findMany');
     return getPrismaFromContext(ctx).director.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'findMany')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Director, {
+  @Query(_returns => Director, {
     nullable: true
   })
-  async director(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueDirectorArgs) args: FindUniqueDirectorArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async director(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueDirectorArgs) args: FindUniqueDirectorArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'findUnique');
     return getPrismaFromContext(ctx).director.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'findUnique')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => Director, {
+  @Query(_returns => Director, {
     nullable: true
   })
-  async getDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueDirectorOrThrowArgs) args: FindUniqueDirectorOrThrowArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async getDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueDirectorOrThrowArgs) args: FindUniqueDirectorOrThrowArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'findUniqueOrThrow');
     return getPrismaFromContext(ctx).director.findUniqueOrThrow({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'findUniqueOrThrow')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'findUniqueOrThrow')),
     });
   }
 
-  @TypeGraphQL.Query(_returns => [DirectorGroupBy], {
+  @Query(_returns => [DirectorGroupBy], {
     nullable: false
   })
-  async groupByDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => GroupByDirectorArgs) args: GroupByDirectorArgs): Promise<DirectorGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info);
+  async groupByDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => GroupByDirectorArgs) args: GroupByDirectorArgs): Promise<DirectorGroupBy[]> {
+    const { _count, _avg, _sum, _min, _max } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'groupBy');
     return getPrismaFromContext(ctx).director.groupBy({
-      ...args,
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'groupBy')),
       ...Object.fromEntries(
         Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
       ),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
+  @Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
-  async updateManyDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateManyDirectorArgs) args: UpdateManyDirectorArgs): Promise<AffectedRowsOutput> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateManyDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateManyDirectorArgs) args: UpdateManyDirectorArgs): Promise<AffectedRowsOutput> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'updateMany');
     return getPrismaFromContext(ctx).director.updateMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'updateMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'updateMany')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Director, {
+  @Mutation(_returns => Director, {
     nullable: true
   })
-  async updateOneDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpdateOneDirectorArgs) args: UpdateOneDirectorArgs): Promise<Director | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async updateOneDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpdateOneDirectorArgs) args: UpdateOneDirectorArgs): Promise<Director | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'update');
     return getPrismaFromContext(ctx).director.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'update')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'update')),
     });
   }
 
-  @TypeGraphQL.Mutation(_returns => Director, {
+  @Mutation(_returns => Director, {
     nullable: false
   })
-  async upsertOneDirector(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => UpsertOneDirectorArgs) args: UpsertOneDirectorArgs): Promise<Director> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async upsertOneDirector(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => UpsertOneDirectorArgs) args: UpsertOneDirectorArgs): Promise<Director> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Director', 'director', 'upsert');
     return getPrismaFromContext(ctx).director.upsert({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Director', 'director', 'upsert')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Director', 'director', 'upsert')),
     });
   }
 }

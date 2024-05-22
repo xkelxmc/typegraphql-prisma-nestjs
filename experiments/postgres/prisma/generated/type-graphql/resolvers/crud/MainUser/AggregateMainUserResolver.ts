@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { AggregateMainUserArgs } from "./args/AggregateMainUserArgs";
 import { MainUser } from "../../../models/MainUser";
 import { AggregateMainUser } from "../../outputs/AggregateMainUser";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => MainUser)
+@Resolver(_of => MainUser)
 export class AggregateMainUserResolver {
-  @TypeGraphQL.Query(_returns => AggregateMainUser, {
+  @Query(_returns => AggregateMainUser, {
     nullable: false
   })
-  async aggregateMainUser(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => AggregateMainUserArgs) args: AggregateMainUserArgs): Promise<AggregateMainUser> {
+  async aggregateMainUser(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => AggregateMainUserArgs) args: AggregateMainUserArgs): Promise<AggregateMainUser> {
     return getPrismaFromContext(ctx).user.aggregate({
-      ...args,
-      ...transformInfoIntoPrismaArgs(info),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'User', 'user', 'aggregate')),
+      ...transformInfoIntoPrismaArgs(info, 'User', 'user', 'aggregate'),
     });
   }
 }

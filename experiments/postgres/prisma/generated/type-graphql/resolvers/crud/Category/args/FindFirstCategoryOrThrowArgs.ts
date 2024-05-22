@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { CategoryOrderByWithRelationAndSearchRelevanceInput } from "../../../inputs/CategoryOrderByWithRelationAndSearchRelevanceInput";
 import { CategoryWhereInput } from "../../../inputs/CategoryWhereInput";
 import { CategoryWhereUniqueInput } from "../../../inputs/CategoryWhereUniqueInput";
 import { CategoryScalarFieldEnum } from "../../../../enums/CategoryScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class FindFirstCategoryOrThrowArgs {
-  @TypeGraphQL.Field(_type => CategoryWhereInput, {
+  @Field(_type => CategoryWhereInput, {
     nullable: true
   })
   where?: CategoryWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [CategoryOrderByWithRelationAndSearchRelevanceInput], {
+  @Field(_type => [CategoryOrderByWithRelationAndSearchRelevanceInput], {
     nullable: true
   })
   orderBy?: CategoryOrderByWithRelationAndSearchRelevanceInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => CategoryWhereUniqueInput, {
+  @Field(_type => CategoryWhereUniqueInput, {
     nullable: true
   })
   cursor?: CategoryWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [CategoryScalarFieldEnum], {
+  @Field(_type => [CategoryScalarFieldEnum], {
     nullable: true
   })
   distinct?: Array<"name" | "slug" | "number"> | undefined;

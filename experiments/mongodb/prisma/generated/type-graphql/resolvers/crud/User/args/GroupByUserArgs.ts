@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { UserOrderByWithAggregationInput } from "../../../inputs/UserOrderByWithAggregationInput";
 import { UserScalarWhereWithAggregatesInput } from "../../../inputs/UserScalarWhereWithAggregatesInput";
 import { UserWhereInput } from "../../../inputs/UserWhereInput";
 import { UserScalarFieldEnum } from "../../../../enums/UserScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByUserArgs {
-  @TypeGraphQL.Field(_type => UserWhereInput, {
+  @Field(_type => UserWhereInput, {
     nullable: true
   })
   where?: UserWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [UserOrderByWithAggregationInput], {
+  @Field(_type => [UserOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: UserOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [UserScalarFieldEnum], {
+  @Field(_type => [UserScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"id" | "email" | "age">;
 
-  @TypeGraphQL.Field(_type => UserScalarWhereWithAggregatesInput, {
+  @Field(_type => UserScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: UserScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

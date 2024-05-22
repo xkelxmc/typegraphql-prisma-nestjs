@@ -76,11 +76,15 @@ export default async function generateCode(
     ),
     absolutePrismaOutputPath:
       !baseOptions.customPrismaImportPath &&
-        baseOptions.prismaClientPath.includes("node_modules")
+      baseOptions.prismaClientPath.includes("node_modules")
         ? "@prisma/client"
         : undefined,
     formatGeneratedCode: baseOptions.formatGeneratedCode ?? "tsc", // default for backward compatibility
   };
+
+  const globalOutput = options.globalOutput
+    ? path.resolve(options.outputDirPath, "../global")
+    : undefined;
 
   const baseDirPath = options.outputDirPath;
   const emitTranspiledCode =
@@ -101,24 +105,48 @@ export default async function generateCode(
 
   if (dmmfDocument.shouldGenerateBlock("enums")) {
     log("Generating enums...");
+    const canBeGlobalEnums = ["QueryMode"];
     const datamodelEnumNames = dmmfDocument.datamodel.enums.map(
       enumDef => enumDef.typeName,
     );
     dmmfDocument.datamodel.enums.forEach(enumDef =>
       generateEnumFromDef(project, baseDirPath, enumDef, options),
     );
-    dmmfDocument.schema.enums
-      // skip enums from datamodel
-      .filter(enumDef => !datamodelEnumNames.includes(enumDef.typeName))
-      .forEach(enumDef =>
-        generateEnumFromDef(project, baseDirPath, enumDef, options),
-      );
-    const emittedEnumNames = [
+
+    const globalEnums = dmmfDocument.schema.enums.filter(enumType =>
+      canBeGlobalEnums.includes(enumType.typeName),
+    );
+    let mainEnums: DMMF.Enum[];
+    let emittedEnumNames = [
       ...new Set([
         ...dmmfDocument.schema.enums.map(it => it.typeName),
         ...dmmfDocument.datamodel.enums.map(it => it.typeName),
       ]),
     ];
+    if (globalOutput) {
+      globalEnums // skip enums from datamodel
+        .filter(enumDef => !datamodelEnumNames.includes(enumDef.typeName))
+        .forEach(enumDef =>
+          generateEnumFromDef(project, globalOutput, enumDef, options),
+        );
+
+      emittedEnumNames = emittedEnumNames.filter(
+        enumName => !canBeGlobalEnums.includes(enumName),
+      );
+      mainEnums = dmmfDocument.schema.enums.filter(
+        enumDef => !canBeGlobalEnums.includes(enumDef.typeName),
+      );
+    } else {
+      mainEnums = dmmfDocument.schema.enums;
+    }
+
+    mainEnums
+      // skip enums from datamodel
+      .filter(enumDef => !datamodelEnumNames.includes(enumDef.typeName))
+      .forEach(enumDef =>
+        generateEnumFromDef(project, baseDirPath, enumDef, options),
+      );
+
     const enumsBarrelExportSourceFile = project.createSourceFile(
       path.resolve(baseDirPath, enumsFolderName, "index.ts"),
       undefined,
@@ -139,6 +167,7 @@ export default async function generateCode(
         model,
         modelOutputType,
         dmmfDocument,
+        options,
       );
     });
     const modelsBarrelExportSourceFile = project.createSourceFile(
@@ -174,6 +203,7 @@ export default async function generateCode(
         resolversDirPath,
         type,
         dmmfDocument,
+        options,
       ),
     );
     const outputsBarrelExportSourceFile = project.createSourceFile(
@@ -224,7 +254,39 @@ export default async function generateCode(
 
   if (dmmfDocument.shouldGenerateBlock("inputs")) {
     log("Generating input types...");
-    dmmfDocument.schema.inputTypes.forEach(type =>
+    const globalInputs = dmmfDocument.schema.inputTypes.filter(
+      it => it.isPrismaGlobalType,
+    );
+    let inputs: DMMF.InputType[] = [];
+    if (globalOutput) {
+      globalInputs.forEach(type =>
+        generateInputTypeClassFromType(project, globalOutput, type, options),
+      );
+      const globalInputsBarrelExportSourceFile = project.createSourceFile(
+        path.resolve(globalOutput, inputsFolderName, "index.ts"),
+        undefined,
+        { overwrite: true },
+      );
+
+      generateInputsBarrelFile(
+        globalInputsBarrelExportSourceFile,
+        globalInputs.map(it => it.typeName),
+      );
+      inputs = dmmfDocument.schema.inputTypes.filter(
+        it => !it.isPrismaGlobalType,
+      );
+    } else {
+      globalInputs.forEach(type =>
+        generateInputTypeClassFromType(
+          project,
+          resolversDirPath,
+          type,
+          options,
+        ),
+      );
+      inputs = dmmfDocument.schema.inputTypes;
+    }
+    inputs.forEach(type =>
       generateInputTypeClassFromType(project, resolversDirPath, type, options),
     );
     const inputsBarrelExportSourceFile = project.createSourceFile(
@@ -239,7 +301,7 @@ export default async function generateCode(
     );
     generateInputsBarrelFile(
       inputsBarrelExportSourceFile,
-      dmmfDocument.schema.inputTypes.map(it => it.typeName),
+      inputs.map(it => it.typeName),
     );
   }
 
@@ -502,12 +564,21 @@ export default async function generateCode(
   );
 
   log("Generate custom scalars");
-  const scalarsSourceFile = project.createSourceFile(
-    baseDirPath + "/scalars.ts",
-    undefined,
-    { overwrite: true },
-  );
-  generateCustomScalars(scalarsSourceFile, dmmfDocument.options);
+  if (globalOutput) {
+    const scalarsSourceFile = project.createSourceFile(
+      globalOutput + "/scalars.ts",
+      undefined,
+      { overwrite: true },
+    );
+    generateCustomScalars(scalarsSourceFile, dmmfDocument.options);
+  } else {
+    const scalarsSourceFile = project.createSourceFile(
+      baseDirPath + "/scalars.ts",
+      undefined,
+      { overwrite: true },
+    );
+    generateCustomScalars(scalarsSourceFile, dmmfDocument.options);
+  }
 
   log("Generate custom helpers");
   const helpersSourceFile = project.createSourceFile(

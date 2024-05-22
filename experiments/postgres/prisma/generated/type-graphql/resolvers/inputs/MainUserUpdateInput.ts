@@ -1,55 +1,55 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { PostUpdateManyWithoutAuthorNestedInput } from "../inputs/PostUpdateManyWithoutAuthorNestedInput";
 import { PostUpdateManyWithoutEditorNestedInput } from "../inputs/PostUpdateManyWithoutEditorNestedInput";
 import { Role } from "../../enums/Role";
 
-@TypeGraphQL.InputType("MainUserUpdateInput", {})
+@InputType("MainUserUpdateInput", {})
 export class MainUserUpdateInput {
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   email?: string | undefined;
 
   name?: string | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   age?: number | undefined;
 
   balance?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+  @Field(_type => Float, {
     nullable: true
   })
   amount?: number | undefined;
 
-  @TypeGraphQL.Field(_type => Role, {
+  @Field(_type => Role, {
     nullable: true
   })
   role?: "USER" | "ADMIN" | undefined;
 
-  @TypeGraphQL.Field(_type => [TypeGraphQL.Int], {
+  @Field(_type => [Int], {
     nullable: true
   })
   grades?: number[] | undefined;
 
-  @TypeGraphQL.Field(_type => [String], {
+  @Field(_type => [String], {
     nullable: true
   })
   aliases?: string[] | undefined;
 
   posts?: PostUpdateManyWithoutAuthorNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => PostUpdateManyWithoutEditorNestedInput, {
+  @Field(_type => PostUpdateManyWithoutEditorNestedInput, {
     nullable: true
   })
   editorPosts?: PostUpdateManyWithoutEditorNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
+  @Field(_type => String, {
     nullable: true
   })
   get firstName() {
@@ -60,7 +60,7 @@ export class MainUserUpdateInput {
     this.name = name;
   }
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+  @Field(_type => Float, {
     nullable: true
   })
   get accountBalance() {
@@ -71,7 +71,7 @@ export class MainUserUpdateInput {
     this.balance = balance;
   }
 
-  @TypeGraphQL.Field(_type => PostUpdateManyWithoutAuthorNestedInput, {
+  @Field(_type => PostUpdateManyWithoutAuthorNestedInput, {
     nullable: true
   })
   get clientPosts() {

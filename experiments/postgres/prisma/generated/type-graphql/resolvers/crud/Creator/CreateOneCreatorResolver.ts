@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { CreateOneCreatorArgs } from "./args/CreateOneCreatorArgs";
 import { Creator } from "../../../models/Creator";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Creator)
+@Resolver(_of => Creator)
 export class CreateOneCreatorResolver {
-  @TypeGraphQL.Mutation(_returns => Creator, {
+  @Mutation(_returns => Creator, {
     nullable: false
   })
-  async createOneCreator(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => CreateOneCreatorArgs) args: CreateOneCreatorArgs): Promise<Creator> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async createOneCreator(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => CreateOneCreatorArgs) args: CreateOneCreatorArgs): Promise<Creator> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Creator', 'creator', 'create');
     return getPrismaFromContext(ctx).creator.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Creator', 'creator', 'create')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Creator', 'creator', 'create')),
     });
   }
 }

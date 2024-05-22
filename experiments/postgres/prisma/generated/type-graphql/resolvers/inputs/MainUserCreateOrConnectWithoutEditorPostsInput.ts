@@ -1,18 +1,18 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MainUserCreateWithoutEditorPostsInput } from "../inputs/MainUserCreateWithoutEditorPostsInput";
 import { MainUserWhereUniqueInput } from "../inputs/MainUserWhereUniqueInput";
 
-@TypeGraphQL.InputType("MainUserCreateOrConnectWithoutEditorPostsInput", {})
+@InputType("MainUserCreateOrConnectWithoutEditorPostsInput", {})
 export class MainUserCreateOrConnectWithoutEditorPostsInput {
-  @TypeGraphQL.Field(_type => MainUserWhereUniqueInput, {
+  @Field(_type => MainUserWhereUniqueInput, {
     nullable: false
   })
   where!: MainUserWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => MainUserCreateWithoutEditorPostsInput, {
+  @Field(_type => MainUserCreateWithoutEditorPostsInput, {
     nullable: false
   })
   create!: MainUserCreateWithoutEditorPostsInput;

@@ -1,16 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { MovieUpdateInput } from "../../../inputs/MovieUpdateInput";
 import { MovieWhereUniqueInput } from "../../../inputs/MovieWhereUniqueInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class UpdateOneMovieArgs {
-  @TypeGraphQL.Field(_type => MovieUpdateInput, {
+  @Field(_type => MovieUpdateInput, {
     nullable: false
   })
   data!: MovieUpdateInput;
 
-  @TypeGraphQL.Field(_type => MovieWhereUniqueInput, {
+  @Field(_type => MovieWhereUniqueInput, {
     nullable: false
   })
   where!: MovieWhereUniqueInput;

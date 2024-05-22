@@ -1,10 +1,10 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { DirectorWhereInput } from "../../../inputs/DirectorWhereInput";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class DeleteManyDirectorArgs {
-  @TypeGraphQL.Field(_type => DirectorWhereInput, {
+  @Field(_type => DirectorWhereInput, {
     nullable: true
   })
   where?: DirectorWhereInput | undefined;

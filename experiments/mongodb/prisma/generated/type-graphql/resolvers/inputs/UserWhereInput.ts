@@ -1,50 +1,50 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
 import { DecimalJSScalar } from "../../scalars";
-import { IntNullableFilter } from "../inputs/IntNullableFilter";
+import { IntNullableFilter } from "../../../global/inputs/IntNullableFilter";
+import { StringFilter } from "../../../global/inputs/StringFilter";
 import { PostListRelationFilter } from "../inputs/PostListRelationFilter";
-import { StringFilter } from "../inputs/StringFilter";
 import { UserAddressCompositeFilter } from "../inputs/UserAddressCompositeFilter";
 
-@TypeGraphQL.InputType("UserWhereInput", {})
+@InputType("UserWhereInput", {})
 export class UserWhereInput {
-  @TypeGraphQL.Field(_type => [UserWhereInput], {
+  @Field(_type => [UserWhereInput], {
     nullable: true
   })
   AND?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [UserWhereInput], {
+  @Field(_type => [UserWhereInput], {
     nullable: true
   })
   OR?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [UserWhereInput], {
+  @Field(_type => [UserWhereInput], {
     nullable: true
   })
   NOT?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @Field(_type => StringFilter, {
     nullable: true
   })
   email?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntNullableFilter, {
+  @Field(_type => IntNullableFilter, {
     nullable: true
   })
   age?: IntNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => UserAddressCompositeFilter, {
+  @Field(_type => UserAddressCompositeFilter, {
     nullable: true
   })
   address?: UserAddressCompositeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => PostListRelationFilter, {
+  @Field(_type => PostListRelationFilter, {
     nullable: true
   })
   posts?: PostListRelationFilter | undefined;

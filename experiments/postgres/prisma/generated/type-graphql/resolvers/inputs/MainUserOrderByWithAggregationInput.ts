@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { MainUserAvgOrderByAggregateInput } from "../inputs/MainUserAvgOrderByAggregateInput";
 import { MainUserCountOrderByAggregateInput } from "../inputs/MainUserCountOrderByAggregateInput";
 import { MainUserMaxOrderByAggregateInput } from "../inputs/MainUserMaxOrderByAggregateInput";
@@ -10,73 +10,73 @@ import { MainUserSumOrderByAggregateInput } from "../inputs/MainUserSumOrderByAg
 import { SortOrderInput } from "../inputs/SortOrderInput";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType("MainUserOrderByWithAggregationInput", {})
+@InputType("MainUserOrderByWithAggregationInput", {})
 export class MainUserOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   email?: "asc" | "desc" | undefined;
 
   name?: SortOrderInput | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   age?: "asc" | "desc" | undefined;
 
   balance?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   amount?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   role?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   grades?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   aliases?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => MainUserCountOrderByAggregateInput, {
+  @Field(_type => MainUserCountOrderByAggregateInput, {
     nullable: true
   })
   _count?: MainUserCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => MainUserAvgOrderByAggregateInput, {
+  @Field(_type => MainUserAvgOrderByAggregateInput, {
     nullable: true
   })
   _avg?: MainUserAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => MainUserMaxOrderByAggregateInput, {
+  @Field(_type => MainUserMaxOrderByAggregateInput, {
     nullable: true
   })
   _max?: MainUserMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => MainUserMinOrderByAggregateInput, {
+  @Field(_type => MainUserMinOrderByAggregateInput, {
     nullable: true
   })
   _min?: MainUserMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => MainUserSumOrderByAggregateInput, {
+  @Field(_type => MainUserSumOrderByAggregateInput, {
     nullable: true
   })
   _sum?: MainUserSumOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrderInput, {
+  @Field(_type => SortOrderInput, {
     nullable: true
   })
   get firstName() {
@@ -87,7 +87,7 @@ export class MainUserOrderByWithAggregationInput {
     this.name = name;
   }
 
-  @TypeGraphQL.Field(_type => SortOrder, {
+  @Field(_type => SortOrder, {
     nullable: true
   })
   get accountBalance() {

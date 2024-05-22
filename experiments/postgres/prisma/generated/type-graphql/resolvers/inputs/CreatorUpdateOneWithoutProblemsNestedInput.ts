@@ -1,7 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../client";
-import { DecimalJSScalar } from "../../scalars";
+import { DecimalJSScalar } from "../../../global/scalars";
 import { CreatorCreateOrConnectWithoutProblemsInput } from "../inputs/CreatorCreateOrConnectWithoutProblemsInput";
 import { CreatorCreateWithoutProblemsInput } from "../inputs/CreatorCreateWithoutProblemsInput";
 import { CreatorUpdateToOneWithWhereWithoutProblemsInput } from "../inputs/CreatorUpdateToOneWithWhereWithoutProblemsInput";
@@ -9,39 +9,39 @@ import { CreatorUpsertWithoutProblemsInput } from "../inputs/CreatorUpsertWithou
 import { CreatorWhereInput } from "../inputs/CreatorWhereInput";
 import { CreatorWhereUniqueInput } from "../inputs/CreatorWhereUniqueInput";
 
-@TypeGraphQL.InputType("CreatorUpdateOneWithoutProblemsNestedInput", {})
+@InputType("CreatorUpdateOneWithoutProblemsNestedInput", {})
 export class CreatorUpdateOneWithoutProblemsNestedInput {
-  @TypeGraphQL.Field(_type => CreatorCreateWithoutProblemsInput, {
+  @Field(_type => CreatorCreateWithoutProblemsInput, {
     nullable: true
   })
   create?: CreatorCreateWithoutProblemsInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorCreateOrConnectWithoutProblemsInput, {
+  @Field(_type => CreatorCreateOrConnectWithoutProblemsInput, {
     nullable: true
   })
   connectOrCreate?: CreatorCreateOrConnectWithoutProblemsInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorUpsertWithoutProblemsInput, {
+  @Field(_type => CreatorUpsertWithoutProblemsInput, {
     nullable: true
   })
   upsert?: CreatorUpsertWithoutProblemsInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorWhereInput, {
+  @Field(_type => CreatorWhereInput, {
     nullable: true
   })
   disconnect?: CreatorWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorWhereInput, {
+  @Field(_type => CreatorWhereInput, {
     nullable: true
   })
   delete?: CreatorWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorWhereUniqueInput, {
+  @Field(_type => CreatorWhereUniqueInput, {
     nullable: true
   })
   connect?: CreatorWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => CreatorUpdateToOneWithWhereWithoutProblemsInput, {
+  @Field(_type => CreatorUpdateToOneWithWhereWithoutProblemsInput, {
     nullable: true
   })
   update?: CreatorUpdateToOneWithWhereWithoutProblemsInput | undefined;

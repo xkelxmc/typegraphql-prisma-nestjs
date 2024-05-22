@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindManyMainUserArgs } from "./args/FindManyMainUserArgs";
 import { MainUser } from "../../../models/MainUser";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => MainUser)
+@Resolver(_of => MainUser)
 export class FindManyMainUserResolver {
-  @TypeGraphQL.Query(_returns => [MainUser], {
+  @Query(_returns => [MainUser], {
     nullable: false
   })
-  async mainUsers(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindManyMainUserArgs) args: FindManyMainUserArgs): Promise<MainUser[]> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async mainUsers(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindManyMainUserArgs) args: FindManyMainUserArgs): Promise<MainUser[]> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'User', 'user', 'findMany');
     return getPrismaFromContext(ctx).user.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'User', 'user', 'findMany')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'User', 'user', 'findMany')),
     });
   }
 }

@@ -1,19 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import type { GraphQLResolveInfo } from "graphql";
 import { FindUniqueCategoryArgs } from "./args/FindUniqueCategoryArgs";
 import { Category } from "../../../models/Category";
-import { transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
+import { transformArgsIntoPrismaArgs, transformInfoIntoPrismaArgs, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
-@TypeGraphQL.Resolver(_of => Category)
+@Resolver(_of => Category)
 export class FindUniqueCategoryResolver {
-  @TypeGraphQL.Query(_returns => Category, {
+  @Query(_returns => Category, {
     nullable: true
   })
-  async category(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args(_type => FindUniqueCategoryArgs) args: FindUniqueCategoryArgs): Promise<Category | null> {
-    const { _count } = transformInfoIntoPrismaArgs(info);
+  async category(@Context() ctx: any, @Info() info: GraphQLResolveInfo, @Args(_type => FindUniqueCategoryArgs) args: FindUniqueCategoryArgs): Promise<Category | null> {
+    const { _count } = transformInfoIntoPrismaArgs(info, 'Category', 'category', 'findUnique');
     return getPrismaFromContext(ctx).category.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      ...(await transformArgsIntoPrismaArgs(info, args, ctx, 'Category', 'category', 'findUnique')),
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count, 'Category', 'category', 'findUnique')),
     });
   }
 }

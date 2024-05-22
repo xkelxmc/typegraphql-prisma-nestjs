@@ -1,38 +1,38 @@
-import * as TypeGraphQL from "type-graphql";
+import { Args, ArgsType, Context, Field, Float, ID, Info, InputType, Int, Mutation, ObjectType, Query, ResolveField, Resolver, Root, registerEnumType } from "@nestjs/graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { ProblemOrderByWithAggregationInput } from "../../../inputs/ProblemOrderByWithAggregationInput";
 import { ProblemScalarWhereWithAggregatesInput } from "../../../inputs/ProblemScalarWhereWithAggregatesInput";
 import { ProblemWhereInput } from "../../../inputs/ProblemWhereInput";
 import { ProblemScalarFieldEnum } from "../../../../enums/ProblemScalarFieldEnum";
 
-@TypeGraphQL.ArgsType()
+@ArgsType()
 export class GroupByProblemArgs {
-  @TypeGraphQL.Field(_type => ProblemWhereInput, {
+  @Field(_type => ProblemWhereInput, {
     nullable: true
   })
   where?: ProblemWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemOrderByWithAggregationInput], {
+  @Field(_type => [ProblemOrderByWithAggregationInput], {
     nullable: true
   })
   orderBy?: ProblemOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ProblemScalarFieldEnum], {
+  @Field(_type => [ProblemScalarFieldEnum], {
     nullable: false
   })
   by!: Array<"id" | "problemText" | "creatorId">;
 
-  @TypeGraphQL.Field(_type => ProblemScalarWhereWithAggregatesInput, {
+  @Field(_type => ProblemScalarWhereWithAggregatesInput, {
     nullable: true
   })
   having?: ProblemScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @Field(_type => Int, {
     nullable: true
   })
   skip?: number | undefined;

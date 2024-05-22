@@ -8,7 +8,6 @@ const {
   PrismaClientInitializationError,
   PrismaClientValidationError,
   NotFoundError,
-  decompressFromBase64,
   getPrismaClient,
   sqltag,
   empty,
@@ -21,20 +20,23 @@ const {
   Extensions,
   warnOnce,
   defineDmmfProperty,
-} = require('./runtime/library')
+  Public,
+  getRuntime
+} = require('./runtime/library.js')
 
 
 const Prisma = {}
 
 exports.Prisma = Prisma
+exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 4.15.0
- * Query Engine version: 8fbc245156db7124f997f4cecdd8d1219e360944
+ * Prisma Client JS version: 5.14.0
+ * Query Engine version: e9771e62de70f79a5e1c604a2d7c8e2a0a874b48
  */
 Prisma.prismaVersion = {
-  client: "4.15.0",
-  engine: "8fbc245156db7124f997f4cecdd8d1219e360944"
+  client: "5.14.0",
+  engine: "e9771e62de70f79a5e1c604a2d7c8e2a0a874b48"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -52,8 +54,13 @@ Prisma.sql = sqltag
 Prisma.empty = empty
 Prisma.join = join
 Prisma.raw = raw
-Prisma.validator = () => (val) => val
+Prisma.validator = Public.validator
 
+/**
+* Extensions
+*/
+Prisma.getExtensionContext = Extensions.getExtensionContext
+Prisma.defineExtension = Extensions.defineExtension
 
 /**
  * Shorthand utilities for JSON filtering
@@ -74,13 +81,6 @@ Prisma.NullTypes = {
 /**
  * Enums
  */
-
-exports.Prisma.CommentScalarFieldEnum = {
-  id: 'id',
-  postId: 'postId',
-  comment: 'comment'
-};
-
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -89,9 +89,16 @@ exports.Prisma.PostScalarFieldEnum = {
   authorId: 'authorId'
 };
 
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  comment: 'comment'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  age: 'age'
 };
 
 exports.Prisma.SortOrder = {
@@ -99,10 +106,9 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  age: 'age'
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 
@@ -122,7 +128,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/majkel/development/typegraphql-prisma/experiments/mongodb/prisma/generated/client",
+      "value": "/Users/ilyazhidkov/repos/typegraphql-prisma-nestjs/experiments/mongodb/prisma/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -131,7 +137,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
@@ -139,35 +145,53 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../.env"
   },
   "relativePath": "../..",
-  "clientVersion": "4.15.0",
-  "engineVersion": "8fbc245156db7124f997f4cecdd8d1219e360944",
+  "clientVersion": "5.14.0",
+  "engineVersion": "e9771e62de70f79a5e1c604a2d7c8e2a0a874b48",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "mongodb",
-  "dataProxy": false,
-  "postinstall": false
+  "postinstall": false,
+  "inlineDatasources": {
+    "db": {
+      "url": {
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
+      }
+    }
+  },
+  "inlineSchema": "datasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  // binaryTargets   = [\"windows\", \"debian-openssl-1.1.x\"]\n  output   = \"../prisma/generated/client\"\n}\n\ngenerator typegraphql {\n  provider               = \"node ../../src/cli/dev.ts\"\n  output                 = \"../prisma/generated/type-graphql\"\n  globalOutput           = true\n  emitDMMF               = true\n  // emitTranspiledCode       = true\n  // simpleResolvers          = false\n  // useOriginalMapping       = true\n  // useUncheckedScalarInputs = false\n  // emitIdAsIDType           = true\n  customPrismaImportPath = \"../client\"\n  useSimpleInputs        = true\n}\n\nmodel Post {\n  id       String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug     String    @unique\n  title    String\n  body     String\n  comments Comment[]\n  author   User      @relation(fields: [authorId], references: [id])\n  authorId String    @db.ObjectId\n}\n\nmodel Comment {\n  id      String @id @default(auto()) @map(\"_id\") @db.ObjectId\n  post    Post   @relation(fields: [postId], references: [id])\n  postId  String @db.ObjectId\n  comment String\n}\n\nmodel User {\n  id      String      @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email   String      @unique\n  age     Int?\n  address UserAddress\n  posts   Post[]\n}\n\ntype UserAddress {\n  street String\n  number Int?\n  city   String\n}\n",
+  "inlineSchemaHash": "bf90d0982913e300145079e8fe89d178c7a56a3e4244d232ea0da314778cc3c9",
+  "copyEngine": true
 }
 
 const fs = require('fs')
 
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
-  config.dirname = path.join(process.cwd(), "prisma/generated/client")
+  const alternativePaths = [
+    "prisma/generated/client",
+    "generated/client",
+  ]
+  
+  const alternativePath = alternativePaths.find((altPath) => {
+    return fs.existsSync(path.join(process.cwd(), altPath, 'schema.prisma'))
+  }) ?? alternativePaths[0]
+
+  config.dirname = path.join(process.cwd(), alternativePath)
   config.isBundled = true
 }
 
 config.runtimeDataModel = JSON.parse("{\"models\":{\"Post\":{\"dbName\":null,\"fields\":[{\"name\":\"id\",\"dbName\":\"_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"auto\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"slug\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"title\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"body\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"comments\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Comment\",\"relationName\":\"CommentToPost\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"author\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"relationName\":\"PostToUser\",\"relationFromFields\":[\"authorId\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"authorId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"Comment\":{\"dbName\":null,\"fields\":[{\"name\":\"id\",\"dbName\":\"_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"auto\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"post\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Post\",\"relationName\":\"CommentToPost\",\"relationFromFields\":[\"postId\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"postId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"comment\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"User\":{\"dbName\":null,\"fields\":[{\"name\":\"id\",\"dbName\":\"_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"auto\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"age\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"address\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"UserAddress\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"posts\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Post\",\"relationName\":\"PostToUser\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{\"UserAddress\":{\"dbName\":null,\"fields\":[{\"name\":\"street\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\"},{\"name\":\"city\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\"}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[]}}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
+config.engineWasm = undefined
 
 
-
-
-
-const { warnEnvConflicts } = require('./runtime/library')
+const { warnEnvConflicts } = require('./runtime/library.js')
 
 warnEnvConflicts({
     rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
@@ -178,7 +202,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
-path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
-path.join(process.cwd(), "prisma/generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "prisma/generated/client/libquery_engine-darwin-arm64.dylib.node")
+// file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/generated/client/schema.prisma")
